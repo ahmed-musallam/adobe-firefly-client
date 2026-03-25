@@ -14,6 +14,9 @@
       "types": "./dist/sdk.d.mts"
     }
   },
+  "publishConfig": {
+    "access": "public"
+  },
   "files": [
     "dist"
   ],

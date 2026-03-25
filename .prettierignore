@@ -1,0 +1,8 @@
+dist/
+docs/
+.turbo/
+node_modules/
+packages/*/src/flat/
+packages/*/src/sdk/
+packages/*/dist/
+pnpm-lock.yaml

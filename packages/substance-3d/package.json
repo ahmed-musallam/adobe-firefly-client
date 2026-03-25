@@ -1,0 +1,32 @@
+{
+  "name": "@musallam/substance-3d",
+  "version": "0.0.0",
+  "description": "Adobe Substance 3D API SDK",
+  "exports": {
+    ".": {
+      "import": "./dist/flat.mjs",
+      "require": "./dist/flat.cjs",
+      "types": "./dist/flat.d.mts"
+    },
+    "./sdk": {
+      "import": "./dist/sdk.mjs",
+      "require": "./dist/sdk.cjs",
+      "types": "./dist/sdk.d.mts"
+    }
+  },
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "tsdown --config ../../tsdown.config.ts",
+    "test": "vitest run"
+  },
+  "dependencies": {
+    "ky": "catalog:"
+  },
+  "devDependencies": {
+    "tsdown": "catalog:",
+    "typescript": "catalog:",
+    "vitest": "catalog:"
+  }
+}

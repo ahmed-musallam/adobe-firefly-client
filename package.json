@@ -1,0 +1,43 @@
+{
+  "name": "adobe-firefly-sdk",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "generate": "openapi-ts",
+    "clean": "rm -rf packages/*/src/flat packages/*/src/sdk packages/*/src/class packages/*/dist",
+    "clean:dist": "rm -rf packages/*/dist",
+    "build": "turbo run build",
+    "test": "turbo run test",
+    "lint": "oxlint \"packages/*/src/**/*.ts\"",
+    "format": "prettier --write .",
+    "format:check": "prettier --check .",
+    "docs": "typedoc",
+    "prepare": "husky"
+  },
+  "devDependencies": {
+    "@commitlint/cli": "20.5.0",
+    "@commitlint/config-conventional": "20.5.0",
+    "@hey-api/openapi-ts": "0.94.4",
+    "@semantic-release/changelog": "6.0.3",
+    "@semantic-release/git": "10.0.1",
+    "@types/node": "22.19.15",
+    "husky": "9.1.7",
+    "lint-staged": "16.4.0",
+    "multi-semantic-release": "3.1.0",
+    "oxlint": "1.57.0",
+    "prettier": "3.8.1",
+    "tsdown": "0.21.4",
+    "turbo": "2.8.20",
+    "typedoc": "0.28.18",
+    "typescript": "5.9.3"
+  },
+  "lint-staged": {
+    "*.{ts,tsx,json,md,yaml,yml}": [
+      "prettier --write"
+    ],
+    "*.{ts,tsx}": [
+      "oxlint --fix"
+    ]
+  },
+  "packageManager": "pnpm@10.17.0"
+}

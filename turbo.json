@@ -1,0 +1,17 @@
+{
+  "$schema": "https://turbo.build/schema.json",
+  "tasks": {
+    "//#clean": {},
+    "//#generate": {
+      "outputs": ["packages/*/src/flat/**", "packages/*/src/sdk/**"],
+      "dependsOn": ["//#clean"]
+    },
+    "build": {
+      "dependsOn": ["//#generate"],
+      "outputs": ["dist/**"]
+    },
+    "test": {},
+    "lint": {},
+    "format:check": {}
+  }
+}

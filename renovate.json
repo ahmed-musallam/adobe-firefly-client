@@ -1,0 +1,14 @@
+{
+  "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+  "extends": ["config:base"],
+  "packageRules": [
+    {
+      "matchPackagePatterns": ["@hey-api/.*"],
+      "groupName": "hey-api"
+    },
+    {
+      "matchPackagePatterns": ["@semantic-release/.*"],
+      "groupName": "semantic-release"
+    }
+  ]
+}

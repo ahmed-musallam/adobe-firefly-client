@@ -1,0 +1,9 @@
+{
+  "entryPointStrategy": "resolve",
+  "entryPoints": ["packages/*/src/flat/index.ts", "packages/*/src/sdk/index.ts"],
+  "tsconfig": "tsconfig.base.json",
+  "out": "docs",
+  "excludePrivate": true,
+  "excludeInternal": true,
+  "readme": "none"
+}

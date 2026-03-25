@@ -22,7 +22,7 @@ jobs:
 
       - uses: actions/setup-node@v4
         with:
-          node-version: 22
+          node-version: 24
           cache: pnpm
 
       - name: Install dependencies
@@ -32,7 +32,7 @@ jobs:
         run: pnpm build
 
       - name: Generate docs
-        run: pnpm docs
+        run: pnpm run docs
 
       - name: Upload pages artifact
         uses: actions/upload-pages-artifact@v3

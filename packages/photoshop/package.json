@@ -1,6 +1,6 @@
 {
   "name": "@musallam/photoshop",
-  "version": "0.0.0",
+  "version": "0.1.0",
   "description": "Adobe Photoshop API SDK",
   "exports": {
     ".": {

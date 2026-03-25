@@ -1,6 +1,6 @@
 {
   "name": "@musallam/indesign",
-  "version": "0.0.0",
+  "version": "0.1.0",
   "description": "Adobe InDesign API SDK",
   "exports": {
     ".": {

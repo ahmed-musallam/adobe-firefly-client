@@ -1,5 +1,5 @@
 {
-  "name": "@musallam/audio-video",
+  "name": "@musallam/ffs-audio-video-client",
   "version": "0.1.0",
   "description": "Adobe Audio & Video API SDK",
   "exports": {

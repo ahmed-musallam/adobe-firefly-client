@@ -1,5 +1,5 @@
 {
-  "name": "@musallam/cloud-storage",
+  "name": "@musallam/ffs-cloud-storage-client",
   "version": "0.1.0",
   "description": "Adobe Cloud Storage & Collaboration API SDK",
   "exports": {

@@ -1,5 +1,5 @@
 {
-  "name": "@musallam/indesign",
+  "name": "@musallam/ffs-indesign-client",
   "version": "0.1.0",
   "description": "Adobe InDesign API SDK",
   "exports": {

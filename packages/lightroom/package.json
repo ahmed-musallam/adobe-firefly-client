@@ -1,5 +1,5 @@
 {
-  "name": "@musallam/lightroom",
+  "name": "@musallam/ffs-lightroom-client",
   "version": "0.1.0",
   "description": "Adobe Lightroom API SDK",
   "exports": {

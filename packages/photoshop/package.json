@@ -1,5 +1,5 @@
 {
-  "name": "@musallam/photoshop",
+  "name": "@musallam/ffs-photoshop-client",
   "version": "0.1.0",
   "description": "Adobe Photoshop API SDK",
   "exports": {

@@ -7,8 +7,10 @@ Manage Creative Cloud projects, folders, and files — including uploads, permis
 ## Installation
 
 ```sh
-npm install @musallam/ffs-cloud-storage-client
+npm install @musallam/ffs-cloud-storage-client ky
 ```
+
+`ky` is a peer dependency (`^1.0.0`); install a compatible 1.x version alongside this package. Releases that bundled `ky` internally are a previous major line—when upgrading, ensure `ky` is listed in your app if your package manager does not add it automatically.
 
 ## Authentication
 

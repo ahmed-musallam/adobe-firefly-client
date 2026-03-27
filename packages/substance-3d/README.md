@@ -7,8 +7,10 @@ Assemble 3D scenes, generate composites, convert between 3D file formats, and re
 ## Installation
 
 ```sh
-npm install @musallam/ffs-substance-3d-client
+npm install @musallam/ffs-substance-3d-client ky
 ```
+
+`ky` is a peer dependency (`^1.0.0`); install a compatible 1.x version alongside this package. Releases that bundled `ky` internally are a previous major line—when upgrading, ensure `ky` is listed in your app if your package manager does not add it automatically.
 
 ## Authentication
 

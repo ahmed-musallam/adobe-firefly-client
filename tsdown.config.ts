@@ -17,6 +17,6 @@ export default defineConfig({
     brotli: true,
   },
   deps: {
-    onlyBundle: ['ky'], // Bundle only the dependencies that are used in the code
+    neverBundle: ['ky'],
   },
 });

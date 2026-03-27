@@ -24,10 +24,11 @@
     "build": "tsdown --config ../../tsdown.config.ts",
     "test": "vitest run"
   },
-  "dependencies": {
-    "ky": "catalog:"
+  "peerDependencies": {
+    "ky": "^1.0.0"
   },
   "devDependencies": {
+    "ky": "catalog:",
     "tsdown": "catalog:",
     "typescript": "catalog:",
     "vitest": "catalog:"

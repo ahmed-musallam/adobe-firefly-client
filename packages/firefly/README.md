@@ -7,8 +7,10 @@ Generate images from text prompts, expand or fill images with AI-generated conte
 ## Installation
 
 ```sh
-npm install @musallam/ffs-firefly-client
+npm install @musallam/ffs-firefly-client ky
 ```
+
+`ky` is a peer dependency (`^1.0.0`); install a compatible 1.x version alongside this package. Releases that bundled `ky` internally are a previous major line—when upgrading, ensure `ky` is listed in your app if your package manager does not add it automatically.
 
 ## Authentication
 

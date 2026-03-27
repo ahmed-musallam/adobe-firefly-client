@@ -70,11 +70,10 @@ importers:
         version: 5.9.3
 
   packages/audio-video:
-    dependencies:
+    devDependencies:
       ky:
         specifier: 'catalog:'
         version: 1.14.3
-    devDependencies:
       tsdown:
         specifier: 'catalog:'
         version: 0.21.4(typescript@5.9.3)
@@ -86,11 +85,10 @@ importers:
         version: 4.1.1(@types/node@22.19.15)(vite@8.0.2(@types/node@22.19.15)(jiti@2.6.1)(yaml@2.8.3))
 
   packages/cloud-storage:
-    dependencies:
+    devDependencies:
       ky:
         specifier: 'catalog:'
         version: 1.14.3
-    devDependencies:
       tsdown:
         specifier: 'catalog:'
         version: 0.21.4(typescript@5.9.3)
@@ -102,11 +100,10 @@ importers:
         version: 4.1.1(@types/node@22.19.15)(vite@8.0.2(@types/node@22.19.15)(jiti@2.6.1)(yaml@2.8.3))
 
   packages/firefly:
-    dependencies:
+    devDependencies:
       ky:
         specifier: 'catalog:'
         version: 1.14.3
-    devDependencies:
       tsdown:
         specifier: 'catalog:'
         version: 0.21.4(typescript@5.9.3)
@@ -118,11 +115,10 @@ importers:
         version: 4.1.1(@types/node@22.19.15)(vite@8.0.2(@types/node@22.19.15)(jiti@2.6.1)(yaml@2.8.3))
 
   packages/indesign:
-    dependencies:
+    devDependencies:
       ky:
         specifier: 'catalog:'
         version: 1.14.3
-    devDependencies:
       tsdown:
         specifier: 'catalog:'
         version: 0.21.4(typescript@5.9.3)
@@ -134,11 +130,10 @@ importers:
         version: 4.1.1(@types/node@22.19.15)(vite@8.0.2(@types/node@22.19.15)(jiti@2.6.1)(yaml@2.8.3))
 
   packages/lightroom:
-    dependencies:
+    devDependencies:
       ky:
         specifier: 'catalog:'
         version: 1.14.3
-    devDependencies:
       tsdown:
         specifier: 'catalog:'
         version: 0.21.4(typescript@5.9.3)
@@ -150,11 +145,10 @@ importers:
         version: 4.1.1(@types/node@22.19.15)(vite@8.0.2(@types/node@22.19.15)(jiti@2.6.1)(yaml@2.8.3))
 
   packages/photoshop:
-    dependencies:
+    devDependencies:
       ky:
         specifier: 'catalog:'
         version: 1.14.3
-    devDependencies:
       tsdown:
         specifier: 'catalog:'
         version: 0.21.4(typescript@5.9.3)
@@ -166,11 +160,10 @@ importers:
         version: 4.1.1(@types/node@22.19.15)(vite@8.0.2(@types/node@22.19.15)(jiti@2.6.1)(yaml@2.8.3))
 
   packages/substance-3d:
-    dependencies:
+    devDependencies:
       ky:
         specifier: 'catalog:'
         version: 1.14.3
-    devDependencies:
       tsdown:
         specifier: 'catalog:'
         version: 0.21.4(typescript@5.9.3)

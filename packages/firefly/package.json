@@ -28,6 +28,7 @@
     "ky": "^1.0.0"
   },
   "devDependencies": {
+    "@vitest/coverage-v8": "catalog:",
     "ky": "catalog:",
     "tsdown": "catalog:",
     "typescript": "catalog:",

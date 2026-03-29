@@ -8,6 +8,7 @@
     "clean:dist": "rm -rf packages/*/dist",
     "build": "turbo run build",
     "test": "turbo run test",
+    "test:vitest": "vitest run",
     "lint": "oxlint \"packages/*/src/**/*.ts\"",
     "format": "prettier --write .",
     "format:check": "prettier --check .",
@@ -29,7 +30,9 @@
     "tsdown": "0.21.4",
     "turbo": "2.8.20",
     "typedoc": "0.28.18",
-    "typescript": "5.9.3"
+    "typescript": "5.9.3",
+    "vitest": "catalog:",
+    "@vitest/coverage-v8": "catalog:"
   },
   "lint-staged": {
     "*.{ts,tsx,json,md,yaml,yml}": [

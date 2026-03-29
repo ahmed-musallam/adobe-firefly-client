@@ -5,7 +5,7 @@ import {
   type AsyncTaskResponseV3,
 } from '../flat';
 import type { Client } from '../flat/client/index';
-import { pollJob, resolveJobId } from '../../../shared/src/generic-poller';
+import { pollJob, resolveJobId, SharedPollJobOptions } from '../../../shared/src/generic-poller';
 
 // all possible job statuses
 type FireflyJobStatus =
@@ -21,13 +21,9 @@ const TERMINAL_STATUSES: Set<FireflyJobStatus> = new Set([
   'timeout',
 ]);
 
-export interface FireflyPollJobOptions {
+export interface FireflyPollJobOptions extends SharedPollJobOptions {
   client: Client;
   jobId: string;
-  intervalMs?: number;
-  maxAttempts?: number;
-  timeoutMs?: number;
-  signal?: AbortSignal;
 }
 
 export type fireflyJobPayload = JobPollPayload | JobSucceededPayload | AsyncTaskResponseV3;
@@ -46,13 +42,10 @@ export const pollFireflyJob = async (options: FireflyPollJobOptions) => {
   const jobId = resolveJobId(options.jobId);
 
   return pollJob<fireflyJobPayload>({
+    ...options,
     fetchJob: () => doFetchJob(options.client, jobId),
     getStatusText,
     isTerminal: (status) => TERMINAL_STATUSES.has(status as FireflyJobStatus),
     isSuccess: (status) => status === 'succeeded',
-    intervalMs: options.intervalMs,
-    maxAttempts: options.maxAttempts,
-    timeoutMs: options.timeoutMs,
-    signal: options.signal,
   });
 };

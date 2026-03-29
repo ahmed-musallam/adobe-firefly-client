@@ -1,4 +1,4 @@
-import { describe, expect, it } from 'vitest';
+import { describe, expect, it, vi } from 'vitest';
 
 import {
   parseRetryAfterMs,
@@ -6,6 +6,7 @@ import {
   resolveJobId,
 } from '../../shared/src/generic-poller';
 import { pollFireflyJob } from '../src/extensions/polling';
+import { createClient } from '../src/flat/client';
 
 describe('firefly polling utilities', () => {
   it('parses Retry-After seconds and date formats', () => {
@@ -42,16 +43,19 @@ describe('firefly polling utilities', () => {
   });
 
   it('polls firefly status endpoint to terminal success', async () => {
-    const client = {
-      get: async () => ({
-        data: { status: 'succeeded', jobId: 'job-1' },
-        error: undefined,
-        request: new Request('https://example.com'),
-        response: new Response('{}', {
-          headers: { 'Retry-After': '5' },
-        }),
-      }),
-    } as any;
+    const client = createClient({
+      headers: {
+        Authorization: 'Bearer token',
+        'x-api-key': 'api-key',
+      },
+    });
+
+    vi.spyOn(client, 'get').mockResolvedValueOnce({
+      data: { status: 'succeeded' },
+      error: undefined,
+      request: {} as Request,
+      response: {} as Response,
+    });
 
     const result = await pollFireflyJob({
       client,

@@ -138,22 +138,7 @@ export const sleepWithAbort = async (delayMs: number, signal?: AbortSignal): Pro
   });
 };
 
-/**
- * Options for polling a job until it reaches a terminal state.
- *
- * @template T - The type of the result returned by `getStatus`.
- */
-export interface PollJobOptions<T> {
-  /** Fetches the current job status. */
-  fetchJob: (attempt: number) => Promise<JobFetchResult<T>>;
-  /** Extracts the status string from the result. */
-  getStatusText: (result: T | undefined) => string | undefined;
-  /** Returns `true` if the status is terminal (polling should stop). */
-  isTerminal: (status: string) => boolean;
-  /** Returns `true` if the terminal status represents success. */
-  isSuccess: (status: string) => boolean;
-  /** Extracts a reset timestamp (ms since epoch) for adaptive delay calculation. */
-  resetAtMs?: (result: T) => number | undefined;
+export interface SharedPollJobOptions {
   /** Fallback polling interval in milliseconds. @default 2000 */
   intervalMs?: number;
   /** Minimum delay between attempts in milliseconds. @default 250 */
@@ -166,6 +151,24 @@ export interface PollJobOptions<T> {
   timeoutMs?: number;
   /** Optional `AbortSignal` to cancel polling. */
   signal?: AbortSignal;
+}
+
+/**
+ * Options for polling a job until it reaches a terminal state.
+ *
+ * @template T - The type of the result returned by `getStatus`.
+ */
+export interface PollJobOptions<T> extends SharedPollJobOptions {
+  /** Fetches the current job status. */
+  fetchJob: (attempt: number) => Promise<JobFetchResult<T>>;
+  /** Extracts the status string from the result. */
+  getStatusText: (result: T | undefined) => string | undefined;
+  /** Returns `true` if the status is terminal (polling should stop). */
+  isTerminal: (status: string) => boolean;
+  /** Returns `true` if the terminal status represents success. */
+  isSuccess: (status: string) => boolean;
+  /** Extracts a reset timestamp (ms since epoch) for adaptive delay calculation. */
+  resetAtMs?: (result: T) => number | undefined;
 }
 
 /** Result of a job fetch operation. */

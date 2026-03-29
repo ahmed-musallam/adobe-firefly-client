@@ -2,7 +2,7 @@
 
 import type { Client, Options as Options2, TDataShape } from './client';
 import { client } from './client.gen';
-import type { AdaptiveCompositeData, AdaptiveCompositeErrors, AdaptiveCompositeResponses, CancelJobV4Data, CancelJobV4Errors, CancelJobV4Responses, ExpandImagesV3AsyncData, ExpandImagesV3AsyncErrors, ExpandImagesV3AsyncResponses, FillImagesV3AsyncData, FillImagesV3AsyncErrors, FillImagesV3AsyncResponses, GenerateImagesV3AsyncData, GenerateImagesV3AsyncErrors, GenerateImagesV3AsyncResponses, GenerateObjectCompositeV3AsyncData, GenerateObjectCompositeV3AsyncErrors, GenerateObjectCompositeV3AsyncResponses, GenerateSimilarImagesV3AsyncData, GenerateSimilarImagesV3AsyncErrors, GenerateSimilarImagesV3AsyncResponses, GenerateVideoV3Data, GenerateVideoV3Errors, GenerateVideoV3Responses, GetCustomModelsData, GetCustomModelsErrors, GetCustomModelsResponses, JobResultV3Data, JobResultV3Errors, JobResultV3Responses, PreciseCompositeData, PreciseCompositeErrors, PreciseCompositeResponses, StorageImageV2Data, StorageImageV2Errors, StorageImageV2Responses } from './types.gen';
+import type { AdaptiveCompositeData, AdaptiveCompositeErrors, AdaptiveCompositeResponses, CancelJobV4Data, CancelJobV4Errors, CancelJobV4Responses, CreativeUpsamplerV3AsyncData, CreativeUpsamplerV3AsyncErrors, CreativeUpsamplerV3AsyncResponses, ExpandImagesV3AsyncData, ExpandImagesV3AsyncErrors, ExpandImagesV3AsyncResponses, FillImagesV3AsyncData, FillImagesV3AsyncErrors, FillImagesV3AsyncResponses, FireflyImageV5GenerateAsyncV4Data, FireflyImageV5GenerateAsyncV4Errors, FireflyImageV5GenerateAsyncV4Responses, GenerateImagesV3AsyncData, GenerateImagesV3AsyncErrors, GenerateImagesV3AsyncResponses, GenerateObjectCompositeV3AsyncData, GenerateObjectCompositeV3AsyncErrors, GenerateObjectCompositeV3AsyncResponses, GenerateSimilarImagesV3AsyncData, GenerateSimilarImagesV3AsyncErrors, GenerateSimilarImagesV3AsyncResponses, GenerateVideoV3Data, GenerateVideoV3Errors, GenerateVideoV3Responses, GetCustomModelsData, GetCustomModelsErrors, GetCustomModelsResponses, JobResultV3Data, JobResultV3Errors, JobResultV3Responses, PreciseCompositeData, PreciseCompositeErrors, PreciseCompositeResponses, StorageImageV2Data, StorageImageV2Errors, StorageImageV2Responses } from './types.gen';
 
 export type Options<TData extends TDataShape = TDataShape, ThrowOnError extends boolean = boolean> = Options2<TData, ThrowOnError> & {
     /**
@@ -66,6 +66,23 @@ export class FireflySdk extends HeyApiClient {
         return (options.client ?? this.client).post<GenerateImagesV3AsyncResponses, GenerateImagesV3AsyncErrors, ThrowOnError>({
             security: [{ name: 'x-api-key', type: 'apiKey' }, { scheme: 'bearer', type: 'http' }],
             url: '/v3/images/generate-async',
+            ...options,
+            headers: {
+                'Content-Type': 'application/json',
+                ...options.headers
+            }
+        });
+    }
+    
+    /**
+     * Generate images with Image5
+     *
+     * Generate images asynchronously using Firefly's Image5 model.
+     */
+    public fireflyImageV5GenerateAsyncV4<ThrowOnError extends boolean = false>(options: Options<FireflyImageV5GenerateAsyncV4Data, ThrowOnError>) {
+        return (options.client ?? this.client).post<FireflyImageV5GenerateAsyncV4Responses, FireflyImageV5GenerateAsyncV4Errors, ThrowOnError>({
+            security: [{ name: 'x-api-key', type: 'apiKey' }, { scheme: 'bearer', type: 'http' }],
+            url: '/v4/images/generate-async',
             ...options,
             headers: {
                 'Content-Type': 'application/json',
@@ -169,6 +186,23 @@ export class FireflySdk extends HeyApiClient {
     }
     
     /**
+     * Upscale image (beta)
+     *
+     * Upscales an image asynchronously using the creative upsampler (beta). Provide the input image via an upload ID from the storage API or a presigned URL. The response includes links to check status and retrieve the result. Poll the status URL until the job completes, then fetch the result for the upscaled image(s).
+     */
+    public creativeUpsamplerV3Async<ThrowOnError extends boolean = false>(options: Options<CreativeUpsamplerV3AsyncData, ThrowOnError>) {
+        return (options.client ?? this.client).post<CreativeUpsamplerV3AsyncResponses, CreativeUpsamplerV3AsyncErrors, ThrowOnError>({
+            security: [{ name: 'x-api-key', type: 'apiKey' }, { scheme: 'bearer', type: 'http' }],
+            url: '/v3/images/upscale',
+            ...options,
+            headers: {
+                'Content-Type': 'application/json',
+                ...options.headers
+            }
+        });
+    }
+    
+    /**
      * Generate video
      *
      * Generate a five second video using a text prompt.
@@ -201,7 +235,7 @@ export class FireflySdk extends HeyApiClient {
     /**
      * Upload image
      *
-     * Upload source image or mask for image-to-image operations, such as fill, expand. This API returns an identifier that is used to refer to uploaded content. The uploaded assets will be valid for 7 days from the date you upload them.
+     * Upload source image or mask for image-to-image operations, such as fill, expand, or upscale (beta). This API returns an identifier that is used to refer to uploaded content. The uploaded assets will be valid for 7 days from the date you upload them.
      */
     public storageImageV2<ThrowOnError extends boolean = false>(options: Options<StorageImageV2Data, ThrowOnError>) {
         return (options.client ?? this.client).post<StorageImageV2Responses, StorageImageV2Errors, ThrowOnError>({
@@ -219,7 +253,7 @@ export class FireflySdk extends HeyApiClient {
     /**
      * Get job status
      *
-     * Get the status of an asynchronous job.
+     * Get the status of an asynchronous job (including upscale jobs). When the job has completed successfully, the result reflects the operation type (for example generation, composite, or upscale).
      */
     public jobResultV3<ThrowOnError extends boolean = false>(options: Options<JobResultV3Data, ThrowOnError>) {
         return (options.client ?? this.client).get<JobResultV3Responses, JobResultV3Errors, ThrowOnError>({

@@ -40,6 +40,11 @@ export type ApiError = {
 };
 
 /**
+ * AspectRatio
+ */
+export type AspectRatio = '1:1' | '4:3' | '3:4' | '16:9' | '9:16';
+
+/**
  * ApiErrorGeneric
  *
  * The error within the error response for non-400 failure responses.
@@ -213,8 +218,20 @@ export type ValidationErrorDetail = {
     };
 };
 
+/**
+ * ValidationErrorCode422
+ *
+ * Error code for HTTP 422 responses (request validation only).
+ */
+export type ValidationErrorCode422 = 'validation_error' | 'cai_assertion_violation_error';
+
+/**
+ * ValidationErrorResponse
+ *
+ * Error response body for HTTP 422 (validation failures).
+ */
 export type ValidationErrorResponse = {
-    error_code?: string;
+    error_code: ValidationErrorCode422;
     /**
      * Human-readable error description.
      */
@@ -223,6 +240,26 @@ export type ValidationErrorResponse = {
      * List of field-level validation errors.
      */
     validation_errors?: Array<ValidationErrorDetail>;
+};
+
+/**
+ * ContentPolicyErrorCode451
+ *
+ * Error code for HTTP 451 responses (content policy, legal, or safety).
+ */
+export type ContentPolicyErrorCode451 = 'legal_error' | 'prompt_unsafe' | 'prompt_entity_denied' | 'image_unsafe' | 'video_unsafe' | 'reference_image_unsafe_error' | 'input_media_unsafe';
+
+/**
+ * ContentPolicyErrorResponse
+ *
+ * Error response body for HTTP 451 (content policy, legal, or safety).
+ */
+export type ContentPolicyErrorResponse = {
+    error_code: ContentPolicyErrorCode451;
+    /**
+     * Human-readable error description.
+     */
+    message?: string;
 };
 
 /**
@@ -302,7 +339,10 @@ export type JobSucceededPayload = {
      * The job ID.
      */
     jobId: string;
-    result: JobResult;
+    /**
+     * The result of the completed job. The schema depends on the async operation (for example generation, composite, or upscale).
+     */
+    result: JobResult | CreativeUpsamplerResponse;
 };
 
 /**
@@ -370,6 +410,39 @@ export type AsyncApiErrorV3 = {
 };
 
 /**
+ * AsyncTaskLink
+ */
+export type AsyncTaskLink = {
+    /**
+     * Href
+     */
+    href: string;
+};
+
+/**
+ * AsyncTaskLinkType
+ */
+export type AsyncTaskLinkType = 'cancel' | 'result';
+
+/**
+ * AsyncTaskResponse
+ *
+ * Response type for async requests.
+ */
+export type AsyncTaskResponse = {
+    /**
+     * Links
+     */
+    links: {
+        [key in AsyncTaskLinkType]?: AsyncTaskLink;
+    };
+    /**
+     * Progress
+     */
+    progress?: number;
+};
+
+/**
  * AsyncTaskResponseV3
  */
 export type AsyncTaskResponseV3 = {
@@ -402,9 +475,106 @@ export type AsyncTaskResponseV3 = {
  */
 export type BaseInputImageV3 = {
     /**
-     * Source image that Firefly expands, fills or uses to generate similar images.
+     * Source image that Firefly expands, fills, uses to generate similar images, or upscales (beta).
      */
     source: PublicBinaryInputV3;
+};
+
+/**
+ * CreativeUpscaleAcceptResponseV3
+ *
+ * Response for async upscale requests (beta). Use links.result.href to poll for status and links.cancel.href to cancel.
+ */
+export type CreativeUpscaleAcceptResponseV3 = {
+    /**
+     * Links to cancel and to fetch the job status or result.
+     */
+    links: {
+        [key: string]: CreativeUpscaleTaskLink;
+    };
+    /**
+     * Progress percentage when available (for example when polling status).
+     */
+    progress?: number;
+};
+
+/**
+ * CreativeUpscaleTaskLink
+ */
+export type CreativeUpscaleTaskLink = {
+    /**
+     * URL for the cancel or result endpoint.
+     */
+    href: string;
+};
+
+/**
+ * CreativeUpsamplerRequestV3
+ *
+ * Request body for upscaling an image (beta). Provide the input image via uploadId from storage or a presigned URL. Seeds are required for reproducible results.
+ */
+export type CreativeUpsamplerRequestV3 = {
+    /**
+     * The input image for the upsampler (source uploadId or url).
+     */
+    image: BaseInputImageV3;
+    /**
+     * The seed for each variation. Provide one seed per output (1–4 seeds).
+     */
+    seeds: Array<number>;
+    /**
+     * The upscale factor (2, 3, 4, or 6). Output dimensions are input dimensions multiplied by this factor.
+     */
+    upscaleFactor?: UpsampleFactor;
+};
+
+/**
+ * CreativeUpsamplerResponse
+ *
+ * Upscale result (beta). Each item in outputs is a storage reference for an upscaled image.
+ */
+export type CreativeUpsamplerResponse = {
+    /**
+     * The list of upscaled images (storage items).
+     */
+    outputs: Array<UpscaleBinaryOutput>;
+    /**
+     * The version of the upscale feature.
+     */
+    version: string;
+};
+
+/**
+ * Supported upscale factors. Output size equals input size multiplied by this factor.
+ */
+export type UpsampleFactor = 2 | 3 | 4 | 6;
+
+/**
+ * UpscaleBinaryOutput
+ *
+ * Reference to output binary (for example an upscaled image). Use id in subsequent API calls or the presigned URL to download.
+ */
+export type UpscaleBinaryOutput = {
+    /**
+     * The internal ID for a storage item.
+     */
+    id?: string;
+    /**
+     * URL to download the file. Expires in one hour.
+     */
+    presignedUrl?: string;
+    /**
+     * Optional ID of the file in ACP. Must be an ACP File asset ID.
+     */
+    creativeCloudFileId?: string;
+    /**
+     * Optional ID of the component in ACP. Must be an ACP Component asset ID.
+     */
+    creativeCloudComponentId?: string;
+    /**
+     * Optional name for the item (for example for lookup in multipart responses).
+     */
+    name?: string;
 };
 
 /**
@@ -619,6 +789,11 @@ export type FillImageResponseV3 = {
 };
 
 /**
+ * FireflyModelId
+ */
+export type FireflyModelId = 'firefly_image';
+
+/**
  * Generating images from prompt
  */
 export type GenerateImagesRequestV3 = {
@@ -671,6 +846,103 @@ export type GenerateImagesRequestV3 = {
      */
     visualIntensity?: number;
 };
+
+/**
+ * ImageGenerateRequestV3
+ */
+export type ImageGenerateRequestV3 = {
+    /**
+     * The prompt
+     *
+     * The prompt used to generate the image. The longer the prompt, the better.
+     */
+    prompt: string;
+    /**
+     * The aspect ratio of the requested generations. This controls the size of the generated image.
+     */
+    aspectRatio?: AspectRatio;
+    /**
+     * The specific model to use for image generation. Available options: 'firefly_image' for Firefly Image model.
+     */
+    modelId?: FireflyModelId;
+    /**
+     * Additional model-specific parameters for controlling the generation process.
+     */
+    modelSpecificPayload?: ModelSpecificPayloadV3;
+    /**
+     * The number of variations
+     *
+     * The number of image variations to generate. Greater than 1 is not supported. Only one image per variation is allowed. For multiple variations, send separate requests.
+     */
+    numVariations?: number;
+    /**
+     * Reference blobs
+     *
+     * List of reference blobs that will be used as additional input for the generation process. Only one reference image is supported. [Pre-signed URLs can be used from supported domains](https://developer.adobe.com/firefly-services/docs/firefly-api/getting-started/usage-notes/#image-api-usage).
+     */
+    referenceBlobs?: Array<ReferenceBlobV3>;
+    /**
+     * The seeds for the generations
+     *
+     * The seed value to vary the image generation. Only one seed per variation is allowed. If specified alongside with numVariations, the number of seeds must be equal to numVariations.
+     */
+    seeds?: Array<number>;
+};
+
+/**
+ * ModelSpecificPayloadV3
+ *
+ * Model-specific payload parameters for V3 generation workflows.
+ */
+export type ModelSpecificPayloadV3 = {
+    /**
+     * The locale code used for image generations
+     *
+     * The locale code (following RFC 5646 format, e.g., 'en-US') will be used to generate content that is more relevant for user's country and language.
+     */
+    localeCode?: string;
+};
+
+/**
+ * ReferenceBlobV3
+ *
+ * Reference blob for V3 API. Style Guide compliant: The 'source' property specifies the input location, and other properties like 'usage' are peers of 'source'.
+ */
+export type ReferenceBlobV3 = {
+    /**
+     * The source location of the reference image.
+     */
+    source: ReferenceBlobSourceV3;
+    /**
+     * The usage of the reference blob. Available options: 'general' for general reference.
+     */
+    usage?: ReferenceBlobUsageV3;
+};
+
+/**
+ * ReferenceBlobSourceV3
+ *
+ * Source specification for a reference blob input asset. Input images must meet these requirements: file size must be 10 MB or less; image area must be between 512×512 and 2048×2048 pixels (inclusive); aspect ratio must be between 1:5 and 5:1 (inclusive).
+ */
+export type ReferenceBlobSourceV3 = {
+    /**
+     * Upload ID
+     *
+     * The ID of an asset previously uploaded to the Firefly Upload Image API.
+     */
+    uploadId?: string;
+    /**
+     * URL
+     *
+     * URL of the reference image. Presigned URLs are not supported for Image5; images must be uploaded to Adobe storage.
+     */
+    url?: string;
+};
+
+/**
+ * ReferenceBlobUsageV3
+ */
+export type ReferenceBlobUsageV3 = 'general';
 
 /**
  * Generating images from prompt
@@ -1450,7 +1722,7 @@ export type GenerateImagesV3AsyncErrors = {
     /**
      * Unprocessable Entity
      */
-    422: ApiError;
+    422: ValidationErrorResponse;
     /**
      * Too Many Requests
      */
@@ -1471,6 +1743,93 @@ export type GenerateImagesV3AsyncResponses = {
 };
 
 export type GenerateImagesV3AsyncResponse = GenerateImagesV3AsyncResponses[keyof GenerateImagesV3AsyncResponses];
+
+export type FireflyImageV5GenerateAsyncV4Data = {
+    body: ImageGenerateRequestV3;
+    headers: {
+        /**
+         * The model version to use for image generation.
+         */
+        'x-model-version': 'image5';
+    };
+    path?: never;
+    query?: never;
+    url: '/v4/images/generate-async';
+};
+
+export type FireflyImageV5GenerateAsyncV4Errors = {
+    /**
+     * Bad Request
+     */
+    400: ApiError;
+    /**
+     * Unauthorized
+     */
+    401: ApiError;
+    /**
+     * Forbidden
+     */
+    403: ApiError;
+    /**
+     * Requested Resource Was Not Found
+     */
+    404: ApiError;
+    /**
+     * Request Timeout
+     */
+    408: ApiError;
+    /**
+     * Conflict
+     */
+    409: ApiError;
+    /**
+     * Gone
+     */
+    410: ApiError;
+    /**
+     * Unsupported Media Type
+     */
+    415: ApiError;
+    /**
+     * Unprocessable Entity
+     */
+    422: ValidationErrorResponse;
+    /**
+     * Too Many Requests
+     */
+    429: ApiError;
+    /**
+     * Unavailable For Legal Reasons
+     */
+    451: ContentPolicyErrorResponse;
+    /**
+     * Client Closed Request
+     */
+    499: ApiError;
+    /**
+     * Internal Server Error
+     */
+    500: ApiError;
+    /**
+     * Not Implemented
+     */
+    501: ApiError;
+    /**
+     * Service Unavailable
+     */
+    503: ApiError;
+};
+
+export type FireflyImageV5GenerateAsyncV4Error = FireflyImageV5GenerateAsyncV4Errors[keyof FireflyImageV5GenerateAsyncV4Errors];
+
+export type FireflyImageV5GenerateAsyncV4Responses = {
+    /**
+     * Success
+     */
+    200: AsyncTaskResponse;
+};
+
+export type FireflyImageV5GenerateAsyncV4Response = FireflyImageV5GenerateAsyncV4Responses[keyof FireflyImageV5GenerateAsyncV4Responses];
 
 export type GenerateSimilarImagesV3AsyncData = {
     body: GenerateSimilarImagesRequestV3;
@@ -1509,7 +1868,7 @@ export type GenerateSimilarImagesV3AsyncErrors = {
     /**
      * Unprocessable Entity
      */
-    422: ApiError;
+    422: ValidationErrorResponse;
     /**
      * Too Many Requests
      */
@@ -1562,7 +1921,7 @@ export type ExpandImagesV3AsyncErrors = {
     /**
      * Unprocessable Entity
      */
-    422: ApiError;
+    422: ValidationErrorResponse;
     /**
      * Too Many Requests
      */
@@ -1615,7 +1974,7 @@ export type FillImagesV3AsyncErrors = {
     /**
      * Unprocessable Entity
      */
-    422: ApiError;
+    422: ValidationErrorResponse;
     /**
      * Too Many Requests
      */
@@ -1664,7 +2023,7 @@ export type GenerateObjectCompositeV3AsyncErrors = {
     /**
      * Unprocessable Entity
      */
-    422: ApiError;
+    422: ValidationErrorResponse;
     /**
      * Too Many Requests
      */
@@ -1703,7 +2062,7 @@ export type PreciseCompositeErrors = {
     /**
      * Bad Request
      */
-    400: ValidationErrorResponse;
+    400: ApiErrorGeneric;
     /**
      * Unauthorized
      */
@@ -1713,9 +2072,17 @@ export type PreciseCompositeErrors = {
      */
     403: ApiErrorGeneric;
     /**
+     * Unprocessable Entity
+     */
+    422: ValidationErrorResponse;
+    /**
      * Too Many Requests
      */
     429: ApiErrorGeneric;
+    /**
+     * Unavailable For Legal Reasons
+     */
+    451: ContentPolicyErrorResponse;
     /**
      * Internal Server Error
      */
@@ -1754,7 +2121,7 @@ export type AdaptiveCompositeErrors = {
     /**
      * Bad Request
      */
-    400: ValidationErrorResponse;
+    400: ApiErrorGeneric;
     /**
      * Unauthorized
      */
@@ -1764,9 +2131,17 @@ export type AdaptiveCompositeErrors = {
      */
     403: ApiErrorGeneric;
     /**
+     * Unprocessable Entity
+     */
+    422: ValidationErrorResponse;
+    /**
      * Too Many Requests
      */
     429: ApiErrorGeneric;
+    /**
+     * Unavailable For Legal Reasons
+     */
+    451: ContentPolicyErrorResponse;
     /**
      * Internal Server Error
      */
@@ -1787,6 +2162,65 @@ export type AdaptiveCompositeResponses = {
 };
 
 export type AdaptiveCompositeResponse = AdaptiveCompositeResponses[keyof AdaptiveCompositeResponses];
+
+export type CreativeUpsamplerV3AsyncData = {
+    body: CreativeUpsamplerRequestV3;
+    headers?: {
+        /**
+         * Model version for the upscale operation. Use creative_upsampler_v1.
+         */
+        'x-model-version'?: string;
+    };
+    path?: never;
+    query?: never;
+    url: '/v3/images/upscale';
+};
+
+export type CreativeUpsamplerV3AsyncErrors = {
+    /**
+     * Bad Request
+     */
+    400: ValidationErrorResponse;
+    /**
+     * Unauthorized
+     */
+    401: ApiErrorGeneric;
+    /**
+     * Forbidden
+     */
+    403: ApiErrorGeneric;
+    /**
+     * Requested Resource Was Not Found
+     */
+    404: ApiErrorGeneric;
+    /**
+     * Input Validation Error
+     */
+    422: ValidationErrorResponse;
+    /**
+     * Too Many Requests
+     */
+    429: ApiErrorGeneric;
+    /**
+     * Internal Server Error
+     */
+    500: ApiErrorGeneric;
+    /**
+     * Service Unavailable
+     */
+    503: ApiErrorGeneric;
+};
+
+export type CreativeUpsamplerV3AsyncError = CreativeUpsamplerV3AsyncErrors[keyof CreativeUpsamplerV3AsyncErrors];
+
+export type CreativeUpsamplerV3AsyncResponses = {
+    /**
+     * Accepted
+     */
+    202: CreativeUpscaleAcceptResponseV3;
+};
+
+export type CreativeUpsamplerV3AsyncResponse = CreativeUpsamplerV3AsyncResponses[keyof CreativeUpsamplerV3AsyncResponses];
 
 export type GenerateVideoV3Data = {
     /**
@@ -1824,7 +2258,7 @@ export type GenerateVideoV3Errors = {
     /**
      * Unprocessable Entity
      */
-    422: ApiError;
+    422: ValidationErrorResponse;
     /**
      * Too Many Requests
      */
@@ -1920,7 +2354,7 @@ export type GetCustomModelsResponse = GetCustomModelsResponses[keyof GetCustomMo
 
 export type StorageImageV2Data = {
     /**
-     * The PNG/JPEG/WEBP image to be stored (binary data). The maximum file size supported for uploading an image is 15MB.
+     * The PNG, JPEG, WEBP, TIFF, or JXL image to be stored (binary data). The maximum file size supported for uploading an image is 15MB.
      */
     body: Blob | File;
     path?: never;
@@ -1948,7 +2382,7 @@ export type StorageImageV2Errors = {
     /**
      * Unavailable for Legal Reasons
      */
-    451: ErrorBody;
+    451: ContentPolicyErrorResponse;
     /**
      * Internal Server Error
      */
@@ -1972,7 +2406,7 @@ export type JobResultV3Data = {
         /**
          * Job ID
          *
-         * The job ID to retrieve status for.
+         * The job ID or URN returned in async response links.
          */
         jobId: string;
     };
@@ -1996,7 +2430,7 @@ export type JobResultV3Errors = {
     /**
      * Unprocessable Entity
      */
-    422: ApiErrorGeneric;
+    422: ValidationErrorResponse;
     /**
      * Too Many Requests
      */
@@ -2028,7 +2462,7 @@ export type CancelJobV4Data = {
         /**
          * Job ID
          *
-         * The job ID to cancel.
+         * The job ID or URN returned in async response links.
          */
         jobId: string;
     };

@@ -3,11 +3,11 @@
 import type { HTTPError, Options as KyOptions } from 'ky';
 import ky from 'ky';
 
-import { createSseClient } from '../core/serverSentEvents.gen.js';
-import type { HttpMethod } from '../core/types.gen.js';
-import { getValidRequestBody } from '../core/utils.gen.js';
-import type { Client, Config, RequestOptions, ResolvedRequestOptions, RetryOptions } from './types.gen.js';
-import type { Middleware } from './utils.gen.js';
+import { createSseClient } from '../core/serverSentEvents.gen';
+import type { HttpMethod } from '../core/types.gen';
+import { getValidRequestBody } from '../core/utils.gen';
+import type { Client, Config, RequestOptions, ResolvedRequestOptions, RetryOptions } from './types.gen';
+import type { Middleware } from './utils.gen';
 import {
   buildUrl,
   createConfig,
@@ -16,7 +16,7 @@ import {
   mergeConfigs,
   mergeHeaders,
   setAuthParams,
-} from './utils.gen.js';
+} from './utils.gen';
 
 export const createClient = (config: Config = {}): Client => {
   let _config = mergeConfigs(createConfig(), config);

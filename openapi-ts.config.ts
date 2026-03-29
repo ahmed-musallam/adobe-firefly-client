@@ -15,7 +15,7 @@ export default defineConfig(
     // Flat tree-shakeable functions
     {
       input: `packages/${name}/spec/${spec}`,
-      output: { path: `packages/${name}/src/flat`, postProcess: ['prettier'] },
+      output: { path: `packages/${name}/src/flat`, postProcess: ['prettier'], tsConfigPath: 'off' },
       plugins: [
         '@hey-api/client-ky',
         '@hey-api/typescript',
@@ -25,7 +25,7 @@ export default defineConfig(
     // Class-based SDK
     {
       input: `packages/${name}/spec/${spec}`,
-      output: { path: `packages/${name}/src/sdk`, postProcess: ['prettier'] },
+      output: { path: `packages/${name}/src/sdk`, postProcess: ['prettier'], tsConfigPath: 'off' },
       plugins: [
         '@hey-api/client-ky',
         '@hey-api/typescript',

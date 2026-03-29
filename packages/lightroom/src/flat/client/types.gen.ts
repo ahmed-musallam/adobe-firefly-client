@@ -3,13 +3,13 @@
 import type { Options as KyOptions } from 'ky';
 import type ky from 'ky';
 
-import type { Auth } from '../core/auth.gen.js';
+import type { Auth } from '../core/auth.gen';
 import type {
   ServerSentEventsOptions,
   ServerSentEventsResult,
-} from '../core/serverSentEvents.gen.js';
-import type { Client as CoreClient, Config as CoreConfig } from '../core/types.gen.js';
-import type { Middleware } from './utils.gen.js';
+} from '../core/serverSentEvents.gen';
+import type { Client as CoreClient, Config as CoreConfig } from '../core/types.gen';
+import type { Middleware } from './utils.gen';
 
 export type ResponseStyle = 'data' | 'fields';
 

@@ -1,0 +1,13 @@
+{
+  "name": "@musallam/ffs-shared",
+  "version": "1.0.0",
+  "description": "Shared utilities for Adobe Firefly SDK",
+  "scripts": {
+    "test": "vitest run"
+  },
+  "devDependencies": {
+    "@vitest/coverage-v8": "catalog:",
+    "typescript": "catalog:",
+    "vitest": "catalog:"
+  }
+}

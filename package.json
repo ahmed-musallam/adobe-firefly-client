@@ -9,7 +9,7 @@
     "build": "turbo run build",
     "test": "turbo run test",
     "test:vitest": "vitest run",
-    "lint": "oxlint \"packages/*/src/**/*.ts\"",
+    "lint": "oxlint ./packages",
     "format": "prettier --write .",
     "format:check": "prettier --check .",
     "docs": "typedoc",

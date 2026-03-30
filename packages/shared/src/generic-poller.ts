@@ -42,10 +42,12 @@ export const clampDelay = (delayMs: number, minDelayMs = 250, maxDelayMs = 60_00
   return Math.min(maxDelayMs, Math.max(minDelayMs, Math.floor(delayMs)));
 };
 
-/** Reads the value of a header from the given headers object. */
-const readHeader = (headers: HeaderMap, key: string): string | undefined => {
+/** Reads the value of a header from `Headers` or a plain header record (case-insensitive key). */
+export const readHttpHeader = (headers: HeaderMap, key: string): string | undefined => {
   if (!headers) return undefined;
-  if (headers instanceof Headers) return headers.get(key) ?? undefined;
+  if (headers instanceof Headers) {
+    return headers.get(key) ?? headers.get(key.toLowerCase()) ?? undefined;
+  }
   const lowerKey = key.toLowerCase();
   for (const [k, v] of Object.entries(headers)) {
     if (k.toLowerCase() === lowerKey) return v;
@@ -95,7 +97,7 @@ export const resolveNextDelayMs = (
   const fallbackDelayMs = clampDelay(options.fallbackDelayMs ?? 2_000, minDelayMs, maxDelayMs);
   const nowMs = options.nowMs ?? Date.now();
 
-  const retryAfterDelay = parseRetryAfterMs(readHeader(options.headers, 'retry-after'), {
+  const retryAfterDelay = parseRetryAfterMs(readHttpHeader(options.headers, 'retry-after'), {
     nowMs,
     minDelayMs,
     maxDelayMs,

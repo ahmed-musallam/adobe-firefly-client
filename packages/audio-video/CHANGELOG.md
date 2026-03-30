@@ -1,3 +1,17 @@
+# @musallam/ffs-audio-video-client [2.0.0](https://github.com/ahmed-musallam/adobe-firefly-client/compare/@musallam/ffs-audio-video-client@1.0.0...@musallam/ffs-audio-video-client@2.0.0) (2026-03-30)
+
+### chore
+
+- **deps:** move ky to peer dependencies and disable bundling ([568d6bd](https://github.com/ahmed-musallam/adobe-firefly-client/commit/568d6bdefab15df90a639347dcbac9da43eb52ab))
+
+### Features
+
+- add audio/video job polling ([7220897](https://github.com/ahmed-musallam/adobe-firefly-client/commit/722089771c1ae4f21254d69fe4e2037f330cb63f))
+
+### BREAKING CHANGES
+
+- **deps:** ky is no longer bundled and is now a peer dependency
+
 # @musallam/ffs-audio-video-client 1.0.0 (2026-03-25)
 
 ### Features

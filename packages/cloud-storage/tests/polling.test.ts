@@ -124,7 +124,7 @@ describe('cloud-storage polling adapter', () => {
       error: undefined,
       request: new Request('https://example.com/status/job-1'),
       response: new Response('{}'),
-    } as GetJobStatusResolved);
+    } as unknown as GetJobStatusResolved);
     await expect(
       pollCloudStorageJob({
         client: createConfigOnlyClient(validHeaders),
@@ -183,7 +183,7 @@ describe('cloud-storage polling adapter', () => {
       status: 'partially_succeeded',
       asset: {},
       errors: [{ error_code: 'x', message: 'y' }],
-    } as JobStatus;
+    } as unknown as JobStatus;
     getJobStatusSpy.mockResolvedValue(makeJobStatusResult(partial));
     await expect(
       pollCloudStorageJob({

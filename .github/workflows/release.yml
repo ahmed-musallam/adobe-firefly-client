@@ -36,6 +36,6 @@ jobs:
         run: pnpm test
 
       - name: Release
-        run: pnpm multi-semantic-release
+        run: pnpm multi-semantic-release --ignore-private-packages
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

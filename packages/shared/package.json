@@ -1,5 +1,6 @@
 {
   "name": "@musallam/ffs-shared",
+  "private": true,
   "version": "1.0.0",
   "description": "Shared utilities for Adobe Firefly SDK",
   "scripts": {

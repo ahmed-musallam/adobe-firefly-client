@@ -1,6 +1,10 @@
 {
   "name": "adobe-firefly-sdk",
   "private": true,
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/ahmed-musallam/adobe-firefly-client"
+  },
   "type": "module",
   "scripts": {
     "generate": "openapi-ts",

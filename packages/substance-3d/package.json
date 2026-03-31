@@ -2,6 +2,11 @@
   "name": "@musallam/ffs-substance-3d-client",
   "version": "2.0.0",
   "description": "Adobe Substance 3D API SDK",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/ahmed-musallam/adobe-firefly-client",
+    "directory": "packages/substance-3d"
+  },
   "exports": {
     ".": {
       "import": "./dist/flat.mjs",

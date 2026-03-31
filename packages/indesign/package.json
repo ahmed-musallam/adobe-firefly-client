@@ -2,6 +2,11 @@
   "name": "@musallam/ffs-indesign-client",
   "version": "1.0.0",
   "description": "Adobe InDesign API SDK",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/ahmed-musallam/adobe-firefly-client",
+    "directory": "packages/indesign"
+  },
   "exports": {
     ".": {
       "import": "./dist/flat.mjs",

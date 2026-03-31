@@ -3,6 +3,11 @@
   "private": true,
   "version": "1.0.0",
   "description": "Shared utilities for Adobe Firefly SDK",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/ahmed-musallam/adobe-firefly-client",
+    "directory": "packages/shared"
+  },
   "scripts": {
     "test": "vitest run"
   },

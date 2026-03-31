@@ -2,6 +2,11 @@
   "name": "@musallam/ffs-lightroom-client",
   "version": "1.0.0",
   "description": "Adobe Lightroom API SDK",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/ahmed-musallam/adobe-firefly-client",
+    "directory": "packages/lightroom"
+  },
   "exports": {
     ".": {
       "import": "./dist/flat.mjs",

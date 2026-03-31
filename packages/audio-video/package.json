@@ -2,6 +2,11 @@
   "name": "@musallam/ffs-audio-video-client",
   "version": "2.0.0",
   "description": "Adobe Audio & Video API SDK",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/ahmed-musallam/adobe-firefly-client",
+    "directory": "packages/audio-video"
+  },
   "exports": {
     ".": {
       "import": "./dist/flat.mjs",

@@ -1,3 +1,21 @@
+# @musallam/ffs-lightroom-client [2.0.0](https://github.com/ahmed-musallam/adobe-firefly-client/compare/@musallam/ffs-lightroom-client@1.0.0...@musallam/ffs-lightroom-client@2.0.0) (2026-03-31)
+
+### Bug Fixes
+
+- add repo details ([0dc40af](https://github.com/ahmed-musallam/adobe-firefly-client/commit/0dc40af50be4afb604de348e8500756b269376ca))
+
+### chore
+
+- **deps:** move ky to peer dependencies and disable bundling ([568d6bd](https://github.com/ahmed-musallam/adobe-firefly-client/commit/568d6bdefab15df90a639347dcbac9da43eb52ab))
+
+### Features
+
+- add lightroom job polling ([e37cb25](https://github.com/ahmed-musallam/adobe-firefly-client/commit/e37cb2573c64e9de887428fd7f3b16c331129eb5))
+
+### BREAKING CHANGES
+
+- **deps:** ky is no longer bundled and is now a peer dependency
+
 # @musallam/ffs-lightroom-client 1.0.0 (2026-03-25)
 
 ### Features

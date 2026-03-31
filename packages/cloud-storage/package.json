@@ -1,6 +1,6 @@
 {
   "name": "@musallam/ffs-cloud-storage-client",
-  "version": "2.0.0",
+  "version": "2.0.1",
   "description": "Adobe Cloud Storage & Collaboration API SDK",
   "repository": {
     "type": "git",

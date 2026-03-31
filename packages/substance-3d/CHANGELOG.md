@@ -1,3 +1,9 @@
+## @musallam/ffs-substance-3d-client [2.0.2](https://github.com/ahmed-musallam/adobe-firefly-client/compare/@musallam/ffs-substance-3d-client@2.0.1...@musallam/ffs-substance-3d-client@2.0.2) (2026-03-31)
+
+### Bug Fixes
+
+- add package default entries (for parcel and others) ([44a1bb9](https://github.com/ahmed-musallam/adobe-firefly-client/commit/44a1bb909a8cd279d478b10be4fa3f908bc09625))
+
 ## @musallam/ffs-substance-3d-client [2.0.1](https://github.com/ahmed-musallam/adobe-firefly-client/compare/@musallam/ffs-substance-3d-client@2.0.0...@musallam/ffs-substance-3d-client@2.0.1) (2026-03-31)
 
 ### Bug Fixes

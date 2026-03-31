@@ -1,3 +1,9 @@
+## @musallam/ffs-firefly-client [2.0.1](https://github.com/ahmed-musallam/adobe-firefly-client/compare/@musallam/ffs-firefly-client@2.0.0...@musallam/ffs-firefly-client@2.0.1) (2026-03-31)
+
+### Bug Fixes
+
+- add package default entries (for parcel and others) ([44a1bb9](https://github.com/ahmed-musallam/adobe-firefly-client/commit/44a1bb909a8cd279d478b10be4fa3f908bc09625))
+
 # @musallam/ffs-firefly-client [2.0.0](https://github.com/ahmed-musallam/adobe-firefly-client/compare/@musallam/ffs-firefly-client@1.0.0...@musallam/ffs-firefly-client@2.0.0) (2026-03-31)
 
 ### Bug Fixes

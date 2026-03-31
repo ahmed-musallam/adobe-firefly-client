@@ -7,6 +7,9 @@
     "url": "https://github.com/ahmed-musallam/adobe-firefly-client",
     "directory": "packages/indesign"
   },
+  "main": "./dist/flat.cjs",
+  "module": "./dist/flat.mjs",
+  "types": "./dist/flat.d.mts",
   "exports": {
     ".": {
       "import": "./dist/flat.mjs",

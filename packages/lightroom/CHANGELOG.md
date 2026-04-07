@@ -1,3 +1,9 @@
+# @musallam/ffs-lightroom-client [2.1.0](https://github.com/ahmed-musallam/adobe-firefly-client/compare/@musallam/ffs-lightroom-client@2.0.1...@musallam/ffs-lightroom-client@2.1.0) (2026-04-07)
+
+### Features
+
+- add MCP tools generation ([02d4e9d](https://github.com/ahmed-musallam/adobe-firefly-client/commit/02d4e9ddec79b8c269d05703d4e2fe305613fe53))
+
 ## @musallam/ffs-lightroom-client [2.0.1](https://github.com/ahmed-musallam/adobe-firefly-client/compare/@musallam/ffs-lightroom-client@2.0.0...@musallam/ffs-lightroom-client@2.0.1) (2026-03-31)
 
 ### Bug Fixes

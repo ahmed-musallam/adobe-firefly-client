@@ -1,0 +1,1602 @@
+[
+  {
+    "name": "voices",
+    "description": "This endpoint provides the list of all available voices for the user's enterprise.",
+    "inputSchema": {
+      "type": "object",
+      "properties": {}
+    },
+    "method": "get",
+    "pathTemplate": "/v1/voices",
+    "parameters": [],
+    "executionParameters": [],
+    "securityRequirements": [
+      {
+        "AccessToken": [],
+        "X-Api-Key": []
+      }
+    ],
+    "operationId": "voices",
+    "baseUrl": "https://audio-video-api.adobe.io"
+  },
+  {
+    "name": "generate-speech",
+    "description": "This endpoint generates speech from a transcript. You can provide the transcript either as plain text or a pre-signed URL. The response will include a job ID and a status URL for tracking the job.",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "requestBody": {
+          "type": "object",
+          "properties": {
+            "script": {
+              "oneOf": [
+                {
+                  "description": "Details of the text resource.",
+                  "type": "string",
+                  "properties": {
+                    "text": {
+                      "type": "string"
+                    }
+                  }
+                },
+                {
+                  "type": "object",
+                  "title": "Image or video background",
+                  "properties": {
+                    "source": {
+                      "type": "object",
+                      "properties": {
+                        "url": {
+                          "type": "string",
+                          "format": "uri",
+                          "description": "The pre-signed URL pointing to the resource to be used for avatar/speech generation."
+                        }
+                      },
+                      "description": "Details of the source including a pre-signed URL. See the [list of allowed domains for storage](https://developer.adobe.com/audio-video-firefly-services/getting-started/storage-solutions/)."
+                    }
+                  }
+                }
+              ],
+              "type": "object",
+              "properties": {
+                "localeCode": {
+                  "type": "string",
+                  "enum": [
+                    "en-US",
+                    "es-ES",
+                    "de-DE",
+                    "fr-FR",
+                    "da-DK",
+                    "en-GB",
+                    "en-IN",
+                    "es-419",
+                    "es-AR",
+                    "fr-CA",
+                    "hi-IN",
+                    "it-IT",
+                    "ja-JP",
+                    "ko-KR",
+                    "nb-NO",
+                    "pt-BR",
+                    "pt-PT",
+                    "nl-NL",
+                    "zh-CN",
+                    "sv-SE"
+                  ],
+                  "description": "The language code for the supported language desired in the result."
+                },
+                "mediaType": {
+                  "type": "string",
+                  "enum": ["text/plain"],
+                  "description": "The format of the text resource."
+                }
+              },
+              "required": ["localeCode", "mediaType"]
+            },
+            "voiceId": {
+              "type": "string",
+              "description": "ID of the voice to use from the catalog of voices."
+            },
+            "output": {
+              "type": "object",
+              "properties": {
+                "mediaType": {
+                  "type": "string",
+                  "enum": ["audio/wav"],
+                  "description": "The supported audio format for output."
+                }
+              },
+              "required": ["mediaType"]
+            }
+          },
+          "required": ["voiceId", "output", "script"],
+          "description": "The request body contains the transcript used for generating speech."
+        }
+      },
+      "required": ["requestBody"]
+    },
+    "method": "post",
+    "pathTemplate": "/v1/generate-speech",
+    "parameters": [],
+    "executionParameters": [],
+    "requestBodyContentType": "application/json",
+    "securityRequirements": [
+      {
+        "AccessToken": [],
+        "X-Api-Key": []
+      }
+    ],
+    "operationId": "generate-speech",
+    "baseUrl": "https://audio-video-api.adobe.io"
+  },
+  {
+    "name": "status",
+    "description": "Provides the status and result of an asynchronous job. For Dynamic Graphics Render (DGR), returns the status of a Describe template or Render job.",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "jobId": {
+          "type": "string",
+          "description": "The job ID of an asynchronous job."
+        }
+      },
+      "required": ["jobId"]
+    },
+    "method": "get",
+    "pathTemplate": "/v1/status/{jobId}",
+    "parameters": [
+      {
+        "name": "jobId",
+        "in": "path",
+        "description": "The job ID of an asynchronous job.",
+        "required": true,
+        "schema": {
+          "type": "string"
+        }
+      }
+    ],
+    "executionParameters": [
+      {
+        "name": "jobId",
+        "in": "path"
+      }
+    ],
+    "securityRequirements": [
+      {
+        "AccessToken": [],
+        "X-Api-Key": []
+      }
+    ],
+    "operationId": "status",
+    "baseUrl": "https://audio-video-api.adobe.io"
+  },
+  {
+    "name": "template-describe",
+    "description": "Analyzes a MOGRT (video template) file and returns a manifest of editable controls; fonts, images, audio, video and other supported values.",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "requestBody": {
+          "type": "object",
+          "required": ["source"],
+          "properties": {
+            "source": {
+              "type": "object",
+              "required": ["url"],
+              "properties": {
+                "url": {
+                  "type": "string",
+                  "format": "uri",
+                  "description": "A pre-signed URL pointing to the input template file."
+                }
+              },
+              "description": "Contains metadata about the source of the input template."
+            }
+          },
+          "description": "The JSON request body."
+        }
+      },
+      "required": ["requestBody"]
+    },
+    "method": "post",
+    "pathTemplate": "/v1/templates/describe",
+    "parameters": [],
+    "executionParameters": [],
+    "requestBodyContentType": "application/json",
+    "securityRequirements": [
+      {
+        "AccessToken": [],
+        "X-Api-Key": []
+      }
+    ],
+    "operationId": "template-describe",
+    "baseUrl": "https://audio-video-api.adobe.io"
+  },
+  {
+    "name": "get-presets",
+    "description": "Returns a list of predefined social-first encoding presets for rendering outputs.",
+    "inputSchema": {
+      "type": "object",
+      "properties": {}
+    },
+    "method": "get",
+    "pathTemplate": "/v1/presets",
+    "parameters": [],
+    "executionParameters": [],
+    "securityRequirements": [
+      {
+        "AccessToken": [],
+        "X-Api-Key": []
+      }
+    ],
+    "operationId": "get-presets",
+    "baseUrl": "https://audio-video-api.adobe.io"
+  },
+  {
+    "name": "template-render",
+    "description": "Renders one or more video variations by applying overrides and export presets. Submit up to 10 overrides per call for a subset of editable layers and get a pre-signed URL link to download the video file. For layers that are not editable, the system defaults are automatically applied at export.",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "requestBody": {
+          "type": "object",
+          "required": ["source", "variations"],
+          "properties": {
+            "source": {
+              "type": "object",
+              "required": ["url"],
+              "properties": {
+                "url": {
+                  "type": "string",
+                  "format": "uri",
+                  "description": "A pre-signed URL pointing to the input template file."
+                }
+              },
+              "description": "Contains metadata about the source of the input template."
+            },
+            "fonts": {
+              "type": "array",
+              "description": "Array of fonts to be used in the template.",
+              "items": {
+                "type": "object",
+                "required": ["name", "source"],
+                "properties": {
+                  "name": {
+                    "type": "string",
+                    "description": "PostScript name of the font."
+                  },
+                  "source": {
+                    "type": "object",
+                    "required": ["url"],
+                    "properties": {
+                      "url": {
+                        "type": "string",
+                        "format": "uri",
+                        "description": "Pre-signed URL for the font file (.ttf/.otf)."
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            "config": {
+              "type": "object",
+              "description": "Configuration options for the render request.",
+              "properties": {
+                "handleMissingFonts": {
+                  "type": "string",
+                  "enum": ["fail", "use_default"],
+                  "default": "use_default",
+                  "description": "How to handle missing fonts. 'fail' will cause the render to fail; 'use_default' will use Premiere Pro fallback behavior."
+                }
+              }
+            },
+            "assets": {
+              "type": "array",
+              "description": "Array of image, video, or audio assets referenced by variations via assetIndex.",
+              "items": {
+                "type": "object",
+                "required": ["source"],
+                "properties": {
+                  "source": {
+                    "type": "object",
+                    "required": ["url"],
+                    "properties": {
+                      "url": {
+                        "type": "string",
+                        "format": "uri",
+                        "description": "Pre-signed URL for the image, video, or audio asset."
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            "presets": {
+              "type": "array",
+              "description": "Array of export presets. Each item is either a built-in preset (by presetId) or a custom preset (by URL). Outputs reference presets by presetIndex.",
+              "items": {
+                "type": "object",
+                "required": ["source"],
+                "properties": {
+                  "source": {
+                    "type": "object",
+                    "properties": {
+                      "presetId": {
+                        "type": "string",
+                        "description": "ID of a built-in preset from the presets endpoint."
+                      },
+                      "url": {
+                        "type": "string",
+                        "format": "uri",
+                        "description": "Pre-signed URL for a custom Encoder preset file."
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            "variations": {
+              "type": "array",
+              "description": "List of variations. Each variation contains variable overrides applied to the template.",
+              "minItems": 1,
+              "items": {
+                "type": "object",
+                "required": ["variables"],
+                "properties": {
+                  "variables": {
+                    "type": "array",
+                    "description": "Variable overrides for this variation. Each object targets one template variable by variableId and supplies the override value.",
+                    "items": {
+                      "type": "object",
+                      "required": ["variableId"],
+                      "properties": {
+                        "variableId": {
+                          "type": "string",
+                          "description": "Unique identifier for the template variable (from describe response)."
+                        },
+                        "selectedCheckboxValue": {
+                          "type": "boolean",
+                          "description": "Override for checkbox controls."
+                        },
+                        "selectedDropdownValue": {
+                          "type": "string",
+                          "description": "Override for dropdown controls."
+                        },
+                        "selectedSliderValue": {
+                          "type": "number",
+                          "description": "Override for slider controls."
+                        },
+                        "text": {
+                          "type": "string",
+                          "description": "Override for text controls."
+                        },
+                        "fontName": {
+                          "type": "string",
+                          "description": "PostScript font name for text controls."
+                        },
+                        "assetIndex": {
+                          "type": "number",
+                          "description": "Index into the assets array for media or audio controls."
+                        },
+                        "scale": {
+                          "type": "string",
+                          "enum": ["no_scale", "fit_to_frame", "stretch_to_fill", "fill_frame"],
+                          "description": "Scaling behavior for media controls."
+                        },
+                        "audioPreference": {
+                          "type": "string",
+                          "enum": ["replace", "mix"],
+                          "description": "Audio preference for audio controls."
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            "outputs": {
+              "type": "array",
+              "description": "Defines which variation and preset combinations to render and optional output file names.",
+              "items": {
+                "type": "object",
+                "required": ["variationIndex", "presetIndex"],
+                "properties": {
+                  "variationIndex": {
+                    "type": "number",
+                    "description": "Zero-based index of the variation to render."
+                  },
+                  "presetIndex": {
+                    "type": "number",
+                    "description": "Zero-based index of the preset in the presets array."
+                  },
+                  "fileName": {
+                    "type": "string",
+                    "description": "Optional custom file name for the output."
+                  }
+                }
+              }
+            }
+          },
+          "description": "The JSON request body."
+        }
+      },
+      "required": ["requestBody"]
+    },
+    "method": "post",
+    "pathTemplate": "/v1/templates/render",
+    "parameters": [],
+    "executionParameters": [],
+    "requestBodyContentType": "application/json",
+    "securityRequirements": [
+      {
+        "AccessToken": [],
+        "X-Api-Key": []
+      }
+    ],
+    "operationId": "template-render",
+    "baseUrl": "https://audio-video-api.adobe.io"
+  },
+  {
+    "name": "generate-reframed-video",
+    "description": "This endpoint enables you to reframe video using AI. Provide video input with a pre-signed URL to generate reframed video output. \n\nThis API has more limited capabilities than the v2 endpoint, and may be deprecated soon. **It's recommended to use the v2 endpoint instead.**",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "requestBody": {
+          "properties": {
+            "video": {
+              "type": "object",
+              "properties": {
+                "source": {
+                  "type": "object",
+                  "properties": {
+                    "url": {
+                      "type": "string",
+                      "format": "uri",
+                      "description": "The pre-signed URL pointing to the input source."
+                    }
+                  },
+                  "required": ["url"],
+                  "description": "Details of the source including a pre-signed URL. See the [list of allowed domains for storage](https://developer.adobe.com/audio-video-firefly-services/getting-started/storage-solutions/)."
+                },
+                "mediaType": {
+                  "type": "string",
+                  "enum": ["video/mp4", "video/quicktime"],
+                  "description": "Supported video media types."
+                }
+              },
+              "required": ["source", "mediaType"],
+              "description": "Video input details."
+            },
+            "sceneEditDetection": {
+              "type": "boolean",
+              "description": "Apply Scene Edit Detection before reframing.",
+              "default": true
+            },
+            "overlays": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "mediaType": {
+                    "type": "string",
+                    "enum": ["image/gif", "image/png", "image/jpeg"],
+                    "description": "The media type of the overlay."
+                  },
+                  "source": {
+                    "type": "object",
+                    "properties": {
+                      "url": {
+                        "type": "string",
+                        "format": "uri",
+                        "description": "The pre-signed URL pointing to the overlay source."
+                      }
+                    },
+                    "required": ["url"],
+                    "description": "Details of the source including a pre-signed URL. See the [list of allowed domains for storage](https://developer.adobe.com/audio-video-firefly-services/getting-started/storage-solutions/)."
+                  },
+                  "startTime": {
+                    "type": "string",
+                    "format": "timecode",
+                    "description": "The start time of the overlay in the video."
+                  },
+                  "duration": {
+                    "type": "string",
+                    "format": "timecode",
+                    "description": "The duration of the overlay in the video."
+                  },
+                  "scale": {
+                    "type": "object",
+                    "properties": {
+                      "width": {
+                        "type": "number",
+                        "description": "The width of the overlay."
+                      },
+                      "height": {
+                        "type": "number",
+                        "description": "The height of the overlay."
+                      }
+                    },
+                    "required": ["width", "height"],
+                    "description": "The scale of the overlay."
+                  },
+                  "position": {
+                    "type": "object",
+                    "properties": {
+                      "anchorPoint": {
+                        "type": "string",
+                        "enum": ["top_left", "top_right", "bottom_left", "bottom_right", "center"],
+                        "description": "The anchor point of the overlay."
+                      },
+                      "offsetX": {
+                        "type": "number",
+                        "description": "The X offset of the overlay from the anchor point."
+                      },
+                      "offsetY": {
+                        "type": "number",
+                        "description": "The Y offset of the overlay from the anchor point."
+                      }
+                    },
+                    "required": ["anchorPoint", "offsetX", "offsetY"],
+                    "description": "The position of the overlay."
+                  },
+                  "repeat": {
+                    "type": "string",
+                    "enum": ["loop", "once"],
+                    "description": "The repeat behavior of the overlay."
+                  }
+                },
+                "required": ["mediaType", "source", "startTime", "duration", "scale", "position"],
+                "description": "Configuration for an overlay in the reframed video."
+              },
+              "description": "Configuration details for video overlays."
+            },
+            "outputConfig": {
+              "type": "object",
+              "properties": {
+                "aspectRatios": {
+                  "type": "array",
+                  "items": {
+                    "type": "string",
+                    "format": "numerator:denominator"
+                  },
+                  "description": "A list of aspect ratios for the output video."
+                }
+              },
+              "required": ["aspectRatios"],
+              "description": "Configuration details for the generated reframed video."
+            }
+          },
+          "required": ["video", "outputConfig"],
+          "type": "object",
+          "description": "The reframe request body."
+        }
+      },
+      "required": ["requestBody"]
+    },
+    "method": "post",
+    "pathTemplate": "/v1/reframe",
+    "parameters": [],
+    "executionParameters": [],
+    "requestBodyContentType": "application/json",
+    "securityRequirements": [
+      {
+        "AccessToken": [],
+        "X-Api-Key": []
+      }
+    ],
+    "operationId": "generate-reframed-video",
+    "baseUrl": "https://audio-video-api.adobe.io"
+  },
+  {
+    "name": "transcribe",
+    "description": "Generates transcripts and captions for the input audio or video in the source language or in a target language.",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "requestBody": {
+          "type": "object",
+          "oneOf": [
+            {
+              "type": "object",
+              "properties": {
+                "audio": {
+                  "type": "object",
+                  "properties": {
+                    "source": {
+                      "type": "object",
+                      "properties": {
+                        "url": {
+                          "type": "string",
+                          "format": "uri",
+                          "description": "The pre-signed URL pointing to the input source."
+                        }
+                      },
+                      "required": ["url"],
+                      "description": "Source details including a pre-signed URL for accessing the input media. See the [list of allowed domains for storage](https://developer.adobe.com/audio-video-firefly-services/getting-started/storage-solutions/)."
+                    },
+                    "mediaType": {
+                      "type": "string",
+                      "description": "Media type of the audio input.",
+                      "enum": ["audio/mp3", "audio/wav", "audio/mpeg", "audio/x-m4a", "audio/aac"]
+                    }
+                  },
+                  "required": ["url", "mediaType"],
+                  "description": "The audio input details for a dub request."
+                }
+              },
+              "required": ["audio"],
+              "description": "The request body for transcribing audio."
+            },
+            {
+              "type": "object",
+              "properties": {
+                "video": {
+                  "type": "object",
+                  "properties": {
+                    "source": {
+                      "type": "object",
+                      "properties": {
+                        "url": {
+                          "type": "string",
+                          "format": "uri",
+                          "description": "The pre-signed URL pointing to the input source."
+                        }
+                      },
+                      "required": ["url"],
+                      "description": "Source details including a pre-signed URL for accessing the input media. See the [list of allowed domains for storage](https://developer.adobe.com/audio-video-firefly-services/getting-started/storage-solutions/)."
+                    },
+                    "mediaType": {
+                      "type": "string",
+                      "description": "Media type of the video input.",
+                      "enum": [
+                        "video/mp4",
+                        "video/mov",
+                        "video/quicktime",
+                        "video/x-msvideo",
+                        "video/x-matroska"
+                      ]
+                    },
+                    "metadata": {
+                      "type": "object",
+                      "properties": {
+                        "dialogTrackNumber": {
+                          "type": "integer"
+                        }
+                      }
+                    }
+                  },
+                  "required": ["url", "mediaType"],
+                  "description": "The video input details for a dub request."
+                }
+              },
+              "required": ["video"],
+              "description": "The request body for transcribing video."
+            }
+          ],
+          "properties": {
+            "targetLocaleCodes": {
+              "type": "array",
+              "description": "This determines the language used in the processed output. See the usage notes for more about [the supported languages](https://developer.adobe.com/audio-video-firefly-services/getting-started/usage/#language-support).",
+              "items": {
+                "type": "string",
+                "description": "Locale code for dubbing target.",
+                "enum": [
+                  "da-DK",
+                  "en-IN",
+                  "en-GB",
+                  "es-AR",
+                  "es-419",
+                  "fr-CA",
+                  "hi-IN",
+                  "ja-JP",
+                  "ko-KR",
+                  "nb-NO",
+                  "nl-NL",
+                  "pt-BR",
+                  "sv-SE",
+                  "zh-CN",
+                  "en-US",
+                  "es-ES",
+                  "de-DE",
+                  "fr-FR",
+                  "it-IT",
+                  "pt-PT"
+                ]
+              }
+            },
+            "captions": {
+              "description": "Details to generate captions.",
+              "type": "object",
+              "properties": {
+                "targetFormats": {
+                  "type": "array",
+                  "items": {
+                    "type": "string",
+                    "description": "Target caption format.",
+                    "enum": ["SRT"]
+                  },
+                  "description": "Accepted values: ['SRT']"
+                }
+              }
+            }
+          },
+          "description": "The transcribe request body."
+        }
+      },
+      "required": ["requestBody"]
+    },
+    "method": "post",
+    "pathTemplate": "/v1/transcribe",
+    "parameters": [],
+    "executionParameters": [],
+    "requestBodyContentType": "application/json",
+    "securityRequirements": [
+      {
+        "AccessToken": [],
+        "X-Api-Key": []
+      }
+    ],
+    "operationId": "transcribe",
+    "baseUrl": "https://audio-video-api.adobe.io"
+  },
+  {
+    "name": "dub",
+    "description": "Generate dubbed video or audio. A composited lip sync can also be added for video dubbing.",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "requestBody": {
+          "type": "object",
+          "oneOf": [
+            {
+              "type": "object",
+              "title": "Audio dub request",
+              "properties": {
+                "targetLocaleCodes": {
+                  "type": "array",
+                  "items": {
+                    "type": "string",
+                    "description": "Locale code for dubbing target.",
+                    "enum": [
+                      "da-DK",
+                      "en-IN",
+                      "en-GB",
+                      "es-AR",
+                      "es-419",
+                      "fr-CA",
+                      "hi-IN",
+                      "ja-JP",
+                      "ko-KR",
+                      "nb-NO",
+                      "nl-NL",
+                      "pt-BR",
+                      "sv-SE",
+                      "zh-CN",
+                      "en-US",
+                      "es-ES",
+                      "de-DE",
+                      "fr-FR",
+                      "it-IT",
+                      "pt-PT"
+                    ]
+                  },
+                  "description": "This determines the language used in the processed output. See the usage notes for more about [the supported languages](https://developer.adobe.com/audio-video-firefly-services/getting-started/usage/#language-support)."
+                },
+                "transcripts": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "source": {
+                        "type": "object",
+                        "properties": {
+                          "url": {
+                            "type": "string",
+                            "format": "uri",
+                            "description": "The pre-signed URL pointing to the input source."
+                          }
+                        },
+                        "required": ["url"],
+                        "description": "Source details including a pre-signed URL for accessing the input media. See the [list of allowed domains for storage](https://developer.adobe.com/audio-video-firefly-services/getting-started/storage-solutions/)."
+                      }
+                    },
+                    "required": ["source"],
+                    "description": "Transcript input details for a transcribe request."
+                  }
+                },
+                "audio": {
+                  "type": "object",
+                  "properties": {
+                    "source": {
+                      "type": "object",
+                      "properties": {
+                        "url": {
+                          "type": "string",
+                          "format": "uri",
+                          "description": "The pre-signed URL pointing to the input source."
+                        }
+                      },
+                      "required": ["url"],
+                      "description": "Source details including a pre-signed URL for accessing the input media. See the [list of allowed domains for storage](https://developer.adobe.com/audio-video-firefly-services/getting-started/storage-solutions/)."
+                    },
+                    "mediaType": {
+                      "type": "string",
+                      "description": "Media type of the audio input.",
+                      "enum": ["audio/mp3", "audio/wav", "audio/mpeg", "audio/x-m4a", "audio/aac"]
+                    }
+                  },
+                  "required": ["url", "mediaType"],
+                  "description": "The audio input details for a dub request."
+                }
+              },
+              "required": ["audio"],
+              "description": "The audio dub request body."
+            },
+            {
+              "type": "object",
+              "title": "Video dub request",
+              "properties": {
+                "targetLocaleCodes": {
+                  "type": "array",
+                  "items": {
+                    "type": "string",
+                    "description": "Locale code for dubbing target.",
+                    "enum": [
+                      "da-DK",
+                      "en-IN",
+                      "en-GB",
+                      "es-AR",
+                      "es-419",
+                      "fr-CA",
+                      "hi-IN",
+                      "ja-JP",
+                      "ko-KR",
+                      "nb-NO",
+                      "nl-NL",
+                      "pt-BR",
+                      "sv-SE",
+                      "zh-CN",
+                      "en-US",
+                      "es-ES",
+                      "de-DE",
+                      "fr-FR",
+                      "it-IT",
+                      "pt-PT"
+                    ]
+                  },
+                  "description": "This determines the language used in the processed output. See the usage notes for more about [the supported languages](https://developer.adobe.com/audio-video-firefly-services/getting-started/usage/#language-support)."
+                },
+                "transcripts": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "source": {
+                        "type": "object",
+                        "properties": {
+                          "url": {
+                            "type": "string",
+                            "format": "uri",
+                            "description": "The pre-signed URL pointing to the input source."
+                          }
+                        },
+                        "required": ["url"],
+                        "description": "Source details including a pre-signed URL for accessing the input media. See the [list of allowed domains for storage](https://developer.adobe.com/audio-video-firefly-services/getting-started/storage-solutions/)."
+                      }
+                    },
+                    "required": ["source"],
+                    "description": "Transcript input details for a transcribe request."
+                  }
+                },
+                "video": {
+                  "type": "object",
+                  "properties": {
+                    "source": {
+                      "type": "object",
+                      "properties": {
+                        "url": {
+                          "type": "string",
+                          "format": "uri",
+                          "description": "The pre-signed URL pointing to the input source."
+                        }
+                      },
+                      "required": ["url"],
+                      "description": "Source details including a pre-signed URL for accessing the input media. See the [list of allowed domains for storage](https://developer.adobe.com/audio-video-firefly-services/getting-started/storage-solutions/)."
+                    },
+                    "mediaType": {
+                      "type": "string",
+                      "description": "Media type of the video input.",
+                      "enum": [
+                        "video/mp4",
+                        "video/mov",
+                        "video/quicktime",
+                        "video/x-msvideo",
+                        "video/x-matroska"
+                      ]
+                    },
+                    "metadata": {
+                      "type": "object",
+                      "properties": {
+                        "dialogTrackNumber": {
+                          "type": "integer"
+                        }
+                      }
+                    }
+                  },
+                  "required": ["url", "mediaType"],
+                  "description": "The video input details for a dub request."
+                },
+                "lipSync": {
+                  "type": "boolean",
+                  "description": "If `true`, a high-quality composited lip sync will be used in the video output.",
+                  "default": "false"
+                }
+              },
+              "required": ["video"],
+              "description": "The video dub request body."
+            }
+          ],
+          "description": "The dub request body."
+        }
+      },
+      "required": ["requestBody"]
+    },
+    "method": "post",
+    "pathTemplate": "/v1/dub",
+    "parameters": [],
+    "executionParameters": [],
+    "requestBodyContentType": "application/json",
+    "securityRequirements": [
+      {
+        "AccessToken": [],
+        "X-Api-Key": []
+      }
+    ],
+    "operationId": "dub",
+    "baseUrl": "https://audio-video-api.adobe.io"
+  },
+  {
+    "name": "avatars",
+    "description": "Retrieves the list of all available avatars for the user's enterprise.",
+    "inputSchema": {
+      "type": "object",
+      "properties": {}
+    },
+    "method": "get",
+    "pathTemplate": "/v1/avatars",
+    "parameters": [],
+    "executionParameters": [],
+    "securityRequirements": [
+      {
+        "AccessToken": [],
+        "X-Api-Key": []
+      }
+    ],
+    "operationId": "avatars",
+    "baseUrl": "https://audio-video-api.adobe.io"
+  },
+  {
+    "name": "generate-reframed-video-v2",
+    "description": "This endpoint enables you to reframe the input media. You can provide a video input via a pre-signed URL to generate reframed output video.",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "requestBody": {
+          "properties": {
+            "video": {
+              "type": "object",
+              "properties": {
+                "source": {
+                  "type": "object",
+                  "properties": {
+                    "url": {
+                      "type": "string",
+                      "format": "uri",
+                      "description": "The pre-signed URL pointing to the input source."
+                    }
+                  },
+                  "required": ["url"],
+                  "description": "Details of the source including a pre-signed URL. See the [list of allowed domains for storage](https://developer.adobe.com/audio-video-firefly-services/getting-started/storage-solutions/)."
+                }
+              },
+              "required": ["source"],
+              "description": "Video input details for generate reframed video request."
+            },
+            "analysis": {
+              "type": "object",
+              "properties": {
+                "sceneEditDetection": {
+                  "type": "boolean",
+                  "default": true,
+                  "description": "Applies scene edit detection before reframing."
+                },
+                "focalPoints": {
+                  "type": "array",
+                  "items": {
+                    "type": "string",
+                    "maxLength": 1000,
+                    "pattern": "^[a-zA-Z0-9\\s\\-_]+$",
+                    "description": "Focal point keyword to utilize Semantic Subject Lock. Must be alphanumeric characters, spaces, hyphens, or underscores only. Maximum 1000 characters per keyword."
+                  },
+                  "maxItems": 10,
+                  "description": "Array of focal point keyword identifiers for reframing. Up to 10 keywords are allowed. Keywords must be alphanumeric characters, spaces, hyphens, or underscores only, with a maximum of 1000 characters per keyword.",
+                  "default": []
+                }
+              },
+              "description": "Analysis configuration for the video processing."
+            },
+            "composition": {
+              "type": "object",
+              "properties": {
+                "overlays": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "source": {
+                        "type": "object",
+                        "properties": {
+                          "url": {
+                            "type": "string",
+                            "format": "uri",
+                            "description": "The pre-signed URL pointing to the input source."
+                          }
+                        },
+                        "required": ["url"],
+                        "description": "Source details including a pre-signed URL for accessing the input media. See the [list of allowed domains for storage](https://developer.adobe.com/audio-video-firefly-services/getting-started/storage-solutions/)."
+                      },
+                      "startTime": {
+                        "type": "string",
+                        "format": "HH:MM:SS:FRAME_NUMBER",
+                        "description": "Start time for the overlay in the format HH:MM:SS:FF."
+                      },
+                      "duration": {
+                        "type": "string",
+                        "format": "HH:MM:SS:FRAME_NUMBER",
+                        "description": "Duration of the overlay in the format HH:MM:SS:FF."
+                      },
+                      "scale": {
+                        "type": "object",
+                        "description": "Scale configuration for overlay dimensions.",
+                        "properties": {
+                          "width": {
+                            "type": "number",
+                            "description": "The width of the scaled overlay."
+                          },
+                          "height": {
+                            "type": "number",
+                            "description": "The height of the scaled overlay."
+                          }
+                        }
+                      },
+                      "position": {
+                        "type": "object",
+                        "description": "Position configuration for overlay placement.",
+                        "properties": {
+                          "anchorPoint": {
+                            "type": "string",
+                            "enum": [
+                              "top_left",
+                              "top_right",
+                              "bottom_left",
+                              "bottom_right",
+                              "center"
+                            ],
+                            "description": "Anchor point for taking the position reference."
+                          },
+                          "offsetX": {
+                            "type": ["integer", "null"],
+                            "description": "Horizontal offset for the anchor point."
+                          },
+                          "offsetY": {
+                            "type": ["integer", "null"],
+                            "description": "Vertical offset for the anchor point."
+                          }
+                        }
+                      },
+                      "repeat": {
+                        "oneOf": [
+                          {
+                            "type": "null"
+                          },
+                          {
+                            "type": "string",
+                            "enum": ["stop_on_last_frame", "loop", "time_stretch"],
+                            "description": "Defines the repeat behavior of the overlay."
+                          }
+                        ],
+                        "description": "Repeat behavior for GIF overlay (optional)."
+                      }
+                    }
+                  },
+                  "description": "List of overlays to be composed on the video."
+                }
+              },
+              "description": "Configuration for composing elements on the video."
+            },
+            "output": {
+              "type": "object",
+              "properties": {
+                "format": {
+                  "type": "object",
+                  "default": "source",
+                  "properties": {
+                    "media": {
+                      "type": "string",
+                      "enum": ["none", "mp4", "mov", "source"],
+                      "description": "Media format for the output video. If only the OTIO file is needed, set this as `none`."
+                    },
+                    "sidecar": {
+                      "type": "string",
+                      "enum": ["json", "otio"],
+                      "description": "Sidecar format for additional metadata."
+                    }
+                  },
+                  "description": "Output format configuration. A media property is mandatory when this format object is specified.",
+                  "required": ["media", "sidecar"]
+                },
+                "renditions": {
+                  "type": "array",
+                  "uniqueItems": true,
+                  "description": "Array of output rendition specifications.",
+                  "items": {
+                    "oneOf": [
+                      {
+                        "title": "Aspect Ratio Rendition",
+                        "type": "object",
+                        "properties": {
+                          "aspectRatio": {
+                            "type": "object",
+                            "description": "Aspect ratio specification for video output.",
+                            "properties": {
+                              "x": {
+                                "type": "integer",
+                                "description": "AspectRatio x ratio."
+                              },
+                              "y": {
+                                "type": "integer",
+                                "description": "AspectRatio y ratio."
+                              }
+                            },
+                            "required": ["x", "y"]
+                          },
+                          "mediaDestination": {
+                            "type": "object",
+                            "properties": {
+                              "url": {
+                                "type": "string",
+                                "format": "uri",
+                                "description": "The pre-signed URL pointing to the output destination."
+                              }
+                            },
+                            "required": ["url"],
+                            "description": "Destination details including a pre-signed URL for the output media."
+                          },
+                          "sidecarDestination": {
+                            "type": "object",
+                            "properties": {
+                              "url": {
+                                "type": "string",
+                                "format": "uri",
+                                "description": "The pre-signed URL pointing to the output destination."
+                              }
+                            },
+                            "required": ["url"],
+                            "description": "Destination details including a pre-signed URL for the output media."
+                          }
+                        },
+                        "required": ["aspectRatio"]
+                      },
+                      {
+                        "title": "Resolution Rendition",
+                        "type": "object",
+                        "properties": {
+                          "resolution": {
+                            "type": "object",
+                            "properties": {
+                              "width": {
+                                "type": "integer",
+                                "description": "Resolution width of the output in pixels."
+                              },
+                              "height": {
+                                "type": "integer",
+                                "description": "Resolution height of the output in pixels."
+                              }
+                            },
+                            "required": ["width", "height"]
+                          },
+                          "mediaDestination": {
+                            "type": "object",
+                            "properties": {
+                              "url": {
+                                "type": "string",
+                                "format": "uri",
+                                "description": "The pre-signed URL pointing to the output destination."
+                              }
+                            },
+                            "required": ["url"],
+                            "description": "Destination details including a pre-signed URL for the output media."
+                          },
+                          "sidecarDestination": {
+                            "type": "object",
+                            "properties": {
+                              "url": {
+                                "type": "string",
+                                "format": "uri",
+                                "description": "The pre-signed URL pointing to the output destination."
+                              }
+                            },
+                            "required": ["url"],
+                            "description": "Destination details including a pre-signed URL for the output media."
+                          }
+                        },
+                        "required": ["resolution"]
+                      }
+                    ]
+                  }
+                }
+              },
+              "required": ["renditions"],
+              "description": "Output configuration details for generating the reframed video."
+            }
+          },
+          "required": ["video", "output"],
+          "type": "object",
+          "description": "Generate reframed video request body."
+        }
+      },
+      "required": ["requestBody"]
+    },
+    "method": "post",
+    "pathTemplate": "/v2/reframe",
+    "parameters": [],
+    "executionParameters": [],
+    "requestBodyContentType": "application/json",
+    "securityRequirements": [
+      {
+        "AccessToken": [],
+        "X-Api-Key": []
+      }
+    ],
+    "operationId": "generate-reframed-video-v2",
+    "baseUrl": "https://audio-video-api.adobe.io"
+  },
+  {
+    "name": "job-result-v2",
+    "description": "This endpoint retrieves the result of an asynchronous reframed job initiated using the job ID.",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "jobId": {
+          "type": "string",
+          "description": "The job ID to get status for an asynchronous generate reframed video job."
+        }
+      },
+      "required": ["jobId"]
+    },
+    "method": "get",
+    "pathTemplate": "/v2/status/{jobId}",
+    "parameters": [
+      {
+        "name": "jobId",
+        "in": "path",
+        "description": "The job ID to get status for an asynchronous generate reframed video job.",
+        "required": true,
+        "schema": {
+          "type": "string"
+        }
+      }
+    ],
+    "executionParameters": [
+      {
+        "name": "jobId",
+        "in": "path"
+      }
+    ],
+    "securityRequirements": [
+      {
+        "AccessToken": [],
+        "X-Api-Key": []
+      }
+    ],
+    "operationId": "job-result-v2",
+    "baseUrl": "https://audio-video-api.adobe.io"
+  },
+  {
+    "name": "generate-avatar",
+    "description": "Generates an avatar video from a provided transcript or audio file. You can provide the transcript either as plain text or a pre-signed URL. The API is asynchronous, so the response will include a job ID and a status URL for tracking the running job.",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "requestBody": {
+          "type": "object",
+          "oneOf": [
+            {
+              "title": "Using Plain Text",
+              "type": "object",
+              "properties": {
+                "script": {
+                  "oneOf": [
+                    {
+                      "description": "Details of the text resource.",
+                      "type": "string",
+                      "properties": {
+                        "text": {
+                          "type": "string"
+                        }
+                      }
+                    },
+                    {
+                      "type": "object",
+                      "title": "Image or video background",
+                      "properties": {
+                        "source": {
+                          "type": "object",
+                          "properties": {
+                            "url": {
+                              "type": "string",
+                              "format": "uri",
+                              "description": "The pre-signed URL pointing to the resource to be used for avatar/speech generation."
+                            }
+                          },
+                          "description": "Details of the source including a pre-signed URL. See the [list of allowed domains for storage](https://developer.adobe.com/audio-video-firefly-services/getting-started/storage-solutions/)."
+                        }
+                      }
+                    }
+                  ],
+                  "type": "object",
+                  "properties": {
+                    "localeCode": {
+                      "type": "string",
+                      "enum": [
+                        "en-US",
+                        "es-ES",
+                        "de-DE",
+                        "fr-FR",
+                        "da-DK",
+                        "en-GB",
+                        "en-IN",
+                        "es-419",
+                        "es-AR",
+                        "fr-CA",
+                        "hi-IN",
+                        "it-IT",
+                        "ja-JP",
+                        "ko-KR",
+                        "nb-NO",
+                        "pt-BR",
+                        "pt-PT",
+                        "nl-NL",
+                        "zh-CN",
+                        "sv-SE"
+                      ],
+                      "description": "The language code for the supported language desired in the result."
+                    },
+                    "mediaType": {
+                      "type": "string",
+                      "enum": ["text/plain"],
+                      "description": "The format of the text resource."
+                    }
+                  },
+                  "required": ["localeCode", "mediaType"]
+                },
+                "voiceId": {
+                  "type": "string",
+                  "description": "ID of the voice to use from the catalog of voices."
+                },
+                "avatarId": {
+                  "type": "string",
+                  "description": "ID of the avatar to use from the catalog of avatars."
+                },
+                "output": {
+                  "type": "object",
+                  "description": "Output configuration for avatar video generation.",
+                  "properties": {
+                    "mediaType": {
+                      "type": "string",
+                      "enum": ["video/mp4"],
+                      "description": "The supported video format for background video for Avatar."
+                    },
+                    "background": {
+                      "oneOf": [
+                        {
+                          "type": "string",
+                          "title": "Color background",
+                          "description": "Color specification for avatar background.",
+                          "properties": {
+                            "color": {
+                              "type": "string",
+                              "pattern": "^#[0-9a-fA-F]{6}$",
+                              "description": "Color code for the background of the output. This should be a six digit hexadecimal value."
+                            }
+                          }
+                        },
+                        {
+                          "type": "object",
+                          "title": "Image or video background",
+                          "properties": {
+                            "source": {
+                              "type": "object",
+                              "properties": {
+                                "url": {
+                                  "type": "string",
+                                  "format": "uri",
+                                  "description": "The pre-signed URL pointing to the resource to be used for avatar/speech generation."
+                                }
+                              },
+                              "description": "Details of the source including a pre-signed URL. See the [list of allowed domains for storage](https://developer.adobe.com/audio-video-firefly-services/getting-started/storage-solutions/)."
+                            }
+                          }
+                        }
+                      ],
+                      "type": "object",
+                      "properties": {
+                        "type": {
+                          "type": "string",
+                          "enum": ["color", "video", "image"],
+                          "description": "Supported background type for output Avatar video."
+                        }
+                      }
+                    },
+                    "resolution": {
+                      "type": "object",
+                      "properties": {
+                        "width": {
+                          "type": "string"
+                        },
+                        "height": {
+                          "type": "string"
+                        }
+                      }
+                    }
+                  },
+                  "required": ["mediaType"]
+                }
+              },
+              "required": ["voiceId", "output", "script", "avatarId"]
+            },
+            {
+              "title": "Using Audio File",
+              "type": "object",
+              "properties": {
+                "audio": {
+                  "type": "object",
+                  "properties": {
+                    "source": {
+                      "type": "object",
+                      "description": "URL object containing a pre-signed URL. See the [list of allowed domains for storage](https://developer.adobe.com/audio-video-firefly-services/getting-started/storage-solutions/).",
+                      "properties": {
+                        "url": {
+                          "type": "string",
+                          "format": "uri",
+                          "description": "The pre-signed URL pointing to the resource to be used for avatar/speech generation."
+                        }
+                      }
+                    },
+                    "mediaType": {
+                      "type": "string",
+                      "enum": ["audio/wav"]
+                    },
+                    "localeCode": {
+                      "type": "string",
+                      "enum": [
+                        "en-US",
+                        "es-ES",
+                        "de-DE",
+                        "fr-FR",
+                        "da-DK",
+                        "en-GB",
+                        "en-IN",
+                        "es-419",
+                        "es-AR",
+                        "fr-CA",
+                        "hi-IN",
+                        "it-IT",
+                        "ja-JP",
+                        "ko-KR",
+                        "nb-NO",
+                        "pt-BR",
+                        "pt-PT",
+                        "nl-NL",
+                        "zh-CN",
+                        "sv-SE"
+                      ],
+                      "description": "The language code for the supported language desired in the result."
+                    }
+                  },
+                  "required": ["localeCode", "mediaType", "source"]
+                },
+                "avatarId": {
+                  "type": "string",
+                  "description": "ID of the avatar to use from the catalog of avatars."
+                },
+                "output": {
+                  "type": "object",
+                  "description": "Output configuration for avatar video generation.",
+                  "properties": {
+                    "mediaType": {
+                      "type": "string",
+                      "enum": ["video/mp4"],
+                      "description": "The supported video format for background video for Avatar."
+                    },
+                    "background": {
+                      "oneOf": [
+                        {
+                          "type": "string",
+                          "title": "Color background",
+                          "description": "Color specification for avatar background.",
+                          "properties": {
+                            "color": {
+                              "type": "string",
+                              "pattern": "^#[0-9a-fA-F]{6}$",
+                              "description": "Color code for the background of the output. This should be a six digit hexadecimal value."
+                            }
+                          }
+                        },
+                        {
+                          "type": "object",
+                          "title": "Image or video background",
+                          "properties": {
+                            "source": {
+                              "type": "object",
+                              "properties": {
+                                "url": {
+                                  "type": "string",
+                                  "format": "uri",
+                                  "description": "The pre-signed URL pointing to the resource to be used for avatar/speech generation."
+                                }
+                              },
+                              "description": "Details of the source including a pre-signed URL. See the [list of allowed domains for storage](https://developer.adobe.com/audio-video-firefly-services/getting-started/storage-solutions/)."
+                            }
+                          }
+                        }
+                      ],
+                      "type": "object",
+                      "properties": {
+                        "type": {
+                          "type": "string",
+                          "enum": ["color", "video", "image"],
+                          "description": "Supported background type for output Avatar video."
+                        }
+                      }
+                    },
+                    "resolution": {
+                      "type": "object",
+                      "properties": {
+                        "width": {
+                          "type": "string"
+                        },
+                        "height": {
+                          "type": "string"
+                        }
+                      }
+                    }
+                  },
+                  "required": ["mediaType"]
+                }
+              },
+              "required": ["output", "audio", "avatarId"]
+            }
+          ],
+          "description": "The request body contains the transcript and details for generating an avatar."
+        }
+      },
+      "required": ["requestBody"]
+    },
+    "method": "post",
+    "pathTemplate": "/v1/generate-avatar",
+    "parameters": [],
+    "executionParameters": [],
+    "requestBodyContentType": "application/json",
+    "securityRequirements": [
+      {
+        "AccessToken": [],
+        "X-Api-Key": []
+      }
+    ],
+    "operationId": "generate-avatar",
+    "baseUrl": "https://audio-video-api.adobe.io"
+  }
+]

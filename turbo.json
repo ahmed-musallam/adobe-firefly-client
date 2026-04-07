@@ -3,7 +3,7 @@
   "tasks": {
     "//#clean": {},
     "//#generate": {
-      "outputs": ["packages/*/src/flat/**", "packages/*/src/sdk/**"],
+      "outputs": ["packages/*/src/flat/**", "packages/*/src/sdk/**", "packages/*/src/tools/**"],
       "dependsOn": ["//#clean"]
     },
     "build": {

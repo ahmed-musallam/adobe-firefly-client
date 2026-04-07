@@ -1,0 +1,2988 @@
+[
+  {
+    "name": "dataMerge",
+    "description": "Creates InDesign documents or PDFs by merging CSV data with InDesign templates. Supports multiple output formats: JPEG (`image/jpeg`), PNG (`image/png`), PDF (`application/pdf`), and InDesign (`application/x-indesign`).",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "Authorization": {
+          "type": "string",
+          "description": "The authorization token with bearer \"token_value\". For example: `Bearer <access_token>`."
+        },
+        "x-api-key": {
+          "type": "string",
+          "description": "The API key as defined in Adobe's Developer Console."
+        },
+        "x-gw-ims-org-id": {
+          "type": "string",
+          "description": "This is the identifier for Adobe Identity Management Service (IMS) as defined in Adobe's Developer Console. This is optional."
+        },
+        "requestBody": {
+          "allOf": [
+            {
+              "allOf": [
+                {
+                  "description": "The base job request for any job.",
+                  "required": ["assets"],
+                  "properties": {
+                    "assets": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "description": "The URL where the asset will be fetched.",
+                        "required": ["source"],
+                        "properties": {
+                          "source": {
+                            "type": "object",
+                            "required": ["url"],
+                            "properties": {
+                              "url": {
+                                "type": "string",
+                                "description": "The pre-signed URL of the input asset. This is the URL of the asset that will be downloaded and acted upon during the job."
+                              }
+                            }
+                          },
+                          "destination": {
+                            "type": "string",
+                            "description": "This provides a path relative to a temporary base directory (working directory) where the resource would be downloaded. This would be used to identify the assets within the parameters. It cannot go up using '..' or '/'. Should be a valid file name."
+                          }
+                        }
+                      },
+                      "description": "Information about the assets, which will be used to process the job."
+                    },
+                    "params": {
+                      "type": "object",
+                      "properties": {
+                        "generalSettings": {
+                          "description": "General settings.",
+                          "type": "object",
+                          "properties": {
+                            "fonts": {
+                              "description": "Settings related to fonts. It is recommended to include fonts to avoid missing fonts warnings when processing the job.",
+                              "type": "object",
+                              "properties": {
+                                "fontsDirectories": {
+                                  "description": "This lists the font directories for the input InDesign documents. \"Document Fonts\" in parallel to the document will continue to work even without specifying them.  <br></br> If none are specified, a temporary base directory (working directory) will be considered as a font directory.",
+                                  "type": "array",
+                                  "items": {
+                                    "type": "string",
+                                    "description": "This provides a path to a directory relative to a temporary base directory (working directory) where the fonts can be found. It cannot go up using '..' or '/'. Should be a valid path. For specifying a working directory, mention '.'."
+                                  }
+                                }
+                              }
+                            },
+                            "links": {
+                              "description": "Settings related to links.",
+                              "type": "object",
+                              "properties": {
+                                "replaceLinks": {
+                                  "type": "array",
+                                  "items": {
+                                    "type": "object",
+                                    "required": ["targetDocument", "mapping"],
+                                    "properties": {
+                                      "targetDocument": {
+                                        "description": "The document in which the relinking is to be done. Relinking of assets is required to ensure that there are no missing links in the output document.",
+                                        "type": "string"
+                                      },
+                                      "mapping": {
+                                        "type": "array",
+                                        "items": {
+                                          "type": "object",
+                                          "required": ["newAssetRelativePath"],
+                                          "properties": {
+                                            "newAssetRelativePath": {
+                                              "type": "string",
+                                              "description": "This provides a path relative to a temporary base directory (working directory) where the asset to be linked to can be found. It cannot go up using '..' or '/'. Should be a valid file name."
+                                            },
+                                            "currentURI": {
+                                              "type": "string",
+                                              "description": "The existing URI of the link that needs relinking. If multiple links with this URI are found, all will be relinked. If `linkID` is provided, this attribute will be ignored. Either `currentURI` or `linkID` should be present."
+                                            },
+                                            "linkID": {
+                                              "type": "integer",
+                                              "description": "The ID of the link which is to be relinked. If `currentURI` is also provided, it will be ignored. Either `currentURI` or `linkID` should be present."
+                                            }
+                                          }
+                                        }
+                                      }
+                                    }
+                                  }
+                                }
+                              }
+                            },
+                            "appLogs": {
+                              "description": "Describes parameters regarding application logs.",
+                              "type": "object",
+                              "properties": {
+                                "logsRelativePath": {
+                                  "type": "string",
+                                  "description": "This provides a path to a file, relative to the temporary base directory (working directory). This file is where the application's logs are to be dumped."
+                                }
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                },
+                {
+                  "description": "The base job request for any job with the option to specify output URLs.",
+                  "type": "object",
+                  "properties": {
+                    "outputs": {
+                      "type": "array",
+                      "items": {
+                        "description": "The URL where the output assets are to be posted after the job is processed.",
+                        "type": "object",
+                        "required": ["destination", "source"],
+                        "properties": {
+                          "destination": {
+                            "type": "object",
+                            "required": ["url"],
+                            "properties": {
+                              "url": {
+                                "type": "string",
+                                "description": "The URL of the asset."
+                              },
+                              "storageType": {
+                                "type": "string",
+                                "description": "This is an optional parameter, however IT IS RECOMMENDED to provide this information.",
+                                "enum": ["Azure", "Dropbox", "AWS"]
+                              }
+                            }
+                          },
+                          "source": {
+                            "type": "string",
+                            "description": "This provides a path relative of the output where the resource would be generated. It cannot go up using '..' or '/'. Should be a valid file name."
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              ]
+            },
+            {
+              "description": "Inputs for the data merge request.",
+              "type": "object",
+              "required": ["params"],
+              "properties": {
+                "params": {
+                  "type": "object",
+                  "required": ["targetDocument", "dataSource"],
+                  "properties": {
+                    "targetDocument": {
+                      "description": "The tagged document to be used as the template for merging.",
+                      "type": "string"
+                    },
+                    "dataSource": {
+                      "description": "The data source files to be used.",
+                      "type": "string"
+                    },
+                    "outputMediaType": {
+                      "description": "The type of output.",
+                      "type": "string",
+                      "enum": [
+                        "image/jpeg",
+                        "image/png",
+                        "application/pdf",
+                        "application/x-indesign"
+                      ],
+                      "default": "application/x-indesign"
+                    },
+                    "exportSettings": {
+                      "type": "object",
+                      "description": "The settings corresponding to the output format.",
+                      "properties": {
+                        "jobOptionsFile": {
+                          "type": "string",
+                          "description": "File path reference to a `.joboptions` file (Adobe PDF preset file) containing custom PDF export settings. This file must be included as part of the input assets. It defines detailed PDF output configurations such as compression, color management, and security settings. When provided, this takes precedence over the `pdfPreset` attribute. Only applicable when generating PDF output.",
+                          "default": "PDF preset `High Quality Print` will be used if not provided."
+                        },
+                        "pdfPreset": {
+                          "type": "string",
+                          "description": "The PDF export style to be used. This is relevant if `outputMediaType` is `application/pdf`.",
+                          "default": "High Quality Print",
+                          "enum": [
+                            "High Quality Print",
+                            "PDF/X-1a:2001",
+                            "PDF/X-3:2002",
+                            "PDF/X-4:2008",
+                            "Press Quality",
+                            "Smallest File Size"
+                          ]
+                        },
+                        "quality": {
+                          "type": "string",
+                          "description": "Defines the quality of the output for JPEG and PNG formats.",
+                          "default": "medium",
+                          "enum": ["low", "medium", "high", "maximum"]
+                        },
+                        "linkImages": {
+                          "description": "If `true`, links images to the target document. If `false`, embeds linked images already referred in the target document.  Only relevant if `outputMediaType` is `application/x-indesign`.",
+                          "type": "boolean",
+                          "default": false
+                        }
+                      }
+                    },
+                    "recordRange": {
+                      "description": "The ranges of records to process for this job. Value can be `All`, along with numeral ranges. For example, '1-2, 5'.",
+                      "type": "string",
+                      "default": "All"
+                    },
+                    "allowMultipleRecordsPerPage": {
+                      "description": "If `true`, will show as many records as will fit on a page.",
+                      "type": "boolean",
+                      "default": false
+                    },
+                    "multipleRecordLayoutOptions": {
+                      "description": "The options to be used when `allowMultipleRecordsPerPage` is set to `true`.",
+                      "type": "object",
+                      "properties": {
+                        "arrangeBy": {
+                          "description": "The order that records will be arranged in the target document.\n* `rows_first` - Arranges records by row.\n* `columns_first` - Arranges records by column.\n",
+                          "type": "string",
+                          "default": "rows_first",
+                          "enum": ["rows_first", "columns_first"]
+                        },
+                        "bottomMargin": {
+                          "description": "The offset value of the bottom margin in the target document. The values can be specified like `1 pt`, `1 pica`, `1`, etc. If a number is mentioned in the string, it will be used as a value in pica.",
+                          "type": "string"
+                        },
+                        "topMargin": {
+                          "description": "The offset value of the top margin in the target document.  The values can be specified like `1 pt`, `1 pica`, `1`, etc. If a number is mentioned in the string, it will be used as a value in pica.",
+                          "type": "string"
+                        },
+                        "leftMargin": {
+                          "description": "The offset value of the left margin in the target document. The values can be specified like `1 pt`, `1 pica`, `1`, etc. If a number is mentioned in the string, it will be used as a value in pica.",
+                          "type": "string"
+                        },
+                        "rightMargin": {
+                          "description": "The offset value of the right margin in the target document. The values can be specified like `1 pt`, `1 pica`, `1`, etc. If a number is mentioned in the string, it will be used as a value in pica.",
+                          "type": "string"
+                        },
+                        "columnSpacing": {
+                          "description": "The amount of spacing between columns of records in the target document.  The values can be specified like `1 pt`, `1 pica`, `1`, etc. If a number is mentioned in the string, it will be used as a value in pica.",
+                          "type": "string"
+                        },
+                        "rowSpacing": {
+                          "description": "The amount of spacing between rows of records in the target document.  The values can be specified like `1 pt`, `1 pica`, `1`, etc. If a number is mentioned in the string, it will be used as a value in pica.",
+                          "type": "string"
+                        }
+                      }
+                    },
+                    "imagePlacementOptions": {
+                      "description": "These are the options for image placement which will be used while merging images in the document.",
+                      "type": "object",
+                      "properties": {
+                        "centerImage": {
+                          "description": "If true, this centers the image in the frame while preserving the frame size as content size and proportions. If the content is larger than the frame, content around the edges is obscured by the bounding box of the frame. <br></br> This won't work when `fittingOption` is `Content_Aware_Fit`.",
+                          "type": "boolean",
+                          "default": false
+                        },
+                        "fittingOption": {
+                          "description": "The method of fitting content in a frame.\n* `content_aware_fit` - Selects best crop region of the content for the frame based on Adobe Sensei. This preserves frame size but it might scale the content size. If this fitting is set, the `centerImage` property is turned-off.\n* `fill_proportional` - Resizes content to fill the frame while preserving the proportions of the content. If the content and frame have different proportions, some of the content is obscured by the bounding box of the frame.\n* `fit_content_to_frame` - Resizes content to fit the frame. Content that is a different size than the frame appears stretched or squeezed.\n* `fit_frame_to_content` - Resizes the frame so it fits the content.\n* `honor_existing_style` - Applies the frame fitting based on existing settings applied on the original frame.\n* `preserve_sizes` - Preserves the original sizes of the frame and the content. Content that is larger than the frame is obscured around the edges.\n* `proportional` - Resizes content to fit the frame while preserving content proportions. If the content and frame have different proportions, an empty space occurs in the frame.\n",
+                          "type": "string",
+                          "default": "proportional",
+                          "enum": [
+                            "content_aware_fit",
+                            "fill_proportional",
+                            "fit_content_to_frame",
+                            "fit_frame_to_content",
+                            "honor_existing_style",
+                            "preserve_sizes",
+                            "proportional"
+                          ]
+                        },
+                        "linkImages": {
+                          "description": "This applies to the images being brought in the document while merging. If true, this links images to the target document. If false, it embeds images in the target document.",
+                          "type": "boolean",
+                          "default": false
+                        }
+                      }
+                    },
+                    "hyphenationSettings": {
+                      "description": "Hyphenation settings to control word breaking and hyphenation behavior during merge.",
+                      "type": "object",
+                      "properties": {
+                        "afterFirst": {
+                          "type": "integer",
+                          "description": "Minimum number of characters at the start of a word before a hyphen may be inserted."
+                        },
+                        "beforeLast": {
+                          "type": "integer",
+                          "description": "Minimum number of characters at the end of a word after a hyphen."
+                        },
+                        "wordsLongerThan": {
+                          "type": "integer",
+                          "description": "Minimum word length for hyphenation to apply."
+                        },
+                        "ladderLimit": {
+                          "type": "integer",
+                          "description": "Maximum allowed consecutive hyphenated lines."
+                        },
+                        "zone": {
+                          "type": "number",
+                          "description": "Whitespace ratio allowed at the end of a line before hyphenation begins (0–1)."
+                        },
+                        "capitalizedWords": {
+                          "type": "boolean",
+                          "description": "If true, allows hyphenation of capitalized words."
+                        },
+                        "lastWord": {
+                          "type": "boolean",
+                          "description": "If true, allows hyphenation of the last word in a paragraph."
+                        },
+                        "acrossColumns": {
+                          "type": "boolean",
+                          "description": "If true, allows hyphenation across columns."
+                        },
+                        "dictionarySettings": {
+                          "type": "array",
+                          "description": "Special hyphenation definitions by language.",
+                          "items": {
+                            "type": "object",
+                            "required": ["language", "wordList"],
+                            "properties": {
+                              "language": {
+                                "type": "string",
+                                "description": "Supported hyphenation dictionary languages.",
+                                "enum": [
+                                  "Arabic",
+                                  "Bengali (India)",
+                                  "Bulgarian",
+                                  "Burmese (Myanmar [Burma])",
+                                  "Catalan",
+                                  "Croatian",
+                                  "Czech",
+                                  "Danish",
+                                  "Dutch: 2005 Reform",
+                                  "Dutch: Old Rules",
+                                  "English: Canadian",
+                                  "English: UK",
+                                  "English: USA",
+                                  "English: USA Legal",
+                                  "English: USA Medical",
+                                  "Estonian",
+                                  "Finnish",
+                                  "French",
+                                  "French: Canadian",
+                                  "German: 1996 Reform",
+                                  "German: 2006 Reform",
+                                  "German: Austria 2006 Reform",
+                                  "German: Old Rules",
+                                  "German: Swiss",
+                                  "German: Swiss 2006 Reform",
+                                  "Greek",
+                                  "Gujarati (India)",
+                                  "Hebrew",
+                                  "Hindi (India)",
+                                  "Hungarian",
+                                  "Indonesian (Indonesia)",
+                                  "Italian",
+                                  "Kannada (India)",
+                                  "Khmer (Cambodia)",
+                                  "Lao (Laos)",
+                                  "Latvian",
+                                  "Lithuanian",
+                                  "Malayalam (India)",
+                                  "Marathi (India)",
+                                  "Norwegian: Bokmål",
+                                  "Norwegian: Nynorsk",
+                                  "Oriya (India)",
+                                  "Polish",
+                                  "Portuguese",
+                                  "Portuguese: Brazilian",
+                                  "Portuguese: Orthographic Agreement",
+                                  "Punjabi (India)",
+                                  "Romanian",
+                                  "Russian",
+                                  "Sinhala (Sri Lanka)",
+                                  "Slovak",
+                                  "Slovenian",
+                                  "Spanish",
+                                  "Swedish",
+                                  "Tamil (India)",
+                                  "Telugu (India)",
+                                  "Thai",
+                                  "Turkish",
+                                  "Ukrainian",
+                                  "Vietnamese"
+                                ]
+                              },
+                              "wordList": {
+                                "type": "array",
+                                "description": "List of special hyphenation definitions (use `~` to mark break points, e.g., `Know~how`, `check~in`. Put `~` at the beginning of the word to exclude it from hyphenation, e.g., `~Wallstreet`, `~Starbucks`).",
+                                "items": {
+                                  "type": "string"
+                                }
+                              }
+                            }
+                          }
+                        }
+                      }
+                    },
+                    "pagesPerDocument": {
+                      "description": "The maximum number of pages per document.",
+                      "type": "integer",
+                      "default": "By default this would not be applicable."
+                    },
+                    "removeBlankLines": {
+                      "description": "If true, removes blank lines caused by empty fields.",
+                      "type": "boolean",
+                      "default": false
+                    },
+                    "convertUrlToHyperlink": {
+                      "description": "If true, all URLs in the merged document are converted into hyperlinks.",
+                      "type": "boolean",
+                      "default": true
+                    },
+                    "outputFileBaseString": {
+                      "type": "string",
+                      "description": "The name of the output file.",
+                      "default": "It is derived from the original document filename."
+                    },
+                    "outputFolderPath": {
+                      "type": "string",
+                      "description": "The path of the output folder.",
+                      "default": "A unique temporary folder name would be created."
+                    }
+                  }
+                }
+              }
+            }
+          ],
+          "description": "This job request object specifies parameters for merging the data with the given template."
+        }
+      },
+      "required": ["Authorization", "x-api-key", "requestBody"]
+    },
+    "method": "post",
+    "pathTemplate": "/v3/merge-data",
+    "parameters": [
+      {
+        "name": "Authorization",
+        "in": "header",
+        "description": "The authorization token with bearer \"token_value\". For example: `Bearer <access_token>`.",
+        "required": true,
+        "schema": {
+          "type": "string"
+        }
+      },
+      {
+        "name": "x-api-key",
+        "in": "header",
+        "description": "The API key as defined in Adobe's Developer Console.",
+        "required": true,
+        "schema": {
+          "type": "string"
+        }
+      },
+      {
+        "name": "x-gw-ims-org-id",
+        "in": "header",
+        "description": "This is the identifier for Adobe Identity Management Service (IMS) as defined in Adobe's Developer Console. This is optional.",
+        "required": false,
+        "schema": {
+          "type": "string"
+        }
+      }
+    ],
+    "executionParameters": [
+      {
+        "name": "Authorization",
+        "in": "header"
+      },
+      {
+        "name": "x-api-key",
+        "in": "header"
+      },
+      {
+        "name": "x-gw-ims-org-id",
+        "in": "header"
+      }
+    ],
+    "requestBodyContentType": "application/json",
+    "securityRequirements": [
+      {
+        "ApiKeyAuth": []
+      },
+      {
+        "BearerAuth": []
+      }
+    ],
+    "operationId": "dataMerge",
+    "baseUrl": "https://indesign.adobe.io"
+  },
+  {
+    "name": "dataMergeTags",
+    "description": "Retrieves the data merge tags from a document.",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "Authorization": {
+          "type": "string",
+          "description": "The authorization token with bearer \"token_value\". For example: `Bearer <access_token>`."
+        },
+        "x-api-key": {
+          "type": "string",
+          "description": "The API key as defined in Adobe's Developer Console."
+        },
+        "x-gw-ims-org-id": {
+          "type": "string",
+          "description": "This is the identifier for Adobe Identity Management Service (IMS) as defined in Adobe's Developer Console. This is optional."
+        },
+        "requestBody": {
+          "allOf": [
+            {
+              "description": "The base job request for any job.",
+              "required": ["assets"],
+              "properties": {
+                "assets": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "description": "The URL where the asset will be fetched.",
+                    "required": ["source"],
+                    "properties": {
+                      "source": {
+                        "type": "object",
+                        "required": ["url"],
+                        "properties": {
+                          "url": {
+                            "type": "string",
+                            "description": "The pre-signed URL of the input asset. This is the URL of the asset that will be downloaded and acted upon during the job."
+                          }
+                        }
+                      },
+                      "destination": {
+                        "type": "string",
+                        "description": "This provides a path relative to a temporary base directory (working directory) where the resource would be downloaded. This would be used to identify the assets within the parameters. It cannot go up using '..' or '/'. Should be a valid file name."
+                      }
+                    }
+                  },
+                  "description": "Information about the assets, which will be used to process the job."
+                },
+                "params": {
+                  "type": "object",
+                  "properties": {
+                    "generalSettings": {
+                      "description": "General settings.",
+                      "type": "object",
+                      "properties": {
+                        "fonts": {
+                          "description": "Settings related to fonts. It is recommended to include fonts to avoid missing fonts warnings when processing the job.",
+                          "type": "object",
+                          "properties": {
+                            "fontsDirectories": {
+                              "description": "This lists the font directories for the input InDesign documents. \"Document Fonts\" in parallel to the document will continue to work even without specifying them.  <br></br> If none are specified, a temporary base directory (working directory) will be considered as a font directory.",
+                              "type": "array",
+                              "items": {
+                                "type": "string",
+                                "description": "This provides a path to a directory relative to a temporary base directory (working directory) where the fonts can be found. It cannot go up using '..' or '/'. Should be a valid path. For specifying a working directory, mention '.'."
+                              }
+                            }
+                          }
+                        },
+                        "links": {
+                          "description": "Settings related to links.",
+                          "type": "object",
+                          "properties": {
+                            "replaceLinks": {
+                              "type": "array",
+                              "items": {
+                                "type": "object",
+                                "required": ["targetDocument", "mapping"],
+                                "properties": {
+                                  "targetDocument": {
+                                    "description": "The document in which the relinking is to be done. Relinking of assets is required to ensure that there are no missing links in the output document.",
+                                    "type": "string"
+                                  },
+                                  "mapping": {
+                                    "type": "array",
+                                    "items": {
+                                      "type": "object",
+                                      "required": ["newAssetRelativePath"],
+                                      "properties": {
+                                        "newAssetRelativePath": {
+                                          "type": "string",
+                                          "description": "This provides a path relative to a temporary base directory (working directory) where the asset to be linked to can be found. It cannot go up using '..' or '/'. Should be a valid file name."
+                                        },
+                                        "currentURI": {
+                                          "type": "string",
+                                          "description": "The existing URI of the link that needs relinking. If multiple links with this URI are found, all will be relinked. If `linkID` is provided, this attribute will be ignored. Either `currentURI` or `linkID` should be present."
+                                        },
+                                        "linkID": {
+                                          "type": "integer",
+                                          "description": "The ID of the link which is to be relinked. If `currentURI` is also provided, it will be ignored. Either `currentURI` or `linkID` should be present."
+                                        }
+                                      }
+                                    }
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        },
+                        "appLogs": {
+                          "description": "Describes parameters regarding application logs.",
+                          "type": "object",
+                          "properties": {
+                            "logsRelativePath": {
+                              "type": "string",
+                              "description": "This provides a path to a file, relative to the temporary base directory (working directory). This file is where the application's logs are to be dumped."
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            {
+              "description": "Filters according to which the information related to data merge tags would be retrieved.",
+              "type": "object",
+              "required": ["params"],
+              "properties": {
+                "params": {
+                  "type": "object",
+                  "required": ["targetDocument"],
+                  "properties": {
+                    "targetDocument": {
+                      "description": "The target document that will have its tags extracted.",
+                      "type": "string"
+                    },
+                    "dataSource": {
+                      "description": "The data source file to be used for extracting and matching the tags.",
+                      "type": "string"
+                    },
+                    "filter": {
+                      "description": "The filter applied for tags. Accepts multiple values.",
+                      "type": "array",
+                      "example": "text, image",
+                      "default": "all",
+                      "items": {
+                        "type": "string",
+                        "enum": ["all", "text", "image", "qr"]
+                      }
+                    },
+                    "includePageItemIdentifiers": {
+                      "type": "boolean",
+                      "description": "If true, the information for associated page items is added to the tags extracted from the document.",
+                      "default": false
+                    }
+                  }
+                }
+              }
+            }
+          ],
+          "description": "This job request object specifies parameters for retrieving the data merge tags."
+        }
+      },
+      "required": ["Authorization", "x-api-key", "requestBody"]
+    },
+    "method": "post",
+    "pathTemplate": "/v3/merge-data-tags",
+    "parameters": [
+      {
+        "name": "Authorization",
+        "in": "header",
+        "description": "The authorization token with bearer \"token_value\". For example: `Bearer <access_token>`.",
+        "required": true,
+        "schema": {
+          "type": "string"
+        }
+      },
+      {
+        "name": "x-api-key",
+        "in": "header",
+        "description": "The API key as defined in Adobe's Developer Console.",
+        "required": true,
+        "schema": {
+          "type": "string"
+        }
+      },
+      {
+        "name": "x-gw-ims-org-id",
+        "in": "header",
+        "description": "This is the identifier for Adobe Identity Management Service (IMS) as defined in Adobe's Developer Console. This is optional.",
+        "required": false,
+        "schema": {
+          "type": "string"
+        }
+      }
+    ],
+    "executionParameters": [
+      {
+        "name": "Authorization",
+        "in": "header"
+      },
+      {
+        "name": "x-api-key",
+        "in": "header"
+      },
+      {
+        "name": "x-gw-ims-org-id",
+        "in": "header"
+      }
+    ],
+    "requestBodyContentType": "application/json",
+    "securityRequirements": [
+      {
+        "ApiKeyAuth": []
+      },
+      {
+        "BearerAuth": []
+      }
+    ],
+    "operationId": "dataMergeTags",
+    "baseUrl": "https://indesign.adobe.io"
+  },
+  {
+    "name": "remapLinks",
+    "description": "Replaces file-based links in InDesign documents with AEM URLs. Particularly useful for customers working with Adobe Experience Manager (AEM) using Adobe Asset Link, enabling designers to work with output files that have direct links to AEM URLs.",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "Authorization": {
+          "type": "string",
+          "description": "The authorization token with bearer \"token_value\". For example: `Bearer <access_token>`."
+        },
+        "x-api-key": {
+          "type": "string",
+          "description": "API key as defined in Adobe's Developer Console."
+        },
+        "x-aem-token": {
+          "type": "string",
+          "description": "Bearer token generated for the AEM technical account without the bearer keyword."
+        },
+        "x-gw-ims-org-id": {
+          "type": "string",
+          "description": "This is the identifier for Adobe Identity Management Service (IMS) as defined in Adobe's Developer Console. This is optional."
+        },
+        "requestBody": {
+          "description": "Job request object that specifies parameters for remapping links in the InDesign document.",
+          "type": "object",
+          "required": ["assets", "params"],
+          "properties": {
+            "assets": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "description": "The URL where the asset will be fetched.",
+                "required": ["source"],
+                "properties": {
+                  "source": {
+                    "type": "object",
+                    "required": ["url"],
+                    "properties": {
+                      "url": {
+                        "type": "string",
+                        "description": "The pre-signed URL of the input asset. This is the URL of the asset that will be downloaded and acted upon during the job."
+                      }
+                    }
+                  },
+                  "destination": {
+                    "type": "string",
+                    "description": "This provides a path relative to a temporary base directory (working directory) where the resource would be downloaded. This would be used to identify the assets within the parameters. It cannot go up using '..' or '/'. Should be a valid file name."
+                  }
+                }
+              }
+            },
+            "params": {
+              "type": "object",
+              "required": ["targetDocument", "dataSource"],
+              "properties": {
+                "targetDocument": {
+                  "description": "The InDesign documents in which links need to be remapped.",
+                  "type": "array",
+                  "minItems": 1,
+                  "items": {
+                    "type": "string"
+                  }
+                },
+                "dataSource": {
+                  "description": "Array of link mappings containing source and destination URIs.",
+                  "type": "array",
+                  "minItems": 1,
+                  "items": {
+                    "type": "object",
+                    "required": ["sourceURI", "destinationURI"],
+                    "properties": {
+                      "sourceURI": {
+                        "type": "string",
+                        "description": "File path/resource URI for the existing link that needs to be remapped."
+                      },
+                      "destinationURI": {
+                        "type": "string",
+                        "description": "AEM URI that will replace the existing link."
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            "outputs": {
+              "type": "array",
+              "items": {
+                "description": "The URL where the output assets are to be posted after the job is processed.",
+                "type": "object",
+                "required": ["destination", "source"],
+                "properties": {
+                  "destination": {
+                    "type": "object",
+                    "required": ["url"],
+                    "properties": {
+                      "url": {
+                        "type": "string",
+                        "description": "The URL of the asset."
+                      },
+                      "storageType": {
+                        "type": "string",
+                        "description": "This is an optional parameter, however IT IS RECOMMENDED to provide this information.",
+                        "enum": ["Azure", "Dropbox", "AWS"]
+                      }
+                    }
+                  },
+                  "source": {
+                    "type": "string",
+                    "description": "This provides a path relative of the output where the resource would be generated. It cannot go up using '..' or '/'. Should be a valid file name."
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "required": ["Authorization", "x-api-key", "x-aem-token", "requestBody"]
+    },
+    "method": "post",
+    "pathTemplate": "/v3/remap-links",
+    "parameters": [
+      {
+        "name": "Authorization",
+        "in": "header",
+        "description": "The authorization token with bearer \"token_value\". For example: `Bearer <access_token>`.",
+        "required": true,
+        "schema": {
+          "type": "string"
+        }
+      },
+      {
+        "name": "x-api-key",
+        "in": "header",
+        "description": "API key as defined in Adobe's Developer Console.",
+        "required": true,
+        "schema": {
+          "type": "string"
+        }
+      },
+      {
+        "name": "x-aem-token",
+        "in": "header",
+        "description": "Bearer token generated for the AEM technical account without the bearer keyword.",
+        "required": true,
+        "schema": {
+          "type": "string"
+        }
+      },
+      {
+        "name": "x-gw-ims-org-id",
+        "in": "header",
+        "description": "This is the identifier for Adobe Identity Management Service (IMS) as defined in Adobe's Developer Console. This is optional.",
+        "required": false,
+        "schema": {
+          "type": "string"
+        }
+      }
+    ],
+    "executionParameters": [
+      {
+        "name": "Authorization",
+        "in": "header"
+      },
+      {
+        "name": "x-api-key",
+        "in": "header"
+      },
+      {
+        "name": "x-aem-token",
+        "in": "header"
+      },
+      {
+        "name": "x-gw-ims-org-id",
+        "in": "header"
+      }
+    ],
+    "requestBodyContentType": "application/json",
+    "securityRequirements": [
+      {
+        "ApiKeyAuth": []
+      },
+      {
+        "BearerAuth": []
+      }
+    ],
+    "operationId": "remapLinks",
+    "baseUrl": "https://indesign.adobe.io"
+  },
+  {
+    "name": "renditionJob",
+    "description": "Creates JPEG, PNG, or PDF renditions of InDesign documents. Supports multiple output formats: JPEG (`image/jpeg`), PNG (`image/png`), and PDF (`application/pdf`).",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "Authorization": {
+          "type": "string",
+          "description": "The authorization token with bearer \"token_value\". For example: `Bearer <access_token>`."
+        },
+        "x-api-key": {
+          "type": "string",
+          "description": "The API key as defined in Adobe's Developer Console."
+        },
+        "x-gw-ims-org-id": {
+          "type": "string",
+          "description": "This is the identifier for Adobe Identity Management Service (IMS) as defined in Adobe's Developer Console. This is optional."
+        },
+        "requestBody": {
+          "allOf": [
+            {
+              "allOf": [
+                {
+                  "description": "The base job request for any job.",
+                  "required": ["assets"],
+                  "properties": {
+                    "assets": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "description": "The URL where the asset will be fetched.",
+                        "required": ["source"],
+                        "properties": {
+                          "source": {
+                            "type": "object",
+                            "required": ["url"],
+                            "properties": {
+                              "url": {
+                                "type": "string",
+                                "description": "The pre-signed URL of the input asset. This is the URL of the asset that will be downloaded and acted upon during the job."
+                              }
+                            }
+                          },
+                          "destination": {
+                            "type": "string",
+                            "description": "This provides a path relative to a temporary base directory (working directory) where the resource would be downloaded. This would be used to identify the assets within the parameters. It cannot go up using '..' or '/'. Should be a valid file name."
+                          }
+                        }
+                      },
+                      "description": "Information about the assets, which will be used to process the job."
+                    },
+                    "params": {
+                      "type": "object",
+                      "properties": {
+                        "generalSettings": {
+                          "description": "General settings.",
+                          "type": "object",
+                          "properties": {
+                            "fonts": {
+                              "description": "Settings related to fonts. It is recommended to include fonts to avoid missing fonts warnings when processing the job.",
+                              "type": "object",
+                              "properties": {
+                                "fontsDirectories": {
+                                  "description": "This lists the font directories for the input InDesign documents. \"Document Fonts\" in parallel to the document will continue to work even without specifying them.  <br></br> If none are specified, a temporary base directory (working directory) will be considered as a font directory.",
+                                  "type": "array",
+                                  "items": {
+                                    "type": "string",
+                                    "description": "This provides a path to a directory relative to a temporary base directory (working directory) where the fonts can be found. It cannot go up using '..' or '/'. Should be a valid path. For specifying a working directory, mention '.'."
+                                  }
+                                }
+                              }
+                            },
+                            "links": {
+                              "description": "Settings related to links.",
+                              "type": "object",
+                              "properties": {
+                                "replaceLinks": {
+                                  "type": "array",
+                                  "items": {
+                                    "type": "object",
+                                    "required": ["targetDocument", "mapping"],
+                                    "properties": {
+                                      "targetDocument": {
+                                        "description": "The document in which the relinking is to be done. Relinking of assets is required to ensure that there are no missing links in the output document.",
+                                        "type": "string"
+                                      },
+                                      "mapping": {
+                                        "type": "array",
+                                        "items": {
+                                          "type": "object",
+                                          "required": ["newAssetRelativePath"],
+                                          "properties": {
+                                            "newAssetRelativePath": {
+                                              "type": "string",
+                                              "description": "This provides a path relative to a temporary base directory (working directory) where the asset to be linked to can be found. It cannot go up using '..' or '/'. Should be a valid file name."
+                                            },
+                                            "currentURI": {
+                                              "type": "string",
+                                              "description": "The existing URI of the link that needs relinking. If multiple links with this URI are found, all will be relinked. If `linkID` is provided, this attribute will be ignored. Either `currentURI` or `linkID` should be present."
+                                            },
+                                            "linkID": {
+                                              "type": "integer",
+                                              "description": "The ID of the link which is to be relinked. If `currentURI` is also provided, it will be ignored. Either `currentURI` or `linkID` should be present."
+                                            }
+                                          }
+                                        }
+                                      }
+                                    }
+                                  }
+                                }
+                              }
+                            },
+                            "appLogs": {
+                              "description": "Describes parameters regarding application logs.",
+                              "type": "object",
+                              "properties": {
+                                "logsRelativePath": {
+                                  "type": "string",
+                                  "description": "This provides a path to a file, relative to the temporary base directory (working directory). This file is where the application's logs are to be dumped."
+                                }
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                },
+                {
+                  "description": "The base job request for any job with the option to specify output URLs.",
+                  "type": "object",
+                  "properties": {
+                    "outputs": {
+                      "type": "array",
+                      "items": {
+                        "description": "The URL where the output assets are to be posted after the job is processed.",
+                        "type": "object",
+                        "required": ["destination", "source"],
+                        "properties": {
+                          "destination": {
+                            "type": "object",
+                            "required": ["url"],
+                            "properties": {
+                              "url": {
+                                "type": "string",
+                                "description": "The URL of the asset."
+                              },
+                              "storageType": {
+                                "type": "string",
+                                "description": "This is an optional parameter, however IT IS RECOMMENDED to provide this information.",
+                                "enum": ["Azure", "Dropbox", "AWS"]
+                              }
+                            }
+                          },
+                          "source": {
+                            "type": "string",
+                            "description": "This provides a path relative of the output where the resource would be generated. It cannot go up using '..' or '/'. Should be a valid file name."
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              ]
+            },
+            {
+              "description": "Inputs and properties with which the job should be processed.",
+              "type": "object",
+              "required": ["params"],
+              "properties": {
+                "params": {
+                  "type": "object",
+                  "required": ["targetDocuments", "outputMediaType"],
+                  "properties": {
+                    "targetDocuments": {
+                      "description": "The documents that will be processed and rendered. Currently, only one document at a time is supported.",
+                      "type": "array",
+                      "items": {
+                        "type": "string"
+                      },
+                      "minItems": 1,
+                      "maxItems": 1
+                    },
+                    "outputMediaType": {
+                      "description": "The MIME type output of the rendered file.",
+                      "type": "string",
+                      "enum": ["image/jpeg", "image/png", "application/pdf"]
+                    },
+                    "exportingSpread": {
+                      "type": "boolean",
+                      "default": false,
+                      "description": "Specify `true` if you consider range as spread numbers. Use `false` if you treat range as pages."
+                    },
+                    "pageRange": {
+                      "type": "string",
+                      "default": "All",
+                      "description": "The page ranges, based on the index of the page within the document. The value can be 'All', as well as numeral ranges. If `exportingSpread` is true, this range would represent spread indices in the document."
+                    },
+                    "quality": {
+                      "type": "string",
+                      "description": "Defines the quality of the output.",
+                      "default": "medium",
+                      "enum": ["low", "medium", "high", "maximum"]
+                    },
+                    "renderingStyle": {
+                      "type": "string",
+                      "description": "Specifies formatting options for the converted JPEG images.",
+                      "default": "baseline_encoding",
+                      "enum": ["baseline_encoding", "progressive_encoding"]
+                    },
+                    "resolution": {
+                      "type": "integer",
+                      "default": 72,
+                      "description": "Specifies the resolution of the final image.",
+                      "minimum": 1,
+                      "maximum": 2400
+                    },
+                    "colorSpace": {
+                      "type": "string",
+                      "description": "Specifies formatting options for converted JPEG images.",
+                      "default": "rgb",
+                      "enum": ["rgb", "cmyk", "gray"]
+                    },
+                    "embedColorProfile": {
+                      "type": "boolean",
+                      "default": true,
+                      "description": "Specify `true` to embed the color profile. Otherwise, use `false`."
+                    },
+                    "antiAlias": {
+                      "type": "boolean",
+                      "default": true,
+                      "description": "If `true`, anti-aliasing is used for text and vectors during export."
+                    },
+                    "simulateOverprint": {
+                      "type": "boolean",
+                      "default": false,
+                      "description": "If `true`, this simulates the effects of overprinting spot and processes colors in the same way they would occur with a print."
+                    },
+                    "useDocumentBleeds": {
+                      "type": "boolean",
+                      "default": false,
+                      "description": "If `true`, the document's bleed settings are used in the exported JPEG."
+                    },
+                    "colorSettingsFile": {
+                      "type": "string",
+                      "description": "This is the color settings file to be used for generating a rendition."
+                    },
+                    "transparentBackground": {
+                      "type": "boolean",
+                      "default": false,
+                      "description": "If `true`, this uses a transparent background for the exported PNG. This is valid only for PNG renditions."
+                    },
+                    "createSeparateFiles": {
+                      "type": "boolean",
+                      "default": false,
+                      "description": "Specify `true` to create separate PDF files for all the specified pages/spreads. This is applicable only in case of PDF rendition."
+                    },
+                    "optimizeForFastWebView": {
+                      "type": "boolean",
+                      "default": true,
+                      "description": "Specify `true` to optimize the PDF for faster web viewing. This is applicable only in case of PDF rendition."
+                    },
+                    "embedPageThumbnails": {
+                      "type": "boolean",
+                      "default": false,
+                      "description": "Specify `true` for embedding page thumbnails. This is applicable only in case of PDF rendition."
+                    },
+                    "includeBookmarks": {
+                      "type": "boolean",
+                      "default": false,
+                      "description": "If `true`, this displays bookmarks and table-of-contents entries as links in the bookmarks pane of the PDF document. If `false`, bookmarks are not exported. This is applicable only in case of PDF rendition."
+                    },
+                    "includeHyperlinks": {
+                      "type": "boolean",
+                      "default": false,
+                      "description": "If `true`, this includes the hyperlinks when exporting the document. This is applicable only in case of PDF rendition."
+                    },
+                    "exportNonprintingObjects": {
+                      "type": "boolean",
+                      "default": false,
+                      "description": "If `true`, this makes non-printing objects visible in the PDF document. This is applicable only in case of PDF rendition."
+                    },
+                    "exportGuidesAndGrids": {
+                      "type": "boolean",
+                      "default": false,
+                      "description": "If `true`, this includes visible guides and baseline grids in the PDF. This is applicable only in case of PDF rendition. document."
+                    },
+                    "createTaggedPDF": {
+                      "type": "boolean",
+                      "default": true,
+                      "description": "If `true`, this creates a tagged PDF file. This is applicable only in case of PDF rendition."
+                    },
+                    "includeInteractiveElements": {
+                      "type": "string",
+                      "description": "Specifies the option to draw interactive elements. This is applicable only in case of PDF rendition.",
+                      "default": "do_not_include",
+                      "enum": ["do_not_include", "appearance_only"]
+                    },
+                    "exportWhichLayers": {
+                      "type": "string",
+                      "description": "This indicates the image layers to be exported. This is applicable only in case of PDF rendition.",
+                      "default": "export_all_layers",
+                      "enum": [
+                        "export_all_layers",
+                        "export_visible_layers",
+                        "export_visible_printable_layers"
+                      ]
+                    },
+                    "jobOptionsFile": {
+                      "type": "string",
+                      "description": "File path reference to a `.joboptions` file (Adobe PDF preset file) containing custom PDF export settings. This file must be included as part of the input assets. It defines detailed PDF output configurations such as compression, color management, and security settings. When provided, this takes precedence over the `pdfPreset` attribute. Only applicable when generating PDF output.",
+                      "default": "PDF preset `High Quality Print` will be used if not provided."
+                    },
+                    "pdfPreset": {
+                      "type": "string",
+                      "description": "The export style to be used. This is applicable only in case of PDF rendition.",
+                      "default": "High Quality Print",
+                      "enum": [
+                        "High Quality Print",
+                        "PDF/X-1a:2001",
+                        "PDF/X-3:2002",
+                        "PDF/X-4:2008",
+                        "Press Quality",
+                        "Smallest File Size"
+                      ]
+                    },
+                    "outputFileBaseString": {
+                      "type": "string",
+                      "description": "The name of the output file.",
+                      "default": "It is derived from the original document filename."
+                    },
+                    "outputFolderPath": {
+                      "type": "string",
+                      "description": "The path of the output folder.",
+                      "default": "A unique temporary folder name would be created."
+                    }
+                  }
+                }
+              }
+            }
+          ],
+          "description": "This object specifies parameters for the JPEG, PNG or PDF output."
+        }
+      },
+      "required": ["Authorization", "x-api-key", "requestBody"]
+    },
+    "method": "post",
+    "pathTemplate": "/v3/create-rendition",
+    "parameters": [
+      {
+        "name": "Authorization",
+        "in": "header",
+        "description": "The authorization token with bearer \"token_value\". For example: `Bearer <access_token>`.",
+        "required": true,
+        "schema": {
+          "type": "string"
+        }
+      },
+      {
+        "name": "x-api-key",
+        "in": "header",
+        "description": "The API key as defined in Adobe's Developer Console.",
+        "required": true,
+        "schema": {
+          "type": "string"
+        }
+      },
+      {
+        "name": "x-gw-ims-org-id",
+        "in": "header",
+        "description": "This is the identifier for Adobe Identity Management Service (IMS) as defined in Adobe's Developer Console. This is optional.",
+        "required": false,
+        "schema": {
+          "type": "string"
+        }
+      }
+    ],
+    "executionParameters": [
+      {
+        "name": "Authorization",
+        "in": "header"
+      },
+      {
+        "name": "x-api-key",
+        "in": "header"
+      },
+      {
+        "name": "x-gw-ims-org-id",
+        "in": "header"
+      }
+    ],
+    "requestBodyContentType": "application/json",
+    "securityRequirements": [
+      {
+        "ApiKeyAuth": []
+      },
+      {
+        "BearerAuth": []
+      }
+    ],
+    "operationId": "renditionJob",
+    "baseUrl": "https://indesign.adobe.io"
+  },
+  {
+    "name": "listCustomScripts",
+    "description": "Retrieves details of the latest version of all registered custom scripts. Includes version, download link, registration date, and script name. Response is paginated based on list length.",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "Authorization": {
+          "type": "string",
+          "description": "The authorization token with bearer \"token_value\". For example: `Bearer <access_token>`."
+        },
+        "x-api-key": {
+          "type": "string",
+          "description": "The API key as defined in Adobe's Developer Console."
+        },
+        "x-gw-ims-org-id": {
+          "type": "string",
+          "description": "This is the identifier for Adobe Identity Management Service (IMS) as defined in Adobe's Developer Console. This is optional."
+        },
+        "page": {
+          "type": "number",
+          "default": 0,
+          "description": "Page number for pagination"
+        }
+      },
+      "required": ["Authorization", "x-api-key"]
+    },
+    "method": "get",
+    "pathTemplate": "/v3/scripts",
+    "parameters": [
+      {
+        "name": "Authorization",
+        "in": "header",
+        "description": "The authorization token with bearer \"token_value\". For example: `Bearer <access_token>`.",
+        "required": true,
+        "schema": {
+          "type": "string"
+        }
+      },
+      {
+        "name": "x-api-key",
+        "in": "header",
+        "description": "The API key as defined in Adobe's Developer Console.",
+        "required": true,
+        "schema": {
+          "type": "string"
+        }
+      },
+      {
+        "name": "x-gw-ims-org-id",
+        "in": "header",
+        "description": "This is the identifier for Adobe Identity Management Service (IMS) as defined in Adobe's Developer Console. This is optional.",
+        "required": false,
+        "schema": {
+          "type": "string"
+        }
+      },
+      {
+        "name": "page",
+        "in": "query",
+        "description": "Page number for pagination",
+        "required": false,
+        "schema": {
+          "type": "integer",
+          "default": 0
+        }
+      }
+    ],
+    "executionParameters": [
+      {
+        "name": "Authorization",
+        "in": "header"
+      },
+      {
+        "name": "x-api-key",
+        "in": "header"
+      },
+      {
+        "name": "x-gw-ims-org-id",
+        "in": "header"
+      },
+      {
+        "name": "page",
+        "in": "query"
+      }
+    ],
+    "securityRequirements": [
+      {
+        "ApiKeyAuth": []
+      },
+      {
+        "BearerAuth": []
+      }
+    ],
+    "operationId": "listCustomScripts",
+    "baseUrl": "https://indesign.adobe.io"
+  },
+  {
+    "name": "submitCustomScript",
+    "description": "Submits custom script bundles for registration. Returns a URL for posting execution requests for the registered script.",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "Authorization": {
+          "type": "string",
+          "description": "The authorization token with bearer \"token_value\". For example: `Bearer <access_token>`."
+        },
+        "x-api-key": {
+          "type": "string",
+          "description": "The API key as defined in Adobe's Developer Console."
+        },
+        "x-gw-ims-org-id": {
+          "type": "string",
+          "description": "This is the identifier for Adobe Identity Management Service (IMS) as defined in Adobe's Developer Console. This is optional."
+        },
+        "requestBody": {
+          "type": "string",
+          "description": "The custom script bundle, in ZIP format. This package describes the script to the app engine."
+        }
+      },
+      "required": ["Authorization", "x-api-key", "requestBody"]
+    },
+    "method": "post",
+    "pathTemplate": "/v3/scripts",
+    "parameters": [
+      {
+        "name": "Authorization",
+        "in": "header",
+        "description": "The authorization token with bearer \"token_value\". For example: `Bearer <access_token>`.",
+        "required": true,
+        "schema": {
+          "type": "string"
+        }
+      },
+      {
+        "name": "x-api-key",
+        "in": "header",
+        "description": "The API key as defined in Adobe's Developer Console.",
+        "required": true,
+        "schema": {
+          "type": "string"
+        }
+      },
+      {
+        "name": "x-gw-ims-org-id",
+        "in": "header",
+        "description": "This is the identifier for Adobe Identity Management Service (IMS) as defined in Adobe's Developer Console. This is optional.",
+        "required": false,
+        "schema": {
+          "type": "string"
+        }
+      }
+    ],
+    "executionParameters": [
+      {
+        "name": "Authorization",
+        "in": "header"
+      },
+      {
+        "name": "x-api-key",
+        "in": "header"
+      },
+      {
+        "name": "x-gw-ims-org-id",
+        "in": "header"
+      }
+    ],
+    "requestBodyContentType": "multipart/form-data",
+    "securityRequirements": [
+      {
+        "ApiKeyAuth": []
+      },
+      {
+        "BearerAuth": []
+      }
+    ],
+    "operationId": "submitCustomScript",
+    "baseUrl": "https://indesign.adobe.io"
+  },
+  {
+    "name": "executeCustomScript",
+    "description": "Submits execution requests for custom scripts. Defines input assets and parameters that the custom script will use during execution.",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "Authorization": {
+          "type": "string",
+          "description": "The authorization token with bearer \"token_value\". For example: `Bearer <access_token>`."
+        },
+        "x-api-key": {
+          "type": "string",
+          "description": "The API key as defined in Adobe's Developer Console."
+        },
+        "script_id": {
+          "type": "string",
+          "description": "script_id as reported in the response to custom script submit request."
+        },
+        "script_name": {
+          "type": "string",
+          "description": "The name of the custom script, specified in the custom script manifest."
+        },
+        "x-gw-ims-org-id": {
+          "type": "string",
+          "description": "This is the identifier for Adobe Identity Management Service (IMS) as defined in Adobe's Developer Console. This is optional."
+        },
+        "requestBody": {
+          "allOf": [
+            {
+              "description": "The base job request for any job.",
+              "required": ["assets"],
+              "properties": {
+                "assets": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "description": "The URL where the asset will be fetched.",
+                    "required": ["source"],
+                    "properties": {
+                      "source": {
+                        "type": "object",
+                        "required": ["url"],
+                        "properties": {
+                          "url": {
+                            "type": "string",
+                            "description": "The pre-signed URL of the input asset. This is the URL of the asset that will be downloaded and acted upon during the job."
+                          }
+                        }
+                      },
+                      "destination": {
+                        "type": "string",
+                        "description": "This provides a path relative to a temporary base directory (working directory) where the resource would be downloaded. This would be used to identify the assets within the parameters. It cannot go up using '..' or '/'. Should be a valid file name."
+                      }
+                    }
+                  },
+                  "description": "Information about the assets, which will be used to process the job."
+                },
+                "params": {
+                  "type": "object",
+                  "properties": {
+                    "generalSettings": {
+                      "description": "General settings.",
+                      "type": "object",
+                      "properties": {
+                        "fonts": {
+                          "description": "Settings related to fonts. It is recommended to include fonts to avoid missing fonts warnings when processing the job.",
+                          "type": "object",
+                          "properties": {
+                            "fontsDirectories": {
+                              "description": "This lists the font directories for the input InDesign documents. \"Document Fonts\" in parallel to the document will continue to work even without specifying them.  <br></br> If none are specified, a temporary base directory (working directory) will be considered as a font directory.",
+                              "type": "array",
+                              "items": {
+                                "type": "string",
+                                "description": "This provides a path to a directory relative to a temporary base directory (working directory) where the fonts can be found. It cannot go up using '..' or '/'. Should be a valid path. For specifying a working directory, mention '.'."
+                              }
+                            }
+                          }
+                        },
+                        "links": {
+                          "description": "Settings related to links.",
+                          "type": "object",
+                          "properties": {
+                            "replaceLinks": {
+                              "type": "array",
+                              "items": {
+                                "type": "object",
+                                "required": ["targetDocument", "mapping"],
+                                "properties": {
+                                  "targetDocument": {
+                                    "description": "The document in which the relinking is to be done. Relinking of assets is required to ensure that there are no missing links in the output document.",
+                                    "type": "string"
+                                  },
+                                  "mapping": {
+                                    "type": "array",
+                                    "items": {
+                                      "type": "object",
+                                      "required": ["newAssetRelativePath"],
+                                      "properties": {
+                                        "newAssetRelativePath": {
+                                          "type": "string",
+                                          "description": "This provides a path relative to a temporary base directory (working directory) where the asset to be linked to can be found. It cannot go up using '..' or '/'. Should be a valid file name."
+                                        },
+                                        "currentURI": {
+                                          "type": "string",
+                                          "description": "The existing URI of the link that needs relinking. If multiple links with this URI are found, all will be relinked. If `linkID` is provided, this attribute will be ignored. Either `currentURI` or `linkID` should be present."
+                                        },
+                                        "linkID": {
+                                          "type": "integer",
+                                          "description": "The ID of the link which is to be relinked. If `currentURI` is also provided, it will be ignored. Either `currentURI` or `linkID` should be present."
+                                        }
+                                      }
+                                    }
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        },
+                        "appLogs": {
+                          "description": "Describes parameters regarding application logs.",
+                          "type": "object",
+                          "properties": {
+                            "logsRelativePath": {
+                              "type": "string",
+                              "description": "This provides a path to a file, relative to the temporary base directory (working directory). This file is where the application's logs are to be dumped."
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            {
+              "description": "The base job request for any job with the option to specify output URLs.",
+              "type": "object",
+              "properties": {
+                "outputs": {
+                  "type": "array",
+                  "items": {
+                    "description": "The URL where the output assets are to be posted after the job is processed.",
+                    "type": "object",
+                    "required": ["destination", "source"],
+                    "properties": {
+                      "destination": {
+                        "type": "object",
+                        "required": ["url"],
+                        "properties": {
+                          "url": {
+                            "type": "string",
+                            "description": "The URL of the asset."
+                          },
+                          "storageType": {
+                            "type": "string",
+                            "description": "This is an optional parameter, however IT IS RECOMMENDED to provide this information.",
+                            "enum": ["Azure", "Dropbox", "AWS"]
+                          }
+                        }
+                      },
+                      "source": {
+                        "type": "string",
+                        "description": "This provides a path relative of the output where the resource would be generated. It cannot go up using '..' or '/'. Should be a valid file name."
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          ],
+          "description": "This job request object specifies parameters for the execution of the custom script."
+        }
+      },
+      "required": ["Authorization", "x-api-key", "script_id", "script_name", "requestBody"]
+    },
+    "method": "post",
+    "pathTemplate": "/v3/{script_id}/{script_name}",
+    "parameters": [
+      {
+        "name": "Authorization",
+        "in": "header",
+        "description": "The authorization token with bearer \"token_value\". For example: `Bearer <access_token>`.",
+        "required": true,
+        "schema": {
+          "type": "string"
+        }
+      },
+      {
+        "name": "x-api-key",
+        "in": "header",
+        "description": "The API key as defined in Adobe's Developer Console.",
+        "required": true,
+        "schema": {
+          "type": "string"
+        }
+      },
+      {
+        "name": "script_id",
+        "in": "path",
+        "description": "script_id as reported in the response to custom script submit request.",
+        "required": true,
+        "schema": {
+          "type": "string"
+        }
+      },
+      {
+        "name": "script_name",
+        "in": "path",
+        "description": "The name of the custom script, specified in the custom script manifest.",
+        "required": true,
+        "schema": {
+          "type": "string"
+        }
+      },
+      {
+        "name": "x-gw-ims-org-id",
+        "in": "header",
+        "description": "This is the identifier for Adobe Identity Management Service (IMS) as defined in Adobe's Developer Console. This is optional.",
+        "required": false,
+        "schema": {
+          "type": "string"
+        }
+      }
+    ],
+    "executionParameters": [
+      {
+        "name": "Authorization",
+        "in": "header"
+      },
+      {
+        "name": "x-api-key",
+        "in": "header"
+      },
+      {
+        "name": "script_id",
+        "in": "path"
+      },
+      {
+        "name": "script_name",
+        "in": "path"
+      },
+      {
+        "name": "x-gw-ims-org-id",
+        "in": "header"
+      }
+    ],
+    "requestBodyContentType": "application/json",
+    "securityRequirements": [
+      {
+        "ApiKeyAuth": []
+      },
+      {
+        "BearerAuth": []
+      }
+    ],
+    "operationId": "executeCustomScript",
+    "baseUrl": "https://indesign.adobe.io"
+  },
+  {
+    "name": "getCustomScriptDetails",
+    "description": "Retrieves details of a single registered custom script. Includes version, download link, registration date, and script name.",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "Authorization": {
+          "type": "string",
+          "description": "The authorization token with bearer \"token_value\". For example: `Bearer <access_token>`."
+        },
+        "x-api-key": {
+          "type": "string",
+          "description": "The API key as defined in Adobe's Developer Console."
+        },
+        "script_name": {
+          "type": "string",
+          "description": "Name of the custom script"
+        },
+        "x-gw-ims-org-id": {
+          "type": "string",
+          "description": "This is the identifier for Adobe Identity Management Service (IMS) as defined in Adobe's Developer Console. This is optional."
+        }
+      },
+      "required": ["Authorization", "x-api-key", "script_name"]
+    },
+    "method": "get",
+    "pathTemplate": "/v3/scripts/{script_name}",
+    "parameters": [
+      {
+        "name": "Authorization",
+        "in": "header",
+        "description": "The authorization token with bearer \"token_value\". For example: `Bearer <access_token>`.",
+        "required": true,
+        "schema": {
+          "type": "string"
+        }
+      },
+      {
+        "name": "x-api-key",
+        "in": "header",
+        "description": "The API key as defined in Adobe's Developer Console.",
+        "required": true,
+        "schema": {
+          "type": "string"
+        }
+      },
+      {
+        "name": "script_name",
+        "in": "path",
+        "description": "Name of the custom script",
+        "required": true,
+        "schema": {
+          "type": "string"
+        }
+      },
+      {
+        "name": "x-gw-ims-org-id",
+        "in": "header",
+        "description": "This is the identifier for Adobe Identity Management Service (IMS) as defined in Adobe's Developer Console. This is optional.",
+        "required": false,
+        "schema": {
+          "type": "string"
+        }
+      }
+    ],
+    "executionParameters": [
+      {
+        "name": "Authorization",
+        "in": "header"
+      },
+      {
+        "name": "x-api-key",
+        "in": "header"
+      },
+      {
+        "name": "script_name",
+        "in": "path"
+      },
+      {
+        "name": "x-gw-ims-org-id",
+        "in": "header"
+      }
+    ],
+    "securityRequirements": [
+      {
+        "ApiKeyAuth": []
+      },
+      {
+        "BearerAuth": []
+      }
+    ],
+    "operationId": "getCustomScriptDetails",
+    "baseUrl": "https://indesign.adobe.io"
+  },
+  {
+    "name": "deleteCustomScript",
+    "description": "Deletes a single registered custom script. All versions of the script will be permanently removed.",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "Authorization": {
+          "type": "string",
+          "description": "The authorization token with bearer \"token_value\". For example: `Bearer <access_token>`."
+        },
+        "x-api-key": {
+          "type": "string",
+          "description": "The API key as defined in Adobe's Developer Console."
+        },
+        "script_name": {
+          "type": "string",
+          "description": "Name of the custom script to delete"
+        },
+        "x-gw-ims-org-id": {
+          "type": "string",
+          "description": "This is the identifier for Adobe Identity Management Service (IMS) as defined in Adobe's Developer Console. This is optional."
+        }
+      },
+      "required": ["Authorization", "x-api-key", "script_name"]
+    },
+    "method": "delete",
+    "pathTemplate": "/v3/scripts/{script_name}",
+    "parameters": [
+      {
+        "name": "Authorization",
+        "in": "header",
+        "description": "The authorization token with bearer \"token_value\". For example: `Bearer <access_token>`.",
+        "required": true,
+        "schema": {
+          "type": "string"
+        }
+      },
+      {
+        "name": "x-api-key",
+        "in": "header",
+        "description": "The API key as defined in Adobe's Developer Console.",
+        "required": true,
+        "schema": {
+          "type": "string"
+        }
+      },
+      {
+        "name": "script_name",
+        "in": "path",
+        "description": "Name of the custom script to delete",
+        "required": true,
+        "schema": {
+          "type": "string"
+        }
+      },
+      {
+        "name": "x-gw-ims-org-id",
+        "in": "header",
+        "description": "This is the identifier for Adobe Identity Management Service (IMS) as defined in Adobe's Developer Console. This is optional.",
+        "required": false,
+        "schema": {
+          "type": "string"
+        }
+      }
+    ],
+    "executionParameters": [
+      {
+        "name": "Authorization",
+        "in": "header"
+      },
+      {
+        "name": "x-api-key",
+        "in": "header"
+      },
+      {
+        "name": "script_name",
+        "in": "path"
+      },
+      {
+        "name": "x-gw-ims-org-id",
+        "in": "header"
+      }
+    ],
+    "securityRequirements": [
+      {
+        "ApiKeyAuth": []
+      },
+      {
+        "BearerAuth": []
+      }
+    ],
+    "operationId": "deleteCustomScript",
+    "baseUrl": "https://indesign.adobe.io"
+  },
+  {
+    "name": "updateScriptAppVersion",
+    "description": "Updates the InDesign app version configuration for a registered custom script. Allows customers to specify version strategies: use latest version, fix to a major version, or fix to a specific major and minor version.",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "x-api-key": {
+          "type": "string",
+          "description": "The API key as defined in Adobe's Developer Console."
+        },
+        "Authorization": {
+          "type": "string",
+          "description": "The authorization token with bearer \"token_value\". For example: `Bearer <access_token>`."
+        },
+        "script_name": {
+          "type": "string",
+          "description": "Name of the custom script to update"
+        },
+        "requestBody": {
+          "type": "object",
+          "description": "Configuration for the app version strategy. The majorAppVersion and minorAppVersion fields are optional and their requirement depends on the selected strategy.",
+          "required": ["appVersionStrategy"],
+          "properties": {
+            "appVersionStrategy": {
+              "type": "string",
+              "description": "Strategy for determining the InDesign app version to use. latest_version uses the most recent version, fixed_major_version locks to a major version, fixed_major_and_minor_version locks to a specific version.",
+              "enum": ["latest_version", "fixed_major_version", "fixed_major_and_minor_version"]
+            },
+            "majorAppVersion": {
+              "type": "string",
+              "description": "Major version of the InDesign app. Required when appVersionStrategy is fixed_major_version or fixed_major_and_minor_version."
+            },
+            "minorAppVersion": {
+              "type": "string",
+              "description": "Minor version of the InDesign app. Required when appVersionStrategy is fixed_major_and_minor_version."
+            }
+          }
+        }
+      },
+      "required": ["x-api-key", "Authorization", "script_name", "requestBody"]
+    },
+    "method": "put",
+    "pathTemplate": "/v3/scripts/{script_name}/app-version",
+    "parameters": [
+      {
+        "name": "x-api-key",
+        "in": "header",
+        "description": "The API key as defined in Adobe's Developer Console.",
+        "required": true,
+        "schema": {
+          "type": "string"
+        }
+      },
+      {
+        "name": "Authorization",
+        "in": "header",
+        "description": "The authorization token with bearer \"token_value\". For example: `Bearer <access_token>`.",
+        "required": true,
+        "schema": {
+          "type": "string"
+        }
+      },
+      {
+        "name": "script_name",
+        "in": "path",
+        "description": "Name of the custom script to update",
+        "required": true,
+        "schema": {
+          "type": "string"
+        }
+      }
+    ],
+    "executionParameters": [
+      {
+        "name": "x-api-key",
+        "in": "header"
+      },
+      {
+        "name": "Authorization",
+        "in": "header"
+      },
+      {
+        "name": "script_name",
+        "in": "path"
+      }
+    ],
+    "requestBodyContentType": "application/json",
+    "securityRequirements": [
+      {
+        "ApiKeyAuth": []
+      },
+      {
+        "BearerAuth": []
+      }
+    ],
+    "operationId": "updateScriptAppVersion",
+    "baseUrl": "https://indesign.adobe.io"
+  },
+  {
+    "name": "listAppVersions",
+    "description": "Retrieves information about all available InDesign app versions. Returns major version, minor version, and status for each registered app version.",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "Authorization": {
+          "type": "string",
+          "description": "The authorization token with bearer \"token_value\". For example: `Bearer <access_token>`."
+        },
+        "x-api-key": {
+          "type": "string",
+          "description": "The API key as defined in Adobe's Developer Console."
+        },
+        "x-gw-ims-org-id": {
+          "type": "string",
+          "description": "This is the identifier for Adobe Identity Management Service (IMS) as defined in Adobe's Developer Console. This is optional."
+        }
+      },
+      "required": ["Authorization", "x-api-key"]
+    },
+    "method": "get",
+    "pathTemplate": "/v3/app-versions",
+    "parameters": [
+      {
+        "name": "Authorization",
+        "in": "header",
+        "description": "The authorization token with bearer \"token_value\". For example: `Bearer <access_token>`.",
+        "required": true,
+        "schema": {
+          "type": "string"
+        }
+      },
+      {
+        "name": "x-api-key",
+        "in": "header",
+        "description": "The API key as defined in Adobe's Developer Console.",
+        "required": true,
+        "schema": {
+          "type": "string"
+        }
+      },
+      {
+        "name": "x-gw-ims-org-id",
+        "in": "header",
+        "description": "This is the identifier for Adobe Identity Management Service (IMS) as defined in Adobe's Developer Console. This is optional.",
+        "required": false,
+        "schema": {
+          "type": "string"
+        }
+      }
+    ],
+    "executionParameters": [
+      {
+        "name": "Authorization",
+        "in": "header"
+      },
+      {
+        "name": "x-api-key",
+        "in": "header"
+      },
+      {
+        "name": "x-gw-ims-org-id",
+        "in": "header"
+      }
+    ],
+    "securityRequirements": [
+      {
+        "ApiKeyAuth": []
+      },
+      {
+        "BearerAuth": []
+      }
+    ],
+    "operationId": "listAppVersions",
+    "baseUrl": "https://indesign.adobe.io"
+  },
+  {
+    "name": "getDocumentInfo",
+    "description": "Retrieve comprehensive information about INDD/IDML documents. Returns data based on the enabled information types specified in the request.",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "Authorization": {
+          "type": "string",
+          "description": "The authorization token with bearer \"token_value\". For example: `Bearer <access_token>`."
+        },
+        "x-api-key": {
+          "type": "string",
+          "description": "The API key as defined in Adobe's Developer Console."
+        },
+        "x-gw-ims-org-id": {
+          "type": "string",
+          "description": "This is the identifier for Adobe Identity Management Service (IMS) as defined in Adobe's Developer Console. This is optional."
+        },
+        "requestBody": {
+          "allOf": [
+            {
+              "description": "The base job request for any job.",
+              "required": ["assets"],
+              "properties": {
+                "assets": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "description": "The URL where the asset will be fetched.",
+                    "required": ["source"],
+                    "properties": {
+                      "source": {
+                        "type": "object",
+                        "required": ["url"],
+                        "properties": {
+                          "url": {
+                            "type": "string",
+                            "description": "The pre-signed URL of the input asset. This is the URL of the asset that will be downloaded and acted upon during the job."
+                          }
+                        }
+                      },
+                      "destination": {
+                        "type": "string",
+                        "description": "This provides a path relative to a temporary base directory (working directory) where the resource would be downloaded. This would be used to identify the assets within the parameters. It cannot go up using '..' or '/'. Should be a valid file name."
+                      }
+                    }
+                  },
+                  "description": "Information about the assets, which will be used to process the job."
+                },
+                "params": {
+                  "type": "object",
+                  "properties": {
+                    "generalSettings": {
+                      "description": "General settings.",
+                      "type": "object",
+                      "properties": {
+                        "fonts": {
+                          "description": "Settings related to fonts. It is recommended to include fonts to avoid missing fonts warnings when processing the job.",
+                          "type": "object",
+                          "properties": {
+                            "fontsDirectories": {
+                              "description": "This lists the font directories for the input InDesign documents. \"Document Fonts\" in parallel to the document will continue to work even without specifying them.  <br></br> If none are specified, a temporary base directory (working directory) will be considered as a font directory.",
+                              "type": "array",
+                              "items": {
+                                "type": "string",
+                                "description": "This provides a path to a directory relative to a temporary base directory (working directory) where the fonts can be found. It cannot go up using '..' or '/'. Should be a valid path. For specifying a working directory, mention '.'."
+                              }
+                            }
+                          }
+                        },
+                        "links": {
+                          "description": "Settings related to links.",
+                          "type": "object",
+                          "properties": {
+                            "replaceLinks": {
+                              "type": "array",
+                              "items": {
+                                "type": "object",
+                                "required": ["targetDocument", "mapping"],
+                                "properties": {
+                                  "targetDocument": {
+                                    "description": "The document in which the relinking is to be done. Relinking of assets is required to ensure that there are no missing links in the output document.",
+                                    "type": "string"
+                                  },
+                                  "mapping": {
+                                    "type": "array",
+                                    "items": {
+                                      "type": "object",
+                                      "required": ["newAssetRelativePath"],
+                                      "properties": {
+                                        "newAssetRelativePath": {
+                                          "type": "string",
+                                          "description": "This provides a path relative to a temporary base directory (working directory) where the asset to be linked to can be found. It cannot go up using '..' or '/'. Should be a valid file name."
+                                        },
+                                        "currentURI": {
+                                          "type": "string",
+                                          "description": "The existing URI of the link that needs relinking. If multiple links with this URI are found, all will be relinked. If `linkID` is provided, this attribute will be ignored. Either `currentURI` or `linkID` should be present."
+                                        },
+                                        "linkID": {
+                                          "type": "integer",
+                                          "description": "The ID of the link which is to be relinked. If `currentURI` is also provided, it will be ignored. Either `currentURI` or `linkID` should be present."
+                                        }
+                                      }
+                                    }
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        },
+                        "appLogs": {
+                          "description": "Describes parameters regarding application logs.",
+                          "type": "object",
+                          "properties": {
+                            "logsRelativePath": {
+                              "type": "string",
+                              "description": "This provides a path to a file, relative to the temporary base directory (working directory). This file is where the application's logs are to be dumped."
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            {
+              "description": "Inputs for the document information request.",
+              "type": "object",
+              "required": ["params"],
+              "properties": {
+                "params": {
+                  "type": "object",
+                  "required": ["targetDocument"],
+                  "properties": {
+                    "targetDocument": {
+                      "description": "The document to be used for data extraction.",
+                      "type": "string"
+                    },
+                    "pageInfo": {
+                      "description": "Settings for extracting page information.",
+                      "type": "object",
+                      "properties": {
+                        "enabled": {
+                          "type": "boolean",
+                          "description": "If true, return pages information.",
+                          "default": true
+                        }
+                      }
+                    },
+                    "linkInfo": {
+                      "description": "Settings for extracting link information.",
+                      "type": "object",
+                      "properties": {
+                        "enabled": {
+                          "type": "boolean",
+                          "description": "If true, return links information.",
+                          "default": false
+                        }
+                      }
+                    },
+                    "fontInfo": {
+                      "description": "Settings for extracting font information.",
+                      "type": "object",
+                      "properties": {
+                        "enabled": {
+                          "type": "boolean",
+                          "description": "If true, return fonts information.",
+                          "default": false
+                        }
+                      }
+                    },
+                    "pageItemInfo": {
+                      "description": "Settings for extracting page item information.",
+                      "type": "object",
+                      "properties": {
+                        "enabled": {
+                          "type": "boolean",
+                          "description": "If true, return page items details.",
+                          "default": false
+                        }
+                      }
+                    },
+                    "textStoryInfo": {
+                      "description": "Settings for extracting text story information.",
+                      "type": "object",
+                      "properties": {
+                        "enabled": {
+                          "type": "boolean",
+                          "description": "If true, return text stories information.",
+                          "default": false
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          ],
+          "description": "This job request object specifies parameters for extracting document information."
+        }
+      },
+      "required": ["Authorization", "x-api-key", "requestBody"]
+    },
+    "method": "post",
+    "pathTemplate": "/v3/document-info",
+    "parameters": [
+      {
+        "name": "Authorization",
+        "in": "header",
+        "description": "The authorization token with bearer \"token_value\". For example: `Bearer <access_token>`.",
+        "required": true,
+        "schema": {
+          "type": "string"
+        }
+      },
+      {
+        "name": "x-api-key",
+        "in": "header",
+        "description": "The API key as defined in Adobe's Developer Console.",
+        "required": true,
+        "schema": {
+          "type": "string"
+        }
+      },
+      {
+        "name": "x-gw-ims-org-id",
+        "in": "header",
+        "description": "This is the identifier for Adobe Identity Management Service (IMS) as defined in Adobe's Developer Console. This is optional.",
+        "required": false,
+        "schema": {
+          "type": "string"
+        }
+      }
+    ],
+    "executionParameters": [
+      {
+        "name": "Authorization",
+        "in": "header"
+      },
+      {
+        "name": "x-api-key",
+        "in": "header"
+      },
+      {
+        "name": "x-gw-ims-org-id",
+        "in": "header"
+      }
+    ],
+    "requestBodyContentType": "application/json",
+    "securityRequirements": [
+      {
+        "ApiKeyAuth": []
+      },
+      {
+        "BearerAuth": []
+      }
+    ],
+    "operationId": "getDocumentInfo",
+    "baseUrl": "https://indesign.adobe.io"
+  },
+  {
+    "name": "getDocumentInfoJobStatus",
+    "description": "Returns the latest status of a Document Info job. Poll this endpoint to retrieve the extracted document information including pages, links, fonts, page items, and text stories.",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "Authorization": {
+          "type": "string",
+          "description": "The authorization token with bearer \"token_value\". For example: `Bearer <access_token>`."
+        },
+        "x-api-key": {
+          "type": "string",
+          "description": "The API key as defined in Adobe's Developer Console."
+        },
+        "document-info_job_id": {
+          "type": "string",
+          "description": "The ID of the Document Info job you want to see the status of. This comes from the response of the Document Info request."
+        },
+        "x-gw-ims-org-id": {
+          "type": "string",
+          "description": "This is the identifier for Adobe Identity Management Service (IMS) as defined in Adobe's Developer Console. This is optional."
+        }
+      },
+      "required": ["Authorization", "x-api-key", "document-info_job_id"]
+    },
+    "method": "get",
+    "pathTemplate": "/v3/status/{document-info_job_id}",
+    "parameters": [
+      {
+        "name": "Authorization",
+        "in": "header",
+        "description": "The authorization token with bearer \"token_value\". For example: `Bearer <access_token>`.",
+        "required": true,
+        "schema": {
+          "type": "string"
+        }
+      },
+      {
+        "name": "x-api-key",
+        "in": "header",
+        "description": "The API key as defined in Adobe's Developer Console.",
+        "required": true,
+        "schema": {
+          "type": "string"
+        }
+      },
+      {
+        "name": "document-info_job_id",
+        "in": "path",
+        "description": "The ID of the Document Info job you want to see the status of. This comes from the response of the Document Info request.",
+        "required": true,
+        "schema": {
+          "type": "string"
+        }
+      },
+      {
+        "name": "x-gw-ims-org-id",
+        "in": "header",
+        "description": "This is the identifier for Adobe Identity Management Service (IMS) as defined in Adobe's Developer Console. This is optional.",
+        "required": false,
+        "schema": {
+          "type": "string"
+        }
+      }
+    ],
+    "executionParameters": [
+      {
+        "name": "Authorization",
+        "in": "header"
+      },
+      {
+        "name": "x-api-key",
+        "in": "header"
+      },
+      {
+        "name": "document-info_job_id",
+        "in": "path"
+      },
+      {
+        "name": "x-gw-ims-org-id",
+        "in": "header"
+      }
+    ],
+    "securityRequirements": [
+      {
+        "ApiKeyAuth": []
+      },
+      {
+        "BearerAuth": []
+      }
+    ],
+    "operationId": "getDocumentInfoJobStatus",
+    "baseUrl": "https://indesign.adobe.io"
+  },
+  {
+    "name": "convertPDFToInDesign",
+    "description": "Converts PDF documents to editable InDesign (INDD or IDML) format. The output is a ZIP file (default name 'output.zip') containing subfolders (named after each input PDF) with the converted document and associated assets. If `embedLinks` is false, assets are provided in a separate folder within the ZIP. If `embedLinks` is true, all links are embedded in the InDesign file. Returns warnings for missing fonts and links.",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "Authorization": {
+          "type": "string",
+          "description": "The authorization token with bearer \"token_value\". For example: `Bearer <access_token>`."
+        },
+        "x-api-key": {
+          "type": "string",
+          "description": "The API key as defined in Adobe's Developer Console."
+        },
+        "x-gw-ims-org-id": {
+          "type": "string",
+          "description": "This is the identifier for Adobe Identity Management Service (IMS) as defined in Adobe's Developer Console. This is optional."
+        },
+        "requestBody": {
+          "allOf": [
+            {
+              "allOf": [
+                {
+                  "description": "The base job request for any job.",
+                  "required": ["assets"],
+                  "properties": {
+                    "assets": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "description": "The URL where the asset will be fetched.",
+                        "required": ["source"],
+                        "properties": {
+                          "source": {
+                            "type": "object",
+                            "required": ["url"],
+                            "properties": {
+                              "url": {
+                                "type": "string",
+                                "description": "The pre-signed URL of the input asset. This is the URL of the asset that will be downloaded and acted upon during the job."
+                              }
+                            }
+                          },
+                          "destination": {
+                            "type": "string",
+                            "description": "This provides a path relative to a temporary base directory (working directory) where the resource would be downloaded. This would be used to identify the assets within the parameters. It cannot go up using '..' or '/'. Should be a valid file name."
+                          }
+                        }
+                      },
+                      "description": "Information about the assets, which will be used to process the job."
+                    },
+                    "params": {
+                      "type": "object",
+                      "properties": {
+                        "generalSettings": {
+                          "description": "General settings.",
+                          "type": "object",
+                          "properties": {
+                            "fonts": {
+                              "description": "Settings related to fonts. It is recommended to include fonts to avoid missing fonts warnings when processing the job.",
+                              "type": "object",
+                              "properties": {
+                                "fontsDirectories": {
+                                  "description": "This lists the font directories for the input InDesign documents. \"Document Fonts\" in parallel to the document will continue to work even without specifying them.  <br></br> If none are specified, a temporary base directory (working directory) will be considered as a font directory.",
+                                  "type": "array",
+                                  "items": {
+                                    "type": "string",
+                                    "description": "This provides a path to a directory relative to a temporary base directory (working directory) where the fonts can be found. It cannot go up using '..' or '/'. Should be a valid path. For specifying a working directory, mention '.'."
+                                  }
+                                }
+                              }
+                            },
+                            "links": {
+                              "description": "Settings related to links.",
+                              "type": "object",
+                              "properties": {
+                                "replaceLinks": {
+                                  "type": "array",
+                                  "items": {
+                                    "type": "object",
+                                    "required": ["targetDocument", "mapping"],
+                                    "properties": {
+                                      "targetDocument": {
+                                        "description": "The document in which the relinking is to be done. Relinking of assets is required to ensure that there are no missing links in the output document.",
+                                        "type": "string"
+                                      },
+                                      "mapping": {
+                                        "type": "array",
+                                        "items": {
+                                          "type": "object",
+                                          "required": ["newAssetRelativePath"],
+                                          "properties": {
+                                            "newAssetRelativePath": {
+                                              "type": "string",
+                                              "description": "This provides a path relative to a temporary base directory (working directory) where the asset to be linked to can be found. It cannot go up using '..' or '/'. Should be a valid file name."
+                                            },
+                                            "currentURI": {
+                                              "type": "string",
+                                              "description": "The existing URI of the link that needs relinking. If multiple links with this URI are found, all will be relinked. If `linkID` is provided, this attribute will be ignored. Either `currentURI` or `linkID` should be present."
+                                            },
+                                            "linkID": {
+                                              "type": "integer",
+                                              "description": "The ID of the link which is to be relinked. If `currentURI` is also provided, it will be ignored. Either `currentURI` or `linkID` should be present."
+                                            }
+                                          }
+                                        }
+                                      }
+                                    }
+                                  }
+                                }
+                              }
+                            },
+                            "appLogs": {
+                              "description": "Describes parameters regarding application logs.",
+                              "type": "object",
+                              "properties": {
+                                "logsRelativePath": {
+                                  "type": "string",
+                                  "description": "This provides a path to a file, relative to the temporary base directory (working directory). This file is where the application's logs are to be dumped."
+                                }
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                },
+                {
+                  "description": "The base job request for any job with the option to specify output URLs.",
+                  "type": "object",
+                  "properties": {
+                    "outputs": {
+                      "type": "array",
+                      "items": {
+                        "description": "The URL where the output assets are to be posted after the job is processed.",
+                        "type": "object",
+                        "required": ["destination", "source"],
+                        "properties": {
+                          "destination": {
+                            "type": "object",
+                            "required": ["url"],
+                            "properties": {
+                              "url": {
+                                "type": "string",
+                                "description": "The URL of the asset."
+                              },
+                              "storageType": {
+                                "type": "string",
+                                "description": "This is an optional parameter, however IT IS RECOMMENDED to provide this information.",
+                                "enum": ["Azure", "Dropbox", "AWS"]
+                              }
+                            }
+                          },
+                          "source": {
+                            "type": "string",
+                            "description": "This provides a path relative of the output where the resource would be generated. It cannot go up using '..' or '/'. Should be a valid file name."
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              ]
+            },
+            {
+              "description": "Inputs for converting PDF to InDesign document.",
+              "type": "object",
+              "required": ["params"],
+              "properties": {
+                "params": {
+                  "type": "object",
+                  "required": ["targetDocuments", "outputMediaType"],
+                  "properties": {
+                    "targetDocuments": {
+                      "description": "Array of PDF documents to convert. Each entry corresponds to the filename of the PDF document to convert. Currently supports one document at a time.",
+                      "type": "array",
+                      "items": {
+                        "type": "string"
+                      },
+                      "minItems": 1,
+                      "maxItems": 1
+                    },
+                    "outputMediaType": {
+                      "description": "The MIME type of the output file.",
+                      "type": "string",
+                      "enum": [
+                        "application/x-indesign",
+                        "application/vnd.adobe.indesign-idml-package"
+                      ],
+                      "default": "application/x-indesign"
+                    },
+                    "embedLinks": {
+                      "description": "If true, all links (images and other assets) from the PDF are embedded directly in the resulting INDD/IDML file. If false (default), the INDD/IDML file is created with external links, and all assets are provided in a separate folder within the output ZIP.",
+                      "type": "boolean",
+                      "default": false
+                    },
+                    "outputFilebaseString": {
+                      "description": "The name of the output ZIP file. If not specified, defaults to 'output.zip'.",
+                      "type": "string",
+                      "default": "output.zip"
+                    }
+                  }
+                }
+              }
+            }
+          ],
+          "description": "This job request object specifies parameters for converting PDF to InDesign format."
+        }
+      },
+      "required": ["Authorization", "x-api-key", "requestBody"]
+    },
+    "method": "post",
+    "pathTemplate": "/v3/convert-pdf-to-indesign",
+    "parameters": [
+      {
+        "name": "Authorization",
+        "in": "header",
+        "description": "The authorization token with bearer \"token_value\". For example: `Bearer <access_token>`.",
+        "required": true,
+        "schema": {
+          "type": "string"
+        }
+      },
+      {
+        "name": "x-api-key",
+        "in": "header",
+        "description": "The API key as defined in Adobe's Developer Console.",
+        "required": true,
+        "schema": {
+          "type": "string"
+        }
+      },
+      {
+        "name": "x-gw-ims-org-id",
+        "in": "header",
+        "description": "This is the identifier for Adobe Identity Management Service (IMS) as defined in Adobe's Developer Console. This is optional.",
+        "required": false,
+        "schema": {
+          "type": "string"
+        }
+      }
+    ],
+    "executionParameters": [
+      {
+        "name": "Authorization",
+        "in": "header"
+      },
+      {
+        "name": "x-api-key",
+        "in": "header"
+      },
+      {
+        "name": "x-gw-ims-org-id",
+        "in": "header"
+      }
+    ],
+    "requestBodyContentType": "application/json",
+    "securityRequirements": [
+      {
+        "ApiKeyAuth": []
+      },
+      {
+        "BearerAuth": []
+      }
+    ],
+    "operationId": "convertPDFToInDesign",
+    "baseUrl": "https://indesign.adobe.io"
+  },
+  {
+    "name": "getConvertPDFToInDesignJobStatus",
+    "description": "Returns the latest status of a job, in this case a PDF to InDesign conversion job. Poll this endpoint to retrieve the job results, warnings, and download URL of the output, in this case an output ZIP file.",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "Authorization": {
+          "type": "string",
+          "description": "The authorization token with bearer \"token_value\". For example: `Bearer <access_token>`."
+        },
+        "x-api-key": {
+          "type": "string",
+          "description": "The API key as defined in Adobe's Developer Console."
+        },
+        "convert-pdf-to-indesign_job_id": {
+          "type": "string",
+          "description": "The ID of the Convert PDF to InDesign job you want to see the status of. This comes from the response of the Convert PDF to InDesign request."
+        },
+        "x-gw-ims-org-id": {
+          "type": "string",
+          "description": "This is the identifier for Adobe Identity Management Service (IMS) as defined in Adobe's Developer Console. This is optional."
+        }
+      },
+      "required": ["Authorization", "x-api-key", "convert-pdf-to-indesign_job_id"]
+    },
+    "method": "get",
+    "pathTemplate": "/v3/status/{convert-pdf-to-indesign_job_id}",
+    "parameters": [
+      {
+        "name": "Authorization",
+        "in": "header",
+        "description": "The authorization token with bearer \"token_value\". For example: `Bearer <access_token>`.",
+        "required": true,
+        "schema": {
+          "type": "string"
+        }
+      },
+      {
+        "name": "x-api-key",
+        "in": "header",
+        "description": "The API key as defined in Adobe's Developer Console.",
+        "required": true,
+        "schema": {
+          "type": "string"
+        }
+      },
+      {
+        "name": "convert-pdf-to-indesign_job_id",
+        "in": "path",
+        "description": "The ID of the Convert PDF to InDesign job you want to see the status of. This comes from the response of the Convert PDF to InDesign request.",
+        "required": true,
+        "schema": {
+          "type": "string"
+        }
+      },
+      {
+        "name": "x-gw-ims-org-id",
+        "in": "header",
+        "description": "This is the identifier for Adobe Identity Management Service (IMS) as defined in Adobe's Developer Console. This is optional.",
+        "required": false,
+        "schema": {
+          "type": "string"
+        }
+      }
+    ],
+    "executionParameters": [
+      {
+        "name": "Authorization",
+        "in": "header"
+      },
+      {
+        "name": "x-api-key",
+        "in": "header"
+      },
+      {
+        "name": "convert-pdf-to-indesign_job_id",
+        "in": "path"
+      },
+      {
+        "name": "x-gw-ims-org-id",
+        "in": "header"
+      }
+    ],
+    "securityRequirements": [
+      {
+        "ApiKeyAuth": []
+      },
+      {
+        "BearerAuth": []
+      }
+    ],
+    "operationId": "getConvertPDFToInDesignJobStatus",
+    "baseUrl": "https://indesign.adobe.io"
+  },
+  {
+    "name": "getJobStatus",
+    "description": "Returns the latest status of an executed custom script job.",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "Authorization": {
+          "type": "string",
+          "description": "The authorization token with bearer \"token_value\". For example: `Bearer <access_token>`."
+        },
+        "x-api-key": {
+          "type": "string",
+          "description": "The API key as defined in Adobe's Developer Console."
+        },
+        "id": {
+          "type": "string",
+          "description": "The ID of the job you want to see the status of. This comes from the response of the executed job request."
+        },
+        "x-gw-ims-org-id": {
+          "type": "string",
+          "description": "This is the identifier for Adobe Identity Management Service (IMS) as defined in Adobe's Developer Console. This is optional."
+        },
+        "size": {
+          "type": "number",
+          "minimum": 1,
+          "default": 10,
+          "description": "Number of output items to return per page when outputs are paginated. Defaults to 10."
+        },
+        "page": {
+          "type": "number",
+          "minimum": 0,
+          "default": 0,
+          "description": "Zero-based page index to retrieve when outputs are paginated. Defaults to 0."
+        }
+      },
+      "required": ["Authorization", "x-api-key", "id"]
+    },
+    "method": "get",
+    "pathTemplate": "/v3/status/{id}",
+    "parameters": [
+      {
+        "name": "Authorization",
+        "in": "header",
+        "description": "The authorization token with bearer \"token_value\". For example: `Bearer <access_token>`.",
+        "required": true,
+        "schema": {
+          "type": "string"
+        }
+      },
+      {
+        "name": "x-api-key",
+        "in": "header",
+        "description": "The API key as defined in Adobe's Developer Console.",
+        "required": true,
+        "schema": {
+          "type": "string"
+        }
+      },
+      {
+        "name": "id",
+        "in": "path",
+        "description": "The ID of the job you want to see the status of. This comes from the response of the executed job request.",
+        "required": true,
+        "schema": {
+          "type": "string"
+        }
+      },
+      {
+        "name": "x-gw-ims-org-id",
+        "in": "header",
+        "description": "This is the identifier for Adobe Identity Management Service (IMS) as defined in Adobe's Developer Console. This is optional.",
+        "required": false,
+        "schema": {
+          "type": "string"
+        }
+      },
+      {
+        "name": "size",
+        "in": "query",
+        "description": "Number of output items to return per page when outputs are paginated. Defaults to 10.",
+        "required": false,
+        "schema": {
+          "type": "integer",
+          "minimum": 1,
+          "default": 10
+        }
+      },
+      {
+        "name": "page",
+        "in": "query",
+        "description": "Zero-based page index to retrieve when outputs are paginated. Defaults to 0.",
+        "required": false,
+        "schema": {
+          "type": "integer",
+          "minimum": 0,
+          "default": 0
+        }
+      }
+    ],
+    "executionParameters": [
+      {
+        "name": "Authorization",
+        "in": "header"
+      },
+      {
+        "name": "x-api-key",
+        "in": "header"
+      },
+      {
+        "name": "id",
+        "in": "path"
+      },
+      {
+        "name": "x-gw-ims-org-id",
+        "in": "header"
+      },
+      {
+        "name": "size",
+        "in": "query"
+      },
+      {
+        "name": "page",
+        "in": "query"
+      }
+    ],
+    "securityRequirements": [
+      {
+        "ApiKeyAuth": []
+      },
+      {
+        "BearerAuth": []
+      }
+    ],
+    "operationId": "getJobStatus",
+    "baseUrl": "https://indesign.adobe.io"
+  }
+]

@@ -1,0 +1,3894 @@
+[
+  {
+    "name": "v1_composites_compose",
+    "description": "Generate a 3D Object Composite with the Substance 3D API.",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "wait": {
+          "description": "Blocking mode (acts like a synchronous API call). Wait for the result before returning. ⚠️ Some operations are long, please be sure to configure your client timeout settings accordingly.",
+          "type": "boolean",
+          "default": false
+        },
+        "requestBody": {
+          "type": "object",
+          "properties": {
+            "$schema": {
+              "description": "A URL to the JSON schema for this object.",
+              "type": "string",
+              "format": "uri",
+              "examples": ["https://s3d.adobe.io/schemas/restv1.ComposeSceneRequest.json"]
+            },
+            "cameraName": {
+              "description": "Name of an existing camera in the source 3D scene. The camera has to be defined in the scene.",
+              "type": ["string", "null"]
+            },
+            "contentClass": {
+              "description": "Class of content to generate.",
+              "type": "string",
+              "default": "photo",
+              "enum": ["art", "photo"]
+            },
+            "enableGroundPlane": {
+              "description": "Enable the auto-generated ground plane under the hero asset. This is useful if the 3D scene contains only a hero asset, without additional elements.",
+              "type": "boolean",
+              "default": false
+            },
+            "environment": {
+              "description": "Optional environment settings used for all variations. If omitted, an environment will be generated based on the background. If set, the `lightingSeeds` parameter will be ignored.",
+              "type": "object",
+              "properties": {
+                "file": {
+                  "description": "Path of environment file in `sources`. If value is null, the environment file will be generated.",
+                  "type": "string"
+                },
+                "rotation": {
+                  "description": "Controls the orientation of the environment map.",
+                  "type": "object",
+                  "properties": {
+                    "euler": {
+                      "description": "Euler angles in degrees.",
+                      "type": "array",
+                      "items": {
+                        "format": "double",
+                        "type": "number"
+                      },
+                      "examples": [[0, 0, 0]],
+                      "maxItems": 3,
+                      "minItems": 3
+                    },
+                    "quaternion": {
+                      "description": "In W,X,Y,Z order.",
+                      "type": "array",
+                      "items": {
+                        "format": "double",
+                        "type": "number"
+                      },
+                      "examples": [[1, 0, 0, 0]],
+                      "maxItems": 4,
+                      "minItems": 4
+                    }
+                  },
+                  "additionalProperties": false
+                }
+              },
+              "additionalProperties": false,
+              "required": ["file"]
+            },
+            "environmentExposure": {
+              "description": "Exposure, in EV (0=neutral).",
+              "type": "number",
+              "format": "double",
+              "maximum": 10,
+              "minimum": -10
+            },
+            "heroAsset": {
+              "description": "Name of an existing 'hero asset' in the source 3D scene. The asset has to be defined in the scene.",
+              "type": "string",
+              "minLength": 1
+            },
+            "lightingSeeds": {
+              "description": "Optional seeds to be used to generate the lighting for the scene. The first seed will be used with the first seed of the background, the second one with the second seed of the background and so on. Background seeds must be defined and the number of lighting seeds should equal the number of background seeds. If not set, random seeds will be used. You will be able to retrieve the seeds used for the generation in the output details of the job.",
+              "type": "array",
+              "items": {
+                "format": "int64",
+                "type": "number"
+              }
+            },
+            "modelVersion": {
+              "description": "Model version to be used to generate the background image with Adobe Firefly.",
+              "type": "string",
+              "default": "image4_ultra",
+              "enum": ["image3_fast", "image4_standard", "image4_ultra"]
+            },
+            "numVariations": {
+              "description": "The number of variations to generate. `numVariations` will default to the number of seeds, or to 1 if `seeds` is not specified.",
+              "type": "number",
+              "format": "int64",
+              "maximum": 4,
+              "minimum": 1
+            },
+            "prompt": {
+              "description": "Prompt to be used to generate the background image with Adobe Firefly.",
+              "type": "string",
+              "minLength": 1
+            },
+            "scene": {
+              "type": "object",
+              "properties": {
+                "camera": {
+                  "description": "Custom camera, exclusive with 'cameraName'.",
+                  "type": "object",
+                  "properties": {
+                    "focal": {
+                      "description": "Camera focal length, in mm.",
+                      "type": "number",
+                      "format": "double",
+                      "default": 50,
+                      "maximum": 1000,
+                      "minimum": 10
+                    },
+                    "sensorWidth": {
+                      "description": "Camera sensor width, in mm.",
+                      "type": "number",
+                      "format": "double",
+                      "default": 36,
+                      "maximum": 100,
+                      "minimum": 1
+                    },
+                    "transform": {
+                      "description": "Controls the position and angle of the camera.",
+                      "type": "object",
+                      "properties": {
+                        "azimuthAltitude": {
+                          "description": "Transform is defined by azimuth, altitude and radius terms. If set, do not set `matrix` or `trs`.",
+                          "type": "object",
+                          "properties": {
+                            "altitude": {
+                              "description": "Altitude, in degrees, from -90 to 90 degrees.",
+                              "type": "number",
+                              "format": "double",
+                              "maximum": 90,
+                              "minimum": -90
+                            },
+                            "azimuth": {
+                              "description": "Rotation around the vertical axis, in degrees.",
+                              "type": "number",
+                              "format": "double"
+                            },
+                            "lookAt": {
+                              "description": "Look at point coordinates.",
+                              "type": ["array", "null"],
+                              "items": {
+                                "format": "double",
+                                "type": "number"
+                              },
+                              "maxItems": 3,
+                              "minItems": 3
+                            },
+                            "radius": {
+                              "description": "Distance to the `lookAt` point.",
+                              "type": "number",
+                              "format": "double",
+                              "minimum": 0
+                            }
+                          },
+                          "additionalProperties": false,
+                          "required": ["azimuth", "altitude", "lookAt", "radius"]
+                        },
+                        "matrix": {
+                          "description": "Transform is defined as a matrix. If set, do not set `trs` or `azimuthAltitude`.",
+                          "type": "array",
+                          "items": {
+                            "format": "double",
+                            "type": "number"
+                          },
+                          "maxItems": 16,
+                          "minItems": 16
+                        },
+                        "trs": {
+                          "description": "Transform is defined by translation, rotation and scale terms. If set, do not set `matrix` or `azimuthAltitude`.",
+                          "type": "object",
+                          "properties": {
+                            "rotation": {
+                              "type": "object",
+                              "properties": {
+                                "euler": {
+                                  "description": "Euler angles in degrees.",
+                                  "type": "array",
+                                  "items": {
+                                    "format": "double",
+                                    "type": "number"
+                                  },
+                                  "examples": [[0, 0, 0]],
+                                  "maxItems": 3,
+                                  "minItems": 3
+                                },
+                                "quaternion": {
+                                  "description": "In W,X,Y,Z order.",
+                                  "type": "array",
+                                  "items": {
+                                    "format": "double",
+                                    "type": "number"
+                                  },
+                                  "examples": [[1, 0, 0, 0]],
+                                  "maxItems": 4,
+                                  "minItems": 4
+                                }
+                              },
+                              "additionalProperties": false
+                            },
+                            "scale": {
+                              "type": ["array", "null"],
+                              "items": {
+                                "format": "double",
+                                "type": "number"
+                              },
+                              "maxItems": 3,
+                              "minItems": 3
+                            },
+                            "translation": {
+                              "type": ["array", "null"],
+                              "items": {
+                                "format": "double",
+                                "type": "number"
+                              },
+                              "examples": [[0, 0, 0]],
+                              "maxItems": 3,
+                              "minItems": 3
+                            }
+                          },
+                          "additionalProperties": false,
+                          "required": ["translation", "rotation", "scale"]
+                        }
+                      },
+                      "additionalProperties": false
+                    }
+                  },
+                  "additionalProperties": false
+                }
+              },
+              "additionalProperties": false
+            },
+            "sceneFile": {
+              "description": "The path of the scene file in `sources`. If value is null, the first found scene file will be used.",
+              "type": "string"
+            },
+            "seeds": {
+              "description": "Optional seed value to be used to generate the background image with Adobe Firefly. A seed ensures consistent background image generation. If `seed` is not set, a random seed will be used. Retrieve the seed used for the generation in the output details of the job. If specified with `numVariations`, the number of seeds must be the equal to `numVariations`.",
+              "type": "array",
+              "items": {
+                "format": "int64",
+                "type": "number"
+              }
+            },
+            "size": {
+              "description": "The size of the image generations. The supported dimensions for image generations are: \n  | Dimensions | Description | \n  | -----------| ----- |\n  | { \"width\": 2048, \"height\": 2048} | Square (1:1) |\n  | { \"width\": 2304, \"height\": 1792 } | Landscape (4:3) |\n  | { \"width\": 1792, \"height\": 2304 } | Portrait (3:4) | \n  | { \"width\": 2688, \"height\": 1536 } | Widescreen (16:9) |  \n  | { \"width\": 1344, \"height\": 768 } |(7:4) |  \n  |{ \"width\": 1152, \"height\": 896 } |(9:7) |  \n  |{ \"width\": 896, \"height\": 1152 } |(7:9) |  \n  | { \"width\": 1024, \"height\": 1024} | Square (1:1) |",
+              "type": "object",
+              "properties": {
+                "height": {
+                  "type": "number",
+                  "format": "int64",
+                  "default": 1536,
+                  "maximum": 2688,
+                  "minimum": 1
+                },
+                "width": {
+                  "type": "number",
+                  "format": "int64",
+                  "default": 2688,
+                  "maximum": 2688,
+                  "minimum": 1
+                }
+              },
+              "additionalProperties": false,
+              "required": ["width", "height"]
+            },
+            "sources": {
+              "description": "List of sources to aggregate and run the job against.",
+              "type": ["array", "null"],
+              "items": {
+                "type": "object",
+                "properties": {
+                  "frame.io": {
+                    "description": "Fetch content from a Frame.io folder. ⚠️ All sources are exclusive.",
+                    "deprecated": true,
+                    "type": "object",
+                    "properties": {
+                      "accessToken": {
+                        "type": "string"
+                      },
+                      "folderId": {
+                        "type": "string"
+                      }
+                    },
+                    "additionalProperties": false,
+                    "required": ["folderId", "accessToken"]
+                  },
+                  "mountPoint": {
+                    "description": "Where to mount the content of the source in the virtual job working directory.",
+                    "type": "string",
+                    "default": "/"
+                  },
+                  "next.frame.io": {
+                    "description": "Fetch content from a next.frame.io folder. ⚠️ All sources are exclusive.",
+                    "type": "object",
+                    "properties": {
+                      "accessToken": {
+                        "type": "string"
+                      },
+                      "accountId": {
+                        "type": "string"
+                      },
+                      "folderId": {
+                        "type": "string"
+                      }
+                    },
+                    "additionalProperties": false,
+                    "required": ["folderId", "accountId", "accessToken"]
+                  },
+                  "space": {
+                    "description": "Read content from an existing space (can be another job's output, or uploaded manually with the space API). ⚠️ All sources are exclusive.'",
+                    "type": "object",
+                    "properties": {
+                      "id": {
+                        "description": "A space ID.",
+                        "type": "string"
+                      }
+                    },
+                    "additionalProperties": false,
+                    "required": ["id"]
+                  },
+                  "url": {
+                    "description": "Fetch content from a URL. ⚠️ All sources are exclusive.",
+                    "type": "object",
+                    "properties": {
+                      "filename": {
+                        "description": "Filename override. If unset, the service will try to detect the filename from the content disposition header, then the URL itself.",
+                        "type": "string"
+                      },
+                      "url": {
+                        "description": "URL to fetch content from.",
+                        "type": "string",
+                        "examples": ["https://cdn.substance3d.com/v2/files/public/stepladder.usdz"]
+                      }
+                    },
+                    "additionalProperties": false,
+                    "required": ["url"]
+                  }
+                },
+                "additionalProperties": false
+              },
+              "maxItems": 16,
+              "minItems": 1
+            },
+            "styleImage": {
+              "description": "Optional 'style image' to be used to generate the background. The style image has to be present in `sources`.",
+              "type": "string"
+            }
+          },
+          "additionalProperties": false,
+          "dependentRequired": {
+            "lightingSeeds": ["seeds"]
+          },
+          "examples": [
+            {
+              "cameraName": "main_camera",
+              "heroAsset": "bottle",
+              "prompt": "french style kitchen with empty wooden table window on the left focal length 50mm",
+              "sources": [
+                {
+                  "url": {
+                    "url": "https://cdn.substance3d.com/v2/files/public/compositing_table_bottle.glb"
+                  }
+                }
+              ]
+            }
+          ],
+          "required": ["sources", "prompt", "heroAsset"],
+          "description": "The JSON request body."
+        }
+      }
+    },
+    "method": "post",
+    "pathTemplate": "/v1/composites/compose",
+    "parameters": [
+      {
+        "name": "wait",
+        "in": "query",
+        "description": "Blocking mode (acts like a synchronous API call). Wait for the result before returning. ⚠️ Some operations are long, please be sure to configure your client timeout settings accordingly.",
+        "schema": {
+          "description": "Blocking mode (acts like a synchronous API call). Wait for the result before returning. ⚠️ Some operations are long, please be sure to configure your client timeout settings accordingly.",
+          "type": "boolean",
+          "default": false
+        },
+        "explode": false
+      }
+    ],
+    "executionParameters": [
+      {
+        "name": "wait",
+        "in": "query"
+      }
+    ],
+    "requestBodyContentType": "application/json",
+    "securityRequirements": [
+      {
+        "bearerAuth": []
+      }
+    ],
+    "operationId": "v1_composites_compose",
+    "baseUrl": "https://s3d.adobe.io"
+  },
+  {
+    "name": "v1_scenes_assemble",
+    "description": "Assemble a 3D scene with the Substance 3D API.",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "wait": {
+          "description": "Blocking mode (acts like a synchronous API call). Wait for the result before returning. ⚠️ Some operations are long, please be sure to configure your client timeout settings accordingly.",
+          "type": "boolean",
+          "default": false
+        },
+        "requestBody": {
+          "type": "object",
+          "properties": {
+            "$schema": {
+              "description": "A URL to the JSON schema for this object.",
+              "type": "string",
+              "format": "uri",
+              "examples": ["https://s3d.adobe.io/schemas/restv1beta.CreateSceneRequest.json"]
+            },
+            "encoding": {
+              "description": "Encoding output format.",
+              "type": "string",
+              "enum": ["glb", "gltf", "fbx", "usdz", "usda", "usdc", "obj"]
+            },
+            "fileBaseName": {
+              "description": "Output filename.",
+              "type": "string",
+              "minLength": 1
+            },
+            "scene": {
+              "type": "object",
+              "properties": {
+                "baseFile": {
+                  "description": "Define a scene from a file. If value is `null`, an empty scene will be created.",
+                  "type": "object",
+                  "properties": {
+                    "file": {
+                      "description": "Path to the scene file in `sources`.",
+                      "type": "string"
+                    },
+                    "modelsRootNodeName": {
+                      "description": "Define root node for models in scene graph. If not found, the node which is parent of all models in the scene will be used. If this node doesn't exist, a new node will be created under global root.",
+                      "type": "string"
+                    }
+                  },
+                  "additionalProperties": false,
+                  "required": ["file"]
+                },
+                "camera": {
+                  "description": "Define a new camera for the scene.",
+                  "type": "object",
+                  "properties": {
+                    "focal": {
+                      "description": "Camera focal length, in mm.",
+                      "type": "number",
+                      "format": "double",
+                      "default": 50,
+                      "maximum": 1000,
+                      "minimum": 10
+                    },
+                    "sensorWidth": {
+                      "description": "Camera sensor width, in mm.",
+                      "type": "number",
+                      "format": "double",
+                      "default": 36,
+                      "maximum": 100,
+                      "minimum": 1
+                    },
+                    "transform": {
+                      "description": "Controls the position and angle of the camera.",
+                      "type": "object",
+                      "properties": {
+                        "azimuthAltitude": {
+                          "description": "Transform is defined by azimuth, altitude and radius terms. If set, do not set `matrix` or `trs`.",
+                          "type": "object",
+                          "properties": {
+                            "altitude": {
+                              "description": "Altitude, in degrees, from -90 to 90 degrees.",
+                              "type": "number",
+                              "format": "double",
+                              "maximum": 90,
+                              "minimum": -90
+                            },
+                            "azimuth": {
+                              "description": "Rotation around the vertical axis, in degrees.",
+                              "type": "number",
+                              "format": "double"
+                            },
+                            "lookAt": {
+                              "description": "Look at point coordinates.",
+                              "type": ["array", "null"],
+                              "items": {
+                                "format": "double",
+                                "type": "number"
+                              },
+                              "maxItems": 3,
+                              "minItems": 3
+                            },
+                            "radius": {
+                              "description": "Distance to the `lookAt` point.",
+                              "type": "number",
+                              "format": "double",
+                              "minimum": 0
+                            }
+                          },
+                          "additionalProperties": false,
+                          "required": ["azimuth", "altitude", "lookAt", "radius"]
+                        },
+                        "matrix": {
+                          "description": "Transform is defined as a matrix. If set, do not set `trs` or `azimuthAltitude`.",
+                          "type": "array",
+                          "items": {
+                            "format": "double",
+                            "type": "number"
+                          },
+                          "maxItems": 16,
+                          "minItems": 16
+                        },
+                        "trs": {
+                          "description": "Transform is defined by translation, rotation and scale terms. If set, do not set `matrix` or `azimuthAltitude`.",
+                          "type": "object",
+                          "properties": {
+                            "rotation": {
+                              "type": "object",
+                              "properties": {
+                                "euler": {
+                                  "description": "Euler angles in degrees.",
+                                  "type": "array",
+                                  "items": {
+                                    "format": "double",
+                                    "type": "number"
+                                  },
+                                  "examples": [[0, 0, 0]],
+                                  "maxItems": 3,
+                                  "minItems": 3
+                                },
+                                "quaternion": {
+                                  "description": "In W,X,Y,Z order.",
+                                  "type": "array",
+                                  "items": {
+                                    "format": "double",
+                                    "type": "number"
+                                  },
+                                  "examples": [[1, 0, 0, 0]],
+                                  "maxItems": 4,
+                                  "minItems": 4
+                                }
+                              },
+                              "additionalProperties": false
+                            },
+                            "scale": {
+                              "type": ["array", "null"],
+                              "items": {
+                                "format": "double",
+                                "type": "number"
+                              },
+                              "maxItems": 3,
+                              "minItems": 3
+                            },
+                            "translation": {
+                              "type": ["array", "null"],
+                              "items": {
+                                "format": "double",
+                                "type": "number"
+                              },
+                              "examples": [[0, 0, 0]],
+                              "maxItems": 3,
+                              "minItems": 3
+                            }
+                          },
+                          "additionalProperties": false,
+                          "required": ["translation", "rotation", "scale"]
+                        }
+                      },
+                      "additionalProperties": false
+                    }
+                  },
+                  "additionalProperties": false
+                },
+                "environment": {
+                  "description": "Define the environment for the scene. Override the previous existing environment.",
+                  "type": "object",
+                  "properties": {
+                    "exposure": {
+                      "description": "Exposure, in EV (0=neutral).",
+                      "type": "number",
+                      "format": "double",
+                      "default": 0,
+                      "maximum": 10,
+                      "minimum": -10
+                    },
+                    "file": {
+                      "description": "Path to the environment file in `sources`. If the value is `null`, the first found environment file will be used.",
+                      "type": "string"
+                    },
+                    "preserveLights": {
+                      "description": "A scene may contain 3D lights, like area lights or spot lights. By default, all those lights are removed when a new environment is set. Set this option to `true` to preserve the scene 3D lights.",
+                      "type": "boolean",
+                      "default": false
+                    },
+                    "rotation": {
+                      "type": "object",
+                      "properties": {
+                        "euler": {
+                          "description": "Euler angles in degrees.",
+                          "type": "array",
+                          "items": {
+                            "format": "double",
+                            "type": "number"
+                          },
+                          "examples": [[0, 0, 0]],
+                          "maxItems": 3,
+                          "minItems": 3
+                        },
+                        "quaternion": {
+                          "description": "In W,X,Y,Z order.",
+                          "type": "array",
+                          "items": {
+                            "format": "double",
+                            "type": "number"
+                          },
+                          "examples": [[1, 0, 0, 0]],
+                          "maxItems": 4,
+                          "minItems": 4
+                        }
+                      },
+                      "additionalProperties": false,
+                      "description": "Controls the orientation of the environment map."
+                    }
+                  },
+                  "additionalProperties": false
+                },
+                "materials": {
+                  "description": "Assign new materials to geometric primitives.",
+                  "type": ["array", "null"],
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "material": {
+                        "description": "The material definition.",
+                        "type": "object",
+                        "properties": {
+                          "sbs": {
+                            "description": "The PBR material definition.",
+                            "type": "object",
+                            "properties": {
+                              "preset": {
+                                "description": "Select a preset to be used for the substance material rendering.",
+                                "type": "string"
+                              },
+                              "resolution": {
+                                "description": "Substance material render resolution. This should be a power of two.",
+                                "type": "integer",
+                                "format": "int64",
+                                "enum": [16, 32, 64, 128, 256, 512, 1024, 2048, 4096],
+                                "maximum": 4096,
+                                "minimum": 16
+                              },
+                              "rotation": {
+                                "description": "Texture space rotation.",
+                                "type": "number",
+                                "format": "double"
+                              },
+                              "sbsar": {
+                                "description": "Path to a substance material; if not set, the first substance 3D material found in sources will be used.",
+                                "type": "string"
+                              },
+                              "scale": {
+                                "description": "Texture space scale.",
+                                "type": "array",
+                                "items": {
+                                  "format": "double",
+                                  "type": "number"
+                                },
+                                "maxItems": 2,
+                                "minItems": 2
+                              },
+                              "translation": {
+                                "description": "Texture space translation.",
+                                "type": "array",
+                                "items": {
+                                  "format": "double",
+                                  "type": "number"
+                                },
+                                "maxItems": 2,
+                                "minItems": 2
+                              }
+                            },
+                            "additionalProperties": false
+                          },
+                          "solidColor": {
+                            "description": "The solid color material definition.",
+                            "type": "object",
+                            "properties": {
+                              "color": {
+                                "description": "RGB color of the solid material, each component has to be in the [0,1] range.",
+                                "type": ["array", "null"],
+                                "items": {
+                                  "format": "double",
+                                  "type": "number"
+                                },
+                                "default": [0, 0, 0],
+                                "maxItems": 3,
+                                "minItems": 3
+                              },
+                              "metallicFactor": {
+                                "description": "Metallic factor of the solid material, has to be in the [0,1] range.",
+                                "type": "number",
+                                "format": "double",
+                                "maximum": 1,
+                                "minimum": 0
+                              },
+                              "roughnessFactor": {
+                                "description": "Roughness factor of the solid material, has to be in the [0,1] range.",
+                                "type": "number",
+                                "format": "double",
+                                "maximum": 1,
+                                "minimum": 0
+                              }
+                            },
+                            "additionalProperties": false,
+                            "required": ["color"]
+                          }
+                        },
+                        "additionalProperties": false
+                      },
+                      "materialName": {
+                        "description": "Desired material name, it will be sanitized to make a valid USD prim name.",
+                        "type": "string"
+                      },
+                      "nodeList": {
+                        "description": "List of nodes under which geometric primitives will have this material assigned. Each entry can be a full node name or a glob expression.",
+                        "type": ["array", "null"],
+                        "items": {
+                          "type": "string"
+                        }
+                      },
+                      "assignByDefault": {
+                        "description": "Set to true to assign this material by default to all geometric primitives."
+                      },
+                      "excludeFromDefault": {
+                        "description": "List of nodes to exclude from default assignment."
+                      }
+                    },
+                    "additionalProperties": false,
+                    "required": ["materialName", "material", "nodeList"]
+                  }
+                },
+                "metersPerUnit": {
+                  "description": "Length of a scene unit, in meters. Defaults to `baseFile` meters per unit if any, or 0.01 (centimeters) otherwise.",
+                  "type": "number",
+                  "format": "double",
+                  "exclusiveMinimum": 0
+                },
+                "models": {
+                  "description": "Define additional models for the scene.",
+                  "type": "object",
+                  "properties": {
+                    "imports": {
+                      "description": "List of model import definitions.",
+                      "type": ["array", "null"],
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "anchorName": {
+                            "description": "Node name in scene graph which used as parent for the model. If anchor is not found, a node with the anchor name will be generated under models root node. And If value is `null`, a node will be generated under models root node.",
+                            "type": "string"
+                          },
+                          "file": {
+                            "description": "Path to the model file in `sources`. If the value is `null`, the first found model file will be used.",
+                            "type": "string"
+                          },
+                          "formatOptions": {
+                            "description": "Define options specific for the model file format.",
+                            "type": "object",
+                            "properties": {
+                              "usd": {
+                                "description": "USD format options.",
+                                "type": "object",
+                                "properties": {
+                                  "variants": {
+                                    "description": "List of USD variants definition applied on USD primitives.",
+                                    "type": ["array", "null"],
+                                    "items": {
+                                      "type": "object",
+                                      "properties": {
+                                        "primName": {
+                                          "type": "string"
+                                        },
+                                        "variant": {
+                                          "type": "string"
+                                        },
+                                        "variantSet": {
+                                          "type": "string"
+                                        }
+                                      },
+                                      "additionalProperties": false,
+                                      "required": ["primName", "variantSet", "variant"]
+                                    }
+                                  }
+                                },
+                                "additionalProperties": false,
+                                "required": ["variants"]
+                              }
+                            },
+                            "additionalProperties": false,
+                            "required": ["usd"]
+                          },
+                          "materialOverrides": {
+                            "description": "Define material overrides.",
+                            "type": ["array", "null"],
+                            "items": {
+                              "type": "object",
+                              "properties": {
+                                "absorptionColorFactor": {
+                                  "description": "RGB float color value, for example white is [1.0,1.0,1.0].",
+                                  "type": "array",
+                                  "items": {
+                                    "format": "double",
+                                    "type": "number"
+                                  },
+                                  "default": [0, 0, 0],
+                                  "maxItems": 3,
+                                  "minItems": 3
+                                },
+                                "absorptionColorTexture": {
+                                  "type": "string"
+                                },
+                                "absorptionDistanceFactor": {
+                                  "type": "number",
+                                  "format": "double",
+                                  "minimum": 0
+                                },
+                                "absorptionDistanceTexture": {
+                                  "type": "string"
+                                },
+                                "baseColorFactor": {
+                                  "description": "RGB float color value, for example white is [1.0,1.0,1.0].",
+                                  "type": "array",
+                                  "items": {
+                                    "format": "double",
+                                    "type": "number"
+                                  },
+                                  "default": [0, 0, 0],
+                                  "maxItems": 3,
+                                  "minItems": 3
+                                },
+                                "baseColorTexture": {
+                                  "type": "string"
+                                },
+                                "coatColorFactor": {
+                                  "description": "RGB float color value, for example white is [1.0,1.0,1.0].",
+                                  "type": "array",
+                                  "items": {
+                                    "format": "double",
+                                    "type": "number"
+                                  },
+                                  "default": [0, 0, 0],
+                                  "maxItems": 3,
+                                  "minItems": 3
+                                },
+                                "coatColorTexture": {
+                                  "type": "string"
+                                },
+                                "coatOpacityFactor": {
+                                  "type": "number",
+                                  "format": "double",
+                                  "maximum": 1,
+                                  "minimum": 0
+                                },
+                                "coatOpacityTexture": {
+                                  "type": "string"
+                                },
+                                "coatRoughnessFactor": {
+                                  "type": "number",
+                                  "format": "double",
+                                  "maximum": 1,
+                                  "minimum": 0
+                                },
+                                "coatRoughnessTexture": {
+                                  "type": "string"
+                                },
+                                "materialName": {
+                                  "type": "string"
+                                },
+                                "metallicFactor": {
+                                  "type": "number",
+                                  "format": "double",
+                                  "maximum": 1,
+                                  "minimum": 0
+                                },
+                                "metallicTexture": {
+                                  "type": "string"
+                                },
+                                "normalFactor": {
+                                  "type": "array",
+                                  "items": {
+                                    "format": "double",
+                                    "type": "number"
+                                  },
+                                  "maxItems": 3,
+                                  "minItems": 3
+                                },
+                                "normalTexture": {
+                                  "type": "string"
+                                },
+                                "opacityFactor": {
+                                  "type": "number",
+                                  "format": "double",
+                                  "minimum": 0
+                                },
+                                "opacityTexture": {
+                                  "type": "string"
+                                },
+                                "pbrMaterial": {
+                                  "type": "object",
+                                  "properties": {
+                                    "preset": {
+                                      "description": "Select a preset to be used for the substance material rendering.",
+                                      "type": "string"
+                                    },
+                                    "resolution": {
+                                      "description": "Substance material render resolution. This should be a power of two.",
+                                      "type": "integer",
+                                      "format": "int64",
+                                      "enum": [16, 32, 64, 128, 256, 512, 1024, 2048, 4096],
+                                      "maximum": 4096,
+                                      "minimum": 16
+                                    },
+                                    "rotation": {
+                                      "description": "Texture space rotation.",
+                                      "type": "number",
+                                      "format": "double"
+                                    },
+                                    "sbsar": {
+                                      "description": "Path to a substance material; if not set, the first substance 3D material found in sources will be used.",
+                                      "type": "string"
+                                    },
+                                    "scale": {
+                                      "description": "Texture space scale.",
+                                      "type": "array",
+                                      "items": {
+                                        "format": "double",
+                                        "type": "number"
+                                      },
+                                      "maxItems": 2,
+                                      "minItems": 2
+                                    },
+                                    "translation": {
+                                      "description": "Texture space translation.",
+                                      "type": "array",
+                                      "items": {
+                                        "format": "double",
+                                        "type": "number"
+                                      },
+                                      "maxItems": 2,
+                                      "minItems": 2
+                                    }
+                                  },
+                                  "additionalProperties": false
+                                },
+                                "roughnessFactor": {
+                                  "type": "number",
+                                  "format": "double",
+                                  "maximum": 1,
+                                  "minimum": 0
+                                },
+                                "roughnessTexture": {
+                                  "type": "string"
+                                },
+                                "translucencyFactor": {
+                                  "type": "number",
+                                  "format": "double",
+                                  "maximum": 1,
+                                  "minimum": 0
+                                },
+                                "translucencyTexture": {
+                                  "type": "string"
+                                },
+                                "volumeThicknessFactor": {
+                                  "type": "number",
+                                  "format": "double",
+                                  "minimum": 0
+                                },
+                                "volumeThicknessTexture": {
+                                  "type": "string"
+                                }
+                              },
+                              "additionalProperties": false,
+                              "required": ["materialName"]
+                            }
+                          },
+                          "transform": {
+                            "description": "Transform applied on the anchor node. Overrides the previous value, if it exists.",
+                            "type": "object",
+                            "properties": {
+                              "azimuthAltitude": {
+                                "description": "Transform is defined by azimuth, altitude and radius terms. If set, do not set `matrix` or `trs`.",
+                                "type": "object",
+                                "properties": {
+                                  "altitude": {
+                                    "description": "Altitude, in degrees, from -90 to 90 degrees.",
+                                    "type": "number",
+                                    "format": "double",
+                                    "maximum": 90,
+                                    "minimum": -90
+                                  },
+                                  "azimuth": {
+                                    "description": "Rotation around the vertical axis, in degrees.",
+                                    "type": "number",
+                                    "format": "double"
+                                  },
+                                  "lookAt": {
+                                    "description": "Look at point coordinates.",
+                                    "type": ["array", "null"],
+                                    "items": {
+                                      "format": "double",
+                                      "type": "number"
+                                    },
+                                    "maxItems": 3,
+                                    "minItems": 3
+                                  },
+                                  "radius": {
+                                    "description": "Distance to the `lookAt` point.",
+                                    "type": "number",
+                                    "format": "double",
+                                    "minimum": 0
+                                  }
+                                },
+                                "additionalProperties": false,
+                                "required": ["azimuth", "altitude", "lookAt", "radius"]
+                              },
+                              "matrix": {
+                                "description": "Transform is defined as a matrix. If set, do not set `trs` or `azimuthAltitude`.",
+                                "type": "array",
+                                "items": {
+                                  "format": "double",
+                                  "type": "number"
+                                },
+                                "maxItems": 16,
+                                "minItems": 16
+                              },
+                              "trs": {
+                                "description": "Transform is defined by translation, rotation and scale terms. If set, do not set `matrix` or `azimuthAltitude`.",
+                                "type": "object",
+                                "properties": {
+                                  "rotation": {
+                                    "type": "object",
+                                    "properties": {
+                                      "euler": {
+                                        "description": "Euler angles in degrees.",
+                                        "type": "array",
+                                        "items": {
+                                          "format": "double",
+                                          "type": "number"
+                                        },
+                                        "examples": [[0, 0, 0]],
+                                        "maxItems": 3,
+                                        "minItems": 3
+                                      },
+                                      "quaternion": {
+                                        "description": "In W,X,Y,Z order.",
+                                        "type": "array",
+                                        "items": {
+                                          "format": "double",
+                                          "type": "number"
+                                        },
+                                        "examples": [[1, 0, 0, 0]],
+                                        "maxItems": 4,
+                                        "minItems": 4
+                                      }
+                                    },
+                                    "additionalProperties": false
+                                  },
+                                  "scale": {
+                                    "type": ["array", "null"],
+                                    "items": {
+                                      "format": "double",
+                                      "type": "number"
+                                    },
+                                    "maxItems": 3,
+                                    "minItems": 3
+                                  },
+                                  "translation": {
+                                    "type": ["array", "null"],
+                                    "items": {
+                                      "format": "double",
+                                      "type": "number"
+                                    },
+                                    "examples": [[0, 0, 0]],
+                                    "maxItems": 3,
+                                    "minItems": 3
+                                  }
+                                },
+                                "additionalProperties": false,
+                                "required": ["translation", "rotation", "scale"]
+                              }
+                            },
+                            "additionalProperties": false
+                          }
+                        },
+                        "additionalProperties": false
+                      }
+                    },
+                    "modelsRootNodeTransform": {
+                      "description": "Global transformation applied on the models root node defined in the scene. Overrides the previous value, if it exists.",
+                      "type": "object",
+                      "properties": {
+                        "azimuthAltitude": {
+                          "description": "Transform is defined by azimuth, altitude and radius terms. If set, do not set `matrix` or `trs`.",
+                          "type": "object",
+                          "properties": {
+                            "altitude": {
+                              "description": "Altitude, in degrees, from -90 to 90 degrees.",
+                              "type": "number",
+                              "format": "double",
+                              "maximum": 90,
+                              "minimum": -90
+                            },
+                            "azimuth": {
+                              "description": "Rotation around the vertical axis, in degrees.",
+                              "type": "number",
+                              "format": "double"
+                            },
+                            "lookAt": {
+                              "description": "Look at point coordinates.",
+                              "type": ["array", "null"],
+                              "items": {
+                                "format": "double",
+                                "type": "number"
+                              },
+                              "maxItems": 3,
+                              "minItems": 3
+                            },
+                            "radius": {
+                              "description": "Distance to the `lookAt` point.",
+                              "type": "number",
+                              "format": "double",
+                              "minimum": 0
+                            }
+                          },
+                          "additionalProperties": false,
+                          "required": ["azimuth", "altitude", "lookAt", "radius"]
+                        },
+                        "matrix": {
+                          "description": "Transform is defined as a matrix. If set, do not set `trs` or `azimuthAltitude`.",
+                          "type": "array",
+                          "items": {
+                            "format": "double",
+                            "type": "number"
+                          },
+                          "maxItems": 16,
+                          "minItems": 16
+                        },
+                        "trs": {
+                          "description": "Transform is defined by translation, rotation and scale terms. If set, do not set `matrix` or `azimuthAltitude`.",
+                          "type": "object",
+                          "properties": {
+                            "rotation": {
+                              "type": "object",
+                              "properties": {
+                                "euler": {
+                                  "description": "Euler angles in degrees.",
+                                  "type": "array",
+                                  "items": {
+                                    "format": "double",
+                                    "type": "number"
+                                  },
+                                  "examples": [[0, 0, 0]],
+                                  "maxItems": 3,
+                                  "minItems": 3
+                                },
+                                "quaternion": {
+                                  "description": "In W,X,Y,Z order.",
+                                  "type": "array",
+                                  "items": {
+                                    "format": "double",
+                                    "type": "number"
+                                  },
+                                  "examples": [[1, 0, 0, 0]],
+                                  "maxItems": 4,
+                                  "minItems": 4
+                                }
+                              },
+                              "additionalProperties": false
+                            },
+                            "scale": {
+                              "type": ["array", "null"],
+                              "items": {
+                                "format": "double",
+                                "type": "number"
+                              },
+                              "maxItems": 3,
+                              "minItems": 3
+                            },
+                            "translation": {
+                              "type": ["array", "null"],
+                              "items": {
+                                "format": "double",
+                                "type": "number"
+                              },
+                              "examples": [[0, 0, 0]],
+                              "maxItems": 3,
+                              "minItems": 3
+                            }
+                          },
+                          "additionalProperties": false,
+                          "required": ["translation", "rotation", "scale"]
+                        }
+                      },
+                      "additionalProperties": false
+                    }
+                  },
+                  "additionalProperties": false
+                }
+              },
+              "additionalProperties": false
+            },
+            "sources": {
+              "description": "List of sources to aggregate and run the job against.",
+              "type": ["array", "null"],
+              "items": {
+                "type": "object",
+                "properties": {
+                  "frame.io": {
+                    "description": "Fetch content from a Frame.io folder. ⚠️ All sources are exclusive.",
+                    "deprecated": true,
+                    "type": "object",
+                    "properties": {
+                      "accessToken": {
+                        "type": "string"
+                      },
+                      "folderId": {
+                        "type": "string"
+                      }
+                    },
+                    "additionalProperties": false,
+                    "required": ["folderId", "accessToken"]
+                  },
+                  "mountPoint": {
+                    "description": "Where to mount the content of the source in the virtual job working directory.",
+                    "type": "string",
+                    "default": "/"
+                  },
+                  "next.frame.io": {
+                    "description": "Fetch content from a next.frame.io folder. ⚠️ All sources are exclusive.",
+                    "type": "object",
+                    "properties": {
+                      "accessToken": {
+                        "type": "string"
+                      },
+                      "accountId": {
+                        "type": "string"
+                      },
+                      "folderId": {
+                        "type": "string"
+                      }
+                    },
+                    "additionalProperties": false,
+                    "required": ["folderId", "accountId", "accessToken"]
+                  },
+                  "space": {
+                    "description": "Read content from an existing space (can be another job's output, or uploaded manually with the space API). ⚠️ All sources are exclusive.'",
+                    "type": "object",
+                    "properties": {
+                      "id": {
+                        "description": "A space ID.",
+                        "type": "string"
+                      }
+                    },
+                    "additionalProperties": false,
+                    "required": ["id"]
+                  },
+                  "url": {
+                    "description": "Fetch content from a URL. ⚠️ All sources are exclusive.",
+                    "type": "object",
+                    "properties": {
+                      "filename": {
+                        "description": "Filename override. If unset, the service will try to detect the filename from the content disposition header, then the URL itself.",
+                        "type": "string"
+                      },
+                      "url": {
+                        "description": "URL to fetch content from.",
+                        "type": "string",
+                        "examples": ["https://cdn.substance3d.com/v2/files/public/stepladder.usdz"]
+                      }
+                    },
+                    "additionalProperties": false,
+                    "required": ["url"]
+                  }
+                },
+                "additionalProperties": false
+              },
+              "maxItems": 16,
+              "minItems": 1
+            }
+          },
+          "additionalProperties": false,
+          "examples": [
+            {
+              "encoding": "usdz",
+              "fileBaseName": "scene",
+              "scene": {
+                "models": {
+                  "imports": [
+                    {
+                      "file": "WaterBottle.glb"
+                    },
+                    {
+                      "file": "WaterBottle.glb",
+                      "transform": {
+                        "trs": {
+                          "rotation": {
+                            "euler": [30, 0, 0]
+                          },
+                          "scale": [1, 1, 1],
+                          "translation": [0.15, 0, 0]
+                        }
+                      }
+                    }
+                  ]
+                }
+              },
+              "sources": [
+                {
+                  "url": {
+                    "url": "https://raw.githubusercontent.com/KhronosGroup/glTF-Sample-Models/master/2.0/WaterBottle/glTF-Binary/WaterBottle.glb"
+                  }
+                }
+              ]
+            },
+            {
+              "encoding": "usdz",
+              "fileBaseName": "scene",
+              "scene": {
+                "models": {
+                  "imports": [
+                    {
+                      "file": "WaterBottle.glb"
+                    },
+                    {
+                      "file": "WaterBottle.glb",
+                      "transform": {
+                        "trs": {
+                          "rotation": {
+                            "euler": [30, 0, 0]
+                          },
+                          "scale": [1, 1, 1],
+                          "translation": [0.15, 0, 0]
+                        }
+                      }
+                    }
+                  ]
+                }
+              },
+              "sources": [
+                {
+                  "url": {
+                    "url": "https://raw.githubusercontent.com/KhronosGroup/glTF-Sample-Models/master/2.0/WaterBottle/glTF-Binary/WaterBottle.glb"
+                  }
+                }
+              ]
+            }
+          ],
+          "required": ["scene", "sources", "encoding", "fileBaseName"],
+          "description": "The JSON request body."
+        }
+      }
+    },
+    "method": "post",
+    "pathTemplate": "/v1/scenes/assemble",
+    "parameters": [
+      {
+        "name": "wait",
+        "in": "query",
+        "description": "Blocking mode (acts like a synchronous API call). Wait for the result before returning. ⚠️ Some operations are long, please be sure to configure your client timeout settings accordingly.",
+        "schema": {
+          "description": "Blocking mode (acts like a synchronous API call). Wait for the result before returning. ⚠️ Some operations are long, please be sure to configure your client timeout settings accordingly.",
+          "type": "boolean",
+          "default": false
+        },
+        "explode": false
+      }
+    ],
+    "executionParameters": [
+      {
+        "name": "wait",
+        "in": "query"
+      }
+    ],
+    "requestBodyContentType": "application/json",
+    "securityRequirements": [
+      {
+        "bearerAuth": []
+      }
+    ],
+    "operationId": "v1_scenes_assemble",
+    "baseUrl": "https://s3d.adobe.io"
+  },
+  {
+    "name": "v1_scenes_convert",
+    "description": "Convert a 3D file into another 3D format with the Substance 3D API.",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "wait": {
+          "description": "Blocking mode (acts like a synchronous API call). Wait for the result before returning. ⚠️ Some operations are long, please be sure to configure your client timeout settings accordingly.",
+          "type": "boolean",
+          "default": false
+        },
+        "requestBody": {
+          "type": "object",
+          "properties": {
+            "$schema": {
+              "description": "A URL to the JSON schema for this object.",
+              "type": "string",
+              "format": "uri",
+              "examples": ["https://s3d.adobe.io/schemas/restv1beta.ModelConvertRequest.json"]
+            },
+            "format": {
+              "description": "Output format.",
+              "type": "string",
+              "enum": ["glb", "gltf", "fbx", "usdz", "usda", "usdc", "obj"],
+              "examples": ["glb"]
+            },
+            "modelEntrypoint": {
+              "description": "Conversion usually takes the first file that's considered a valid 3D model. Define this entry point to disambiguate when there are multiple options.",
+              "type": "string"
+            },
+            "sources": {
+              "description": "List of sources to aggregate and run the job against.",
+              "type": ["array", "null"],
+              "items": {
+                "type": "object",
+                "properties": {
+                  "frame.io": {
+                    "description": "Fetch content from a Frame.io folder. ⚠️ All sources are exclusive.",
+                    "deprecated": true,
+                    "type": "object",
+                    "properties": {
+                      "accessToken": {
+                        "type": "string"
+                      },
+                      "folderId": {
+                        "type": "string"
+                      }
+                    },
+                    "additionalProperties": false,
+                    "required": ["folderId", "accessToken"]
+                  },
+                  "mountPoint": {
+                    "description": "Where to mount the content of the source in the virtual job working directory.",
+                    "type": "string",
+                    "default": "/"
+                  },
+                  "next.frame.io": {
+                    "description": "Fetch content from a next.frame.io folder. ⚠️ All sources are exclusive.",
+                    "type": "object",
+                    "properties": {
+                      "accessToken": {
+                        "type": "string"
+                      },
+                      "accountId": {
+                        "type": "string"
+                      },
+                      "folderId": {
+                        "type": "string"
+                      }
+                    },
+                    "additionalProperties": false,
+                    "required": ["folderId", "accountId", "accessToken"]
+                  },
+                  "space": {
+                    "description": "Read content from an existing space (can be another job's output, or uploaded manually with the space API). ⚠️ All sources are exclusive.'",
+                    "type": "object",
+                    "properties": {
+                      "id": {
+                        "description": "A space ID.",
+                        "type": "string"
+                      }
+                    },
+                    "additionalProperties": false,
+                    "required": ["id"]
+                  },
+                  "url": {
+                    "description": "Fetch content from a URL. ⚠️ All sources are exclusive.",
+                    "type": "object",
+                    "properties": {
+                      "filename": {
+                        "description": "Filename override. If unset, the service will try to detect the filename from the content disposition header, then the URL itself.",
+                        "type": "string"
+                      },
+                      "url": {
+                        "description": "URL to fetch content from.",
+                        "type": "string",
+                        "examples": ["https://cdn.substance3d.com/v2/files/public/stepladder.usdz"]
+                      }
+                    },
+                    "additionalProperties": false,
+                    "required": ["url"]
+                  }
+                },
+                "additionalProperties": false
+              },
+              "maxItems": 16,
+              "minItems": 1
+            }
+          },
+          "additionalProperties": false,
+          "examples": [
+            {
+              "format": "glb",
+              "sources": [
+                {
+                  "url": {
+                    "url": "https://cdn.substance3d.com/v2/files/public/stepladder.usdz"
+                  }
+                }
+              ]
+            },
+            {
+              "format": "glb",
+              "sources": [
+                {
+                  "url": {
+                    "url": "https://cdn.substance3d.com/v2/files/public/stepladder.usdz"
+                  }
+                }
+              ]
+            },
+            {
+              "format": "glb",
+              "sources": [
+                {
+                  "url": {
+                    "url": "https://cdn.substance3d.com/v2/files/public/stepladder.usdz"
+                  }
+                }
+              ]
+            }
+          ],
+          "required": ["format", "sources"],
+          "description": "The JSON request body."
+        }
+      }
+    },
+    "method": "post",
+    "pathTemplate": "/v1/scenes/convert",
+    "parameters": [
+      {
+        "name": "wait",
+        "in": "query",
+        "description": "Blocking mode (acts like a synchronous API call). Wait for the result before returning. ⚠️ Some operations are long, please be sure to configure your client timeout settings accordingly.",
+        "schema": {
+          "description": "Blocking mode (acts like a synchronous API call). Wait for the result before returning. ⚠️ Some operations are long, please be sure to configure your client timeout settings accordingly.",
+          "type": "boolean",
+          "default": false
+        },
+        "explode": false
+      }
+    ],
+    "executionParameters": [
+      {
+        "name": "wait",
+        "in": "query"
+      }
+    ],
+    "requestBodyContentType": "application/json",
+    "securityRequirements": [
+      {
+        "bearerAuth": []
+      }
+    ],
+    "operationId": "v1_scenes_convert",
+    "baseUrl": "https://s3d.adobe.io"
+  },
+  {
+    "name": "v1_scenes_describe",
+    "description": "Describe a 3D scene.",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "wait": {
+          "description": "Blocking mode (acts like a synchronous API call). Wait for the result before returning. ⚠️ Some operations are long, please be sure to configure your client timeout settings accordingly.",
+          "type": "boolean",
+          "default": false
+        },
+        "requestBody": {
+          "type": "object",
+          "properties": {
+            "$schema": {
+              "description": "A URL to the JSON schema for this object.",
+              "type": "string",
+              "format": "uri",
+              "examples": ["https://s3d.adobe.io/schemas/restv1beta.SceneDescRequest.json"]
+            },
+            "sceneFile": {
+              "description": "Path to the scene file in `sources`. If the value is `null`, the first found scene file will be used.",
+              "type": "string"
+            },
+            "sources": {
+              "description": "List of sources to aggregate and run the job against.",
+              "type": ["array", "null"],
+              "items": {
+                "type": "object",
+                "properties": {
+                  "frame.io": {
+                    "description": "Fetch content from a Frame.io folder. ⚠️ All sources are exclusive.",
+                    "deprecated": true,
+                    "type": "object",
+                    "properties": {
+                      "accessToken": {
+                        "type": "string"
+                      },
+                      "folderId": {
+                        "type": "string"
+                      }
+                    },
+                    "additionalProperties": false,
+                    "required": ["folderId", "accessToken"]
+                  },
+                  "mountPoint": {
+                    "description": "Where to mount the content of the source in the virtual job working directory.",
+                    "type": "string",
+                    "default": "/"
+                  },
+                  "next.frame.io": {
+                    "description": "Fetch content from a next.frame.io folder. ⚠️ All sources are exclusive.",
+                    "type": "object",
+                    "properties": {
+                      "accessToken": {
+                        "type": "string"
+                      },
+                      "accountId": {
+                        "type": "string"
+                      },
+                      "folderId": {
+                        "type": "string"
+                      }
+                    },
+                    "additionalProperties": false,
+                    "required": ["folderId", "accountId", "accessToken"]
+                  },
+                  "space": {
+                    "description": "Read content from an existing space (can be another job's output, or uploaded manually with the space API). ⚠️ All sources are exclusive.'",
+                    "type": "object",
+                    "properties": {
+                      "id": {
+                        "description": "A space ID.",
+                        "type": "string"
+                      }
+                    },
+                    "additionalProperties": false,
+                    "required": ["id"]
+                  },
+                  "url": {
+                    "description": "Fetch content from a URL. ⚠️ All sources are exclusive.",
+                    "type": "object",
+                    "properties": {
+                      "filename": {
+                        "description": "Filename override. If unset, the service will try to detect the filename from the content disposition header, then the URL itself.",
+                        "type": "string"
+                      },
+                      "url": {
+                        "description": "URL to fetch content from.",
+                        "type": "string",
+                        "examples": ["https://cdn.substance3d.com/v2/files/public/stepladder.usdz"]
+                      }
+                    },
+                    "additionalProperties": false,
+                    "required": ["url"]
+                  }
+                },
+                "additionalProperties": false
+              },
+              "maxItems": 16,
+              "minItems": 1
+            }
+          },
+          "additionalProperties": false,
+          "examples": [
+            {
+              "sources": [
+                {
+                  "url": {
+                    "url": "https://cdn.substance3d.com/v2/files/public/stepladder.usdz"
+                  }
+                }
+              ]
+            },
+            {
+              "sources": [
+                {
+                  "url": {
+                    "url": "https://cdn.substance3d.com/v2/files/public/stepladder.usdz"
+                  }
+                }
+              ]
+            }
+          ],
+          "required": ["sources"],
+          "description": "The JSON request body."
+        }
+      }
+    },
+    "method": "post",
+    "pathTemplate": "/v1/scenes/describe",
+    "parameters": [
+      {
+        "name": "wait",
+        "in": "query",
+        "description": "Blocking mode (acts like a synchronous API call). Wait for the result before returning. ⚠️ Some operations are long, please be sure to configure your client timeout settings accordingly.",
+        "schema": {
+          "description": "Blocking mode (acts like a synchronous API call). Wait for the result before returning. ⚠️ Some operations are long, please be sure to configure your client timeout settings accordingly.",
+          "type": "boolean",
+          "default": false
+        },
+        "explode": false
+      }
+    ],
+    "executionParameters": [
+      {
+        "name": "wait",
+        "in": "query"
+      }
+    ],
+    "requestBodyContentType": "application/json",
+    "securityRequirements": [
+      {
+        "bearerAuth": []
+      }
+    ],
+    "operationId": "v1_scenes_describe",
+    "baseUrl": "https://s3d.adobe.io"
+  },
+  {
+    "name": "v1_scenes_render",
+    "description": "Render a 3D object with the Substance 3D API.",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "wait": {
+          "description": "Blocking mode (acts like a synchronous API call). Wait for the result before returning. ⚠️ Some operations are long, please be sure to configure your client timeout settings accordingly.",
+          "type": "boolean",
+          "default": false
+        },
+        "requestBody": {
+          "type": "object",
+          "properties": {
+            "$schema": {
+              "description": "A URL to the JSON schema for this object.",
+              "type": "string",
+              "format": "uri",
+              "examples": ["https://s3d.adobe.io/schemas/restv1beta.RenderSceneRequest.json"]
+            },
+            "autoFraming": {
+              "description": "Auto-framing related options.",
+              "type": "object",
+              "properties": {
+                "algorithm": {
+                  "type": "string",
+                  "default": "auto",
+                  "enum": ["auto", "bounding_cylinder", "frustum_fit"]
+                },
+                "zoomFactor": {
+                  "description": "A value of 1 indicates tight framing. Less than 1 is a zoom-out. Greater than 1 is a zoom-in.",
+                  "type": "number",
+                  "format": "double",
+                  "default": 0.8,
+                  "maximum": 100,
+                  "minimum": 0.001
+                }
+              },
+              "additionalProperties": false
+            },
+            "background": {
+              "description": "Background related options.",
+              "type": "object",
+              "properties": {
+                "backgroundColor": {
+                  "description": "RGBA background color. Has an effect only if `showEnvironment` is `false`. Each component has to be in the [0,1] range.",
+                  "type": ["array", "null"],
+                  "items": {
+                    "format": "double",
+                    "type": "number"
+                  },
+                  "default": [0, 0, 0, 0],
+                  "examples": [[0, 0, 0, 0]],
+                  "maxItems": 4,
+                  "minItems": 4
+                },
+                "backgroundImage": {
+                  "description": "Path to a background image. If set, will be used as the background.",
+                  "type": "string"
+                },
+                "showEnvironment": {
+                  "description": "Show the environment map as the background.",
+                  "type": "boolean",
+                  "default": false
+                }
+              },
+              "additionalProperties": false
+            },
+            "cameraName": {
+              "description": "If set, this camera is used to perform the render. The camera has to be defined in the scene.",
+              "type": "string"
+            },
+            "extraOutputs": {
+              "description": "Request additional outputs from the renderer.",
+              "type": "object",
+              "properties": {
+                "exportMaterialIds": {
+                  "description": "Export an image with one color per material.",
+                  "type": "boolean",
+                  "default": false
+                },
+                "exportMaterialMasks": {
+                  "description": "Export one mask per material.",
+                  "type": "object",
+                  "properties": {
+                    "selection": {
+                      "description": "The list of masks to be exported, accepts glob expressions. If empty, all masks will be exported.",
+                      "type": ["array", "null"],
+                      "items": {
+                        "type": "string"
+                      }
+                    }
+                  },
+                  "additionalProperties": false
+                },
+                "exportObjectIds": {
+                  "description": "Export an image with one color per object.",
+                  "type": "boolean",
+                  "default": false
+                },
+                "exportObjectMasks": {
+                  "description": "Export one mask per object.",
+                  "type": "object",
+                  "properties": {
+                    "selection": {
+                      "description": "The list of masks to be exported, accepts glob expressions. If empty, all masks will be exported.",
+                      "type": ["array", "null"],
+                      "items": {
+                        "type": "string"
+                      }
+                    }
+                  },
+                  "additionalProperties": false
+                }
+              },
+              "additionalProperties": false
+            },
+            "groundPlane": {
+              "description": "Options related to the ground plane.",
+              "type": "object",
+              "properties": {
+                "autoGroundScene": {
+                  "description": "Automatically position the scene on the ground plane. Moves the scene along the vertical axis.",
+                  "type": "boolean",
+                  "default": true
+                },
+                "enable": {
+                  "description": "Enable/disable the ground plane.",
+                  "type": "boolean",
+                  "default": true
+                },
+                "reflections": {
+                  "description": "Enable/disable reflections onto the ground plane.",
+                  "type": "boolean",
+                  "default": false
+                },
+                "reflectionsOpacity": {
+                  "description": "Controls the opacity of the reflections. Useful for compositing purposes.",
+                  "type": "number",
+                  "format": "double",
+                  "default": 1,
+                  "maximum": 1,
+                  "minimum": 0
+                },
+                "reflectionsRoughness": {
+                  "description": "Controls the roughness of the reflections. Useful for compositing purposes.",
+                  "type": "number",
+                  "format": "double",
+                  "default": 0,
+                  "maximum": 1,
+                  "minimum": 0
+                },
+                "shadows": {
+                  "description": "Controls whether the ground plane catches shadows or not.",
+                  "type": "boolean",
+                  "default": true
+                },
+                "shadowsOpacity": {
+                  "description": "Controls the opacity of cast shadows. Only has effect if shadows are enabled.",
+                  "type": "number",
+                  "format": "double",
+                  "default": 1,
+                  "maximum": 1,
+                  "minimum": 0
+                }
+              },
+              "additionalProperties": false
+            },
+            "scene": {
+              "type": "object",
+              "properties": {
+                "baseFile": {
+                  "description": "Define a scene from a file. If value is `null`, an empty scene will be created.",
+                  "type": "object",
+                  "properties": {
+                    "file": {
+                      "description": "Path to the scene file in `sources`.",
+                      "type": "string"
+                    },
+                    "modelsRootNodeName": {
+                      "description": "Define root node for models in scene graph. If not found, the node which is parent of all models in the scene will be used. If this node doesn't exist, a new node will be created under global root.",
+                      "type": "string"
+                    }
+                  },
+                  "additionalProperties": false,
+                  "required": ["file"]
+                },
+                "camera": {
+                  "description": "Define a new camera for the scene.",
+                  "type": "object",
+                  "properties": {
+                    "focal": {
+                      "description": "Camera focal length, in mm.",
+                      "type": "number",
+                      "format": "double",
+                      "default": 50,
+                      "maximum": 1000,
+                      "minimum": 10
+                    },
+                    "sensorWidth": {
+                      "description": "Camera sensor width, in mm.",
+                      "type": "number",
+                      "format": "double",
+                      "default": 36,
+                      "maximum": 100,
+                      "minimum": 1
+                    },
+                    "transform": {
+                      "description": "Controls the position and angle of the camera.",
+                      "type": "object",
+                      "properties": {
+                        "azimuthAltitude": {
+                          "description": "Transform is defined by azimuth, altitude and radius terms. If set, do not set `matrix` or `trs`.",
+                          "type": "object",
+                          "properties": {
+                            "altitude": {
+                              "description": "Altitude, in degrees, from -90 to 90 degrees.",
+                              "type": "number",
+                              "format": "double",
+                              "maximum": 90,
+                              "minimum": -90
+                            },
+                            "azimuth": {
+                              "description": "Rotation around the vertical axis, in degrees.",
+                              "type": "number",
+                              "format": "double"
+                            },
+                            "lookAt": {
+                              "description": "Look at point coordinates.",
+                              "type": ["array", "null"],
+                              "items": {
+                                "format": "double",
+                                "type": "number"
+                              },
+                              "maxItems": 3,
+                              "minItems": 3
+                            },
+                            "radius": {
+                              "description": "Distance to the `lookAt` point.",
+                              "type": "number",
+                              "format": "double",
+                              "minimum": 0
+                            }
+                          },
+                          "additionalProperties": false,
+                          "required": ["azimuth", "altitude", "lookAt", "radius"]
+                        },
+                        "matrix": {
+                          "description": "Transform is defined as a matrix. If set, do not set `trs` or `azimuthAltitude`.",
+                          "type": "array",
+                          "items": {
+                            "format": "double",
+                            "type": "number"
+                          },
+                          "maxItems": 16,
+                          "minItems": 16
+                        },
+                        "trs": {
+                          "description": "Transform is defined by translation, rotation and scale terms. If set, do not set `matrix` or `azimuthAltitude`.",
+                          "type": "object",
+                          "properties": {
+                            "rotation": {
+                              "type": "object",
+                              "properties": {
+                                "euler": {
+                                  "description": "Euler angles in degrees.",
+                                  "type": "array",
+                                  "items": {
+                                    "format": "double",
+                                    "type": "number"
+                                  },
+                                  "examples": [[0, 0, 0]],
+                                  "maxItems": 3,
+                                  "minItems": 3
+                                },
+                                "quaternion": {
+                                  "description": "In W,X,Y,Z order.",
+                                  "type": "array",
+                                  "items": {
+                                    "format": "double",
+                                    "type": "number"
+                                  },
+                                  "examples": [[1, 0, 0, 0]],
+                                  "maxItems": 4,
+                                  "minItems": 4
+                                }
+                              },
+                              "additionalProperties": false
+                            },
+                            "scale": {
+                              "type": ["array", "null"],
+                              "items": {
+                                "format": "double",
+                                "type": "number"
+                              },
+                              "maxItems": 3,
+                              "minItems": 3
+                            },
+                            "translation": {
+                              "type": ["array", "null"],
+                              "items": {
+                                "format": "double",
+                                "type": "number"
+                              },
+                              "examples": [[0, 0, 0]],
+                              "maxItems": 3,
+                              "minItems": 3
+                            }
+                          },
+                          "additionalProperties": false,
+                          "required": ["translation", "rotation", "scale"]
+                        }
+                      },
+                      "additionalProperties": false
+                    }
+                  },
+                  "additionalProperties": false
+                },
+                "environment": {
+                  "description": "Define the environment for the scene. Override the previous existing environment.",
+                  "type": "object",
+                  "properties": {
+                    "exposure": {
+                      "description": "Exposure, in EV (0=neutral).",
+                      "type": "number",
+                      "format": "double",
+                      "default": 0,
+                      "maximum": 10,
+                      "minimum": -10
+                    },
+                    "file": {
+                      "description": "Path to the environment file in `sources`. If the value is `null`, the first found environment file will be used.",
+                      "type": "string"
+                    },
+                    "preserveLights": {
+                      "description": "A scene may contain 3D lights, like area lights or spot lights. By default, all those lights are removed when a new environment is set. Set this option to `true` to preserve the scene 3D lights.",
+                      "type": "boolean",
+                      "default": false
+                    },
+                    "rotation": {
+                      "type": "object",
+                      "properties": {
+                        "euler": {
+                          "description": "Euler angles in degrees.",
+                          "type": "array",
+                          "items": {
+                            "format": "double",
+                            "type": "number"
+                          },
+                          "examples": [[0, 0, 0]],
+                          "maxItems": 3,
+                          "minItems": 3
+                        },
+                        "quaternion": {
+                          "description": "In W,X,Y,Z order.",
+                          "type": "array",
+                          "items": {
+                            "format": "double",
+                            "type": "number"
+                          },
+                          "examples": [[1, 0, 0, 0]],
+                          "maxItems": 4,
+                          "minItems": 4
+                        }
+                      },
+                      "additionalProperties": false,
+                      "description": "Controls the orientation of the environment map."
+                    }
+                  },
+                  "additionalProperties": false
+                },
+                "materials": {
+                  "description": "Assign new materials to geometric primitives.",
+                  "type": ["array", "null"],
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "material": {
+                        "description": "The material definition.",
+                        "type": "object",
+                        "properties": {
+                          "sbs": {
+                            "description": "The PBR material definition.",
+                            "type": "object",
+                            "properties": {
+                              "preset": {
+                                "description": "Select a preset to be used for the substance material rendering.",
+                                "type": "string"
+                              },
+                              "resolution": {
+                                "description": "Substance material render resolution. This should be a power of two.",
+                                "type": "integer",
+                                "format": "int64",
+                                "enum": [16, 32, 64, 128, 256, 512, 1024, 2048, 4096],
+                                "maximum": 4096,
+                                "minimum": 16
+                              },
+                              "rotation": {
+                                "description": "Texture space rotation.",
+                                "type": "number",
+                                "format": "double"
+                              },
+                              "sbsar": {
+                                "description": "Path to a substance material; if not set, the first substance 3D material found in sources will be used.",
+                                "type": "string"
+                              },
+                              "scale": {
+                                "description": "Texture space scale.",
+                                "type": "array",
+                                "items": {
+                                  "format": "double",
+                                  "type": "number"
+                                },
+                                "maxItems": 2,
+                                "minItems": 2
+                              },
+                              "translation": {
+                                "description": "Texture space translation.",
+                                "type": "array",
+                                "items": {
+                                  "format": "double",
+                                  "type": "number"
+                                },
+                                "maxItems": 2,
+                                "minItems": 2
+                              }
+                            },
+                            "additionalProperties": false
+                          },
+                          "solidColor": {
+                            "description": "The solid color material definition.",
+                            "type": "object",
+                            "properties": {
+                              "color": {
+                                "description": "RGB color of the solid material, each component has to be in the [0,1] range.",
+                                "type": ["array", "null"],
+                                "items": {
+                                  "format": "double",
+                                  "type": "number"
+                                },
+                                "default": [0, 0, 0],
+                                "maxItems": 3,
+                                "minItems": 3
+                              },
+                              "metallicFactor": {
+                                "description": "Metallic factor of the solid material, has to be in the [0,1] range.",
+                                "type": "number",
+                                "format": "double",
+                                "maximum": 1,
+                                "minimum": 0
+                              },
+                              "roughnessFactor": {
+                                "description": "Roughness factor of the solid material, has to be in the [0,1] range.",
+                                "type": "number",
+                                "format": "double",
+                                "maximum": 1,
+                                "minimum": 0
+                              }
+                            },
+                            "additionalProperties": false,
+                            "required": ["color"]
+                          }
+                        },
+                        "additionalProperties": false
+                      },
+                      "materialName": {
+                        "description": "Desired material name, it will be sanitized to make a valid USD prim name.",
+                        "type": "string"
+                      },
+                      "nodeList": {
+                        "description": "List of nodes under which geometric primitives will have this material assigned. Each entry can be a full node name or a glob expression.",
+                        "type": ["array", "null"],
+                        "items": {
+                          "type": "string"
+                        }
+                      },
+                      "assignByDefault": {
+                        "description": "Set to true to assign this material by default to all geometric primitives."
+                      },
+                      "excludeFromDefault": {
+                        "description": "List of nodes to exclude from default assignment."
+                      }
+                    },
+                    "additionalProperties": false,
+                    "required": ["materialName", "material", "nodeList"]
+                  }
+                },
+                "metersPerUnit": {
+                  "description": "Length of a scene unit, in meters. Defaults to `baseFile` meters per unit if any, or 0.01 (centimeters) otherwise.",
+                  "type": "number",
+                  "format": "double",
+                  "exclusiveMinimum": 0
+                },
+                "models": {
+                  "description": "Define additional models for the scene.",
+                  "type": "object",
+                  "properties": {
+                    "imports": {
+                      "description": "List of model import definitions.",
+                      "type": ["array", "null"],
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "anchorName": {
+                            "description": "Node name in scene graph which used as parent for the model. If anchor is not found, a node with the anchor name will be generated under models root node. And If value is `null`, a node will be generated under models root node.",
+                            "type": "string"
+                          },
+                          "file": {
+                            "description": "Path to the model file in `sources`. If the value is `null`, the first found model file will be used.",
+                            "type": "string"
+                          },
+                          "formatOptions": {
+                            "description": "Define options specific for the model file format.",
+                            "type": "object",
+                            "properties": {
+                              "usd": {
+                                "description": "USD format options.",
+                                "type": "object",
+                                "properties": {
+                                  "variants": {
+                                    "description": "List of USD variants definition applied on USD primitives.",
+                                    "type": ["array", "null"],
+                                    "items": {
+                                      "type": "object",
+                                      "properties": {
+                                        "primName": {
+                                          "type": "string"
+                                        },
+                                        "variant": {
+                                          "type": "string"
+                                        },
+                                        "variantSet": {
+                                          "type": "string"
+                                        }
+                                      },
+                                      "additionalProperties": false,
+                                      "required": ["primName", "variantSet", "variant"]
+                                    }
+                                  }
+                                },
+                                "additionalProperties": false,
+                                "required": ["variants"]
+                              }
+                            },
+                            "additionalProperties": false,
+                            "required": ["usd"]
+                          },
+                          "materialOverrides": {
+                            "description": "Define material overrides.",
+                            "type": ["array", "null"],
+                            "items": {
+                              "type": "object",
+                              "properties": {
+                                "absorptionColorFactor": {
+                                  "description": "RGB float color value, for example white is [1.0,1.0,1.0].",
+                                  "type": "array",
+                                  "items": {
+                                    "format": "double",
+                                    "type": "number"
+                                  },
+                                  "default": [0, 0, 0],
+                                  "maxItems": 3,
+                                  "minItems": 3
+                                },
+                                "absorptionColorTexture": {
+                                  "type": "string"
+                                },
+                                "absorptionDistanceFactor": {
+                                  "type": "number",
+                                  "format": "double",
+                                  "minimum": 0
+                                },
+                                "absorptionDistanceTexture": {
+                                  "type": "string"
+                                },
+                                "baseColorFactor": {
+                                  "description": "RGB float color value, for example white is [1.0,1.0,1.0].",
+                                  "type": "array",
+                                  "items": {
+                                    "format": "double",
+                                    "type": "number"
+                                  },
+                                  "default": [0, 0, 0],
+                                  "maxItems": 3,
+                                  "minItems": 3
+                                },
+                                "baseColorTexture": {
+                                  "type": "string"
+                                },
+                                "coatColorFactor": {
+                                  "description": "RGB float color value, for example white is [1.0,1.0,1.0].",
+                                  "type": "array",
+                                  "items": {
+                                    "format": "double",
+                                    "type": "number"
+                                  },
+                                  "default": [0, 0, 0],
+                                  "maxItems": 3,
+                                  "minItems": 3
+                                },
+                                "coatColorTexture": {
+                                  "type": "string"
+                                },
+                                "coatOpacityFactor": {
+                                  "type": "number",
+                                  "format": "double",
+                                  "maximum": 1,
+                                  "minimum": 0
+                                },
+                                "coatOpacityTexture": {
+                                  "type": "string"
+                                },
+                                "coatRoughnessFactor": {
+                                  "type": "number",
+                                  "format": "double",
+                                  "maximum": 1,
+                                  "minimum": 0
+                                },
+                                "coatRoughnessTexture": {
+                                  "type": "string"
+                                },
+                                "materialName": {
+                                  "type": "string"
+                                },
+                                "metallicFactor": {
+                                  "type": "number",
+                                  "format": "double",
+                                  "maximum": 1,
+                                  "minimum": 0
+                                },
+                                "metallicTexture": {
+                                  "type": "string"
+                                },
+                                "normalFactor": {
+                                  "type": "array",
+                                  "items": {
+                                    "format": "double",
+                                    "type": "number"
+                                  },
+                                  "maxItems": 3,
+                                  "minItems": 3
+                                },
+                                "normalTexture": {
+                                  "type": "string"
+                                },
+                                "opacityFactor": {
+                                  "type": "number",
+                                  "format": "double",
+                                  "minimum": 0
+                                },
+                                "opacityTexture": {
+                                  "type": "string"
+                                },
+                                "pbrMaterial": {
+                                  "type": "object",
+                                  "properties": {
+                                    "preset": {
+                                      "description": "Select a preset to be used for the substance material rendering.",
+                                      "type": "string"
+                                    },
+                                    "resolution": {
+                                      "description": "Substance material render resolution. This should be a power of two.",
+                                      "type": "integer",
+                                      "format": "int64",
+                                      "enum": [16, 32, 64, 128, 256, 512, 1024, 2048, 4096],
+                                      "maximum": 4096,
+                                      "minimum": 16
+                                    },
+                                    "rotation": {
+                                      "description": "Texture space rotation.",
+                                      "type": "number",
+                                      "format": "double"
+                                    },
+                                    "sbsar": {
+                                      "description": "Path to a substance material; if not set, the first substance 3D material found in sources will be used.",
+                                      "type": "string"
+                                    },
+                                    "scale": {
+                                      "description": "Texture space scale.",
+                                      "type": "array",
+                                      "items": {
+                                        "format": "double",
+                                        "type": "number"
+                                      },
+                                      "maxItems": 2,
+                                      "minItems": 2
+                                    },
+                                    "translation": {
+                                      "description": "Texture space translation.",
+                                      "type": "array",
+                                      "items": {
+                                        "format": "double",
+                                        "type": "number"
+                                      },
+                                      "maxItems": 2,
+                                      "minItems": 2
+                                    }
+                                  },
+                                  "additionalProperties": false
+                                },
+                                "roughnessFactor": {
+                                  "type": "number",
+                                  "format": "double",
+                                  "maximum": 1,
+                                  "minimum": 0
+                                },
+                                "roughnessTexture": {
+                                  "type": "string"
+                                },
+                                "translucencyFactor": {
+                                  "type": "number",
+                                  "format": "double",
+                                  "maximum": 1,
+                                  "minimum": 0
+                                },
+                                "translucencyTexture": {
+                                  "type": "string"
+                                },
+                                "volumeThicknessFactor": {
+                                  "type": "number",
+                                  "format": "double",
+                                  "minimum": 0
+                                },
+                                "volumeThicknessTexture": {
+                                  "type": "string"
+                                }
+                              },
+                              "additionalProperties": false,
+                              "required": ["materialName"]
+                            }
+                          },
+                          "transform": {
+                            "description": "Transform applied on the anchor node. Overrides the previous value, if it exists.",
+                            "type": "object",
+                            "properties": {
+                              "azimuthAltitude": {
+                                "description": "Transform is defined by azimuth, altitude and radius terms. If set, do not set `matrix` or `trs`.",
+                                "type": "object",
+                                "properties": {
+                                  "altitude": {
+                                    "description": "Altitude, in degrees, from -90 to 90 degrees.",
+                                    "type": "number",
+                                    "format": "double",
+                                    "maximum": 90,
+                                    "minimum": -90
+                                  },
+                                  "azimuth": {
+                                    "description": "Rotation around the vertical axis, in degrees.",
+                                    "type": "number",
+                                    "format": "double"
+                                  },
+                                  "lookAt": {
+                                    "description": "Look at point coordinates.",
+                                    "type": ["array", "null"],
+                                    "items": {
+                                      "format": "double",
+                                      "type": "number"
+                                    },
+                                    "maxItems": 3,
+                                    "minItems": 3
+                                  },
+                                  "radius": {
+                                    "description": "Distance to the `lookAt` point.",
+                                    "type": "number",
+                                    "format": "double",
+                                    "minimum": 0
+                                  }
+                                },
+                                "additionalProperties": false,
+                                "required": ["azimuth", "altitude", "lookAt", "radius"]
+                              },
+                              "matrix": {
+                                "description": "Transform is defined as a matrix. If set, do not set `trs` or `azimuthAltitude`.",
+                                "type": "array",
+                                "items": {
+                                  "format": "double",
+                                  "type": "number"
+                                },
+                                "maxItems": 16,
+                                "minItems": 16
+                              },
+                              "trs": {
+                                "description": "Transform is defined by translation, rotation and scale terms. If set, do not set `matrix` or `azimuthAltitude`.",
+                                "type": "object",
+                                "properties": {
+                                  "rotation": {
+                                    "type": "object",
+                                    "properties": {
+                                      "euler": {
+                                        "description": "Euler angles in degrees.",
+                                        "type": "array",
+                                        "items": {
+                                          "format": "double",
+                                          "type": "number"
+                                        },
+                                        "examples": [[0, 0, 0]],
+                                        "maxItems": 3,
+                                        "minItems": 3
+                                      },
+                                      "quaternion": {
+                                        "description": "In W,X,Y,Z order.",
+                                        "type": "array",
+                                        "items": {
+                                          "format": "double",
+                                          "type": "number"
+                                        },
+                                        "examples": [[1, 0, 0, 0]],
+                                        "maxItems": 4,
+                                        "minItems": 4
+                                      }
+                                    },
+                                    "additionalProperties": false
+                                  },
+                                  "scale": {
+                                    "type": ["array", "null"],
+                                    "items": {
+                                      "format": "double",
+                                      "type": "number"
+                                    },
+                                    "maxItems": 3,
+                                    "minItems": 3
+                                  },
+                                  "translation": {
+                                    "type": ["array", "null"],
+                                    "items": {
+                                      "format": "double",
+                                      "type": "number"
+                                    },
+                                    "examples": [[0, 0, 0]],
+                                    "maxItems": 3,
+                                    "minItems": 3
+                                  }
+                                },
+                                "additionalProperties": false,
+                                "required": ["translation", "rotation", "scale"]
+                              }
+                            },
+                            "additionalProperties": false
+                          }
+                        },
+                        "additionalProperties": false
+                      }
+                    },
+                    "modelsRootNodeTransform": {
+                      "description": "Global transformation applied on the models root node defined in the scene. Overrides the previous value, if it exists.",
+                      "type": "object",
+                      "properties": {
+                        "azimuthAltitude": {
+                          "description": "Transform is defined by azimuth, altitude and radius terms. If set, do not set `matrix` or `trs`.",
+                          "type": "object",
+                          "properties": {
+                            "altitude": {
+                              "description": "Altitude, in degrees, from -90 to 90 degrees.",
+                              "type": "number",
+                              "format": "double",
+                              "maximum": 90,
+                              "minimum": -90
+                            },
+                            "azimuth": {
+                              "description": "Rotation around the vertical axis, in degrees.",
+                              "type": "number",
+                              "format": "double"
+                            },
+                            "lookAt": {
+                              "description": "Look at point coordinates.",
+                              "type": ["array", "null"],
+                              "items": {
+                                "format": "double",
+                                "type": "number"
+                              },
+                              "maxItems": 3,
+                              "minItems": 3
+                            },
+                            "radius": {
+                              "description": "Distance to the `lookAt` point.",
+                              "type": "number",
+                              "format": "double",
+                              "minimum": 0
+                            }
+                          },
+                          "additionalProperties": false,
+                          "required": ["azimuth", "altitude", "lookAt", "radius"]
+                        },
+                        "matrix": {
+                          "description": "Transform is defined as a matrix. If set, do not set `trs` or `azimuthAltitude`.",
+                          "type": "array",
+                          "items": {
+                            "format": "double",
+                            "type": "number"
+                          },
+                          "maxItems": 16,
+                          "minItems": 16
+                        },
+                        "trs": {
+                          "description": "Transform is defined by translation, rotation and scale terms. If set, do not set `matrix` or `azimuthAltitude`.",
+                          "type": "object",
+                          "properties": {
+                            "rotation": {
+                              "type": "object",
+                              "properties": {
+                                "euler": {
+                                  "description": "Euler angles in degrees.",
+                                  "type": "array",
+                                  "items": {
+                                    "format": "double",
+                                    "type": "number"
+                                  },
+                                  "examples": [[0, 0, 0]],
+                                  "maxItems": 3,
+                                  "minItems": 3
+                                },
+                                "quaternion": {
+                                  "description": "In W,X,Y,Z order.",
+                                  "type": "array",
+                                  "items": {
+                                    "format": "double",
+                                    "type": "number"
+                                  },
+                                  "examples": [[1, 0, 0, 0]],
+                                  "maxItems": 4,
+                                  "minItems": 4
+                                }
+                              },
+                              "additionalProperties": false
+                            },
+                            "scale": {
+                              "type": ["array", "null"],
+                              "items": {
+                                "format": "double",
+                                "type": "number"
+                              },
+                              "maxItems": 3,
+                              "minItems": 3
+                            },
+                            "translation": {
+                              "type": ["array", "null"],
+                              "items": {
+                                "format": "double",
+                                "type": "number"
+                              },
+                              "examples": [[0, 0, 0]],
+                              "maxItems": 3,
+                              "minItems": 3
+                            }
+                          },
+                          "additionalProperties": false,
+                          "required": ["translation", "rotation", "scale"]
+                        }
+                      },
+                      "additionalProperties": false
+                    }
+                  },
+                  "additionalProperties": false
+                }
+              },
+              "additionalProperties": false,
+              "description": "Define rendering scene primitives."
+            },
+            "size": {
+              "description": "Render size related options.",
+              "type": "object",
+              "properties": {
+                "height": {
+                  "description": "Render height.",
+                  "type": "number",
+                  "format": "int64",
+                  "maximum": 2304,
+                  "minimum": 16
+                },
+                "width": {
+                  "description": "Render width.",
+                  "type": "number",
+                  "format": "int64",
+                  "maximum": 3840,
+                  "minimum": 16
+                }
+              },
+              "additionalProperties": false,
+              "required": ["width", "height"]
+            },
+            "sources": {
+              "description": "List of sources to aggregate and run the job against.",
+              "type": ["array", "null"],
+              "items": {
+                "type": "object",
+                "properties": {
+                  "frame.io": {
+                    "description": "Fetch content from a Frame.io folder. ⚠️ All sources are exclusive.",
+                    "deprecated": true,
+                    "type": "object",
+                    "properties": {
+                      "accessToken": {
+                        "type": "string"
+                      },
+                      "folderId": {
+                        "type": "string"
+                      }
+                    },
+                    "additionalProperties": false,
+                    "required": ["folderId", "accessToken"]
+                  },
+                  "mountPoint": {
+                    "description": "Where to mount the content of the source in the virtual job working directory.",
+                    "type": "string",
+                    "default": "/"
+                  },
+                  "next.frame.io": {
+                    "description": "Fetch content from a next.frame.io folder. ⚠️ All sources are exclusive.",
+                    "type": "object",
+                    "properties": {
+                      "accessToken": {
+                        "type": "string"
+                      },
+                      "accountId": {
+                        "type": "string"
+                      },
+                      "folderId": {
+                        "type": "string"
+                      }
+                    },
+                    "additionalProperties": false,
+                    "required": ["folderId", "accountId", "accessToken"]
+                  },
+                  "space": {
+                    "description": "Read content from an existing space (can be another job's output, or uploaded manually with the space API). ⚠️ All sources are exclusive.'",
+                    "type": "object",
+                    "properties": {
+                      "id": {
+                        "description": "A space ID.",
+                        "type": "string"
+                      }
+                    },
+                    "additionalProperties": false,
+                    "required": ["id"]
+                  },
+                  "url": {
+                    "description": "Fetch content from a URL. ⚠️ All sources are exclusive.",
+                    "type": "object",
+                    "properties": {
+                      "filename": {
+                        "description": "Filename override. If unset, the service will try to detect the filename from the content disposition header, then the URL itself.",
+                        "type": "string"
+                      },
+                      "url": {
+                        "description": "URL to fetch content from.",
+                        "type": "string",
+                        "examples": ["https://cdn.substance3d.com/v2/files/public/stepladder.usdz"]
+                      }
+                    },
+                    "additionalProperties": false,
+                    "required": ["url"]
+                  }
+                },
+                "additionalProperties": false
+              },
+              "maxItems": 16,
+              "minItems": 1
+            }
+          },
+          "additionalProperties": false,
+          "examples": [
+            {
+              "scene": {
+                "models": {
+                  "imports": [
+                    {
+                      "file": "WaterBottle.glb"
+                    }
+                  ]
+                }
+              },
+              "sources": [
+                {
+                  "url": {
+                    "url": "https://raw.githubusercontent.com/KhronosGroup/glTF-Sample-Models/master/2.0/WaterBottle/glTF-Binary/WaterBottle.glb"
+                  }
+                }
+              ]
+            },
+            {
+              "scene": {
+                "models": {
+                  "imports": [
+                    {
+                      "file": "WaterBottle.glb"
+                    }
+                  ]
+                }
+              },
+              "sources": [
+                {
+                  "url": {
+                    "url": "https://raw.githubusercontent.com/KhronosGroup/glTF-Sample-Models/master/2.0/WaterBottle/glTF-Binary/WaterBottle.glb"
+                  }
+                }
+              ]
+            }
+          ],
+          "required": ["scene", "sources"],
+          "description": "The JSON request body."
+        }
+      }
+    },
+    "method": "post",
+    "pathTemplate": "/v1/scenes/render",
+    "parameters": [
+      {
+        "name": "wait",
+        "in": "query",
+        "description": "Blocking mode (acts like a synchronous API call). Wait for the result before returning. ⚠️ Some operations are long, please be sure to configure your client timeout settings accordingly.",
+        "schema": {
+          "description": "Blocking mode (acts like a synchronous API call). Wait for the result before returning. ⚠️ Some operations are long, please be sure to configure your client timeout settings accordingly.",
+          "type": "boolean",
+          "default": false
+        },
+        "explode": false
+      }
+    ],
+    "executionParameters": [
+      {
+        "name": "wait",
+        "in": "query"
+      }
+    ],
+    "requestBodyContentType": "application/json",
+    "securityRequirements": [
+      {
+        "bearerAuth": []
+      }
+    ],
+    "operationId": "v1_scenes_render",
+    "baseUrl": "https://s3d.adobe.io"
+  },
+  {
+    "name": "v1_scenes_render-basic",
+    "description": "Render a 3D object (basic version) with the Substance 3D API.",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "wait": {
+          "description": "Blocking mode (acts like a synchronous API call). Wait for the result before returning. ⚠️ Some operations are long, please be sure to configure your client timeout settings accordingly.",
+          "type": "boolean",
+          "default": false
+        },
+        "requestBody": {
+          "type": "object",
+          "properties": {
+            "$schema": {
+              "description": "A URL to the JSON schema for this object.",
+              "type": "string",
+              "format": "uri",
+              "examples": ["https://s3d.adobe.io/schemas/restv1beta.RenderModelRequest.json"]
+            },
+            "autoFraming": {
+              "description": "Options related to auto-framing.",
+              "type": "object",
+              "properties": {
+                "algorithm": {
+                  "type": "string",
+                  "default": "auto",
+                  "enum": ["auto", "bounding_cylinder", "frustum_fit"]
+                },
+                "zoomFactor": {
+                  "description": "A value of 1 indicates tight framing. Less than 1 is a zoom-out. Greater than 1 is a zoom-in.",
+                  "type": "number",
+                  "format": "double",
+                  "default": 0.8,
+                  "maximum": 100,
+                  "minimum": 0.001
+                }
+              },
+              "additionalProperties": false
+            },
+            "background": {
+              "description": "Options related to the background.",
+              "type": "object",
+              "properties": {
+                "backgroundColor": {
+                  "description": "RGBA background color. Has an effect only if `showEnvironment` is `false`. Each component has to be in the [0,1] range.",
+                  "type": ["array", "null"],
+                  "items": {
+                    "format": "double",
+                    "type": "number"
+                  },
+                  "default": [0, 0, 0, 0],
+                  "examples": [[0, 0, 0, 0]],
+                  "maxItems": 4,
+                  "minItems": 4
+                },
+                "backgroundImage": {
+                  "description": "Path to a background image. If set, will be used as the background.",
+                  "type": "string"
+                },
+                "showEnvironment": {
+                  "description": "Show the environment map as the background.",
+                  "type": "boolean",
+                  "default": false
+                }
+              },
+              "additionalProperties": false
+            },
+            "cameraName": {
+              "description": "If set, this camera is used to perform the render. The camera has to be defined in the scene.",
+              "type": "string"
+            },
+            "extraOutputs": {
+              "description": "Request additional outputs from the renderer.",
+              "type": "object",
+              "properties": {
+                "exportMaterialIds": {
+                  "description": "Export an image with one color per material.",
+                  "type": "boolean",
+                  "default": false
+                },
+                "exportMaterialMasks": {
+                  "description": "Export one mask per material.",
+                  "type": "object",
+                  "properties": {
+                    "selection": {
+                      "description": "The list of masks to be exported, accepts glob expressions. If empty, all masks will be exported.",
+                      "type": ["array", "null"],
+                      "items": {
+                        "type": "string"
+                      }
+                    }
+                  },
+                  "additionalProperties": false
+                },
+                "exportObjectIds": {
+                  "description": "Export an image with one color per object.",
+                  "type": "boolean",
+                  "default": false
+                },
+                "exportObjectMasks": {
+                  "description": "Export one mask per object.",
+                  "type": "object",
+                  "properties": {
+                    "selection": {
+                      "description": "The list of masks to be exported, accepts glob expressions. If empty, all masks will be exported.",
+                      "type": ["array", "null"],
+                      "items": {
+                        "type": "string"
+                      }
+                    }
+                  },
+                  "additionalProperties": false
+                }
+              },
+              "additionalProperties": false
+            },
+            "groundPlane": {
+              "description": "Options related to the ground plane.",
+              "type": "object",
+              "properties": {
+                "autoGroundScene": {
+                  "description": "Automatically position the scene on the ground plane. Moves the scene along the vertical axis.",
+                  "type": "boolean",
+                  "default": true
+                },
+                "enable": {
+                  "description": "Enable/disable the ground plane.",
+                  "type": "boolean",
+                  "default": true
+                },
+                "reflections": {
+                  "description": "Enable/disable reflections onto the ground plane.",
+                  "type": "boolean",
+                  "default": false
+                },
+                "reflectionsOpacity": {
+                  "description": "Controls the opacity of the reflections. Useful for compositing purposes.",
+                  "type": "number",
+                  "format": "double",
+                  "default": 1,
+                  "maximum": 1,
+                  "minimum": 0
+                },
+                "reflectionsRoughness": {
+                  "description": "Controls the roughness of the reflections. Useful for compositing purposes.",
+                  "type": "number",
+                  "format": "double",
+                  "default": 0,
+                  "maximum": 1,
+                  "minimum": 0
+                },
+                "shadows": {
+                  "description": "Controls whether the ground plane catches shadows or not.",
+                  "type": "boolean",
+                  "default": true
+                },
+                "shadowsOpacity": {
+                  "description": "Controls the opacity of cast shadows. Only has effect if shadows are enabled.",
+                  "type": "number",
+                  "format": "double",
+                  "default": 1,
+                  "maximum": 1,
+                  "minimum": 0
+                }
+              },
+              "additionalProperties": false
+            },
+            "scene": {
+              "description": "Define rendering scene primitives.",
+              "type": "object",
+              "properties": {
+                "camera": {
+                  "description": "Define a new camera for the scene.",
+                  "type": "object",
+                  "properties": {
+                    "focal": {
+                      "description": "Camera focal length, in mm.",
+                      "type": "number",
+                      "format": "double",
+                      "default": 50,
+                      "maximum": 1000,
+                      "minimum": 10
+                    },
+                    "sensorWidth": {
+                      "description": "Camera sensor width, in mm.",
+                      "type": "number",
+                      "format": "double",
+                      "default": 36,
+                      "maximum": 100,
+                      "minimum": 1
+                    },
+                    "transform": {
+                      "description": "Controls the position and angle of the camera.",
+                      "type": "object",
+                      "properties": {
+                        "azimuthAltitude": {
+                          "description": "Transform is defined by azimuth, altitude and radius terms. If set, do not set `matrix` or `trs`.",
+                          "type": "object",
+                          "properties": {
+                            "altitude": {
+                              "description": "Altitude, in degrees, from -90 to 90 degrees.",
+                              "type": "number",
+                              "format": "double",
+                              "maximum": 90,
+                              "minimum": -90
+                            },
+                            "azimuth": {
+                              "description": "Rotation around the vertical axis, in degrees.",
+                              "type": "number",
+                              "format": "double"
+                            },
+                            "lookAt": {
+                              "description": "Look at point coordinates.",
+                              "type": ["array", "null"],
+                              "items": {
+                                "format": "double",
+                                "type": "number"
+                              },
+                              "maxItems": 3,
+                              "minItems": 3
+                            },
+                            "radius": {
+                              "description": "Distance to the `lookAt` point.",
+                              "type": "number",
+                              "format": "double",
+                              "minimum": 0
+                            }
+                          },
+                          "additionalProperties": false,
+                          "required": ["azimuth", "altitude", "lookAt", "radius"]
+                        },
+                        "matrix": {
+                          "description": "Transform is defined as a matrix. If set, do not set `trs` or `azimuthAltitude`.",
+                          "type": "array",
+                          "items": {
+                            "format": "double",
+                            "type": "number"
+                          },
+                          "maxItems": 16,
+                          "minItems": 16
+                        },
+                        "trs": {
+                          "description": "Transform is defined by translation, rotation and scale terms. If set, do not set `matrix` or `azimuthAltitude`.",
+                          "type": "object",
+                          "properties": {
+                            "rotation": {
+                              "type": "object",
+                              "properties": {
+                                "euler": {
+                                  "description": "Euler angles in degrees.",
+                                  "type": "array",
+                                  "items": {
+                                    "format": "double",
+                                    "type": "number"
+                                  },
+                                  "examples": [[0, 0, 0]],
+                                  "maxItems": 3,
+                                  "minItems": 3
+                                },
+                                "quaternion": {
+                                  "description": "In W,X,Y,Z order.",
+                                  "type": "array",
+                                  "items": {
+                                    "format": "double",
+                                    "type": "number"
+                                  },
+                                  "examples": [[1, 0, 0, 0]],
+                                  "maxItems": 4,
+                                  "minItems": 4
+                                }
+                              },
+                              "additionalProperties": false
+                            },
+                            "scale": {
+                              "type": ["array", "null"],
+                              "items": {
+                                "format": "double",
+                                "type": "number"
+                              },
+                              "maxItems": 3,
+                              "minItems": 3
+                            },
+                            "translation": {
+                              "type": ["array", "null"],
+                              "items": {
+                                "format": "double",
+                                "type": "number"
+                              },
+                              "examples": [[0, 0, 0]],
+                              "maxItems": 3,
+                              "minItems": 3
+                            }
+                          },
+                          "additionalProperties": false,
+                          "required": ["translation", "rotation", "scale"]
+                        }
+                      },
+                      "additionalProperties": false
+                    }
+                  },
+                  "additionalProperties": false
+                },
+                "environment": {
+                  "description": "Define the environment for the scene. Override the previous existing environment.",
+                  "type": "object",
+                  "properties": {
+                    "exposure": {
+                      "description": "Exposure, in EV (0=neutral).",
+                      "type": "number",
+                      "format": "double",
+                      "default": 0,
+                      "maximum": 10,
+                      "minimum": -10
+                    },
+                    "file": {
+                      "description": "Path to the environment file in `sources`. If the value is `null`, the first found environment file will be used.",
+                      "type": "string"
+                    },
+                    "preserveLights": {
+                      "description": "A scene may contain 3D lights, like area lights or spot lights. By default, all those lights are removed when a new environment is set. Set this option to `true` to preserve the scene 3D lights.",
+                      "type": "boolean",
+                      "default": false
+                    },
+                    "rotation": {
+                      "type": "object",
+                      "properties": {
+                        "euler": {
+                          "description": "Euler angles in degrees.",
+                          "type": "array",
+                          "items": {
+                            "format": "double",
+                            "type": "number"
+                          },
+                          "examples": [[0, 0, 0]],
+                          "maxItems": 3,
+                          "minItems": 3
+                        },
+                        "quaternion": {
+                          "description": "In W,X,Y,Z order.",
+                          "type": "array",
+                          "items": {
+                            "format": "double",
+                            "type": "number"
+                          },
+                          "examples": [[1, 0, 0, 0]],
+                          "maxItems": 4,
+                          "minItems": 4
+                        }
+                      },
+                      "additionalProperties": false,
+                      "description": "Controls the orientation of the environment map."
+                    }
+                  },
+                  "additionalProperties": false
+                },
+                "formatOptions": {
+                  "description": "Define options specific for the model file format.",
+                  "type": "object",
+                  "properties": {
+                    "usd": {
+                      "description": "USD format options.",
+                      "type": "object",
+                      "properties": {
+                        "variants": {
+                          "description": "List of USD variants definition applied on USD primitives.",
+                          "type": ["array", "null"],
+                          "items": {
+                            "type": "object",
+                            "properties": {
+                              "primName": {
+                                "type": "string"
+                              },
+                              "variant": {
+                                "type": "string"
+                              },
+                              "variantSet": {
+                                "type": "string"
+                              }
+                            },
+                            "additionalProperties": false,
+                            "required": ["primName", "variantSet", "variant"]
+                          }
+                        }
+                      },
+                      "additionalProperties": false,
+                      "required": ["variants"]
+                    }
+                  },
+                  "additionalProperties": false,
+                  "required": ["usd"]
+                },
+                "materialOverrides": {
+                  "description": "Define material overrides.",
+                  "type": ["array", "null"],
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "absorptionColorFactor": {
+                        "description": "RGB float color value, for example white is [1.0,1.0,1.0].",
+                        "type": "array",
+                        "items": {
+                          "format": "double",
+                          "type": "number"
+                        },
+                        "default": [0, 0, 0],
+                        "maxItems": 3,
+                        "minItems": 3
+                      },
+                      "absorptionColorTexture": {
+                        "type": "string"
+                      },
+                      "absorptionDistanceFactor": {
+                        "type": "number",
+                        "format": "double",
+                        "minimum": 0
+                      },
+                      "absorptionDistanceTexture": {
+                        "type": "string"
+                      },
+                      "baseColorFactor": {
+                        "description": "RGB float color value, for example white is [1.0,1.0,1.0].",
+                        "type": "array",
+                        "items": {
+                          "format": "double",
+                          "type": "number"
+                        },
+                        "default": [0, 0, 0],
+                        "maxItems": 3,
+                        "minItems": 3
+                      },
+                      "baseColorTexture": {
+                        "type": "string"
+                      },
+                      "coatColorFactor": {
+                        "description": "RGB float color value, for example white is [1.0,1.0,1.0].",
+                        "type": "array",
+                        "items": {
+                          "format": "double",
+                          "type": "number"
+                        },
+                        "default": [0, 0, 0],
+                        "maxItems": 3,
+                        "minItems": 3
+                      },
+                      "coatColorTexture": {
+                        "type": "string"
+                      },
+                      "coatOpacityFactor": {
+                        "type": "number",
+                        "format": "double",
+                        "maximum": 1,
+                        "minimum": 0
+                      },
+                      "coatOpacityTexture": {
+                        "type": "string"
+                      },
+                      "coatRoughnessFactor": {
+                        "type": "number",
+                        "format": "double",
+                        "maximum": 1,
+                        "minimum": 0
+                      },
+                      "coatRoughnessTexture": {
+                        "type": "string"
+                      },
+                      "materialName": {
+                        "type": "string"
+                      },
+                      "metallicFactor": {
+                        "type": "number",
+                        "format": "double",
+                        "maximum": 1,
+                        "minimum": 0
+                      },
+                      "metallicTexture": {
+                        "type": "string"
+                      },
+                      "normalFactor": {
+                        "type": "array",
+                        "items": {
+                          "format": "double",
+                          "type": "number"
+                        },
+                        "maxItems": 3,
+                        "minItems": 3
+                      },
+                      "normalTexture": {
+                        "type": "string"
+                      },
+                      "opacityFactor": {
+                        "type": "number",
+                        "format": "double",
+                        "minimum": 0
+                      },
+                      "opacityTexture": {
+                        "type": "string"
+                      },
+                      "pbrMaterial": {
+                        "type": "object",
+                        "properties": {
+                          "preset": {
+                            "description": "Select a preset to be used for the substance material rendering.",
+                            "type": "string"
+                          },
+                          "resolution": {
+                            "description": "Substance material render resolution. This should be a power of two.",
+                            "type": "integer",
+                            "format": "int64",
+                            "enum": [16, 32, 64, 128, 256, 512, 1024, 2048, 4096],
+                            "maximum": 4096,
+                            "minimum": 16
+                          },
+                          "rotation": {
+                            "description": "Texture space rotation.",
+                            "type": "number",
+                            "format": "double"
+                          },
+                          "sbsar": {
+                            "description": "Path to a substance material; if not set, the first substance 3D material found in sources will be used.",
+                            "type": "string"
+                          },
+                          "scale": {
+                            "description": "Texture space scale.",
+                            "type": "array",
+                            "items": {
+                              "format": "double",
+                              "type": "number"
+                            },
+                            "maxItems": 2,
+                            "minItems": 2
+                          },
+                          "translation": {
+                            "description": "Texture space translation.",
+                            "type": "array",
+                            "items": {
+                              "format": "double",
+                              "type": "number"
+                            },
+                            "maxItems": 2,
+                            "minItems": 2
+                          }
+                        },
+                        "additionalProperties": false
+                      },
+                      "roughnessFactor": {
+                        "type": "number",
+                        "format": "double",
+                        "maximum": 1,
+                        "minimum": 0
+                      },
+                      "roughnessTexture": {
+                        "type": "string"
+                      },
+                      "translucencyFactor": {
+                        "type": "number",
+                        "format": "double",
+                        "maximum": 1,
+                        "minimum": 0
+                      },
+                      "translucencyTexture": {
+                        "type": "string"
+                      },
+                      "volumeThicknessFactor": {
+                        "type": "number",
+                        "format": "double",
+                        "minimum": 0
+                      },
+                      "volumeThicknessTexture": {
+                        "type": "string"
+                      }
+                    },
+                    "additionalProperties": false,
+                    "required": ["materialName"]
+                  }
+                },
+                "materials": {
+                  "description": "Assign new materials to geometric primitives.",
+                  "type": ["array", "null"],
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "material": {
+                        "description": "The material definition.",
+                        "type": "object",
+                        "properties": {
+                          "sbs": {
+                            "description": "The PBR material definition.",
+                            "type": "object",
+                            "properties": {
+                              "preset": {
+                                "description": "Select a preset to be used for the substance material rendering.",
+                                "type": "string"
+                              },
+                              "resolution": {
+                                "description": "Substance material render resolution. This should be a power of two.",
+                                "type": "integer",
+                                "format": "int64",
+                                "enum": [16, 32, 64, 128, 256, 512, 1024, 2048, 4096],
+                                "maximum": 4096,
+                                "minimum": 16
+                              },
+                              "rotation": {
+                                "description": "Texture space rotation.",
+                                "type": "number",
+                                "format": "double"
+                              },
+                              "sbsar": {
+                                "description": "Path to a substance material; if not set, the first substance 3D material found in sources will be used.",
+                                "type": "string"
+                              },
+                              "scale": {
+                                "description": "Texture space scale.",
+                                "type": "array",
+                                "items": {
+                                  "format": "double",
+                                  "type": "number"
+                                },
+                                "maxItems": 2,
+                                "minItems": 2
+                              },
+                              "translation": {
+                                "description": "Texture space translation.",
+                                "type": "array",
+                                "items": {
+                                  "format": "double",
+                                  "type": "number"
+                                },
+                                "maxItems": 2,
+                                "minItems": 2
+                              }
+                            },
+                            "additionalProperties": false
+                          },
+                          "solidColor": {
+                            "description": "The solid color material definition.",
+                            "type": "object",
+                            "properties": {
+                              "color": {
+                                "description": "RGB color of the solid material, each component has to be in the [0,1] range.",
+                                "type": ["array", "null"],
+                                "items": {
+                                  "format": "double",
+                                  "type": "number"
+                                },
+                                "default": [0, 0, 0],
+                                "maxItems": 3,
+                                "minItems": 3
+                              },
+                              "metallicFactor": {
+                                "description": "Metallic factor of the solid material, has to be in the [0,1] range.",
+                                "type": "number",
+                                "format": "double",
+                                "maximum": 1,
+                                "minimum": 0
+                              },
+                              "roughnessFactor": {
+                                "description": "Roughness factor of the solid material, has to be in the [0,1] range.",
+                                "type": "number",
+                                "format": "double",
+                                "maximum": 1,
+                                "minimum": 0
+                              }
+                            },
+                            "additionalProperties": false,
+                            "required": ["color"]
+                          }
+                        },
+                        "additionalProperties": false
+                      },
+                      "materialName": {
+                        "description": "Desired material name, it will be sanitized to make a valid USD prim name.",
+                        "type": "string"
+                      },
+                      "nodeList": {
+                        "description": "List of nodes under which geometric primitives will have this material assigned. Each entry can be a full node name or a glob expression.",
+                        "type": ["array", "null"],
+                        "items": {
+                          "type": "string"
+                        }
+                      },
+                      "assignByDefault": {
+                        "description": "Set to true to assign this material by default to all geometric primitives."
+                      },
+                      "excludeFromDefault": {
+                        "description": "List of nodes to exclude from default assignment."
+                      }
+                    },
+                    "additionalProperties": false,
+                    "required": ["materialName", "material", "nodeList"]
+                  }
+                },
+                "metersPerUnit": {
+                  "description": "Length of a scene unit, in meters. Defaults to 0.01 (centimeters).",
+                  "type": "number",
+                  "format": "double",
+                  "exclusiveMinimum": 0
+                },
+                "modelFile": {
+                  "description": "Path to the model file in `sources`. If the value is `null`, the first found model file will be used.",
+                  "type": "string"
+                },
+                "modelTransform": {
+                  "description": "Transform applied on the model.",
+                  "type": "object",
+                  "properties": {
+                    "azimuthAltitude": {
+                      "description": "Transform is defined by azimuth, altitude and radius terms. If set, do not set `matrix` or `trs`.",
+                      "type": "object",
+                      "properties": {
+                        "altitude": {
+                          "description": "Altitude, in degrees, from -90 to 90 degrees.",
+                          "type": "number",
+                          "format": "double",
+                          "maximum": 90,
+                          "minimum": -90
+                        },
+                        "azimuth": {
+                          "description": "Rotation around the vertical axis, in degrees.",
+                          "type": "number",
+                          "format": "double"
+                        },
+                        "lookAt": {
+                          "description": "Look at point coordinates.",
+                          "type": ["array", "null"],
+                          "items": {
+                            "format": "double",
+                            "type": "number"
+                          },
+                          "maxItems": 3,
+                          "minItems": 3
+                        },
+                        "radius": {
+                          "description": "Distance to the `lookAt` point.",
+                          "type": "number",
+                          "format": "double",
+                          "minimum": 0
+                        }
+                      },
+                      "additionalProperties": false,
+                      "required": ["azimuth", "altitude", "lookAt", "radius"]
+                    },
+                    "matrix": {
+                      "description": "Transform is defined as a matrix. If set, do not set `trs` or `azimuthAltitude`.",
+                      "type": "array",
+                      "items": {
+                        "format": "double",
+                        "type": "number"
+                      },
+                      "maxItems": 16,
+                      "minItems": 16
+                    },
+                    "trs": {
+                      "description": "Transform is defined by translation, rotation and scale terms. If set, do not set `matrix` or `azimuthAltitude`.",
+                      "type": "object",
+                      "properties": {
+                        "rotation": {
+                          "type": "object",
+                          "properties": {
+                            "euler": {
+                              "description": "Euler angles in degrees.",
+                              "type": "array",
+                              "items": {
+                                "format": "double",
+                                "type": "number"
+                              },
+                              "examples": [[0, 0, 0]],
+                              "maxItems": 3,
+                              "minItems": 3
+                            },
+                            "quaternion": {
+                              "description": "In W,X,Y,Z order.",
+                              "type": "array",
+                              "items": {
+                                "format": "double",
+                                "type": "number"
+                              },
+                              "examples": [[1, 0, 0, 0]],
+                              "maxItems": 4,
+                              "minItems": 4
+                            }
+                          },
+                          "additionalProperties": false
+                        },
+                        "scale": {
+                          "type": ["array", "null"],
+                          "items": {
+                            "format": "double",
+                            "type": "number"
+                          },
+                          "maxItems": 3,
+                          "minItems": 3
+                        },
+                        "translation": {
+                          "type": ["array", "null"],
+                          "items": {
+                            "format": "double",
+                            "type": "number"
+                          },
+                          "examples": [[0, 0, 0]],
+                          "maxItems": 3,
+                          "minItems": 3
+                        }
+                      },
+                      "additionalProperties": false,
+                      "required": ["translation", "rotation", "scale"]
+                    }
+                  },
+                  "additionalProperties": false
+                }
+              },
+              "additionalProperties": false
+            },
+            "size": {
+              "description": "Options related to the render size.",
+              "type": "object",
+              "properties": {
+                "height": {
+                  "description": "Render height.",
+                  "type": "number",
+                  "format": "int64",
+                  "maximum": 2304,
+                  "minimum": 16
+                },
+                "width": {
+                  "description": "Render width.",
+                  "type": "number",
+                  "format": "int64",
+                  "maximum": 3840,
+                  "minimum": 16
+                }
+              },
+              "additionalProperties": false,
+              "required": ["width", "height"]
+            },
+            "sources": {
+              "description": "List of sources to aggregate and run the job against.",
+              "type": ["array", "null"],
+              "items": {
+                "type": "object",
+                "properties": {
+                  "frame.io": {
+                    "description": "Fetch content from a Frame.io folder. ⚠️ All sources are exclusive.",
+                    "deprecated": true,
+                    "type": "object",
+                    "properties": {
+                      "accessToken": {
+                        "type": "string"
+                      },
+                      "folderId": {
+                        "type": "string"
+                      }
+                    },
+                    "additionalProperties": false,
+                    "required": ["folderId", "accessToken"]
+                  },
+                  "mountPoint": {
+                    "description": "Where to mount the content of the source in the virtual job working directory.",
+                    "type": "string",
+                    "default": "/"
+                  },
+                  "next.frame.io": {
+                    "description": "Fetch content from a next.frame.io folder. ⚠️ All sources are exclusive.",
+                    "type": "object",
+                    "properties": {
+                      "accessToken": {
+                        "type": "string"
+                      },
+                      "accountId": {
+                        "type": "string"
+                      },
+                      "folderId": {
+                        "type": "string"
+                      }
+                    },
+                    "additionalProperties": false,
+                    "required": ["folderId", "accountId", "accessToken"]
+                  },
+                  "space": {
+                    "description": "Read content from an existing space (can be another job's output, or uploaded manually with the space API). ⚠️ All sources are exclusive.'",
+                    "type": "object",
+                    "properties": {
+                      "id": {
+                        "description": "A space ID.",
+                        "type": "string"
+                      }
+                    },
+                    "additionalProperties": false,
+                    "required": ["id"]
+                  },
+                  "url": {
+                    "description": "Fetch content from a URL. ⚠️ All sources are exclusive.",
+                    "type": "object",
+                    "properties": {
+                      "filename": {
+                        "description": "Filename override. If unset, the service will try to detect the filename from the content disposition header, then the URL itself.",
+                        "type": "string"
+                      },
+                      "url": {
+                        "description": "URL to fetch content from.",
+                        "type": "string",
+                        "examples": ["https://cdn.substance3d.com/v2/files/public/stepladder.usdz"]
+                      }
+                    },
+                    "additionalProperties": false,
+                    "required": ["url"]
+                  }
+                },
+                "additionalProperties": false
+              },
+              "maxItems": 16,
+              "minItems": 1
+            }
+          },
+          "additionalProperties": false,
+          "examples": [
+            {
+              "scene": {
+                "modelFile": "WaterBottle.glb"
+              },
+              "sources": [
+                {
+                  "url": {
+                    "url": "https://raw.githubusercontent.com/KhronosGroup/glTF-Sample-Models/master/2.0/WaterBottle/glTF-Binary/WaterBottle.glb"
+                  }
+                }
+              ]
+            },
+            {
+              "scene": {
+                "modelFile": "WaterBottle.glb"
+              },
+              "sources": [
+                {
+                  "url": {
+                    "url": "https://raw.githubusercontent.com/KhronosGroup/glTF-Sample-Models/master/2.0/WaterBottle/glTF-Binary/WaterBottle.glb"
+                  }
+                }
+              ]
+            }
+          ],
+          "required": ["scene", "sources"],
+          "description": "The JSON request body."
+        }
+      }
+    },
+    "method": "post",
+    "pathTemplate": "/v1/scenes/render-basic",
+    "parameters": [
+      {
+        "name": "wait",
+        "in": "query",
+        "description": "Blocking mode (acts like a synchronous API call). Wait for the result before returning. ⚠️ Some operations are long, please be sure to configure your client timeout settings accordingly.",
+        "schema": {
+          "description": "Blocking mode (acts like a synchronous API call). Wait for the result before returning. ⚠️ Some operations are long, please be sure to configure your client timeout settings accordingly.",
+          "type": "boolean",
+          "default": false
+        },
+        "explode": false
+      }
+    ],
+    "executionParameters": [
+      {
+        "name": "wait",
+        "in": "query"
+      }
+    ],
+    "requestBodyContentType": "application/json",
+    "securityRequirements": [
+      {
+        "bearerAuth": []
+      }
+    ],
+    "operationId": "v1_scenes_render-basic",
+    "baseUrl": "https://s3d.adobe.io"
+  },
+  {
+    "name": "createSpace_v1",
+    "description": "Create a Space from 3D files.",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "requestBody": {
+          "type": "string",
+          "description": "Request body (content type: multipart/form-data)"
+        }
+      },
+      "required": ["requestBody"]
+    },
+    "method": "post",
+    "pathTemplate": "/v1/spaces",
+    "parameters": [],
+    "executionParameters": [],
+    "requestBodyContentType": "multipart/form-data",
+    "securityRequirements": [
+      {
+        "bearerAuth": []
+      }
+    ],
+    "operationId": "createSpace_v1",
+    "baseUrl": "https://s3d.adobe.io"
+  }
+]

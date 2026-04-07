@@ -36,7 +36,7 @@ class HeyApiRegistry<T> {
     get(key?: string): T {
         const instance = this.instances.get(key ?? this.defaultKey);
         if (!instance) {
-            throw new Error(`No SDK client found. Create one with "new Substance3Dsdk()" to fix this error.`);
+            throw new Error(`No SDK client found. Create one with "new Substance3dSdk()" to fix this error.`);
         }
         return instance;
     }
@@ -164,15 +164,15 @@ export class V1 extends HeyApiClient {
     }
 }
 
-export class Substance3Dsdk extends HeyApiClient {
-    public static readonly __registry = new HeyApiRegistry<Substance3Dsdk>();
+export class Substance3dSdk extends HeyApiClient {
+    public static readonly __registry = new HeyApiRegistry<Substance3dSdk>();
     
     constructor(args?: {
         client?: Client;
         key?: string;
     }) {
         super(args);
-        Substance3Dsdk.__registry.set(this, args?.key);
+        Substance3dSdk.__registry.set(this, args?.key);
     }
     
     /**

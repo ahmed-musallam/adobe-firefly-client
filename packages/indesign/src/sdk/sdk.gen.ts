@@ -36,7 +36,7 @@ class HeyApiRegistry<T> {
     get(key?: string): T {
         const instance = this.instances.get(key ?? this.defaultKey);
         if (!instance) {
-            throw new Error(`No SDK client found. Create one with "new InDesignSdk()" to fix this error.`);
+            throw new Error(`No SDK client found. Create one with "new IndesignSdk()" to fix this error.`);
         }
         return instance;
     }
@@ -46,15 +46,15 @@ class HeyApiRegistry<T> {
     }
 }
 
-export class InDesignSdk extends HeyApiClient {
-    public static readonly __registry = new HeyApiRegistry<InDesignSdk>();
+export class IndesignSdk extends HeyApiClient {
+    public static readonly __registry = new HeyApiRegistry<IndesignSdk>();
     
     constructor(args?: {
         client?: Client;
         key?: string;
     }) {
         super(args);
-        InDesignSdk.__registry.set(this, args?.key);
+        IndesignSdk.__registry.set(this, args?.key);
     }
     
     /**

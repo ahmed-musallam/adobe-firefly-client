@@ -4,5 +4,6 @@ docs/
 node_modules/
 packages/*/src/flat/
 packages/*/src/sdk/
+packages/*/src/tools/
 packages/*/dist/
 pnpm-lock.yaml

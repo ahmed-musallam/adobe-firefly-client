@@ -1,3 +1,9 @@
+## @musallam/ffs-photoshop-client [2.1.1](https://github.com/ahmed-musallam/adobe-firefly-client/compare/@musallam/ffs-photoshop-client@2.1.0...@musallam/ffs-photoshop-client@2.1.1) (2026-04-09)
+
+### Bug Fixes
+
+- expose extensions via package entries ([6ea4b71](https://github.com/ahmed-musallam/adobe-firefly-client/commit/6ea4b71d4f57fe6a2d918cd44604b6134d57ce79))
+
 # @musallam/ffs-photoshop-client [2.1.0](https://github.com/ahmed-musallam/adobe-firefly-client/compare/@musallam/ffs-photoshop-client@2.0.1...@musallam/ffs-photoshop-client@2.1.0) (2026-04-07)
 
 ### Features

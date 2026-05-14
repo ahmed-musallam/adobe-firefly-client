@@ -4,7 +4,7 @@ import type { Client, Options as Options2, TDataShape } from './client';
 import { client } from './client.gen';
 import type { AdaptiveCompositeData, AdaptiveCompositeErrors, AdaptiveCompositeResponses, CancelJobV4Data, CancelJobV4Errors, CancelJobV4Responses, CreativeUpsamplerV3AsyncData, CreativeUpsamplerV3AsyncErrors, CreativeUpsamplerV3AsyncResponses, ExpandImagesV3AsyncData, ExpandImagesV3AsyncErrors, ExpandImagesV3AsyncResponses, FillImagesV3AsyncData, FillImagesV3AsyncErrors, FillImagesV3AsyncResponses, FireflyImageV5GenerateAsyncV4Data, FireflyImageV5GenerateAsyncV4Errors, FireflyImageV5GenerateAsyncV4Responses, GenerateImagesV3AsyncData, GenerateImagesV3AsyncErrors, GenerateImagesV3AsyncResponses, GenerateObjectCompositeV3AsyncData, GenerateObjectCompositeV3AsyncErrors, GenerateObjectCompositeV3AsyncResponses, GenerateSimilarImagesV3AsyncData, GenerateSimilarImagesV3AsyncErrors, GenerateSimilarImagesV3AsyncResponses, GenerateVideoV3Data, GenerateVideoV3Errors, GenerateVideoV3Responses, GetCustomModelsData, GetCustomModelsErrors, GetCustomModelsResponses, JobResultV3Data, JobResultV3Errors, JobResultV3Responses, PreciseCompositeData, PreciseCompositeErrors, PreciseCompositeResponses, StorageImageV2Data, StorageImageV2Errors, StorageImageV2Responses } from './types.gen';
 
-export type Options<TData extends TDataShape = TDataShape, ThrowOnError extends boolean = boolean> = Options2<TData, ThrowOnError> & {
+export type Options<TData extends TDataShape = TDataShape, ThrowOnError extends boolean = boolean, TResponse = unknown> = Options2<TData, ThrowOnError, TResponse> & {
     /**
      * You can provide a client instance returned by `createClient()` instead of
      * individual options. This might be also useful if you want to implement a

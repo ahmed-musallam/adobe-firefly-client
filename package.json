@@ -22,7 +22,7 @@
   "devDependencies": {
     "@commitlint/cli": "20.5.0",
     "@commitlint/config-conventional": "20.5.0",
-    "@hey-api/openapi-ts": "0.94.4",
+    "@hey-api/openapi-ts": "0.97.1",
     "@semantic-release/changelog": "6.0.3",
     "@semantic-release/git": "10.0.1",
     "@types/node": "22.19.15",

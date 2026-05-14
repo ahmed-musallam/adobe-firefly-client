@@ -5,6672 +5,7059 @@
  */
 export const openapiMcpTools = [
   {
-    name: 'senseiJobStatus',
-    description:
-      'This endpoint returns the status of a job for a Remove Background and Create Mask operation. The schema of a 200 response varies depending on the status of the job.',
-    inputSchema: {
-      type: 'object',
-      properties: {
-        jobId: {
-          type: 'string',
-          description: 'The job ID.',
+    "name": "senseiJobStatus",
+    "description": "This endpoint returns the status of a job for a Remove Background and Create Mask operation. The schema of a 200 response varies depending on the status of the job.",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "jobId": {
+          "type": "string",
+          "description": "The job ID."
         },
-        'x-gw-ims-org-id': {
-          type: 'string',
-          description:
-            'The IMS organization ID. This only needs to be sent if you want to receive the job status through Adobe I/O Events.',
-        },
+        "x-gw-ims-org-id": {
+          "type": "string",
+          "description": "The IMS organization ID. This only needs to be sent if you want to receive the job status through Adobe I/O Events."
+        }
       },
-      required: ['jobId'],
+      "required": [
+        "jobId"
+      ]
     },
-    method: 'get',
-    pathTemplate: '/sensei/status/{jobId}',
-    parameters: [
+    "method": "get",
+    "pathTemplate": "/sensei/status/{jobId}",
+    "parameters": [
       {
-        name: 'jobId',
-        in: 'path',
-        description: 'The job ID.',
-        required: true,
-        schema: {
-          type: 'string',
-        },
+        "name": "jobId",
+        "in": "path",
+        "description": "The job ID.",
+        "required": true,
+        "schema": {
+          "type": "string"
+        }
       },
       {
-        name: 'x-gw-ims-org-id',
-        in: 'header',
-        description:
-          'The IMS organization ID. This only needs to be sent if you want to receive the job status through Adobe I/O Events.',
-        required: false,
-        schema: {
-          type: 'string',
-        },
-      },
+        "name": "x-gw-ims-org-id",
+        "in": "header",
+        "description": "The IMS organization ID. This only needs to be sent if you want to receive the job status through Adobe I/O Events.",
+        "required": false,
+        "schema": {
+          "type": "string"
+        }
+      }
     ],
-    executionParameters: [
+    "executionParameters": [
       {
-        name: 'jobId',
-        in: 'path',
+        "name": "jobId",
+        "in": "path"
       },
       {
-        name: 'x-gw-ims-org-id',
-        in: 'header',
-      },
+        "name": "x-gw-ims-org-id",
+        "in": "header"
+      }
     ],
-    securityRequirements: [
+    "securityRequirements": [
       {
-        ApiKeyAuth: [],
+        "ApiKeyAuth": []
       },
       {
-        BearerAuth: [],
-      },
+        "BearerAuth": []
+      }
     ],
-    operationId: 'senseiJobStatus',
-    baseUrl: 'https://image.adobe.io',
+    "operationId": "senseiJobStatus",
+    "baseUrl": "https://image.adobe.io"
   },
   {
-    name: 'removeBackgroundAsync',
-    description:
-      '⚠️ **DEPRECATED**: This endpoint is deprecated and will no longer be accessible after Oct 15, 2025. Use `/v2/remove-background` instead. For more information, see the [Deprecation Announcement](https://developer.adobe.com/firefly-services/docs/photoshop/getting_started/deprecation_announcement/). This endpoint will identify the main subject of your image and removes the background automatically. It also provides options to return a PNG file in 4 channel RGBA or 3 channel RGB format. To check the status of this process, utilize the `Get Status - Mask` endpoint.',
-    inputSchema: {
-      type: 'object',
-      properties: {
-        'x-gw-ims-org-id': {
-          type: 'string',
-          description:
-            'The IMS organization ID. This only needs to be sent if you want to receive the job status through Adobe I/O Events.',
+    "name": "removeBackgroundAsync",
+    "description": "⚠️ **DEPRECATED**: This endpoint is deprecated and will no longer be accessible after Oct 15, 2025. Use `/v2/remove-background` instead. For more information, see the [Deprecation Announcement](https://developer.adobe.com/firefly-services/docs/photoshop/getting_started/deprecation_announcement/). This endpoint will identify the main subject of your image and removes the background automatically. It also provides options to return a PNG file in 4 channel RGBA or 3 channel RGB format. To check the status of this process, utilize the `Get Status - Mask` endpoint.",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "x-gw-ims-org-id": {
+          "type": "string",
+          "description": "The IMS organization ID. This only needs to be sent if you want to receive the job status through Adobe I/O Events."
         },
-        requestBody: {
-          title: 'RemoveBackgroundRequest',
-          type: 'object',
-          required: ['input', 'output'],
-          properties: {
-            input: {
-              title: 'StorageDetails',
-              type: 'object',
-              required: ['href', 'storage'],
-              properties: {
-                href: {
-                  type: 'string',
-                  description: 'A pre-signed GET URL.',
+        "requestBody": {
+          "title": "RemoveBackgroundRequest",
+          "type": "object",
+          "required": [
+            "input",
+            "output"
+          ],
+          "properties": {
+            "input": {
+              "title": "StorageDetails",
+              "type": "object",
+              "required": [
+                "href",
+                "storage"
+              ],
+              "properties": {
+                "href": {
+                  "type": "string",
+                  "description": "A pre-signed GET URL."
                 },
-                storage: {
-                  title: 'StorageType',
-                  enum: ['external', 'azure', 'dropbox'],
-                  type: 'string',
-                  description: 'Storage platforms supported.',
-                },
+                "storage": {
+                  "title": "StorageType",
+                  "enum": [
+                    "external",
+                    "azure",
+                    "dropbox"
+                  ],
+                  "type": "string",
+                  "description": "Storage platforms supported."
+                }
               },
-              description: "A file located on Adobe's cloud or a supported external service.",
+              "description": "A file located on Adobe's cloud or a supported external service."
             },
-            output: {
-              title: 'SenseiOutputDetails',
-              type: 'object',
-              required: ['href', 'storage'],
-              properties: {
-                href: {
-                  type: 'string',
-                  description: 'A pre-signed POST URL to the output file.',
+            "output": {
+              "title": "SenseiOutputDetails",
+              "type": "object",
+              "required": [
+                "href",
+                "storage"
+              ],
+              "properties": {
+                "href": {
+                  "type": "string",
+                  "description": "A pre-signed POST URL to the output file."
                 },
-                storage: {
-                  title: 'StorageType',
-                  enum: ['external', 'azure', 'dropbox'],
-                  type: 'string',
-                  description: 'Storage platforms supported.',
+                "storage": {
+                  "title": "StorageType",
+                  "enum": [
+                    "external",
+                    "azure",
+                    "dropbox"
+                  ],
+                  "type": "string",
+                  "description": "Storage platforms supported."
                 },
-                mask: {
-                  title: 'MaskFormat',
-                  type: 'object',
-                  properties: {
-                    format: {
-                      title: 'MaskFormatType',
-                      enum: ['binary', 'soft'],
-                      type: 'string',
-                      description: 'Soft mask or binary mask.',
-                    },
-                  },
-                },
-                color: {
-                  title: 'SenseiColor',
-                  type: 'object',
-                  properties: {
-                    space: {
-                      title: 'ColorSpaceType',
-                      type: 'string',
-                      enum: ['rgb', 'rgba'],
-                      description: 'Color space for output image',
-                    },
-                  },
-                  description: 'Color space for output image',
-                },
-                overwrite: {
-                  type: 'boolean',
-                  description:
-                    'If the file already exists, indicates if the output file should be overwritten. Will eventually support eTags. Only applies to CC Storage.',
-                  default: true,
-                },
-              },
-              description: 'A PNG file.',
-            },
-          },
-          description: 'The input image and the cutout mask parameters',
-        },
-      },
-      required: ['requestBody'],
-    },
-    method: 'post',
-    pathTemplate: '/sensei/cutout',
-    parameters: [
-      {
-        name: 'x-gw-ims-org-id',
-        in: 'header',
-        description:
-          'The IMS organization ID. This only needs to be sent if you want to receive the job status through Adobe I/O Events.',
-        required: false,
-        schema: {
-          type: 'string',
-        },
-      },
-    ],
-    executionParameters: [
-      {
-        name: 'x-gw-ims-org-id',
-        in: 'header',
-      },
-    ],
-    requestBodyContentType: 'application/json',
-    securityRequirements: [
-      {
-        ApiKeyAuth: [],
-      },
-      {
-        BearerAuth: [],
-      },
-    ],
-    operationId: 'removeBackgroundAsync',
-    baseUrl: 'https://image.adobe.io',
-  },
-  {
-    name: 'removeBackground',
-    description:
-      'This endpoint allows you to remove the background from an image. The request is processed asynchronously and the status of the running job can be checked with the Get Status endpoint.',
-    inputSchema: {
-      type: 'object',
-      properties: {
-        Authorization: {
-          type: 'string',
-          description: 'The bearer token for the user. This is the access token.',
-        },
-        'x-api-key': {
-          type: 'string',
-          description: 'The API key/Client ID',
-        },
-        'Content-Type': {
-          type: 'string',
-          description: 'The content type of the request. The value is `application/json`.',
-        },
-        requestBody: {
-          type: 'object',
-          properties: {
-            image: {
-              description: 'The image to be processed.',
-              allOf: [
-                {
-                  type: 'object',
-                  properties: {
-                    source: {
-                      description:
-                        'The source path for the input image. Dimensions of the image should not be greater than 6000px X 6000px. The image media type must be `image/jpeg`, `image/png`, `image/webp`, or `image/tiff`.',
-                      allOf: [
-                        {
-                          type: 'object',
-                          properties: {
-                            url: {
-                              type: 'string',
-                              description:
-                                'The URL of the resource. Only these listed domains are accepted in the request:  \n  <ul><li><code>amazonaws.com</code></li><li><code>windows.net</code></li><li><code>dropboxusercontent.com</code></li><li><code>assets.frame.io</code></li><li><code>storage.googleapis.com</code></li></ul>',
-                            },
-                          },
-                          required: ['url'],
-                        },
+                "mask": {
+                  "title": "MaskFormat",
+                  "type": "object",
+                  "properties": {
+                    "format": {
+                      "title": "MaskFormatType",
+                      "enum": [
+                        "binary",
+                        "soft"
                       ],
-                    },
-                  },
-                  required: ['source'],
+                      "type": "string",
+                      "description": "Soft mask or binary mask."
+                    }
+                  }
                 },
-              ],
-            },
-            mode: {
-              type: 'string',
-              description: 'The mode of background removal.',
-              default: 'cutout',
-              enum: ['cutout', 'mask', 'psd'],
-            },
-            output: {
-              description: 'The options for the output image.',
-              allOf: [
-                {
-                  type: 'object',
-                  properties: {
-                    mediaType: {
-                      type: 'string',
-                      description:
-                        'The media type of the output image. By default this will match the input source file format.',
-                      enum: ['image/jpeg', 'image/png', 'image/webp', 'image/vnd.adobe.photoshop'],
-                    },
+                "color": {
+                  "title": "SenseiColor",
+                  "type": "object",
+                  "properties": {
+                    "space": {
+                      "title": "ColorSpaceType",
+                      "type": "string",
+                      "enum": [
+                        "rgb",
+                        "rgba"
+                      ],
+                      "description": "Color space for output image"
+                    }
                   },
+                  "description": "Color space for output image"
                 },
-              ],
-            },
-            trim: {
-              type: 'boolean',
-              description:
-                'If true, the image returned is cropped to the cutout border. Transparent pixels are removed.',
-              default: false,
-            },
-            backgroundColor: {
-              description: 'The background color.',
-              allOf: [
-                {
-                  type: 'object',
-                  properties: {
-                    red: {
-                      type: 'number',
-                      description: 'The red value of the color.',
-                      minimum: 0,
-                      maximum: 255,
-                    },
-                    green: {
-                      type: 'number',
-                      description: 'The green value of the color.',
-                      minimum: 0,
-                      maximum: 255,
-                    },
-                    blue: {
-                      type: 'number',
-                      description: 'The blue value of the color.',
-                      minimum: 0,
-                      maximum: 255,
-                    },
-                    alpha: {
-                      type: 'number',
-                      description:
-                        'The transparency value. 0 is fully transparent and 1 is fully opaque.',
-                      minimum: 0,
-                      maximum: 1,
-                    },
-                  },
-                  required: ['red', 'green', 'blue', 'alpha'],
-                },
-              ],
-            },
-            colorDecontamination: {
-              type: 'number',
-              description:
-                'If the value is greater than 0, automatically removes colored reflections that have been left on the main subject by the background.',
-              minimum: 0,
-              maximum: 1,
-              default: 1,
-            },
+                "overwrite": {
+                  "type": "boolean",
+                  "description": "If the file already exists, indicates if the output file should be overwritten. Will eventually support eTags. Only applies to CC Storage.",
+                  "default": true
+                }
+              },
+              "description": "A PNG file."
+            }
           },
-          required: ['image'],
-          description: 'The JSON request body.',
-        },
+          "description": "The input image and the cutout mask parameters"
+        }
       },
-      required: ['Authorization', 'x-api-key', 'Content-Type', 'requestBody'],
+      "required": [
+        "requestBody"
+      ]
     },
-    method: 'post',
-    pathTemplate: '/v2/remove-background',
-    parameters: [
+    "method": "post",
+    "pathTemplate": "/sensei/cutout",
+    "parameters": [
       {
-        name: 'Authorization',
-        description: 'The bearer token for the user. This is the access token.',
-        in: 'header',
-        required: true,
-        schema: {
-          type: 'string',
-        },
-      },
-      {
-        name: 'x-api-key',
-        description: 'The API key/Client ID',
-        in: 'header',
-        required: true,
-        schema: {
-          type: 'string',
-        },
-      },
-      {
-        name: 'Content-Type',
-        description: 'The content type of the request. The value is `application/json`.',
-        in: 'header',
-        required: true,
-        schema: {
-          type: 'string',
-        },
-      },
+        "name": "x-gw-ims-org-id",
+        "in": "header",
+        "description": "The IMS organization ID. This only needs to be sent if you want to receive the job status through Adobe I/O Events.",
+        "required": false,
+        "schema": {
+          "type": "string"
+        }
+      }
     ],
-    executionParameters: [
+    "executionParameters": [
       {
-        name: 'Authorization',
-        in: 'header',
-      },
-      {
-        name: 'x-api-key',
-        in: 'header',
-      },
-      {
-        name: 'Content-Type',
-        in: 'header',
-      },
+        "name": "x-gw-ims-org-id",
+        "in": "header"
+      }
     ],
-    requestBodyContentType: 'application/json',
-    securityRequirements: [
+    "requestBodyContentType": "application/json",
+    "securityRequirements": [
       {
-        ApiKeyAuth: [],
+        "ApiKeyAuth": []
       },
       {
-        BearerAuth: [],
-      },
+        "BearerAuth": []
+      }
     ],
-    operationId: 'removeBackground',
-    baseUrl: 'https://image.adobe.io',
+    "operationId": "removeBackgroundAsync",
+    "baseUrl": "https://image.adobe.io"
   },
   {
-    name: 'facadeJobStatus',
-    description:
-      'Retrieve the status of a running Remove Background job by providing the job ID. The job ID is obtained from the response of the asynchronous Remove Background API call.',
-    inputSchema: {
-      type: 'object',
-      properties: {
-        jobId: {
-          type: 'string',
-          description: 'The job ID from the response of the Remove Background API call.',
+    "name": "removeBackground",
+    "description": "This endpoint allows you to remove the background from an image. The request is processed asynchronously and the status of the running job can be checked with the Get Status endpoint.",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "Authorization": {
+          "type": "string",
+          "description": "The bearer token for the user. This is the access token."
         },
-      },
-      required: ['jobId'],
-    },
-    method: 'get',
-    pathTemplate: '/v2/status/{jobId}',
-    parameters: [
-      {
-        name: 'jobId',
-        required: true,
-        in: 'path',
-        description: 'The job ID from the response of the Remove Background API call.',
-        schema: {
-          type: 'string',
+        "x-api-key": {
+          "type": "string",
+          "description": "The API key/Client ID"
         },
-      },
-    ],
-    executionParameters: [
-      {
-        name: 'jobId',
-        in: 'path',
-      },
-    ],
-    securityRequirements: [
-      {
-        ApiKeyAuth: [],
-      },
-      {
-        BearerAuth: [],
-      },
-    ],
-    operationId: 'facadeJobStatus',
-    baseUrl: 'https://image.adobe.io',
-  },
-  {
-    name: 'createMaskAsync',
-    description:
-      '⚠️ **DEPRECATED**: This endpoint is deprecated and will no longer be accessible after Oct 15, 2025. Use `/v2/remove-background` instead. For more information, see the [Deprecation Announcement](https://developer.adobe.com/firefly-services/docs/photoshop/getting_started/deprecation_announcement/).This endpoint uses the Remove Background AI/ML model to return a PNG file with a mask applied around the subject. To check the status of this process, utilize the `Get Status - Mask` endpoint.',
-    inputSchema: {
-      type: 'object',
-      properties: {
-        'x-gw-ims-org-id': {
-          type: 'string',
-          description:
-            'The IMS organization ID. This only needs to be sent if you want to receive the job status through Adobe I/O Events.',
+        "Content-Type": {
+          "type": "string",
+          "description": "The content type of the request. The value is `application/json`."
         },
-        requestBody: {
-          title: 'CreateMaskRequest',
-          type: 'object',
-          required: ['input', 'output'],
-          properties: {
-            input: {
-              title: 'StorageDetails',
-              type: 'object',
-              required: ['href', 'storage'],
-              properties: {
-                href: {
-                  type: 'string',
-                  description: 'A pre-signed GET URL.',
-                },
-                storage: {
-                  title: 'StorageType',
-                  enum: ['external', 'azure', 'dropbox'],
-                  type: 'string',
-                  description: 'Storage platforms supported.',
-                },
-              },
-              description: "A file located on Adobe's cloud or a supported external service.",
-            },
-            output: {
-              title: 'SenseiOutputDetails',
-              type: 'object',
-              required: ['href', 'storage'],
-              properties: {
-                href: {
-                  type: 'string',
-                  description: 'A pre-signed POST URL to the output file.',
-                },
-                storage: {
-                  title: 'StorageType',
-                  enum: ['external', 'azure', 'dropbox'],
-                  type: 'string',
-                  description: 'Storage platforms supported.',
-                },
-                mask: {
-                  title: 'MaskFormat',
-                  type: 'object',
-                  properties: {
-                    format: {
-                      title: 'MaskFormatType',
-                      enum: ['binary', 'soft'],
-                      type: 'string',
-                      description: 'Soft mask or binary mask.',
-                    },
-                  },
-                },
-                color: {
-                  title: 'SenseiColor',
-                  type: 'object',
-                  properties: {
-                    space: {
-                      title: 'ColorSpaceType',
-                      type: 'string',
-                      enum: ['rgb', 'rgba'],
-                      description: 'Color space for output image',
-                    },
-                  },
-                  description: 'Color space for output image',
-                },
-                overwrite: {
-                  type: 'boolean',
-                  description:
-                    'If the file already exists, indicates if the output file should be overwritten. Will eventually support eTags. Only applies to CC Storage.',
-                  default: true,
-                },
-              },
-              description: 'A PNG file.',
-            },
-          },
-          description: 'The input image and the mask parameters',
-        },
-      },
-      required: ['requestBody'],
-    },
-    method: 'post',
-    pathTemplate: '/sensei/mask',
-    parameters: [
-      {
-        name: 'x-gw-ims-org-id',
-        in: 'header',
-        description:
-          'The IMS organization ID. This only needs to be sent if you want to receive the job status through Adobe I/O Events.',
-        required: false,
-        schema: {
-          type: 'string',
-        },
-      },
-    ],
-    executionParameters: [
-      {
-        name: 'x-gw-ims-org-id',
-        in: 'header',
-      },
-    ],
-    requestBodyContentType: 'application/json',
-    securityRequirements: [
-      {
-        ApiKeyAuth: [],
-      },
-      {
-        BearerAuth: [],
-      },
-    ],
-    operationId: 'createMaskAsync',
-    baseUrl: 'https://image.adobe.io',
-  },
-  {
-    name: 'psJobStatus',
-    description: 'Get the job status of a Photoshop job.',
-    inputSchema: {
-      type: 'object',
-      properties: {
-        jobId: {
-          type: 'string',
-          description: 'The job ID.',
-        },
-        'x-gw-ims-org-id': {
-          type: 'string',
-          description:
-            'The IMS organization ID. This only needs to be sent if you want to receive the job status through Adobe I/O Events.',
-        },
-      },
-      required: ['jobId'],
-    },
-    method: 'get',
-    pathTemplate: '/pie/psdService/status/{jobId}',
-    parameters: [
-      {
-        name: 'jobId',
-        in: 'path',
-        description: 'The job ID.',
-        required: true,
-        schema: {
-          type: 'string',
-        },
-      },
-      {
-        name: 'x-gw-ims-org-id',
-        in: 'header',
-        description:
-          'The IMS organization ID. This only needs to be sent if you want to receive the job status through Adobe I/O Events.',
-        required: false,
-        schema: {
-          type: 'string',
-        },
-      },
-    ],
-    executionParameters: [
-      {
-        name: 'jobId',
-        in: 'path',
-      },
-      {
-        name: 'x-gw-ims-org-id',
-        in: 'header',
-      },
-    ],
-    securityRequirements: [
-      {
-        ApiKeyAuth: [],
-      },
-      {
-        BearerAuth: [],
-      },
-    ],
-    operationId: 'psJobStatus',
-    baseUrl: 'https://image.adobe.io',
-  },
-  {
-    name: 'getDocumentManifestAsync',
-    description:
-      'Extract metadata from PSD document, including general file and layer information.',
-    inputSchema: {
-      type: 'object',
-      properties: {
-        'x-gw-ims-org-id': {
-          type: 'string',
-          description:
-            'The IMS organization ID. This only needs to be sent if you want to receive the job status through Adobe I/O Events.',
-        },
-        requestBody: {
-          title: 'DocumentManifestRequest',
-          type: 'object',
-          required: ['inputs'],
-          properties: {
-            inputs: {
-              type: 'array',
-              items: {
-                title: 'StorageDetails',
-                type: 'object',
-                required: ['href', 'storage'],
-                properties: {
-                  href: {
-                    type: 'string',
-                    description: 'A pre-signed GET URL.',
-                  },
-                  storage: {
-                    title: 'StorageType',
-                    enum: ['external', 'azure', 'dropbox'],
-                    type: 'string',
-                    description: 'Storage platforms supported.',
-                  },
-                },
-                description: "A file located on Adobe's cloud or a supported external service.",
-              },
-              description:
-                'An array of input objects. Each input object represents a file to be processed.',
-            },
-            options: {
-              allOf: [
+        "requestBody": {
+          "type": "object",
+          "properties": {
+            "image": {
+              "description": "The image to be processed.",
+              "allOf": [
                 {
-                  title: 'DocumentManifestOptions',
-                  type: 'object',
-                  properties: {
-                    thumbnails: {
-                      allOf: [
+                  "type": "object",
+                  "properties": {
+                    "source": {
+                      "description": "The source path for the input image. Dimensions of the image should not be greater than 6000px X 6000px. The image media type must be `image/jpeg`, `image/png`, `image/webp`, or `image/tiff`.",
+                      "allOf": [
                         {
-                          title: 'Thumbnails',
-                          type: 'object',
-                          properties: {
-                            type: {
-                              allOf: [
+                          "type": "object",
+                          "properties": {
+                            "url": {
+                              "type": "string",
+                              "description": "The URL of the resource. Only these listed domains are accepted in the request:  \n  <ul><li><code>amazonaws.com</code></li><li><code>windows.net</code></li><li><code>dropboxusercontent.com</code></li><li><code>assets.frame.io</code></li><li><code>storage.googleapis.com</code></li></ul>"
+                            }
+                          },
+                          "required": [
+                            "url"
+                          ]
+                        }
+                      ]
+                    }
+                  },
+                  "required": [
+                    "source"
+                  ]
+                }
+              ]
+            },
+            "mode": {
+              "type": "string",
+              "description": "The mode of background removal.",
+              "default": "cutout",
+              "enum": [
+                "cutout",
+                "mask",
+                "psd"
+              ]
+            },
+            "output": {
+              "description": "The options for the output image.",
+              "allOf": [
+                {
+                  "type": "object",
+                  "properties": {
+                    "mediaType": {
+                      "type": "string",
+                      "description": "The media type of the output image. By default this will match the input source file format.",
+                      "enum": [
+                        "image/jpeg",
+                        "image/png",
+                        "image/webp",
+                        "image/vnd.adobe.photoshop"
+                      ]
+                    }
+                  }
+                }
+              ]
+            },
+            "trim": {
+              "type": "boolean",
+              "description": "If true, the image returned is cropped to the cutout border. Transparent pixels are removed.",
+              "default": false
+            },
+            "backgroundColor": {
+              "description": "The background color.",
+              "allOf": [
+                {
+                  "type": "object",
+                  "properties": {
+                    "red": {
+                      "type": "number",
+                      "description": "The red value of the color.",
+                      "minimum": 0,
+                      "maximum": 255
+                    },
+                    "green": {
+                      "type": "number",
+                      "description": "The green value of the color.",
+                      "minimum": 0,
+                      "maximum": 255
+                    },
+                    "blue": {
+                      "type": "number",
+                      "description": "The blue value of the color.",
+                      "minimum": 0,
+                      "maximum": 255
+                    },
+                    "alpha": {
+                      "type": "number",
+                      "description": "The transparency value. 0 is fully transparent and 1 is fully opaque.",
+                      "minimum": 0,
+                      "maximum": 1
+                    }
+                  },
+                  "required": [
+                    "red",
+                    "green",
+                    "blue",
+                    "alpha"
+                  ]
+                }
+              ]
+            },
+            "colorDecontamination": {
+              "type": "number",
+              "description": "If the value is greater than 0, automatically removes colored reflections that have been left on the main subject by the background.",
+              "minimum": 0,
+              "maximum": 1,
+              "default": 1
+            }
+          },
+          "required": [
+            "image"
+          ],
+          "description": "The JSON request body."
+        }
+      },
+      "required": [
+        "Authorization",
+        "x-api-key",
+        "Content-Type",
+        "requestBody"
+      ]
+    },
+    "method": "post",
+    "pathTemplate": "/v2/remove-background",
+    "parameters": [
+      {
+        "name": "Authorization",
+        "description": "The bearer token for the user. This is the access token.",
+        "in": "header",
+        "required": true,
+        "schema": {
+          "type": "string"
+        }
+      },
+      {
+        "name": "x-api-key",
+        "description": "The API key/Client ID",
+        "in": "header",
+        "required": true,
+        "schema": {
+          "type": "string"
+        }
+      },
+      {
+        "name": "Content-Type",
+        "description": "The content type of the request. The value is `application/json`.",
+        "in": "header",
+        "required": true,
+        "schema": {
+          "type": "string"
+        }
+      }
+    ],
+    "executionParameters": [
+      {
+        "name": "Authorization",
+        "in": "header"
+      },
+      {
+        "name": "x-api-key",
+        "in": "header"
+      },
+      {
+        "name": "Content-Type",
+        "in": "header"
+      }
+    ],
+    "requestBodyContentType": "application/json",
+    "securityRequirements": [
+      {
+        "ApiKeyAuth": []
+      },
+      {
+        "BearerAuth": []
+      }
+    ],
+    "operationId": "removeBackground",
+    "baseUrl": "https://image.adobe.io"
+  },
+  {
+    "name": "facadeJobStatus",
+    "description": "Retrieve the status of a running Remove Background job by providing the job ID. The job ID is obtained from the response of the asynchronous Remove Background API call.",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "jobId": {
+          "type": "string",
+          "description": "The job ID from the response of the Remove Background API call."
+        }
+      },
+      "required": [
+        "jobId"
+      ]
+    },
+    "method": "get",
+    "pathTemplate": "/v2/status/{jobId}",
+    "parameters": [
+      {
+        "name": "jobId",
+        "required": true,
+        "in": "path",
+        "description": "The job ID from the response of the Remove Background API call.",
+        "schema": {
+          "type": "string"
+        }
+      }
+    ],
+    "executionParameters": [
+      {
+        "name": "jobId",
+        "in": "path"
+      }
+    ],
+    "securityRequirements": [
+      {
+        "ApiKeyAuth": []
+      },
+      {
+        "BearerAuth": []
+      }
+    ],
+    "operationId": "facadeJobStatus",
+    "baseUrl": "https://image.adobe.io"
+  },
+  {
+    "name": "createMaskAsync",
+    "description": "⚠️ **DEPRECATED**: This endpoint is deprecated and will no longer be accessible after Oct 15, 2025. Use `/v2/remove-background` instead. For more information, see the [Deprecation Announcement](https://developer.adobe.com/firefly-services/docs/photoshop/getting_started/deprecation_announcement/).This endpoint uses the Remove Background AI/ML model to return a PNG file with a mask applied around the subject. To check the status of this process, utilize the `Get Status - Mask` endpoint.",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "x-gw-ims-org-id": {
+          "type": "string",
+          "description": "The IMS organization ID. This only needs to be sent if you want to receive the job status through Adobe I/O Events."
+        },
+        "requestBody": {
+          "title": "CreateMaskRequest",
+          "type": "object",
+          "required": [
+            "input",
+            "output"
+          ],
+          "properties": {
+            "input": {
+              "title": "StorageDetails",
+              "type": "object",
+              "required": [
+                "href",
+                "storage"
+              ],
+              "properties": {
+                "href": {
+                  "type": "string",
+                  "description": "A pre-signed GET URL."
+                },
+                "storage": {
+                  "title": "StorageType",
+                  "enum": [
+                    "external",
+                    "azure",
+                    "dropbox"
+                  ],
+                  "type": "string",
+                  "description": "Storage platforms supported."
+                }
+              },
+              "description": "A file located on Adobe's cloud or a supported external service."
+            },
+            "output": {
+              "title": "SenseiOutputDetails",
+              "type": "object",
+              "required": [
+                "href",
+                "storage"
+              ],
+              "properties": {
+                "href": {
+                  "type": "string",
+                  "description": "A pre-signed POST URL to the output file."
+                },
+                "storage": {
+                  "title": "StorageType",
+                  "enum": [
+                    "external",
+                    "azure",
+                    "dropbox"
+                  ],
+                  "type": "string",
+                  "description": "Storage platforms supported."
+                },
+                "mask": {
+                  "title": "MaskFormat",
+                  "type": "object",
+                  "properties": {
+                    "format": {
+                      "title": "MaskFormatType",
+                      "enum": [
+                        "binary",
+                        "soft"
+                      ],
+                      "type": "string",
+                      "description": "Soft mask or binary mask."
+                    }
+                  }
+                },
+                "color": {
+                  "title": "SenseiColor",
+                  "type": "object",
+                  "properties": {
+                    "space": {
+                      "title": "ColorSpaceType",
+                      "type": "string",
+                      "enum": [
+                        "rgb",
+                        "rgba"
+                      ],
+                      "description": "Color space for output image"
+                    }
+                  },
+                  "description": "Color space for output image"
+                },
+                "overwrite": {
+                  "type": "boolean",
+                  "description": "If the file already exists, indicates if the output file should be overwritten. Will eventually support eTags. Only applies to CC Storage.",
+                  "default": true
+                }
+              },
+              "description": "A PNG file."
+            }
+          },
+          "description": "The input image and the mask parameters"
+        }
+      },
+      "required": [
+        "requestBody"
+      ]
+    },
+    "method": "post",
+    "pathTemplate": "/sensei/mask",
+    "parameters": [
+      {
+        "name": "x-gw-ims-org-id",
+        "in": "header",
+        "description": "The IMS organization ID. This only needs to be sent if you want to receive the job status through Adobe I/O Events.",
+        "required": false,
+        "schema": {
+          "type": "string"
+        }
+      }
+    ],
+    "executionParameters": [
+      {
+        "name": "x-gw-ims-org-id",
+        "in": "header"
+      }
+    ],
+    "requestBodyContentType": "application/json",
+    "securityRequirements": [
+      {
+        "ApiKeyAuth": []
+      },
+      {
+        "BearerAuth": []
+      }
+    ],
+    "operationId": "createMaskAsync",
+    "baseUrl": "https://image.adobe.io"
+  },
+  {
+    "name": "psJobStatus",
+    "description": "Get the job status of a Photoshop job.",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "jobId": {
+          "type": "string",
+          "description": "The job ID."
+        },
+        "x-gw-ims-org-id": {
+          "type": "string",
+          "description": "The IMS organization ID. This only needs to be sent if you want to receive the job status through Adobe I/O Events."
+        }
+      },
+      "required": [
+        "jobId"
+      ]
+    },
+    "method": "get",
+    "pathTemplate": "/pie/psdService/status/{jobId}",
+    "parameters": [
+      {
+        "name": "jobId",
+        "in": "path",
+        "description": "The job ID.",
+        "required": true,
+        "schema": {
+          "type": "string"
+        }
+      },
+      {
+        "name": "x-gw-ims-org-id",
+        "in": "header",
+        "description": "The IMS organization ID. This only needs to be sent if you want to receive the job status through Adobe I/O Events.",
+        "required": false,
+        "schema": {
+          "type": "string"
+        }
+      }
+    ],
+    "executionParameters": [
+      {
+        "name": "jobId",
+        "in": "path"
+      },
+      {
+        "name": "x-gw-ims-org-id",
+        "in": "header"
+      }
+    ],
+    "securityRequirements": [
+      {
+        "ApiKeyAuth": []
+      },
+      {
+        "BearerAuth": []
+      }
+    ],
+    "operationId": "psJobStatus",
+    "baseUrl": "https://image.adobe.io"
+  },
+  {
+    "name": "getDocumentManifestAsync",
+    "description": "Extract metadata from PSD document, including general file and layer information.",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "x-gw-ims-org-id": {
+          "type": "string",
+          "description": "The IMS organization ID. This only needs to be sent if you want to receive the job status through Adobe I/O Events."
+        },
+        "requestBody": {
+          "title": "DocumentManifestRequest",
+          "type": "object",
+          "required": [
+            "inputs"
+          ],
+          "properties": {
+            "inputs": {
+              "type": "array",
+              "items": {
+                "title": "StorageDetails",
+                "type": "object",
+                "required": [
+                  "href",
+                  "storage"
+                ],
+                "properties": {
+                  "href": {
+                    "type": "string",
+                    "description": "A pre-signed GET URL."
+                  },
+                  "storage": {
+                    "title": "StorageType",
+                    "enum": [
+                      "external",
+                      "azure",
+                      "dropbox"
+                    ],
+                    "type": "string",
+                    "description": "Storage platforms supported."
+                  }
+                },
+                "description": "A file located on Adobe's cloud or a supported external service."
+              },
+              "description": "An array of input objects. Each input object represents a file to be processed."
+            },
+            "options": {
+              "allOf": [
+                {
+                  "title": "DocumentManifestOptions",
+                  "type": "object",
+                  "properties": {
+                    "thumbnails": {
+                      "allOf": [
+                        {
+                          "title": "Thumbnails",
+                          "type": "object",
+                          "properties": {
+                            "type": {
+                              "allOf": [
                                 {
-                                  title: 'ThumbnailType',
-                                  enum: ['image/jpeg', 'image/png', 'image/tiff'],
-                                  type: 'string',
-                                  description: 'Desired image format.',
+                                  "title": "ThumbnailType",
+                                  "enum": [
+                                    "image/jpeg",
+                                    "image/png",
+                                    "image/tiff"
+                                  ],
+                                  "type": "string",
+                                  "description": "Desired image format."
                                 },
                                 {
-                                  description: 'Desired image format.',
-                                },
-                              ],
-                            },
+                                  "description": "Desired image format."
+                                }
+                              ]
+                            }
                           },
-                          description:
-                            'Include pre-signed GET URLs to small preview thumbnails for any renderable layer.',
+                          "description": "Include pre-signed GET URLs to small preview thumbnails for any renderable layer."
                         },
                         {
-                          description:
-                            'Include pre-signed GET URLs to small preview thumbnails for any renderable layer.',
-                        },
-                      ],
-                    },
+                          "description": "Include pre-signed GET URLs to small preview thumbnails for any renderable layer."
+                        }
+                      ]
+                    }
                   },
-                  description: 'Available options to apply to all input files.',
+                  "description": "Available options to apply to all input files."
                 },
                 {
-                  description: 'Options to apply to all input files.',
+                  "description": "Options to apply to all input files."
+                }
+              ]
+            }
+          },
+          "description": "The PSD file with the layer information you want to extract."
+        }
+      },
+      "required": [
+        "requestBody"
+      ]
+    },
+    "method": "post",
+    "pathTemplate": "/pie/psdService/documentManifest",
+    "parameters": [
+      {
+        "name": "x-gw-ims-org-id",
+        "in": "header",
+        "description": "The IMS organization ID. This only needs to be sent if you want to receive the job status through Adobe I/O Events.",
+        "required": false,
+        "schema": {
+          "type": "string"
+        }
+      }
+    ],
+    "executionParameters": [
+      {
+        "name": "x-gw-ims-org-id",
+        "in": "header"
+      }
+    ],
+    "requestBodyContentType": "application/json",
+    "securityRequirements": [
+      {
+        "ApiKeyAuth": []
+      },
+      {
+        "BearerAuth": []
+      }
+    ],
+    "operationId": "getDocumentManifestAsync",
+    "baseUrl": "https://image.adobe.io"
+  },
+  {
+    "name": "createDocumentAsync",
+    "description": "Create new PSD with layers.",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "x-gw-ims-org-id": {
+          "type": "string",
+          "description": "The IMS organization ID. This only needs to be sent if you want to receive the job status through Adobe I/O Events."
+        },
+        "requestBody": {
+          "title": "CreateDocumentRequest",
+          "type": "object",
+          "required": [
+            "outputs",
+            "options"
+          ],
+          "properties": {
+            "outputs": {
+              "type": "array",
+              "items": {
+                "title": "PsOutputDetails",
+                "type": "object",
+                "required": [
+                  "href",
+                  "storage",
+                  "type"
+                ],
+                "properties": {
+                  "href": {
+                    "type": "string",
+                    "description": "A pre-signed POST URL to the output file."
+                  },
+                  "storage": {
+                    "title": "StorageType",
+                    "enum": [
+                      "external",
+                      "azure",
+                      "dropbox"
+                    ],
+                    "type": "string",
+                    "description": "Storage platforms supported."
+                  },
+                  "type": {
+                    "title": "ImageFormatType",
+                    "enum": [
+                      "image/vnd.adobe.photoshop",
+                      "image/jpeg",
+                      "image/png",
+                      "image/tiff",
+                      "vnd.adobe.photoshop"
+                    ],
+                    "type": "string",
+                    "description": "The desired image format. Using `image/vnd.adobe.photoshop` - create a new PSD file. Using `image/jpeg`, `image/png`, `image/tiff` - create a new JPEG, PNG or TIFF rendition. Certain image modes (RGB, CMYK, greyscale, etc.) must be converted to another image mode before a rendition can be created. With TIFF requested, Multichannel and Duotone will convert to RGB. With PNG requested, CMYK, HSL, HSB, Multichannel, Duotone, Lab and XYZ will convert to RGB."
+                  },
+                  "overwrite": {
+                    "type": "boolean",
+                    "description": "If the file already exists, indicates if the output file should be overwritten. Will eventually support eTags. Only applies to CC Storage.",
+                    "default": true
+                  },
+                  "width": {
+                    "type": "number",
+                    "description": "The width, in pixels, of the renditions. A width of 0 generates a full size rendition. Height is generated automatically using the aspect ratio. Only supported for image rendition.",
+                    "format": "int32",
+                    "default": 0
+                  },
+                  "maxWidth": {
+                    "type": "number",
+                    "description": "The size, in pixels, of the renditions. When width is 0, maxWidth can be provided to get the rendition size. maxWidth when less than document width gets precedence over width. Height is not necessary as the rendition generate will automatically maintain the aspect ratio.",
+                    "format": "int32",
+                    "default": 0
+                  },
+                  "quality": {
+                    "maximum": 7,
+                    "minimum": 1,
+                    "type": "number",
+                    "description": "The quality of the renditions for JPEG. The range is 1 to 7, 7 being the highest quality.",
+                    "format": "int32",
+                    "default": 7
+                  },
+                  "compression": {
+                    "title": "CompressionType",
+                    "enum": [
+                      "small",
+                      "medium",
+                      "large"
+                    ],
+                    "type": "string",
+                    "description": "Desired PNG compression level."
+                  },
+                  "trimToCanvas": {
+                    "title": "TrimToCanvasType",
+                    "enum": [
+                      true,
+                      false
+                    ],
+                    "type": "boolean",
+                    "description": "Use this if the renditions needs to be of Canvas size. Using `True` trims the renditions to Canvas size, while `False` makes the renditions Layer Size."
+                  },
+                  "layers": {
+                    "type": "array",
+                    "items": {
+                      "title": "LayerReference",
+                      "description": "A layer reference object.",
+                      "type": "object",
+                      "properties": {
+                        "id": {
+                          "type": "number",
+                          "description": "The id of the layer. Use either `id` OR `name`.",
+                          "format": "int32"
+                        },
+                        "name": {
+                          "type": "string",
+                          "description": "The name of the layer. Use either `id` OR `name`."
+                        }
+                      }
+                    },
+                    "description": "An array of layer objects.\nBy including this array you are signaling that you'd like a rendition created from these layer id's or layer names. Excluding it will generate a document-level rendition."
+                  },
+                  "iccProfile": {
+                    "title": "IccProfileDetails",
+                    "type": "object",
+                    "properties": {
+                      "imageMode": {
+                        "title": "ImageModeType",
+                        "enum": [
+                          "grayscale",
+                          "rgb",
+                          "cmyk"
+                        ],
+                        "type": "string",
+                        "description": "The image mode."
+                      },
+                      "input": {
+                        "title": "StorageDetails",
+                        "type": "object",
+                        "required": [
+                          "href",
+                          "storage"
+                        ],
+                        "properties": {
+                          "href": {
+                            "type": "string",
+                            "description": "A pre-signed GET URL."
+                          },
+                          "storage": {
+                            "title": "StorageType",
+                            "enum": [
+                              "external",
+                              "azure",
+                              "dropbox"
+                            ],
+                            "type": "string",
+                            "description": "Storage platforms supported."
+                          }
+                        },
+                        "description": "A file located on Adobe's cloud or a supported external service."
+                      },
+                      "profileName": {
+                        "title": "ColorProfileType",
+                        "enum": [
+                          "Adobe RGB (1998)",
+                          "Apple RGB",
+                          "ColorMatch RGB",
+                          "sRGB IEC61966-2.1",
+                          "Dot Gain 10%",
+                          "Dot Gain 15%",
+                          "Dot Gain 20%",
+                          "Dot Gain 25%",
+                          "Dot Gain 30%",
+                          "Gray Gamma 1.8",
+                          "Gray Gamma 2.2"
+                        ],
+                        "type": "string",
+                        "description": "The name of the color profile."
+                      }
+                    }
+                  }
                 },
+                "description": "An output object."
+              },
+              "description": "An array of output objects. Each output object represents a file to be created."
+            },
+            "options": {
+              "title": "DocumentCreateOptions",
+              "type": "object",
+              "required": [
+                "document"
               ],
-            },
-          },
-          description: 'The PSD file with the layer information you want to extract.',
-        },
-      },
-      required: ['requestBody'],
-    },
-    method: 'post',
-    pathTemplate: '/pie/psdService/documentManifest',
-    parameters: [
-      {
-        name: 'x-gw-ims-org-id',
-        in: 'header',
-        description:
-          'The IMS organization ID. This only needs to be sent if you want to receive the job status through Adobe I/O Events.',
-        required: false,
-        schema: {
-          type: 'string',
-        },
-      },
-    ],
-    executionParameters: [
-      {
-        name: 'x-gw-ims-org-id',
-        in: 'header',
-      },
-    ],
-    requestBodyContentType: 'application/json',
-    securityRequirements: [
-      {
-        ApiKeyAuth: [],
-      },
-      {
-        BearerAuth: [],
-      },
-    ],
-    operationId: 'getDocumentManifestAsync',
-    baseUrl: 'https://image.adobe.io',
-  },
-  {
-    name: 'createDocumentAsync',
-    description: 'Create new PSD with layers.',
-    inputSchema: {
-      type: 'object',
-      properties: {
-        'x-gw-ims-org-id': {
-          type: 'string',
-          description:
-            'The IMS organization ID. This only needs to be sent if you want to receive the job status through Adobe I/O Events.',
-        },
-        requestBody: {
-          title: 'CreateDocumentRequest',
-          type: 'object',
-          required: ['outputs', 'options'],
-          properties: {
-            outputs: {
-              type: 'array',
-              items: {
-                title: 'PsOutputDetails',
-                type: 'object',
-                required: ['href', 'storage', 'type'],
-                properties: {
-                  href: {
-                    type: 'string',
-                    description: 'A pre-signed POST URL to the output file.',
-                  },
-                  storage: {
-                    title: 'StorageType',
-                    enum: ['external', 'azure', 'dropbox'],
-                    type: 'string',
-                    description: 'Storage platforms supported.',
-                  },
-                  type: {
-                    title: 'ImageFormatType',
-                    enum: [
-                      'image/vnd.adobe.photoshop',
-                      'image/jpeg',
-                      'image/png',
-                      'image/tiff',
-                      'vnd.adobe.photoshop',
-                    ],
-                    type: 'string',
-                    description:
-                      'The desired image format. Using `image/vnd.adobe.photoshop` - create a new PSD file. Using `image/jpeg`, `image/png`, `image/tiff` - create a new JPEG, PNG or TIFF rendition. Certain image modes (RGB, CMYK, greyscale, etc.) must be converted to another image mode before a rendition can be created. With TIFF requested, Multichannel and Duotone will convert to RGB. With PNG requested, CMYK, HSL, HSB, Multichannel, Duotone, Lab and XYZ will convert to RGB.',
-                  },
-                  overwrite: {
-                    type: 'boolean',
-                    description:
-                      'If the file already exists, indicates if the output file should be overwritten. Will eventually support eTags. Only applies to CC Storage.',
-                    default: true,
-                  },
-                  width: {
-                    type: 'number',
-                    description:
-                      'The width, in pixels, of the renditions. A width of 0 generates a full size rendition. Height is generated automatically using the aspect ratio. Only supported for image rendition.',
-                    format: 'int32',
-                    default: 0,
-                  },
-                  maxWidth: {
-                    type: 'number',
-                    description:
-                      'The size, in pixels, of the renditions. When width is 0, maxWidth can be provided to get the rendition size. maxWidth when less than document width gets precedence over width. Height is not necessary as the rendition generate will automatically maintain the aspect ratio.',
-                    format: 'int32',
-                    default: 0,
-                  },
-                  quality: {
-                    maximum: 7,
-                    minimum: 1,
-                    type: 'number',
-                    description:
-                      'The quality of the renditions for JPEG. The range is 1 to 7, 7 being the highest quality.',
-                    format: 'int32',
-                    default: 7,
-                  },
-                  compression: {
-                    title: 'CompressionType',
-                    enum: ['small', 'medium', 'large'],
-                    type: 'string',
-                    description: 'Desired PNG compression level.',
-                  },
-                  trimToCanvas: {
-                    title: 'TrimToCanvasType',
-                    enum: [true, false],
-                    type: 'boolean',
-                    description:
-                      'Use this if the renditions needs to be of Canvas size. Using `True` trims the renditions to Canvas size, while `False` makes the renditions Layer Size.',
-                  },
-                  layers: {
-                    type: 'array',
-                    items: {
-                      title: 'LayerReference',
-                      description: 'A layer reference object.',
-                      type: 'object',
-                      properties: {
-                        id: {
-                          type: 'number',
-                          description: 'The id of the layer. Use either `id` OR `name`.',
-                          format: 'int32',
-                        },
-                        name: {
-                          type: 'string',
-                          description: 'The name of the layer. Use either `id` OR `name`.',
-                        },
-                      },
-                    },
-                    description:
-                      "An array of layer objects.\nBy including this array you are signaling that you'd like a rendition created from these layer id's or layer names. Excluding it will generate a document-level rendition.",
-                  },
-                  iccProfile: {
-                    title: 'IccProfileDetails',
-                    type: 'object',
-                    properties: {
-                      imageMode: {
-                        title: 'ImageModeType',
-                        enum: ['grayscale', 'rgb', 'cmyk'],
-                        type: 'string',
-                        description: 'The image mode.',
-                      },
-                      input: {
-                        title: 'StorageDetails',
-                        type: 'object',
-                        required: ['href', 'storage'],
-                        properties: {
-                          href: {
-                            type: 'string',
-                            description: 'A pre-signed GET URL.',
-                          },
-                          storage: {
-                            title: 'StorageType',
-                            enum: ['external', 'azure', 'dropbox'],
-                            type: 'string',
-                            description: 'Storage platforms supported.',
-                          },
-                        },
-                        description:
-                          "A file located on Adobe's cloud or a supported external service.",
-                      },
-                      profileName: {
-                        title: 'ColorProfileType',
-                        enum: [
-                          'Adobe RGB (1998)',
-                          'Apple RGB',
-                          'ColorMatch RGB',
-                          'sRGB IEC61966-2.1',
-                          'Dot Gain 10%',
-                          'Dot Gain 15%',
-                          'Dot Gain 20%',
-                          'Dot Gain 25%',
-                          'Dot Gain 30%',
-                          'Gray Gamma 1.8',
-                          'Gray Gamma 2.2',
-                        ],
-                        type: 'string',
-                        description: 'The name of the color profile.',
-                      },
-                    },
-                  },
-                },
-                description: 'An output object.',
-              },
-              description:
-                'An array of output objects. Each output object represents a file to be created.',
-            },
-            options: {
-              title: 'DocumentCreateOptions',
-              type: 'object',
-              required: ['document'],
-              properties: {
-                manageMissingFonts: {
-                  allOf: [
+              "properties": {
+                "manageMissingFonts": {
+                  "allOf": [
                     {
-                      title: 'ManageMissingFonts',
-                      enum: ['useDefault', 'fail'],
-                      type: 'string',
-                      description:
-                        'Action to take if there are one or more missing fonts in the document. Using `fail` - the job will not succeed and the status will be set to `failed` with the details of the error provided in the `details` section in the status. Using `useDefault` - the job will succeed, however all the missing fonts will use the font: ArialMT.',
-                    },
-                    {
-                      description:
-                        'Action to take if there are one or more missing fonts in the document. Using `fail` - the job will not succeed and the status will be set to `failed` with the details of the error provided in the `details` section in the status. Using `useDefault` - the job will succeed, however all the missing fonts will use the font: ArialMT.',
-                    },
-                  ],
-                },
-                globalFont: {
-                  type: 'string',
-                  description:
-                    'The PostScript name of the font to be used as the global default for the document. If this font is also missing, the option specified in `manageMissingFonts` will take effect.',
-                },
-                fonts: {
-                  type: 'array',
-                  items: {
-                    title: 'StorageDetails',
-                    type: 'object',
-                    required: ['href', 'storage'],
-                    properties: {
-                      href: {
-                        type: 'string',
-                        description: 'A pre-signed GET URL.',
-                      },
-                      storage: {
-                        title: 'StorageType',
-                        enum: ['external', 'azure', 'dropbox'],
-                        type: 'string',
-                        description: 'Storage platforms supported.',
-                      },
-                    },
-                    description: "A file located on Adobe's cloud or a supported external service.",
-                  },
-                  description: 'array of custom fonts needed in this document',
-                },
-                document: {
-                  title: 'DocumentDetails',
-                  type: 'object',
-                  required: ['height', 'width', 'resolution', 'fill', 'mode'],
-                  properties: {
-                    height: {
-                      type: 'number',
-                      description: 'In pixels',
-                      format: 'int32',
-                    },
-                    width: {
-                      type: 'number',
-                      description: 'In pixels',
-                      format: 'int32',
-                    },
-                    resolution: {
-                      maximum: 300,
-                      minimum: 72,
-                      type: 'number',
-                      description: 'In pixels per inch',
-                      format: 'int32',
-                    },
-                    fill: {
-                      title: 'FillType',
-                      enum: ['white', 'backgroundColor', 'transparent'],
-                      type: 'string',
-                      description: 'Type of fill for the background layer.',
-                    },
-                    mode: {
-                      title: 'ChannelModeType',
-                      enum: [
-                        'bitmap',
-                        'greyscale',
-                        'indexed',
-                        'rgb',
-                        'cmyk',
-                        'hsl',
-                        'hsb',
-                        'multichannel',
-                        'duotone',
-                        'lab',
-                        'xyz',
+                      "title": "ManageMissingFonts",
+                      "enum": [
+                        "useDefault",
+                        "fail"
                       ],
-                      type: 'string',
-                      description: "The document's bit/channel depth.",
+                      "type": "string",
+                      "description": "Action to take if there are one or more missing fonts in the document. Using `fail` - the job will not succeed and the status will be set to `failed` with the details of the error provided in the `details` section in the status. Using `useDefault` - the job will succeed, however all the missing fonts will use the font: ArialMT."
                     },
-                    depth: {
-                      title: 'DepthType',
-                      enum: [8, 16, 32],
-                      type: 'number',
-                      description: 'Bit depth. This is either 8, 16 or 32 bit.',
-                    },
-                  },
+                    {
+                      "description": "Action to take if there are one or more missing fonts in the document. Using `fail` - the job will not succeed and the status will be set to `failed` with the details of the error provided in the `details` section in the status. Using `useDefault` - the job will succeed, however all the missing fonts will use the font: ArialMT."
+                    }
+                  ]
                 },
-                layers: {
-                  type: 'array',
-                  items: {
-                    title: 'DocumentCreateLayer',
-                    type: 'object',
-                    required: ['type', 'input'],
-                    properties: {
-                      type: {
-                        title: 'LayerType',
-                        enum: [
-                          'layer',
-                          'textLayer',
-                          'adjustmentLayer',
-                          'smartObject',
-                          'fillLayer',
-                          'backgroundLayer',
-                          'layerSection',
+                "globalFont": {
+                  "type": "string",
+                  "description": "The PostScript name of the font to be used as the global default for the document. If this font is also missing, the option specified in `manageMissingFonts` will take effect."
+                },
+                "fonts": {
+                  "type": "array",
+                  "items": {
+                    "title": "StorageDetails",
+                    "type": "object",
+                    "required": [
+                      "href",
+                      "storage"
+                    ],
+                    "properties": {
+                      "href": {
+                        "type": "string",
+                        "description": "A pre-signed GET URL."
+                      },
+                      "storage": {
+                        "title": "StorageType",
+                        "enum": [
+                          "external",
+                          "azure",
+                          "dropbox"
                         ],
-                        type: 'string',
-                        description:
-                          'The layer type. Using `layer` - a pixel layer. Using `textLayer` - a text layer. Using `adjustmentLayer` - an adjustment layer. Using `layerSection` - a grouping layer. Using `smartObject` - a smart object. Using `backgroundLayer` - a background layer. Using `fillLayer` - a fill layer.',
-                      },
-                      input: {
-                        allOf: [
-                          {
-                            title: 'StorageDetails',
-                            type: 'object',
-                            required: ['href', 'storage'],
-                            properties: {
-                              href: {
-                                type: 'string',
-                                description: 'A pre-signed GET URL.',
-                              },
-                              storage: {
-                                title: 'StorageType',
-                                enum: ['external', 'azure', 'dropbox'],
-                                type: 'string',
-                                description: 'Storage platforms supported.',
-                              },
-                            },
-                            description:
-                              "A file located on Adobe's cloud or a supported external service.",
-                          },
-                          {
-                            description:
-                              "File on Adobe's cloud or an external service (like AWS S3, Azure, Dropbox)",
-                          },
+                        "type": "string",
+                        "description": "Storage platforms supported."
+                      }
+                    },
+                    "description": "A file located on Adobe's cloud or a supported external service."
+                  },
+                  "description": "array of custom fonts needed in this document"
+                },
+                "document": {
+                  "title": "DocumentDetails",
+                  "type": "object",
+                  "required": [
+                    "height",
+                    "width",
+                    "resolution",
+                    "fill",
+                    "mode"
+                  ],
+                  "properties": {
+                    "height": {
+                      "type": "number",
+                      "description": "In pixels",
+                      "format": "int32"
+                    },
+                    "width": {
+                      "type": "number",
+                      "description": "In pixels",
+                      "format": "int32"
+                    },
+                    "resolution": {
+                      "maximum": 300,
+                      "minimum": 72,
+                      "type": "number",
+                      "description": "In pixels per inch",
+                      "format": "int32"
+                    },
+                    "fill": {
+                      "title": "FillType",
+                      "enum": [
+                        "white",
+                        "backgroundColor",
+                        "transparent"
+                      ],
+                      "type": "string",
+                      "description": "Type of fill for the background layer."
+                    },
+                    "mode": {
+                      "title": "ChannelModeType",
+                      "enum": [
+                        "bitmap",
+                        "greyscale",
+                        "indexed",
+                        "rgb",
+                        "cmyk",
+                        "hsl",
+                        "hsb",
+                        "multichannel",
+                        "duotone",
+                        "lab",
+                        "xyz"
+                      ],
+                      "type": "string",
+                      "description": "The document's bit/channel depth."
+                    },
+                    "depth": {
+                      "title": "DepthType",
+                      "enum": [
+                        8,
+                        16,
+                        32
+                      ],
+                      "type": "number",
+                      "description": "Bit depth. This is either 8, 16 or 32 bit."
+                    }
+                  }
+                },
+                "layers": {
+                  "type": "array",
+                  "items": {
+                    "title": "DocumentCreateLayer",
+                    "type": "object",
+                    "required": [
+                      "type",
+                      "input"
+                    ],
+                    "properties": {
+                      "type": {
+                        "title": "LayerType",
+                        "enum": [
+                          "layer",
+                          "textLayer",
+                          "adjustmentLayer",
+                          "smartObject",
+                          "fillLayer",
+                          "backgroundLayer",
+                          "layerSection"
                         ],
+                        "type": "string",
+                        "description": "The layer type. Using `layer` - a pixel layer. Using `textLayer` - a text layer. Using `adjustmentLayer` - an adjustment layer. Using `layerSection` - a grouping layer. Using `smartObject` - a smart object. Using `backgroundLayer` - a background layer. Using `fillLayer` - a fill layer."
                       },
-                      name: {
-                        type: 'string',
-                      },
-                      locked: {
-                        type: 'boolean',
-                        description: 'is the layer locked',
-                        default: false,
-                      },
-                      visible: {
-                        type: 'boolean',
-                        description: 'is the layer visible',
-                        default: true,
-                      },
-                      adjustments: {
-                        title: 'AdjustmentDetails',
-                        type: 'object',
-                        properties: {
-                          brightnessContrast: {
-                            title: 'BrightnessContrast',
-                            type: 'object',
-                            properties: {
-                              brightness: {
-                                maximum: 150,
-                                minimum: -150,
-                                type: 'number',
-                                description: "The adjustment layer's brightness.",
-                                format: 'int32',
-                              },
-                              contrast: {
-                                maximum: 150,
-                                minimum: -150,
-                                type: 'number',
-                                description: "The adjustment layer's contrast.",
-                                format: 'int32',
-                              },
-                            },
-                            description: 'Brightness and contrast settings.',
-                          },
-                          exposure: {
-                            title: 'ExposureDetails',
-                            description: 'Exposure settings.',
-                            type: 'object',
-                            properties: {
-                              exposure: {
-                                maximum: 20,
-                                minimum: -20,
-                                type: 'number',
-                                description: "The layer's exposure.",
-                                default: 0,
-                              },
-                              offset: {
-                                maximum: 0.5,
-                                minimum: -0.5,
-                                type: 'number',
-                                description: "The layer's offset.",
-                                default: 0,
-                              },
-                              gammaCorrection: {
-                                maximum: 9.99,
-                                minimum: 0.01,
-                                type: 'number',
-                                description: "The layer's gamma correction.",
-                                default: 1,
-                              },
-                            },
-                          },
-                          hueSaturation: {
-                            title: 'HueSaturation',
-                            type: 'object',
-                            properties: {
-                              colorize: {
-                                type: 'boolean',
-                                description: 'Whether to colorize.',
-                              },
-                              channels: {
-                                type: 'array',
-                                items: {
-                                  title: 'ChannelDetails',
-                                  type: 'object',
-                                  properties: {
-                                    channel: {
-                                      title: 'ChannelType',
-                                      enum: ['master'],
-                                      type: 'string',
-                                      description: 'The channel type.',
-                                    },
-                                    hue: {
-                                      maximum: 180,
-                                      minimum: -180,
-                                      type: 'number',
-                                      format: 'int32',
-                                    },
-                                    saturation: {
-                                      maximum: 100,
-                                      minimum: -100,
-                                      type: 'number',
-                                      format: 'int32',
-                                    },
-                                    lightness: {
-                                      maximum: 100,
-                                      minimum: -100,
-                                      type: 'number',
-                                      format: 'int32',
-                                    },
-                                  },
-                                },
-                                description:
-                                  "An array of hashes representing the 'master' channel (the remaining five channels of 'magentas', 'yellows', 'greens', etc. are not yet supported).",
-                              },
-                            },
-                          },
-                          colorBalance: {
-                            title: 'ColorBalance',
-                            description: 'Color balance settings.',
-                            type: 'object',
-                            properties: {
-                              preserveLuminosity: {
-                                type: 'boolean',
-                                description: 'Whether to preserve luminosity.',
-                              },
-                              shadowLevels: {
-                                type: 'array',
-                                items: {
-                                  maximum: 100,
-                                  minimum: -100,
-                                  type: 'number',
-                                  format: 'int32',
-                                },
-                                description: 'Shadow levels.',
-                              },
-                              midtoneLevels: {
-                                type: 'array',
-                                items: {
-                                  maximum: 100,
-                                  minimum: -100,
-                                  type: 'number',
-                                  format: 'int32',
-                                },
-                                description: 'Midtone levels.',
-                              },
-                              highlightLevels: {
-                                type: 'array',
-                                items: {
-                                  maximum: 100,
-                                  minimum: -100,
-                                  type: 'number',
-                                  format: 'int32',
-                                },
-                                description: 'Highlight levels.',
-                              },
-                            },
-                          },
-                        },
-                        description: 'Adjustment layer information.',
-                      },
-                      bounds: {
-                        title: 'Bounds',
-                        description: 'The bounds of the layer.',
-                        type: 'object',
-                        properties: {
-                          top: {
-                            type: 'number',
-                            description: 'The top position in pixels.',
-                            format: 'int32',
-                          },
-                          left: {
-                            type: 'number',
-                            description: 'The left position in pixels.',
-                            format: 'int32',
-                          },
-                          width: {
-                            type: 'number',
-                            description: 'The width in pixels.',
-                            format: 'int32',
-                          },
-                          height: {
-                            type: 'number',
-                            description: 'The height in pixels.',
-                            format: 'int32',
-                          },
-                        },
-                      },
-                      children: {
-                        type: 'array',
-                        items: {
-                          title: 'ChildrenLayerDetails',
-                          type: 'object',
-                          properties: {
-                            id: {
-                              type: 'number',
-                              description:
-                                'The layer ID. An ID of -1 is valid and indicates a PSD that only contains a background image and no layers.',
-                              format: 'int32',
-                            },
-                            index: {
-                              type: 'number',
-                              description: 'The layer index.',
-                              format: 'int32',
-                            },
-                            thumbnail: {
-                              type: 'string',
-                              description:
-                                'If thumbnails were requested, a pre-signed GET URL to the thumbnail',
-                            },
-                            type: {
-                              title: 'LayerType',
-                              enum: [
-                                'layer',
-                                'textLayer',
-                                'adjustmentLayer',
-                                'smartObject',
-                                'fillLayer',
-                                'backgroundLayer',
-                                'layerSection',
-                              ],
-                              type: 'string',
-                              description:
-                                'The layer type. Using `layer` - a pixel layer. Using `textLayer` - a text layer. Using `adjustmentLayer` - an adjustment layer. Using `layerSection` - a grouping layer. Using `smartObject` - a smart object. Using `backgroundLayer` - a background layer. Using `fillLayer` - a fill layer.',
-                            },
-                            name: {
-                              type: 'string',
-                              description: 'The layer name.',
-                            },
-                            locked: {
-                              type: 'boolean',
-                              description: 'Whether the layer is locked',
-                            },
-                            visible: {
-                              type: 'boolean',
-                              description: 'Whether the layer is visible',
-                            },
-                            adjustments: {
-                              title: 'AdjustmentDetails',
-                              type: 'object',
-                              properties: {
-                                brightnessContrast: {
-                                  title: 'BrightnessContrast',
-                                  type: 'object',
-                                  properties: {
-                                    brightness: {
-                                      maximum: 150,
-                                      minimum: -150,
-                                      type: 'number',
-                                      description: "The adjustment layer's brightness.",
-                                      format: 'int32',
-                                    },
-                                    contrast: {
-                                      maximum: 150,
-                                      minimum: -150,
-                                      type: 'number',
-                                      description: "The adjustment layer's contrast.",
-                                      format: 'int32',
-                                    },
-                                  },
-                                  description: 'Brightness and contrast settings.',
-                                },
-                                exposure: {
-                                  title: 'ExposureDetails',
-                                  description: 'Exposure settings.',
-                                  type: 'object',
-                                  properties: {
-                                    exposure: {
-                                      maximum: 20,
-                                      minimum: -20,
-                                      type: 'number',
-                                      description: "The layer's exposure.",
-                                      default: 0,
-                                    },
-                                    offset: {
-                                      maximum: 0.5,
-                                      minimum: -0.5,
-                                      type: 'number',
-                                      description: "The layer's offset.",
-                                      default: 0,
-                                    },
-                                    gammaCorrection: {
-                                      maximum: 9.99,
-                                      minimum: 0.01,
-                                      type: 'number',
-                                      description: "The layer's gamma correction.",
-                                      default: 1,
-                                    },
-                                  },
-                                },
-                                hueSaturation: {
-                                  title: 'HueSaturation',
-                                  type: 'object',
-                                  properties: {
-                                    colorize: {
-                                      type: 'boolean',
-                                      description: 'Whether to colorize.',
-                                    },
-                                    channels: {
-                                      type: 'array',
-                                      items: {
-                                        title: 'ChannelDetails',
-                                        type: 'object',
-                                        properties: {
-                                          channel: {
-                                            title: 'ChannelType',
-                                            enum: ['master'],
-                                            type: 'string',
-                                            description: 'The channel type.',
-                                          },
-                                          hue: {
-                                            maximum: 180,
-                                            minimum: -180,
-                                            type: 'number',
-                                            format: 'int32',
-                                          },
-                                          saturation: {
-                                            maximum: 100,
-                                            minimum: -100,
-                                            type: 'number',
-                                            format: 'int32',
-                                          },
-                                          lightness: {
-                                            maximum: 100,
-                                            minimum: -100,
-                                            type: 'number',
-                                            format: 'int32',
-                                          },
-                                        },
-                                      },
-                                      description:
-                                        "An array of hashes representing the 'master' channel (the remaining five channels of 'magentas', 'yellows', 'greens', etc. are not yet supported).",
-                                    },
-                                  },
-                                },
-                                colorBalance: {
-                                  title: 'ColorBalance',
-                                  description: 'Color balance settings.',
-                                  type: 'object',
-                                  properties: {
-                                    preserveLuminosity: {
-                                      type: 'boolean',
-                                      description: 'Whether to preserve luminosity.',
-                                    },
-                                    shadowLevels: {
-                                      type: 'array',
-                                      items: {
-                                        maximum: 100,
-                                        minimum: -100,
-                                        type: 'number',
-                                        format: 'int32',
-                                      },
-                                      description: 'Shadow levels.',
-                                    },
-                                    midtoneLevels: {
-                                      type: 'array',
-                                      items: {
-                                        maximum: 100,
-                                        minimum: -100,
-                                        type: 'number',
-                                        format: 'int32',
-                                      },
-                                      description: 'Midtone levels.',
-                                    },
-                                    highlightLevels: {
-                                      type: 'array',
-                                      items: {
-                                        maximum: 100,
-                                        minimum: -100,
-                                        type: 'number',
-                                        format: 'int32',
-                                      },
-                                      description: 'Highlight levels.',
-                                    },
-                                  },
-                                },
-                              },
-                              description: 'Adjustment layer information.',
-                            },
-                            bounds: {
-                              title: 'Bounds',
-                              description: 'The bounds of the layer.',
-                              type: 'object',
-                              properties: {
-                                top: {
-                                  type: 'number',
-                                  description: 'The top position in pixels.',
-                                  format: 'int32',
-                                },
-                                left: {
-                                  type: 'number',
-                                  description: 'The left position in pixels.',
-                                  format: 'int32',
-                                },
-                                width: {
-                                  type: 'number',
-                                  description: 'The width in pixels.',
-                                  format: 'int32',
-                                },
-                                height: {
-                                  type: 'number',
-                                  description: 'The height in pixels.',
-                                  format: 'int32',
-                                },
-                              },
-                            },
-                            blendOptions: {
-                              title: 'BlendDetails',
-                              type: 'object',
-                              properties: {
-                                opacity: {
-                                  maximum: 100,
-                                  minimum: 0,
-                                  type: 'number',
-                                  description: 'Indicates the opacity value of a layer.',
-                                  format: 'int32',
-                                },
-                                blendMode: {
-                                  title: 'BlendModeType',
-                                  enum: [
-                                    'normal',
-                                    'dissolve',
-                                    'darken',
-                                    'multiply',
-                                    'colorBurn',
-                                    'linearBurn',
-                                    'darkerColor',
-                                    'lighten',
-                                    'screen',
-                                    'colorDodge',
-                                    'linearDodge',
-                                    'lighterColor',
-                                    'overlay',
-                                    'softLight',
-                                    'hardLight',
-                                    'vividLight',
-                                    'linearLight',
-                                    'pinLight',
-                                    'hardMix',
-                                    'difference',
-                                    'exclusion',
-                                    'subtract',
-                                    'divide',
-                                    'hue',
-                                    'saturation',
-                                    'color',
-                                    'luminosity',
-                                  ],
-                                  type: 'string',
-                                  description: 'Blend mode of layer.',
-                                },
-                              },
-                              description:
-                                'Blend options of a layer, including opacity and blend mode.',
-                            },
-                            mask: {
-                              title: 'LayerMaskDetails',
-                              type: 'object',
-                              properties: {
-                                clip: {
-                                  type: 'boolean',
-                                  description: 'Indicates if this is a clipped layer.',
-                                },
-                                enabled: {
-                                  type: 'boolean',
-                                  description: 'Indicates whether a mask is enabled on that layer.',
-                                },
-                                linked: {
-                                  type: 'boolean',
-                                  description: 'Indicates whether a mask is linked to the layer.',
-                                },
-                                offset: {
-                                  title: 'Offset',
-                                  description: 'Offset details.',
-                                  type: 'object',
-                                  properties: {
-                                    x: {
-                                      type: 'number',
-                                      description:
-                                        'Offset to indicate horizontal move of the mask.',
-                                      format: 'int32',
-                                    },
-                                    y: {
-                                      type: 'number',
-                                      description: 'Offset to indicate vertical move of the mask.',
-                                      format: 'int32',
-                                    },
-                                  },
-                                },
-                              },
-                              description:
-                                'An object describing the input mask replaced or added to the layer.',
-                            },
-                            smartObject: {
-                              title: 'SmartObjectDetails',
-                              description: 'Smart object details.',
-                              type: 'object',
-                              properties: {
-                                type: {
-                                  type: 'string',
-                                  description: 'Desired image format for the smart object.',
-                                },
-                                linked: {
-                                  type: 'boolean',
-                                  description:
-                                    'Indicates if the smart object is linked. Currently we support embedded smart object only, which means "linked = false".',
-                                  default: false,
-                                },
-                                name: {
-                                  type: 'string',
-                                  description:
-                                    'Name of the embedded or linked smart object. Currently we support embedded smart object only.',
-                                },
-                                path: {
-                                  type: 'string',
-                                  description:
-                                    'Only for a linked smart object. Indicates the relative path for the linked smart object.',
-                                },
-                                instanceId: {
-                                  type: 'string',
-                                  description:
-                                    'Only for an embedded smart object. Indicates the instance ID of the embedded smart object. This ID is unique and the value is derived from the RAW data of the document. `instanceId` may show a value as unknown, if the embedded smart object is generated using a non-Adobe application.',
-                                },
-                              },
-                            },
-                            fill: {
-                              title: 'FillDetails',
-                              type: 'object',
-                              properties: {
-                                solidColor: {
-                                  title: 'SolidColor',
-                                  type: 'object',
-                                  required: ['rgb'],
-                                  properties: {
-                                    rgb: {
-                                      title: 'RgbColor',
-                                      type: 'object',
-                                      properties: {
-                                        red: {
-                                          maximum: 255,
-                                          minimum: 0,
-                                          type: 'number',
-                                          format: 'int32',
-                                        },
-                                        green: {
-                                          maximum: 255,
-                                          minimum: 0,
-                                          type: 'number',
-                                          format: 'int32',
-                                        },
-                                        blue: {
-                                          maximum: 255,
-                                          minimum: 0,
-                                          type: 'number',
-                                          format: 'int32',
-                                        },
-                                      },
-                                      description:
-                                        'An object describing the RGB color format in 8 bits.',
-                                    },
-                                  },
-                                },
-                              },
-                            },
-                            text: {
-                              title: 'TextLayerDetails',
-                              type: 'object',
-                              properties: {
-                                content: {
-                                  type: 'string',
-                                  description: 'The text string.',
-                                },
-                                characterStyles: {
-                                  type: 'array',
-                                  items: {
-                                    title: 'TextLayerCharacterStyleDetails',
-                                    type: 'object',
-                                    properties: {
-                                      from: {
-                                        minimum: 0,
-                                        type: 'number',
-                                        description:
-                                          'The beginning of the range of characters that this character style applies to. Based on initial index of 0. For example a style applied to only the first two characters would be from=0 and to=1.',
-                                        format: 'int32',
-                                      },
-                                      to: {
-                                        minimum: 0,
-                                        type: 'number',
-                                        description:
-                                          'The ending of the range of characters that this character style applies to. Based on initial index of 0. For example a style applied to only the first two characters would be from=0 and to=1.',
-                                        format: 'int32',
-                                      },
-                                      fontSize: {
-                                        type: 'number',
-                                        description: 'The font size in points.',
-                                      },
-                                      fontName: {
-                                        type: 'string',
-                                        description:
-                                          "The font's PostScript name from the [list of supported fonts](../../getting_started/technical_usage_notes/index.md#photoshop-api-supported-fonts).",
-                                      },
-                                      orientation: {
-                                        title: 'OrientationType',
-                                        enum: ['horizontal', 'vertical'],
-                                        type: 'string',
-                                        description: 'The text orientation.',
-                                      },
-                                      fontColor: {
-                                        title: 'FontColorDetails',
-                                        type: 'object',
-                                        properties: {
-                                          rgb: {
-                                            allOf: [
-                                              {
-                                                title: 'FontColorRgb',
-                                                type: 'object',
-                                                properties: {
-                                                  red: {
-                                                    maximum: 32768,
-                                                    minimum: 0,
-                                                    type: 'integer',
-                                                    format: 'int32',
-                                                  },
-                                                  green: {
-                                                    maximum: 32768,
-                                                    minimum: 0,
-                                                    type: 'integer',
-                                                    format: 'int32',
-                                                  },
-                                                  blue: {
-                                                    maximum: 32768,
-                                                    minimum: 0,
-                                                    type: 'integer',
-                                                    format: 'int32',
-                                                  },
-                                                },
-                                                description:
-                                                  'An object describing the RGB color format in 16 bits.',
-                                              },
-                                              {
-                                                description:
-                                                  'An object describing the RGB color format in 16 bits.',
-                                              },
-                                            ],
-                                          },
-                                          cmyk: {
-                                            allOf: [
-                                              {
-                                                title: 'FontColorCmyk',
-                                                type: 'object',
-                                                properties: {
-                                                  cyan: {
-                                                    maximum: 32768,
-                                                    minimum: 0,
-                                                    type: 'integer',
-                                                    format: 'int32',
-                                                  },
-                                                  magenta: {
-                                                    maximum: 32768,
-                                                    minimum: 0,
-                                                    type: 'integer',
-                                                    format: 'int32',
-                                                  },
-                                                  yellowColor: {
-                                                    maximum: 32768,
-                                                    minimum: 0,
-                                                    type: 'integer',
-                                                    format: 'int32',
-                                                  },
-                                                  black: {
-                                                    maximum: 32768,
-                                                    minimum: 0,
-                                                    type: 'integer',
-                                                    format: 'int32',
-                                                  },
-                                                },
-                                                description:
-                                                  'The font color settings for CMYK mode in 16-bit representation.',
-                                              },
-                                              {
-                                                description:
-                                                  'The font color settings for CMYK mode in 16-bit representation.',
-                                              },
-                                            ],
-                                          },
-                                          gray: {
-                                            allOf: [
-                                              {
-                                                title: 'FontColorGray',
-                                                type: 'object',
-                                                properties: {
-                                                  gray: {
-                                                    maximum: 32768,
-                                                    minimum: 0,
-                                                    type: 'integer',
-                                                    format: 'int32',
-                                                  },
-                                                },
-                                                description:
-                                                  'The font color settings for gray mode in 16-bit representation.',
-                                              },
-                                              {
-                                                description:
-                                                  'The font color settings for gray mode in 16-bit representation.',
-                                              },
-                                            ],
-                                          },
-                                          lab: {
-                                            allOf: [
-                                              {
-                                                title: 'FontColorLab',
-                                                type: 'object',
-                                                properties: {
-                                                  luminance: {
-                                                    maximum: 32768,
-                                                    minimum: 0,
-                                                    type: 'integer',
-                                                    format: 'int32',
-                                                  },
-                                                  a: {
-                                                    maximum: 32768,
-                                                    minimum: 0,
-                                                    type: 'integer',
-                                                    format: 'int32',
-                                                  },
-                                                  b: {
-                                                    maximum: 32768,
-                                                    minimum: 0,
-                                                    type: 'integer',
-                                                    format: 'int32',
-                                                  },
-                                                },
-                                                description:
-                                                  'The font color settings for Lab mode in 16-bit representation.',
-                                              },
-                                              {
-                                                description:
-                                                  'The font color settings for Lab mode in 16-bit representation.',
-                                              },
-                                            ],
-                                          },
-                                        },
-                                      },
-                                    },
-                                  },
-                                  description:
-                                    "Character style settings. If the same supported attributes apply to all characters in the layer, then this will be an array of one item. Otherwise, each `characterStyle` object will have a 'from' and 'to' value indicating the range of characters that style applies to.",
-                                },
-                                paragraphStyles: {
-                                  type: 'array',
-                                  items: {
-                                    title: 'TextLayerParagraphStyleDetails',
-                                    type: 'object',
-                                    properties: {
-                                      from: {
-                                        minimum: 0,
-                                        type: 'number',
-                                        description:
-                                          'The beginning of the range of characters that this paragraph style applies to. Based on initial index of 0. For example a style applied to only the first two characters would be from=0 and to=1.',
-                                        format: 'int32',
-                                      },
-                                      to: {
-                                        minimum: 0,
-                                        type: 'number',
-                                        description:
-                                          'The ending of the range of characters that this paragraph style applies to. Based on initial index of 0. For example a style applied to only the first two characters would be from=0 and to=1.',
-                                        format: 'int32',
-                                      },
-                                      alignment: {
-                                        title: 'AlignmentType',
-                                        enum: [
-                                          'left',
-                                          'center',
-                                          'right',
-                                          'justify',
-                                          'justifyLeft',
-                                          'justifyCenter',
-                                          'justifyRight',
-                                        ],
-                                        type: 'string',
-                                        description: 'The paragraph alignment.',
-                                      },
-                                    },
-                                    description:
-                                      "If the same supported attributes apply to all characters in the layer then this will be an array of one item, otherwise each paragraph style object will have a 'from' and 'to' value indicating the range of characters that the style applies to.",
-                                  },
-                                  description:
-                                    "Paragraph style settings. If the same supported attributes apply to all characters in the layer then this will be an array of one item, otherwise each paragraph style object will have a 'from' and 'to' value indicating the range of characters that the style applies to.",
-                                },
-                              },
-                              description: 'Text settings.',
-                            },
-                          },
-                        },
-                      },
-                      mask: {
-                        title: 'MaskDetails',
-                        type: 'object',
-                        properties: {
-                          input: {
-                            title: 'StorageDetails',
-                            type: 'object',
-                            required: ['href', 'storage'],
-                            properties: {
-                              href: {
-                                type: 'string',
-                                description: 'A pre-signed GET URL.',
-                              },
-                              storage: {
-                                title: 'StorageType',
-                                enum: ['external', 'azure', 'dropbox'],
-                                type: 'string',
-                                description: 'Storage platforms supported.',
-                              },
-                            },
-                            description:
-                              "A file located on Adobe's cloud or a supported external service.",
-                          },
-                          clip: {
-                            type: 'boolean',
-                            description: 'Indicates if this is a clipped layer',
-                          },
-                          enabled: {
-                            type: 'boolean',
-                            description: 'Indicates a mask is enabled on that layer or not',
-                          },
-                          linked: {
-                            type: 'boolean',
-                            description: 'Indicates a mask is linked to the layer or not',
-                          },
-                          offset: {
-                            title: 'Offset',
-                            description: 'Offset details.',
-                            type: 'object',
-                            properties: {
-                              x: {
-                                type: 'number',
-                                description: 'Offset to indicate horizontal move of the mask.',
-                                format: 'int32',
-                              },
-                              y: {
-                                type: 'number',
-                                description: 'Offset to indicate vertical move of the mask.',
-                                format: 'int32',
-                              },
-                            },
-                          },
-                        },
-                      },
-                      smartObject: {
-                        allOf: [
+                      "input": {
+                        "allOf": [
                           {
-                            title: 'SmartObject',
-                            type: 'object',
-                            properties: {
-                              linked: {
-                                type: 'boolean',
-                                description:
-                                  'Indicates if this Smart Object is linked. Currently we support Embedded Smart Object only which means "linked = false".',
-                                default: false,
+                            "title": "StorageDetails",
+                            "type": "object",
+                            "required": [
+                              "href",
+                              "storage"
+                            ],
+                            "properties": {
+                              "href": {
+                                "type": "string",
+                                "description": "A pre-signed GET URL."
                               },
-                            },
-                            description:
-                              'An object describing the attributes specific to creating or editing a smart object. `SmartObject` properties operate on the input smart object file. When creating a linked smart object, this is a required. When creating an embedded smart object, it is optional.',
-                          },
-                          {
-                            description:
-                              'An object describing the attributes specific to creating or editing a smart object. `smartObject` properties operate on the input smart object file. This is required with a linked smart object and optional with an embedded smart object.',
-                          },
-                        ],
-                      },
-                      fill: {
-                        title: 'FillDetails',
-                        type: 'object',
-                        properties: {
-                          solidColor: {
-                            title: 'SolidColor',
-                            type: 'object',
-                            required: ['rgb'],
-                            properties: {
-                              rgb: {
-                                title: 'RgbColor',
-                                type: 'object',
-                                properties: {
-                                  red: {
-                                    maximum: 255,
-                                    minimum: 0,
-                                    type: 'number',
-                                    format: 'int32',
-                                  },
-                                  green: {
-                                    maximum: 255,
-                                    minimum: 0,
-                                    type: 'number',
-                                    format: 'int32',
-                                  },
-                                  blue: {
-                                    maximum: 255,
-                                    minimum: 0,
-                                    type: 'number',
-                                    format: 'int32',
-                                  },
-                                },
-                                description: 'An object describing the RGB color format in 8 bits.',
-                              },
-                            },
-                          },
-                        },
-                      },
-                      text: {
-                        allOf: [
-                          {
-                            title: 'TextLayerDetails',
-                            type: 'object',
-                            properties: {
-                              content: {
-                                type: 'string',
-                                description: 'The text string.',
-                              },
-                              characterStyles: {
-                                type: 'array',
-                                items: {
-                                  title: 'TextLayerCharacterStyleDetails',
-                                  type: 'object',
-                                  properties: {
-                                    from: {
-                                      minimum: 0,
-                                      type: 'integer',
-                                      description:
-                                        'The beginning of the range of characters that this character style applies to. Based on initial index of 0. For example a style applied to only the first two characters would be from=0 and to=1.',
-                                      format: 'int32',
-                                    },
-                                    to: {
-                                      minimum: 0,
-                                      type: 'integer',
-                                      description:
-                                        'The ending of the range of characters that this character style applies to. Based on initial index of 0. For example a style applied to only the first two characters would be from=0 and to=1.',
-                                      format: 'int32',
-                                    },
-                                    fontSize: {
-                                      type: 'number',
-                                      description: 'The font size in points.',
-                                    },
-                                    fontName: {
-                                      type: 'string',
-                                      description:
-                                        "The font's PostScript name from the [list of supported fonts](../../getting_started/technical_usage_notes/index.md#photoshop-api-supported-fonts).",
-                                    },
-                                    orientation: {
-                                      title: 'OrientationType',
-                                      enum: ['horizontal', 'vertical'],
-                                      type: 'string',
-                                      description: 'The text orientation.',
-                                    },
-                                    fontColor: {
-                                      title: 'FontColorDetails',
-                                      type: 'object',
-                                      properties: {
-                                        rgb: {
-                                          allOf: [
-                                            {
-                                              title: 'FontColorRgb',
-                                              type: 'object',
-                                              properties: {
-                                                red: {
-                                                  maximum: 32768,
-                                                  minimum: 0,
-                                                  type: 'integer',
-                                                  format: 'int32',
-                                                },
-                                                green: {
-                                                  maximum: 32768,
-                                                  minimum: 0,
-                                                  type: 'integer',
-                                                  format: 'int32',
-                                                },
-                                                blue: {
-                                                  maximum: 32768,
-                                                  minimum: 0,
-                                                  type: 'integer',
-                                                  format: 'int32',
-                                                },
-                                              },
-                                              description:
-                                                'An object describing the RGB color format in 16 bits.',
-                                            },
-                                            {
-                                              description:
-                                                'An object describing the RGB color format in 16 bits.',
-                                            },
-                                          ],
-                                        },
-                                        cmyk: {
-                                          allOf: [
-                                            {
-                                              title: 'FontColorCmyk',
-                                              type: 'object',
-                                              properties: {
-                                                cyan: {
-                                                  maximum: 32768,
-                                                  minimum: 0,
-                                                  type: 'integer',
-                                                  format: 'int32',
-                                                },
-                                                magenta: {
-                                                  maximum: 32768,
-                                                  minimum: 0,
-                                                  type: 'integer',
-                                                  format: 'int32',
-                                                },
-                                                yellowColor: {
-                                                  maximum: 32768,
-                                                  minimum: 0,
-                                                  type: 'integer',
-                                                  format: 'int32',
-                                                },
-                                                black: {
-                                                  maximum: 32768,
-                                                  minimum: 0,
-                                                  type: 'integer',
-                                                  format: 'int32',
-                                                },
-                                              },
-                                              description:
-                                                'The font color settings for CMYK mode in 16-bit representation.',
-                                            },
-                                            {
-                                              description:
-                                                'The font color settings for CMYK mode in 16-bit representation.',
-                                            },
-                                          ],
-                                        },
-                                        gray: {
-                                          allOf: [
-                                            {
-                                              title: 'FontColorGray',
-                                              type: 'object',
-                                              properties: {
-                                                gray: {
-                                                  maximum: 32768,
-                                                  minimum: 0,
-                                                  type: 'integer',
-                                                  format: 'int32',
-                                                },
-                                              },
-                                              description:
-                                                'The font color settings for gray mode in 16-bit representation.',
-                                            },
-                                            {
-                                              description:
-                                                'The font color settings for gray mode in 16-bit representation.',
-                                            },
-                                          ],
-                                        },
-                                        lab: {
-                                          allOf: [
-                                            {
-                                              title: 'FontColorLab',
-                                              type: 'object',
-                                              properties: {
-                                                luminance: {
-                                                  maximum: 32768,
-                                                  minimum: 0,
-                                                  type: 'integer',
-                                                  format: 'int32',
-                                                },
-                                                a: {
-                                                  maximum: 32768,
-                                                  minimum: 0,
-                                                  type: 'integer',
-                                                  format: 'int32',
-                                                },
-                                                b: {
-                                                  maximum: 32768,
-                                                  minimum: 0,
-                                                  type: 'integer',
-                                                  format: 'int32',
-                                                },
-                                              },
-                                              description:
-                                                'The font color settings for Lab mode in 16-bit representation.',
-                                            },
-                                            {
-                                              description:
-                                                'The font color settings for Lab mode in 16-bit representation.',
-                                            },
-                                          ],
-                                        },
-                                      },
-                                    },
-                                  },
-                                },
-                                description:
-                                  "Character style settings. If the same supported attributes apply to all characters in the layer, then this will be an array of one item. Otherwise, each `characterStyle` object will have a 'from' and 'to' value indicating the range of characters that style applies to.",
-                              },
-                              paragraphStyles: {
-                                type: 'array',
-                                items: {
-                                  title: 'TextLayerParagraphStyleDetails',
-                                  type: 'object',
-                                  properties: {
-                                    from: {
-                                      minimum: 0,
-                                      type: 'integer',
-                                      description:
-                                        'The beginning of the range of characters that this paragraph style applies to. Based on initial index of 0. For example a style applied to only the first two characters would be from=0 and to=1.',
-                                      format: 'int32',
-                                    },
-                                    to: {
-                                      minimum: 0,
-                                      type: 'integer',
-                                      description:
-                                        'The ending of the range of characters that this paragraph style applies to. Based on initial index of 0. For example a style applied to only the first two characters would be from=0 and to=1.',
-                                      format: 'int32',
-                                    },
-                                    alignment: {
-                                      title: 'AlignmentType',
-                                      enum: [
-                                        'left',
-                                        'center',
-                                        'right',
-                                        'justify',
-                                        'justifyLeft',
-                                        'justifyCenter',
-                                        'justifyRight',
-                                      ],
-                                      type: 'string',
-                                      description: 'The paragraph alignment.',
-                                    },
-                                  },
-                                  description:
-                                    "If the same supported attributes apply to all characters in the layer then this will be an array of one item, otherwise each paragraph style object will have a 'from' and 'to' value indicating the range of characters that the style applies to.",
-                                },
-                                description:
-                                  "Paragraph style settings. If the same supported attributes apply to all characters in the layer then this will be an array of one item, otherwise each paragraph style object will have a 'from' and 'to' value indicating the range of characters that the style applies to.",
-                              },
-                            },
-                            description: 'Text settings.',
-                          },
-                          {
-                            description: 'text settings',
-                          },
-                        ],
-                      },
-                      blendOptions: {
-                        allOf: [
-                          {
-                            title: 'BlendDetails',
-                            type: 'object',
-                            properties: {
-                              opacity: {
-                                maximum: 100,
-                                minimum: 0,
-                                type: 'integer',
-                                description: 'Indicates the opacity value of a layer.',
-                                format: 'int32',
-                              },
-                              blendMode: {
-                                title: 'BlendModeType',
-                                enum: [
-                                  'normal',
-                                  'dissolve',
-                                  'darken',
-                                  'multiply',
-                                  'colorBurn',
-                                  'linearBurn',
-                                  'darkerColor',
-                                  'lighten',
-                                  'screen',
-                                  'colorDodge',
-                                  'linearDodge',
-                                  'lighterColor',
-                                  'overlay',
-                                  'softLight',
-                                  'hardLight',
-                                  'vividLight',
-                                  'linearLight',
-                                  'pinLight',
-                                  'hardMix',
-                                  'difference',
-                                  'exclusion',
-                                  'subtract',
-                                  'divide',
-                                  'hue',
-                                  'saturation',
-                                  'color',
-                                  'luminosity',
+                              "storage": {
+                                "title": "StorageType",
+                                "enum": [
+                                  "external",
+                                  "azure",
+                                  "dropbox"
                                 ],
-                                type: 'string',
-                                description: 'Blend mode of layer.',
-                              },
+                                "type": "string",
+                                "description": "Storage platforms supported."
+                              }
                             },
-                            description:
-                              'Blend options of a layer, including opacity and blend mode.',
+                            "description": "A file located on Adobe's cloud or a supported external service."
                           },
                           {
-                            description:
-                              'Blend options of a layer, including opacity and blend mode',
-                          },
-                        ],
+                            "description": "File on Adobe's cloud or an external service (like AWS S3, Azure, Dropbox)"
+                          }
+                        ]
                       },
-                    },
-                  },
-                  description: 'Array of layers to be created in the document.',
-                },
-              },
-            },
-          },
-          description: 'The input psd file to create a new psd from',
-        },
-      },
-      required: ['requestBody'],
-    },
-    method: 'post',
-    pathTemplate: '/pie/psdService/documentCreate',
-    parameters: [
-      {
-        name: 'x-gw-ims-org-id',
-        in: 'header',
-        description:
-          'The IMS organization ID. This only needs to be sent if you want to receive the job status through Adobe I/O Events.',
-        required: false,
-        schema: {
-          type: 'string',
-        },
-      },
-    ],
-    executionParameters: [
-      {
-        name: 'x-gw-ims-org-id',
-        in: 'header',
-      },
-    ],
-    requestBodyContentType: 'application/json',
-    securityRequirements: [
-      {
-        ApiKeyAuth: [],
-      },
-      {
-        BearerAuth: [],
-      },
-    ],
-    operationId: 'createDocumentAsync',
-    baseUrl: 'https://image.adobe.io',
-  },
-  {
-    name: 'modifyDocumentAsync',
-    description:
-      'Apply basic layer edits (name, state, etc.), add/edit adjustment, pixel, and shape layers.',
-    inputSchema: {
-      type: 'object',
-      properties: {
-        'x-gw-ims-org-id': {
-          type: 'string',
-          description:
-            'The IMS organization ID. This only needs to be sent if you want to receive the job status through Adobe I/O Events.',
-        },
-        requestBody: {
-          title: 'ModifyDocumentRequest',
-          type: 'object',
-          required: ['inputs', 'options', 'outputs'],
-          properties: {
-            inputs: {
-              type: 'array',
-              items: {
-                title: 'StorageDetails',
-                type: 'object',
-                required: ['href', 'storage'],
-                properties: {
-                  href: {
-                    type: 'string',
-                    description: 'A pre-signed GET URL.',
-                  },
-                  storage: {
-                    title: 'StorageType',
-                    enum: ['external', 'azure', 'dropbox'],
-                    type: 'string',
-                    description: 'Storage platforms supported.',
-                  },
-                },
-                description: "A file located on Adobe's cloud or a supported external service.",
-              },
-              description:
-                'An array of input objects. Each input object represents a file to be processed.',
-            },
-            outputs: {
-              type: 'array',
-              items: {
-                title: 'PsOutputDetails',
-                type: 'object',
-                required: ['href', 'storage', 'type'],
-                properties: {
-                  href: {
-                    type: 'string',
-                    description: 'A pre-signed POST URL to the output file.',
-                  },
-                  storage: {
-                    title: 'StorageType',
-                    enum: ['external', 'azure', 'dropbox'],
-                    type: 'string',
-                    description: 'Storage platforms supported.',
-                  },
-                  type: {
-                    title: 'ImageFormatType',
-                    enum: [
-                      'image/vnd.adobe.photoshop',
-                      'image/jpeg',
-                      'image/png',
-                      'image/tiff',
-                      'vnd.adobe.photoshop',
-                    ],
-                    type: 'string',
-                    description:
-                      'The desired image format. Using `image/vnd.adobe.photoshop` - create a new PSD file. Using `image/jpeg`, `image/png`, `image/tiff` - create a new JPEG, PNG or TIFF rendition. Certain image modes (RGB, CMYK, greyscale, etc.) must be converted to another image mode before a rendition can be created. With TIFF requested, Multichannel and Duotone will convert to RGB. With PNG requested, CMYK, HSL, HSB, Multichannel, Duotone, Lab and XYZ will convert to RGB.',
-                  },
-                  overwrite: {
-                    type: 'boolean',
-                    description:
-                      'If the file already exists, indicates if the output file should be overwritten. Will eventually support eTags. Only applies to CC Storage.',
-                    default: true,
-                  },
-                  width: {
-                    type: 'number',
-                    description:
-                      'The width, in pixels, of the renditions. A width of 0 generates a full size rendition. Height is generated automatically using the aspect ratio. Only supported for image rendition.',
-                    format: 'int32',
-                    default: 0,
-                  },
-                  maxWidth: {
-                    type: 'number',
-                    description:
-                      'The size, in pixels, of the renditions. When width is 0, maxWidth can be provided to get the rendition size. maxWidth when less than document width gets precedence over width. Height is not necessary as the rendition generate will automatically maintain the aspect ratio.',
-                    format: 'int32',
-                    default: 0,
-                  },
-                  quality: {
-                    maximum: 7,
-                    minimum: 1,
-                    type: 'number',
-                    description:
-                      'The quality of the renditions for JPEG. The range is 1 to 7, 7 being the highest quality.',
-                    format: 'int32',
-                    default: 7,
-                  },
-                  compression: {
-                    title: 'CompressionType',
-                    enum: ['small', 'medium', 'large'],
-                    type: 'string',
-                    description: 'Desired PNG compression level.',
-                  },
-                  trimToCanvas: {
-                    title: 'TrimToCanvasType',
-                    enum: [true, false],
-                    type: 'boolean',
-                    description:
-                      'Use this if the renditions needs to be of Canvas size. Using `True` trims the renditions to Canvas size, while `False` makes the renditions Layer Size.',
-                  },
-                  layers: {
-                    type: 'array',
-                    items: {
-                      title: 'LayerReference',
-                      description: 'A layer reference object.',
-                      type: 'object',
-                      properties: {
-                        id: {
-                          type: 'number',
-                          description: 'The id of the layer. Use either `id` OR `name`.',
-                          format: 'int32',
-                        },
-                        name: {
-                          type: 'string',
-                          description: 'The name of the layer. Use either `id` OR `name`.',
-                        },
+                      "name": {
+                        "type": "string"
                       },
-                    },
-                    description:
-                      "An array of layer objects.\nBy including this array you are signaling that you'd like a rendition created from these layer id's or layer names. Excluding it will generate a document-level rendition.",
-                  },
-                  iccProfile: {
-                    title: 'IccProfileDetails',
-                    type: 'object',
-                    properties: {
-                      imageMode: {
-                        title: 'ImageModeType',
-                        enum: ['grayscale', 'rgb', 'cmyk'],
-                        type: 'string',
-                        description: 'The image mode.',
+                      "locked": {
+                        "type": "boolean",
+                        "description": "is the layer locked",
+                        "default": false
                       },
-                      input: {
-                        title: 'StorageDetails',
-                        type: 'object',
-                        required: ['href', 'storage'],
-                        properties: {
-                          href: {
-                            type: 'string',
-                            description: 'A pre-signed GET URL.',
-                          },
-                          storage: {
-                            title: 'StorageType',
-                            enum: ['external', 'azure', 'dropbox'],
-                            type: 'string',
-                            description: 'Storage platforms supported.',
-                          },
-                        },
-                        description:
-                          "A file located on Adobe's cloud or a supported external service.",
+                      "visible": {
+                        "type": "boolean",
+                        "description": "is the layer visible",
+                        "default": true
                       },
-                      profileName: {
-                        title: 'ColorProfileType',
-                        enum: [
-                          'Adobe RGB (1998)',
-                          'Apple RGB',
-                          'ColorMatch RGB',
-                          'sRGB IEC61966-2.1',
-                          'Dot Gain 10%',
-                          'Dot Gain 15%',
-                          'Dot Gain 20%',
-                          'Dot Gain 25%',
-                          'Dot Gain 30%',
-                          'Gray Gamma 1.8',
-                          'Gray Gamma 2.2',
-                        ],
-                        type: 'string',
-                        description: 'The name of the color profile.',
-                      },
-                    },
-                  },
-                },
-                description: 'An output object.',
-              },
-              description:
-                'An array of output objects. Each output object represents a file to be created.',
-            },
-            options: {
-              title: 'DocumentOperationOptions',
-              type: 'object',
-              properties: {
-                manageMissingFonts: {
-                  allOf: [
-                    {
-                      title: 'ManageMissingFonts',
-                      enum: ['useDefault', 'fail'],
-                      type: 'string',
-                      description:
-                        'Action to take if there are one or more missing fonts in the document. Using `fail` - the job will not succeed and the status will be set to `failed` with the details of the error provided in the `details` section in the status. Using `useDefault` - the job will succeed, however all the missing fonts will use the font: ArialMT.',
-                    },
-                    {
-                      description:
-                        'Action to take if there are one or more missing fonts. Using `fail` - the job will not succeed and the status will be set to `failed` with the details of the error provided in the `details` section in the status. Using `useDefault` - the job will succeed, however all the missing fonts will use the font: ArialMT.',
-                    },
-                  ],
-                },
-                globalFont: {
-                  type: 'string',
-                  description:
-                    'The PostScript name of the font to be used as the global default. If this font is also missing, the option specified in `manageMissingFonts` will take effect',
-                },
-                fonts: {
-                  type: 'array',
-                  items: {
-                    title: 'StorageDetails',
-                    type: 'object',
-                    required: ['href', 'storage'],
-                    properties: {
-                      href: {
-                        type: 'string',
-                        description: 'A pre-signed GET URL.',
-                      },
-                      storage: {
-                        title: 'StorageType',
-                        enum: ['external', 'azure', 'dropbox'],
-                        type: 'string',
-                        description: 'Storage platforms supported.',
-                      },
-                    },
-                    description: "A file located on Adobe's cloud or a supported external service.",
-                  },
-                  description: 'array of custom fonts needed in this document',
-                },
-                document: {
-                  title: 'OperationDocument',
-                  type: 'object',
-                  properties: {
-                    canvasSize: {
-                      title: 'CanvasSize',
-                      type: 'object',
-                      required: ['bounds'],
-                      properties: {
-                        bounds: {
-                          title: 'Bounds',
-                          description: 'The bounds of the layer.',
-                          type: 'object',
-                          properties: {
-                            top: {
-                              type: 'number',
-                              description: 'The top position in pixels.',
-                              format: 'int32',
+                      "adjustments": {
+                        "title": "AdjustmentDetails",
+                        "type": "object",
+                        "properties": {
+                          "brightnessContrast": {
+                            "title": "BrightnessContrast",
+                            "type": "object",
+                            "properties": {
+                              "brightness": {
+                                "maximum": 150,
+                                "minimum": -150,
+                                "type": "number",
+                                "description": "The adjustment layer's brightness.",
+                                "format": "int32"
+                              },
+                              "contrast": {
+                                "maximum": 150,
+                                "minimum": -150,
+                                "type": "number",
+                                "description": "The adjustment layer's contrast.",
+                                "format": "int32"
+                              }
                             },
-                            left: {
-                              type: 'number',
-                              description: 'The left position in pixels.',
-                              format: 'int32',
-                            },
-                            width: {
-                              type: 'number',
-                              description: 'The width in pixels.',
-                              format: 'int32',
-                            },
-                            height: {
-                              type: 'number',
-                              description: 'The height in pixels.',
-                              format: 'int32',
-                            },
+                            "description": "Brightness and contrast settings."
                           },
-                        },
-                      },
-                    },
-                    imageSize: {
-                      title: 'ImageSize',
-                      description: 'The size of the image',
-                      type: 'object',
-                      required: ['height', 'width'],
-                      properties: {
-                        width: {
-                          type: 'number',
-                          format: 'int32',
-                        },
-                        height: {
-                          type: 'number',
-                          format: 'int32',
-                        },
-                      },
-                    },
-                    trim: {
-                      title: 'Trim',
-                      type: 'object',
-                      required: ['basedOn'],
-                      properties: {
-                        basedOn: {
-                          title: 'BasedOnType',
-                          enum: ['transparentPixels'],
-                          type: 'string',
-                          description: 'Based on type.',
-                        },
-                      },
-                    },
-                  },
-                },
-                layers: {
-                  type: 'array',
-                  items: {
-                    title: 'DocumentOperationLayer',
-                    type: 'object',
-                    required: ['id', 'delete'],
-                    properties: {
-                      edit: {
-                        type: 'object',
-                        description:
-                          "Indicates the layer to edit, by it's ID or name. Note the object is currently empty but leaves room for further enhancements. The layer block should contain changes from the original manifest. If you apply it to a group layer, you will be affecting the attributes of the group layer itself, not the child layers. This edit is supported for layer type `smartObject` and `fillLayer` only.",
-                      },
-                      move: {
-                        title: 'MoveDetails',
-                        type: 'object',
-                        properties: {
-                          moveChildren: {
-                            type: 'boolean',
-                            default: true,
+                          "exposure": {
+                            "title": "ExposureDetails",
+                            "description": "Exposure settings.",
+                            "type": "object",
+                            "properties": {
+                              "exposure": {
+                                "maximum": 20,
+                                "minimum": -20,
+                                "type": "number",
+                                "description": "The layer's exposure.",
+                                "default": 0
+                              },
+                              "offset": {
+                                "maximum": 0.5,
+                                "minimum": -0.5,
+                                "type": "number",
+                                "description": "The layer's offset.",
+                                "default": 0
+                              },
+                              "gammaCorrection": {
+                                "maximum": 9.99,
+                                "minimum": 0.01,
+                                "type": "number",
+                                "description": "The layer's gamma correction.",
+                                "default": 1
+                              }
+                            }
                           },
-                          insertAbove: {
-                            title: 'LayerReference',
-                            description: 'A layer reference object.',
-                            type: 'object',
-                            properties: {
-                              id: {
-                                type: 'number',
-                                description: 'The id of the layer. Use either `id` OR `name`.',
-                                format: 'int32',
+                          "hueSaturation": {
+                            "title": "HueSaturation",
+                            "type": "object",
+                            "properties": {
+                              "colorize": {
+                                "type": "boolean",
+                                "description": "Whether to colorize."
                               },
-                              name: {
-                                type: 'string',
-                                description: 'The name of the layer. Use either `id` OR `name`.',
-                              },
-                            },
-                          },
-                          insertBelow: {
-                            title: 'LayerReference',
-                            description: 'A layer reference object.',
-                            type: 'object',
-                            properties: {
-                              id: {
-                                type: 'number',
-                                description: 'The id of the layer. Use either `id` OR `name`.',
-                                format: 'int32',
-                              },
-                              name: {
-                                type: 'string',
-                                description: 'The name of the layer. Use either `id` OR `name`.',
-                              },
-                            },
-                          },
-                          insertInto: {
-                            title: 'LayerReference',
-                            description: 'A layer reference object.',
-                            type: 'object',
-                            properties: {
-                              id: {
-                                type: 'number',
-                                description: 'The id of the layer. Use either `id` OR `name`.',
-                                format: 'int32',
-                              },
-                              name: {
-                                type: 'string',
-                                description: 'The name of the layer. Use either `id` OR `name`.',
-                              },
-                            },
-                          },
-                          insertTop: {
-                            type: 'boolean',
-                          },
-                          insertBottom: {
-                            type: 'boolean',
-                          },
-                        },
-                      },
-                      add: {
-                        title: 'LayerPosition',
-                        type: 'object',
-                        properties: {
-                          insertAbove: {
-                            title: 'LayerReference',
-                            description: 'A layer reference object.',
-                            type: 'object',
-                            properties: {
-                              id: {
-                                type: 'number',
-                                description: 'The id of the layer. Use either `id` OR `name`.',
-                                format: 'int32',
-                              },
-                              name: {
-                                type: 'string',
-                                description: 'The name of the layer. Use either `id` OR `name`.',
-                              },
-                            },
-                          },
-                          insertBelow: {
-                            title: 'LayerReference',
-                            description: 'A layer reference object.',
-                            type: 'object',
-                            properties: {
-                              id: {
-                                type: 'number',
-                                description: 'The id of the layer. Use either `id` OR `name`.',
-                                format: 'int32',
-                              },
-                              name: {
-                                type: 'string',
-                                description: 'The name of the layer. Use either `id` OR `name`.',
-                              },
-                            },
-                          },
-                          insertInto: {
-                            title: 'LayerReference',
-                            description: 'A layer reference object.',
-                            type: 'object',
-                            properties: {
-                              id: {
-                                type: 'number',
-                                description: 'The id of the layer. Use either `id` OR `name`.',
-                                format: 'int32',
-                              },
-                              name: {
-                                type: 'string',
-                                description: 'The name of the layer. Use either `id` OR `name`.',
-                              },
-                            },
-                          },
-                          insertTop: {
-                            type: 'boolean',
-                          },
-                          insertBottom: {
-                            type: 'boolean',
-                          },
-                        },
-                      },
-                      delete: {
-                        title: 'DeleteDetails',
-                        type: 'object',
-                        properties: {
-                          includeChildren: {
-                            type: 'boolean',
-                            default: false,
-                            description:
-                              'Indicates that child layers are included when deleting a group layer.',
-                          },
-                          id: {
-                            type: 'number',
-                            description: 'The layer ID.',
-                          },
-                          name: {
-                            type: 'string',
-                            description:
-                              'The layer name. You can identify a layer by id or name. That makes either id or name a required field.',
-                          },
-                        },
-                        description:
-                          'Indicates you want to delete the layer, identified by the `id` or `name`. Note the object is currently empty but leaves room for further enhancements.',
-                      },
-                      id: {
-                        type: 'number',
-                        description: 'The layer ID.',
-                        format: 'int32',
-                      },
-                      index: {
-                        type: 'number',
-                        description:
-                          'The layer index. Required when deleting a layer, otherwise not used.',
-                        format: 'int32',
-                      },
-                      children: {
-                        type: 'array',
-                        items: {
-                          title: 'ChildrenLayerDetails',
-                          type: 'object',
-                          properties: {
-                            id: {
-                              type: 'number',
-                              description:
-                                'The layer ID. An ID of -1 is valid and indicates a PSD that only contains a background image and no layers.',
-                              format: 'int32',
-                            },
-                            index: {
-                              type: 'number',
-                              description: 'The layer index.',
-                              format: 'int32',
-                            },
-                            thumbnail: {
-                              type: 'string',
-                              description:
-                                'If thumbnails were requested, a pre-signed GET URL to the thumbnail',
-                            },
-                            type: {
-                              title: 'LayerType',
-                              enum: [
-                                'layer',
-                                'textLayer',
-                                'adjustmentLayer',
-                                'smartObject',
-                                'fillLayer',
-                                'backgroundLayer',
-                                'layerSection',
-                              ],
-                              type: 'string',
-                              description:
-                                'The layer type. Using `layer` - a pixel layer. Using `textLayer` - a text layer. Using `adjustmentLayer` - an adjustment layer. Using `layerSection` - a grouping layer. Using `smartObject` - a smart object. Using `backgroundLayer` - a background layer. Using `fillLayer` - a fill layer.',
-                            },
-                            name: {
-                              type: 'string',
-                              description: 'The layer name.',
-                            },
-                            locked: {
-                              type: 'boolean',
-                              description: 'Whether the layer is locked',
-                            },
-                            visible: {
-                              type: 'boolean',
-                              description: 'Whether the layer is visible',
-                            },
-                            adjustments: {
-                              title: 'AdjustmentDetails',
-                              type: 'object',
-                              properties: {
-                                brightnessContrast: {
-                                  title: 'BrightnessContrast',
-                                  type: 'object',
-                                  properties: {
-                                    brightness: {
-                                      maximum: 150,
-                                      minimum: -150,
-                                      type: 'number',
-                                      description: "The adjustment layer's brightness.",
-                                      format: 'int32',
-                                    },
-                                    contrast: {
-                                      maximum: 150,
-                                      minimum: -150,
-                                      type: 'number',
-                                      description: "The adjustment layer's contrast.",
-                                      format: 'int32',
-                                    },
-                                  },
-                                  description: 'Brightness and contrast settings.',
-                                },
-                                exposure: {
-                                  title: 'ExposureDetails',
-                                  description: 'Exposure settings.',
-                                  type: 'object',
-                                  properties: {
-                                    exposure: {
-                                      maximum: 20,
-                                      minimum: -20,
-                                      type: 'number',
-                                      description: "The layer's exposure.",
-                                      default: 0,
-                                    },
-                                    offset: {
-                                      maximum: 0.5,
-                                      minimum: -0.5,
-                                      type: 'number',
-                                      description: "The layer's offset.",
-                                      default: 0,
-                                    },
-                                    gammaCorrection: {
-                                      maximum: 9.99,
-                                      minimum: 0.01,
-                                      type: 'number',
-                                      description: "The layer's gamma correction.",
-                                      default: 1,
-                                    },
-                                  },
-                                },
-                                hueSaturation: {
-                                  title: 'HueSaturation',
-                                  type: 'object',
-                                  properties: {
-                                    colorize: {
-                                      type: 'boolean',
-                                      description: 'Whether to colorize.',
-                                    },
-                                    channels: {
-                                      type: 'array',
-                                      items: {
-                                        title: 'ChannelDetails',
-                                        type: 'object',
-                                        properties: {
-                                          channel: {
-                                            title: 'ChannelType',
-                                            enum: ['master'],
-                                            type: 'string',
-                                            description: 'The channel type.',
-                                          },
-                                          hue: {
-                                            maximum: 180,
-                                            minimum: -180,
-                                            type: 'number',
-                                            format: 'int32',
-                                          },
-                                          saturation: {
-                                            maximum: 100,
-                                            minimum: -100,
-                                            type: 'number',
-                                            format: 'int32',
-                                          },
-                                          lightness: {
-                                            maximum: 100,
-                                            minimum: -100,
-                                            type: 'number',
-                                            format: 'int32',
-                                          },
-                                        },
-                                      },
-                                      description:
-                                        "An array of hashes representing the 'master' channel (the remaining five channels of 'magentas', 'yellows', 'greens', etc. are not yet supported).",
-                                    },
-                                  },
-                                },
-                                colorBalance: {
-                                  title: 'ColorBalance',
-                                  description: 'Color balance settings.',
-                                  type: 'object',
-                                  properties: {
-                                    preserveLuminosity: {
-                                      type: 'boolean',
-                                      description: 'Whether to preserve luminosity.',
-                                    },
-                                    shadowLevels: {
-                                      type: 'array',
-                                      items: {
-                                        maximum: 100,
-                                        minimum: -100,
-                                        type: 'number',
-                                        format: 'int32',
-                                      },
-                                      description: 'Shadow levels.',
-                                    },
-                                    midtoneLevels: {
-                                      type: 'array',
-                                      items: {
-                                        maximum: 100,
-                                        minimum: -100,
-                                        type: 'number',
-                                        format: 'int32',
-                                      },
-                                      description: 'Midtone levels.',
-                                    },
-                                    highlightLevels: {
-                                      type: 'array',
-                                      items: {
-                                        maximum: 100,
-                                        minimum: -100,
-                                        type: 'number',
-                                        format: 'int32',
-                                      },
-                                      description: 'Highlight levels.',
-                                    },
-                                  },
-                                },
-                              },
-                              description: 'Adjustment layer information.',
-                            },
-                            bounds: {
-                              title: 'Bounds',
-                              description: 'The bounds of the layer.',
-                              type: 'object',
-                              properties: {
-                                top: {
-                                  type: 'number',
-                                  description: 'The top position in pixels.',
-                                  format: 'int32',
-                                },
-                                left: {
-                                  type: 'number',
-                                  description: 'The left position in pixels.',
-                                  format: 'int32',
-                                },
-                                width: {
-                                  type: 'number',
-                                  description: 'The width in pixels.',
-                                  format: 'int32',
-                                },
-                                height: {
-                                  type: 'number',
-                                  description: 'The height in pixels.',
-                                  format: 'int32',
-                                },
-                              },
-                            },
-                            blendOptions: {
-                              title: 'BlendDetails',
-                              type: 'object',
-                              properties: {
-                                opacity: {
-                                  maximum: 100,
-                                  minimum: 0,
-                                  type: 'number',
-                                  description: 'Indicates the opacity value of a layer.',
-                                  format: 'int32',
-                                },
-                                blendMode: {
-                                  title: 'BlendModeType',
-                                  enum: [
-                                    'normal',
-                                    'dissolve',
-                                    'darken',
-                                    'multiply',
-                                    'colorBurn',
-                                    'linearBurn',
-                                    'darkerColor',
-                                    'lighten',
-                                    'screen',
-                                    'colorDodge',
-                                    'linearDodge',
-                                    'lighterColor',
-                                    'overlay',
-                                    'softLight',
-                                    'hardLight',
-                                    'vividLight',
-                                    'linearLight',
-                                    'pinLight',
-                                    'hardMix',
-                                    'difference',
-                                    'exclusion',
-                                    'subtract',
-                                    'divide',
-                                    'hue',
-                                    'saturation',
-                                    'color',
-                                    'luminosity',
-                                  ],
-                                  type: 'string',
-                                  description: 'Blend mode of layer.',
-                                },
-                              },
-                              description:
-                                'Blend options of a layer, including opacity and blend mode.',
-                            },
-                            mask: {
-                              title: 'LayerMaskDetails',
-                              type: 'object',
-                              properties: {
-                                clip: {
-                                  type: 'boolean',
-                                  description: 'Indicates if this is a clipped layer.',
-                                },
-                                enabled: {
-                                  type: 'boolean',
-                                  description: 'Indicates whether a mask is enabled on that layer.',
-                                },
-                                linked: {
-                                  type: 'boolean',
-                                  description: 'Indicates whether a mask is linked to the layer.',
-                                },
-                                offset: {
-                                  title: 'Offset',
-                                  description: 'Offset details.',
-                                  type: 'object',
-                                  properties: {
-                                    x: {
-                                      type: 'number',
-                                      description:
-                                        'Offset to indicate horizontal move of the mask.',
-                                      format: 'int32',
-                                    },
-                                    y: {
-                                      type: 'number',
-                                      description: 'Offset to indicate vertical move of the mask.',
-                                      format: 'int32',
-                                    },
-                                  },
-                                },
-                              },
-                              description:
-                                'An object describing the input mask replaced or added to the layer.',
-                            },
-                            smartObject: {
-                              title: 'SmartObjectDetails',
-                              description: 'Smart object details.',
-                              type: 'object',
-                              properties: {
-                                type: {
-                                  type: 'string',
-                                  description: 'Desired image format for the smart object.',
-                                },
-                                linked: {
-                                  type: 'boolean',
-                                  description:
-                                    'Indicates if the smart object is linked. Currently we support embedded smart object only, which means "linked = false".',
-                                  default: false,
-                                },
-                                name: {
-                                  type: 'string',
-                                  description:
-                                    'Name of the embedded or linked smart object. Currently we support embedded smart object only.',
-                                },
-                                path: {
-                                  type: 'string',
-                                  description:
-                                    'Only for a linked smart object. Indicates the relative path for the linked smart object.',
-                                },
-                                instanceId: {
-                                  type: 'string',
-                                  description:
-                                    'Only for an embedded smart object. Indicates the instance ID of the embedded smart object. This ID is unique and the value is derived from the RAW data of the document. `instanceId` may show a value as unknown, if the embedded smart object is generated using a non-Adobe application.',
-                                },
-                              },
-                            },
-                            fill: {
-                              title: 'FillDetails',
-                              type: 'object',
-                              properties: {
-                                solidColor: {
-                                  title: 'SolidColor',
-                                  type: 'object',
-                                  required: ['rgb'],
-                                  properties: {
-                                    rgb: {
-                                      title: 'RgbColor',
-                                      type: 'object',
-                                      properties: {
-                                        red: {
-                                          maximum: 255,
-                                          minimum: 0,
-                                          type: 'number',
-                                          format: 'int32',
-                                        },
-                                        green: {
-                                          maximum: 255,
-                                          minimum: 0,
-                                          type: 'number',
-                                          format: 'int32',
-                                        },
-                                        blue: {
-                                          maximum: 255,
-                                          minimum: 0,
-                                          type: 'number',
-                                          format: 'int32',
-                                        },
-                                      },
-                                      description:
-                                        'An object describing the RGB color format in 8 bits.',
-                                    },
-                                  },
-                                },
-                              },
-                            },
-                            text: {
-                              title: 'TextLayerDetails',
-                              type: 'object',
-                              properties: {
-                                content: {
-                                  type: 'string',
-                                  description: 'The text string.',
-                                },
-                                characterStyles: {
-                                  type: 'array',
-                                  items: {
-                                    title: 'TextLayerCharacterStyleDetails',
-                                    type: 'object',
-                                    properties: {
-                                      from: {
-                                        minimum: 0,
-                                        type: 'number',
-                                        description:
-                                          'The beginning of the range of characters that this character style applies to. Based on initial index of 0. For example a style applied to only the first two characters would be from=0 and to=1.',
-                                        format: 'int32',
-                                      },
-                                      to: {
-                                        minimum: 0,
-                                        type: 'number',
-                                        description:
-                                          'The ending of the range of characters that this character style applies to. Based on initial index of 0. For example a style applied to only the first two characters would be from=0 and to=1.',
-                                        format: 'int32',
-                                      },
-                                      fontSize: {
-                                        type: 'number',
-                                        description: 'The font size in points.',
-                                      },
-                                      fontName: {
-                                        type: 'string',
-                                        description:
-                                          "The font's PostScript name from the [list of supported fonts](../../getting_started/technical_usage_notes/index.md#photoshop-api-supported-fonts).",
-                                      },
-                                      orientation: {
-                                        title: 'OrientationType',
-                                        enum: ['horizontal', 'vertical'],
-                                        type: 'string',
-                                        description: 'The text orientation.',
-                                      },
-                                      fontColor: {
-                                        title: 'FontColorDetails',
-                                        type: 'object',
-                                        properties: {
-                                          rgb: {
-                                            allOf: [
-                                              {
-                                                title: 'FontColorRgb',
-                                                type: 'object',
-                                                properties: {
-                                                  red: {
-                                                    maximum: 32768,
-                                                    minimum: 0,
-                                                    type: 'integer',
-                                                    format: 'int32',
-                                                  },
-                                                  green: {
-                                                    maximum: 32768,
-                                                    minimum: 0,
-                                                    type: 'integer',
-                                                    format: 'int32',
-                                                  },
-                                                  blue: {
-                                                    maximum: 32768,
-                                                    minimum: 0,
-                                                    type: 'integer',
-                                                    format: 'int32',
-                                                  },
-                                                },
-                                                description:
-                                                  'An object describing the RGB color format in 16 bits.',
-                                              },
-                                              {
-                                                description:
-                                                  'An object describing the RGB color format in 16 bits.',
-                                              },
-                                            ],
-                                          },
-                                          cmyk: {
-                                            allOf: [
-                                              {
-                                                title: 'FontColorCmyk',
-                                                type: 'object',
-                                                properties: {
-                                                  cyan: {
-                                                    maximum: 32768,
-                                                    minimum: 0,
-                                                    type: 'integer',
-                                                    format: 'int32',
-                                                  },
-                                                  magenta: {
-                                                    maximum: 32768,
-                                                    minimum: 0,
-                                                    type: 'integer',
-                                                    format: 'int32',
-                                                  },
-                                                  yellowColor: {
-                                                    maximum: 32768,
-                                                    minimum: 0,
-                                                    type: 'integer',
-                                                    format: 'int32',
-                                                  },
-                                                  black: {
-                                                    maximum: 32768,
-                                                    minimum: 0,
-                                                    type: 'integer',
-                                                    format: 'int32',
-                                                  },
-                                                },
-                                                description:
-                                                  'The font color settings for CMYK mode in 16-bit representation.',
-                                              },
-                                              {
-                                                description:
-                                                  'The font color settings for CMYK mode in 16-bit representation.',
-                                              },
-                                            ],
-                                          },
-                                          gray: {
-                                            allOf: [
-                                              {
-                                                title: 'FontColorGray',
-                                                type: 'object',
-                                                properties: {
-                                                  gray: {
-                                                    maximum: 32768,
-                                                    minimum: 0,
-                                                    type: 'integer',
-                                                    format: 'int32',
-                                                  },
-                                                },
-                                                description:
-                                                  'The font color settings for gray mode in 16-bit representation.',
-                                              },
-                                              {
-                                                description:
-                                                  'The font color settings for gray mode in 16-bit representation.',
-                                              },
-                                            ],
-                                          },
-                                          lab: {
-                                            allOf: [
-                                              {
-                                                title: 'FontColorLab',
-                                                type: 'object',
-                                                properties: {
-                                                  luminance: {
-                                                    maximum: 32768,
-                                                    minimum: 0,
-                                                    type: 'integer',
-                                                    format: 'int32',
-                                                  },
-                                                  a: {
-                                                    maximum: 32768,
-                                                    minimum: 0,
-                                                    type: 'integer',
-                                                    format: 'int32',
-                                                  },
-                                                  b: {
-                                                    maximum: 32768,
-                                                    minimum: 0,
-                                                    type: 'integer',
-                                                    format: 'int32',
-                                                  },
-                                                },
-                                                description:
-                                                  'The font color settings for Lab mode in 16-bit representation.',
-                                              },
-                                              {
-                                                description:
-                                                  'The font color settings for Lab mode in 16-bit representation.',
-                                              },
-                                            ],
-                                          },
-                                        },
-                                      },
-                                    },
-                                  },
-                                  description:
-                                    "Character style settings. If the same supported attributes apply to all characters in the layer, then this will be an array of one item. Otherwise, each `characterStyle` object will have a 'from' and 'to' value indicating the range of characters that style applies to.",
-                                },
-                                paragraphStyles: {
-                                  type: 'array',
-                                  items: {
-                                    title: 'TextLayerParagraphStyleDetails',
-                                    type: 'object',
-                                    properties: {
-                                      from: {
-                                        minimum: 0,
-                                        type: 'number',
-                                        description:
-                                          'The beginning of the range of characters that this paragraph style applies to. Based on initial index of 0. For example a style applied to only the first two characters would be from=0 and to=1.',
-                                        format: 'int32',
-                                      },
-                                      to: {
-                                        minimum: 0,
-                                        type: 'number',
-                                        description:
-                                          'The ending of the range of characters that this paragraph style applies to. Based on initial index of 0. For example a style applied to only the first two characters would be from=0 and to=1.',
-                                        format: 'int32',
-                                      },
-                                      alignment: {
-                                        title: 'AlignmentType',
-                                        enum: [
-                                          'left',
-                                          'center',
-                                          'right',
-                                          'justify',
-                                          'justifyLeft',
-                                          'justifyCenter',
-                                          'justifyRight',
-                                        ],
-                                        type: 'string',
-                                        description: 'The paragraph alignment.',
-                                      },
-                                    },
-                                    description:
-                                      "If the same supported attributes apply to all characters in the layer then this will be an array of one item, otherwise each paragraph style object will have a 'from' and 'to' value indicating the range of characters that the style applies to.",
-                                  },
-                                  description:
-                                    "Paragraph style settings. If the same supported attributes apply to all characters in the layer then this will be an array of one item, otherwise each paragraph style object will have a 'from' and 'to' value indicating the range of characters that the style applies to.",
-                                },
-                              },
-                              description: 'Text settings.',
-                            },
-                          },
-                        },
-                        description:
-                          'A tree of layer objects representing the PSD layer structure extracted from the PSD document.',
-                      },
-                      type: {
-                        title: 'LayerType',
-                        enum: [
-                          'layer',
-                          'textLayer',
-                          'adjustmentLayer',
-                          'smartObject',
-                          'fillLayer',
-                          'backgroundLayer',
-                          'layerSection',
-                        ],
-                        type: 'string',
-                        description:
-                          'The layer type. Using `layer` - a pixel layer. Using `textLayer` - a text layer. Using `adjustmentLayer` - an adjustment layer. Using `layerSection` - a grouping layer. Using `smartObject` - a smart object. Using `backgroundLayer` - a background layer. Using `fillLayer` - a fill layer.',
-                      },
-                      input: {
-                        title: 'StorageDetails',
-                        type: 'object',
-                        required: ['href', 'storage'],
-                        properties: {
-                          href: {
-                            type: 'string',
-                            description: 'A pre-signed GET URL.',
-                          },
-                          storage: {
-                            title: 'StorageType',
-                            enum: ['external', 'azure', 'dropbox'],
-                            type: 'string',
-                            description: 'Storage platforms supported.',
-                          },
-                        },
-                        description:
-                          "A file located on Adobe's cloud or a supported external service.",
-                      },
-                      name: {
-                        type: 'string',
-                      },
-                      locked: {
-                        type: 'boolean',
-                        description: 'is the layer locked',
-                        default: false,
-                      },
-                      visible: {
-                        type: 'boolean',
-                        description: 'is the layer visible',
-                        default: true,
-                      },
-                      adjustments: {
-                        title: 'AdjustmentDetails',
-                        type: 'object',
-                        properties: {
-                          brightnessContrast: {
-                            title: 'BrightnessContrast',
-                            type: 'object',
-                            properties: {
-                              brightness: {
-                                maximum: 150,
-                                minimum: -150,
-                                type: 'number',
-                                description: "The adjustment layer's brightness.",
-                                format: 'int32',
-                              },
-                              contrast: {
-                                maximum: 150,
-                                minimum: -150,
-                                type: 'number',
-                                description: "The adjustment layer's contrast.",
-                                format: 'int32',
-                              },
-                            },
-                            description: 'Brightness and contrast settings.',
-                          },
-                          exposure: {
-                            title: 'ExposureDetails',
-                            description: 'Exposure settings.',
-                            type: 'object',
-                            properties: {
-                              exposure: {
-                                maximum: 20,
-                                minimum: -20,
-                                type: 'number',
-                                description: "The layer's exposure.",
-                                default: 0,
-                              },
-                              offset: {
-                                maximum: 0.5,
-                                minimum: -0.5,
-                                type: 'number',
-                                description: "The layer's offset.",
-                                default: 0,
-                              },
-                              gammaCorrection: {
-                                maximum: 9.99,
-                                minimum: 0.01,
-                                type: 'number',
-                                description: "The layer's gamma correction.",
-                                default: 1,
-                              },
-                            },
-                          },
-                          hueSaturation: {
-                            title: 'HueSaturation',
-                            type: 'object',
-                            properties: {
-                              colorize: {
-                                type: 'boolean',
-                                description: 'Whether to colorize.',
-                              },
-                              channels: {
-                                type: 'array',
-                                items: {
-                                  title: 'ChannelDetails',
-                                  type: 'object',
-                                  properties: {
-                                    channel: {
-                                      title: 'ChannelType',
-                                      enum: ['master'],
-                                      type: 'string',
-                                      description: 'The channel type.',
-                                    },
-                                    hue: {
-                                      maximum: 180,
-                                      minimum: -180,
-                                      type: 'number',
-                                      format: 'int32',
-                                    },
-                                    saturation: {
-                                      maximum: 100,
-                                      minimum: -100,
-                                      type: 'number',
-                                      format: 'int32',
-                                    },
-                                    lightness: {
-                                      maximum: 100,
-                                      minimum: -100,
-                                      type: 'number',
-                                      format: 'int32',
-                                    },
-                                  },
-                                },
-                                description:
-                                  "An array of hashes representing the 'master' channel (the remaining five channels of 'magentas', 'yellows', 'greens', etc. are not yet supported).",
-                              },
-                            },
-                          },
-                          colorBalance: {
-                            title: 'ColorBalance',
-                            description: 'Color balance settings.',
-                            type: 'object',
-                            properties: {
-                              preserveLuminosity: {
-                                type: 'boolean',
-                                description: 'Whether to preserve luminosity.',
-                              },
-                              shadowLevels: {
-                                type: 'array',
-                                items: {
-                                  maximum: 100,
-                                  minimum: -100,
-                                  type: 'number',
-                                  format: 'int32',
-                                },
-                                description: 'Shadow levels.',
-                              },
-                              midtoneLevels: {
-                                type: 'array',
-                                items: {
-                                  maximum: 100,
-                                  minimum: -100,
-                                  type: 'number',
-                                  format: 'int32',
-                                },
-                                description: 'Midtone levels.',
-                              },
-                              highlightLevels: {
-                                type: 'array',
-                                items: {
-                                  maximum: 100,
-                                  minimum: -100,
-                                  type: 'number',
-                                  format: 'int32',
-                                },
-                                description: 'Highlight levels.',
-                              },
-                            },
-                          },
-                        },
-                        description: 'Adjustment layer information.',
-                      },
-                      mask: {
-                        title: 'MaskDetails',
-                        type: 'object',
-                        properties: {
-                          input: {
-                            title: 'StorageDetails',
-                            type: 'object',
-                            required: ['href', 'storage'],
-                            properties: {
-                              href: {
-                                type: 'string',
-                                description: 'A pre-signed GET URL.',
-                              },
-                              storage: {
-                                title: 'StorageType',
-                                enum: ['external', 'azure', 'dropbox'],
-                                type: 'string',
-                                description: 'Storage platforms supported.',
-                              },
-                            },
-                            description:
-                              "A file located on Adobe's cloud or a supported external service.",
-                          },
-                          clip: {
-                            type: 'boolean',
-                            description: 'Indicates if this is a clipped layer',
-                          },
-                          enabled: {
-                            type: 'boolean',
-                            description: 'Indicates a mask is enabled on that layer or not',
-                          },
-                          linked: {
-                            type: 'boolean',
-                            description: 'Indicates a mask is linked to the layer or not',
-                          },
-                          offset: {
-                            title: 'Offset',
-                            description: 'Offset details.',
-                            type: 'object',
-                            properties: {
-                              x: {
-                                type: 'number',
-                                description: 'Offset to indicate horizontal move of the mask.',
-                                format: 'int32',
-                              },
-                              y: {
-                                type: 'number',
-                                description: 'Offset to indicate vertical move of the mask.',
-                                format: 'int32',
-                              },
-                            },
-                          },
-                        },
-                      },
-                      bounds: {
-                        title: 'Bounds',
-                        description: 'The bounds of the layer.',
-                        type: 'object',
-                        properties: {
-                          top: {
-                            type: 'number',
-                            description: 'The top position in pixels.',
-                            format: 'int32',
-                          },
-                          left: {
-                            type: 'number',
-                            description: 'The left position in pixels.',
-                            format: 'int32',
-                          },
-                          width: {
-                            type: 'number',
-                            description: 'The width in pixels.',
-                            format: 'int32',
-                          },
-                          height: {
-                            type: 'number',
-                            description: 'The height in pixels.',
-                            format: 'int32',
-                          },
-                        },
-                      },
-                      smartObject: {
-                        allOf: [
-                          {
-                            title: 'SmartObject',
-                            type: 'object',
-                            properties: {
-                              linked: {
-                                type: 'boolean',
-                                description:
-                                  'Indicates if this Smart Object is linked. Currently we support Embedded Smart Object only which means "linked = false".',
-                                default: false,
-                              },
-                            },
-                            description:
-                              'An object describing the attributes specific to creating or editing a smart object. `SmartObject` properties operate on the input smart object file. When creating a linked smart object, this is a required. When creating an embedded smart object, it is optional.',
-                          },
-                          {
-                            description:
-                              "An object describing the attributes specific to creating or editing a smart object. Smart object properties operate on the input smart object file. Currently if you're creating a linked smart object, this is a required. If you're creating an embedded smart object, this is optional.",
-                          },
-                        ],
-                      },
-                      fill: {
-                        title: 'FillDetails',
-                        type: 'object',
-                        properties: {
-                          solidColor: {
-                            title: 'SolidColor',
-                            type: 'object',
-                            required: ['rgb'],
-                            properties: {
-                              rgb: {
-                                title: 'RgbColor',
-                                type: 'object',
-                                properties: {
-                                  red: {
-                                    maximum: 255,
-                                    minimum: 0,
-                                    type: 'number',
-                                    format: 'int32',
-                                  },
-                                  green: {
-                                    maximum: 255,
-                                    minimum: 0,
-                                    type: 'number',
-                                    format: 'int32',
-                                  },
-                                  blue: {
-                                    maximum: 255,
-                                    minimum: 0,
-                                    type: 'number',
-                                    format: 'int32',
-                                  },
-                                },
-                                description: 'An object describing the RGB color format in 8 bits.',
-                              },
-                            },
-                          },
-                        },
-                      },
-                      text: {
-                        allOf: [
-                          {
-                            title: 'TextLayerDetails',
-                            type: 'object',
-                            properties: {
-                              content: {
-                                type: 'string',
-                                description: 'The text string.',
-                              },
-                              characterStyles: {
-                                type: 'array',
-                                items: {
-                                  title: 'TextLayerCharacterStyleDetails',
-                                  type: 'object',
-                                  properties: {
-                                    from: {
-                                      minimum: 0,
-                                      type: 'integer',
-                                      description:
-                                        'The beginning of the range of characters that this character style applies to. Based on initial index of 0. For example a style applied to only the first two characters would be from=0 and to=1.',
-                                      format: 'int32',
-                                    },
-                                    to: {
-                                      minimum: 0,
-                                      type: 'integer',
-                                      description:
-                                        'The ending of the range of characters that this character style applies to. Based on initial index of 0. For example a style applied to only the first two characters would be from=0 and to=1.',
-                                      format: 'int32',
-                                    },
-                                    fontSize: {
-                                      type: 'number',
-                                      description: 'The font size in points.',
-                                    },
-                                    fontName: {
-                                      type: 'string',
-                                      description:
-                                        "The font's PostScript name from the [list of supported fonts](../../getting_started/technical_usage_notes/index.md#photoshop-api-supported-fonts).",
-                                    },
-                                    orientation: {
-                                      title: 'OrientationType',
-                                      enum: ['horizontal', 'vertical'],
-                                      type: 'string',
-                                      description: 'The text orientation.',
-                                    },
-                                    fontColor: {
-                                      title: 'FontColorDetails',
-                                      type: 'object',
-                                      properties: {
-                                        rgb: {
-                                          allOf: [
-                                            {
-                                              title: 'FontColorRgb',
-                                              type: 'object',
-                                              properties: {
-                                                red: {
-                                                  maximum: 32768,
-                                                  minimum: 0,
-                                                  type: 'integer',
-                                                  format: 'int32',
-                                                },
-                                                green: {
-                                                  maximum: 32768,
-                                                  minimum: 0,
-                                                  type: 'integer',
-                                                  format: 'int32',
-                                                },
-                                                blue: {
-                                                  maximum: 32768,
-                                                  minimum: 0,
-                                                  type: 'integer',
-                                                  format: 'int32',
-                                                },
-                                              },
-                                              description:
-                                                'An object describing the RGB color format in 16 bits.',
-                                            },
-                                            {
-                                              description:
-                                                'An object describing the RGB color format in 16 bits.',
-                                            },
-                                          ],
-                                        },
-                                        cmyk: {
-                                          allOf: [
-                                            {
-                                              title: 'FontColorCmyk',
-                                              type: 'object',
-                                              properties: {
-                                                cyan: {
-                                                  maximum: 32768,
-                                                  minimum: 0,
-                                                  type: 'integer',
-                                                  format: 'int32',
-                                                },
-                                                magenta: {
-                                                  maximum: 32768,
-                                                  minimum: 0,
-                                                  type: 'integer',
-                                                  format: 'int32',
-                                                },
-                                                yellowColor: {
-                                                  maximum: 32768,
-                                                  minimum: 0,
-                                                  type: 'integer',
-                                                  format: 'int32',
-                                                },
-                                                black: {
-                                                  maximum: 32768,
-                                                  minimum: 0,
-                                                  type: 'integer',
-                                                  format: 'int32',
-                                                },
-                                              },
-                                              description:
-                                                'The font color settings for CMYK mode in 16-bit representation.',
-                                            },
-                                            {
-                                              description:
-                                                'The font color settings for CMYK mode in 16-bit representation.',
-                                            },
-                                          ],
-                                        },
-                                        gray: {
-                                          allOf: [
-                                            {
-                                              title: 'FontColorGray',
-                                              type: 'object',
-                                              properties: {
-                                                gray: {
-                                                  maximum: 32768,
-                                                  minimum: 0,
-                                                  type: 'integer',
-                                                  format: 'int32',
-                                                },
-                                              },
-                                              description:
-                                                'The font color settings for gray mode in 16-bit representation.',
-                                            },
-                                            {
-                                              description:
-                                                'The font color settings for gray mode in 16-bit representation.',
-                                            },
-                                          ],
-                                        },
-                                        lab: {
-                                          allOf: [
-                                            {
-                                              title: 'FontColorLab',
-                                              type: 'object',
-                                              properties: {
-                                                luminance: {
-                                                  maximum: 32768,
-                                                  minimum: 0,
-                                                  type: 'integer',
-                                                  format: 'int32',
-                                                },
-                                                a: {
-                                                  maximum: 32768,
-                                                  minimum: 0,
-                                                  type: 'integer',
-                                                  format: 'int32',
-                                                },
-                                                b: {
-                                                  maximum: 32768,
-                                                  minimum: 0,
-                                                  type: 'integer',
-                                                  format: 'int32',
-                                                },
-                                              },
-                                              description:
-                                                'The font color settings for Lab mode in 16-bit representation.',
-                                            },
-                                            {
-                                              description:
-                                                'The font color settings for Lab mode in 16-bit representation.',
-                                            },
-                                          ],
-                                        },
-                                      },
-                                    },
-                                  },
-                                },
-                                description:
-                                  "Character style settings. If the same supported attributes apply to all characters in the layer, then this will be an array of one item. Otherwise, each `characterStyle` object will have a 'from' and 'to' value indicating the range of characters that style applies to.",
-                              },
-                              paragraphStyles: {
-                                type: 'array',
-                                items: {
-                                  title: 'TextLayerParagraphStyleDetails',
-                                  type: 'object',
-                                  properties: {
-                                    from: {
-                                      minimum: 0,
-                                      type: 'integer',
-                                      description:
-                                        'The beginning of the range of characters that this paragraph style applies to. Based on initial index of 0. For example a style applied to only the first two characters would be from=0 and to=1.',
-                                      format: 'int32',
-                                    },
-                                    to: {
-                                      minimum: 0,
-                                      type: 'integer',
-                                      description:
-                                        'The ending of the range of characters that this paragraph style applies to. Based on initial index of 0. For example a style applied to only the first two characters would be from=0 and to=1.',
-                                      format: 'int32',
-                                    },
-                                    alignment: {
-                                      title: 'AlignmentType',
-                                      enum: [
-                                        'left',
-                                        'center',
-                                        'right',
-                                        'justify',
-                                        'justifyLeft',
-                                        'justifyCenter',
-                                        'justifyRight',
+                              "channels": {
+                                "type": "array",
+                                "items": {
+                                  "title": "ChannelDetails",
+                                  "type": "object",
+                                  "properties": {
+                                    "channel": {
+                                      "title": "ChannelType",
+                                      "enum": [
+                                        "master"
                                       ],
-                                      type: 'string',
-                                      description: 'The paragraph alignment.',
+                                      "type": "string",
+                                      "description": "The channel type."
                                     },
-                                  },
-                                  description:
-                                    "If the same supported attributes apply to all characters in the layer then this will be an array of one item, otherwise each paragraph style object will have a 'from' and 'to' value indicating the range of characters that the style applies to.",
+                                    "hue": {
+                                      "maximum": 180,
+                                      "minimum": -180,
+                                      "type": "number",
+                                      "format": "int32"
+                                    },
+                                    "saturation": {
+                                      "maximum": 100,
+                                      "minimum": -100,
+                                      "type": "number",
+                                      "format": "int32"
+                                    },
+                                    "lightness": {
+                                      "maximum": 100,
+                                      "minimum": -100,
+                                      "type": "number",
+                                      "format": "int32"
+                                    }
+                                  }
                                 },
-                                description:
-                                  "Paragraph style settings. If the same supported attributes apply to all characters in the layer then this will be an array of one item, otherwise each paragraph style object will have a 'from' and 'to' value indicating the range of characters that the style applies to.",
+                                "description": "An array of hashes representing the 'master' channel (the remaining five channels of 'magentas', 'yellows', 'greens', etc. are not yet supported)."
+                              }
+                            }
+                          },
+                          "colorBalance": {
+                            "title": "ColorBalance",
+                            "description": "Color balance settings.",
+                            "type": "object",
+                            "properties": {
+                              "preserveLuminosity": {
+                                "type": "boolean",
+                                "description": "Whether to preserve luminosity."
                               },
-                            },
-                            description: 'Text settings.',
-                          },
-                          {
-                            description: 'text settings',
-                          },
-                        ],
+                              "shadowLevels": {
+                                "type": "array",
+                                "items": {
+                                  "maximum": 100,
+                                  "minimum": -100,
+                                  "type": "number",
+                                  "format": "int32"
+                                },
+                                "description": "Shadow levels."
+                              },
+                              "midtoneLevels": {
+                                "type": "array",
+                                "items": {
+                                  "maximum": 100,
+                                  "minimum": -100,
+                                  "type": "number",
+                                  "format": "int32"
+                                },
+                                "description": "Midtone levels."
+                              },
+                              "highlightLevels": {
+                                "type": "array",
+                                "items": {
+                                  "maximum": 100,
+                                  "minimum": -100,
+                                  "type": "number",
+                                  "format": "int32"
+                                },
+                                "description": "Highlight levels."
+                              }
+                            }
+                          }
+                        },
+                        "description": "Adjustment layer information."
                       },
-                      blendOptions: {
-                        allOf: [
-                          {
-                            title: 'BlendDetails',
-                            type: 'object',
-                            properties: {
-                              opacity: {
-                                maximum: 100,
-                                minimum: 0,
-                                type: 'integer',
-                                description: 'Indicates the opacity value of a layer.',
-                                format: 'int32',
+                      "bounds": {
+                        "title": "Bounds",
+                        "description": "The bounds of the layer.",
+                        "type": "object",
+                        "properties": {
+                          "top": {
+                            "type": "number",
+                            "description": "The top position in pixels.",
+                            "format": "int32"
+                          },
+                          "left": {
+                            "type": "number",
+                            "description": "The left position in pixels.",
+                            "format": "int32"
+                          },
+                          "width": {
+                            "type": "number",
+                            "description": "The width in pixels.",
+                            "format": "int32"
+                          },
+                          "height": {
+                            "type": "number",
+                            "description": "The height in pixels.",
+                            "format": "int32"
+                          }
+                        }
+                      },
+                      "children": {
+                        "type": "array",
+                        "items": {
+                          "title": "ChildrenLayerDetails",
+                          "type": "object",
+                          "properties": {
+                            "id": {
+                              "type": "number",
+                              "description": "The layer ID. An ID of -1 is valid and indicates a PSD that only contains a background image and no layers.",
+                              "format": "int32"
+                            },
+                            "index": {
+                              "type": "number",
+                              "description": "The layer index.",
+                              "format": "int32"
+                            },
+                            "thumbnail": {
+                              "type": "string",
+                              "description": "If thumbnails were requested, a pre-signed GET URL to the thumbnail"
+                            },
+                            "type": {
+                              "title": "LayerType",
+                              "enum": [
+                                "layer",
+                                "textLayer",
+                                "adjustmentLayer",
+                                "smartObject",
+                                "fillLayer",
+                                "backgroundLayer",
+                                "layerSection"
+                              ],
+                              "type": "string",
+                              "description": "The layer type. Using `layer` - a pixel layer. Using `textLayer` - a text layer. Using `adjustmentLayer` - an adjustment layer. Using `layerSection` - a grouping layer. Using `smartObject` - a smart object. Using `backgroundLayer` - a background layer. Using `fillLayer` - a fill layer."
+                            },
+                            "name": {
+                              "type": "string",
+                              "description": "The layer name."
+                            },
+                            "locked": {
+                              "type": "boolean",
+                              "description": "Whether the layer is locked"
+                            },
+                            "visible": {
+                              "type": "boolean",
+                              "description": "Whether the layer is visible"
+                            },
+                            "adjustments": {
+                              "title": "AdjustmentDetails",
+                              "type": "object",
+                              "properties": {
+                                "brightnessContrast": {
+                                  "title": "BrightnessContrast",
+                                  "type": "object",
+                                  "properties": {
+                                    "brightness": {
+                                      "maximum": 150,
+                                      "minimum": -150,
+                                      "type": "number",
+                                      "description": "The adjustment layer's brightness.",
+                                      "format": "int32"
+                                    },
+                                    "contrast": {
+                                      "maximum": 150,
+                                      "minimum": -150,
+                                      "type": "number",
+                                      "description": "The adjustment layer's contrast.",
+                                      "format": "int32"
+                                    }
+                                  },
+                                  "description": "Brightness and contrast settings."
+                                },
+                                "exposure": {
+                                  "title": "ExposureDetails",
+                                  "description": "Exposure settings.",
+                                  "type": "object",
+                                  "properties": {
+                                    "exposure": {
+                                      "maximum": 20,
+                                      "minimum": -20,
+                                      "type": "number",
+                                      "description": "The layer's exposure.",
+                                      "default": 0
+                                    },
+                                    "offset": {
+                                      "maximum": 0.5,
+                                      "minimum": -0.5,
+                                      "type": "number",
+                                      "description": "The layer's offset.",
+                                      "default": 0
+                                    },
+                                    "gammaCorrection": {
+                                      "maximum": 9.99,
+                                      "minimum": 0.01,
+                                      "type": "number",
+                                      "description": "The layer's gamma correction.",
+                                      "default": 1
+                                    }
+                                  }
+                                },
+                                "hueSaturation": {
+                                  "title": "HueSaturation",
+                                  "type": "object",
+                                  "properties": {
+                                    "colorize": {
+                                      "type": "boolean",
+                                      "description": "Whether to colorize."
+                                    },
+                                    "channels": {
+                                      "type": "array",
+                                      "items": {
+                                        "title": "ChannelDetails",
+                                        "type": "object",
+                                        "properties": {
+                                          "channel": {
+                                            "title": "ChannelType",
+                                            "enum": [
+                                              "master"
+                                            ],
+                                            "type": "string",
+                                            "description": "The channel type."
+                                          },
+                                          "hue": {
+                                            "maximum": 180,
+                                            "minimum": -180,
+                                            "type": "number",
+                                            "format": "int32"
+                                          },
+                                          "saturation": {
+                                            "maximum": 100,
+                                            "minimum": -100,
+                                            "type": "number",
+                                            "format": "int32"
+                                          },
+                                          "lightness": {
+                                            "maximum": 100,
+                                            "minimum": -100,
+                                            "type": "number",
+                                            "format": "int32"
+                                          }
+                                        }
+                                      },
+                                      "description": "An array of hashes representing the 'master' channel (the remaining five channels of 'magentas', 'yellows', 'greens', etc. are not yet supported)."
+                                    }
+                                  }
+                                },
+                                "colorBalance": {
+                                  "title": "ColorBalance",
+                                  "description": "Color balance settings.",
+                                  "type": "object",
+                                  "properties": {
+                                    "preserveLuminosity": {
+                                      "type": "boolean",
+                                      "description": "Whether to preserve luminosity."
+                                    },
+                                    "shadowLevels": {
+                                      "type": "array",
+                                      "items": {
+                                        "maximum": 100,
+                                        "minimum": -100,
+                                        "type": "number",
+                                        "format": "int32"
+                                      },
+                                      "description": "Shadow levels."
+                                    },
+                                    "midtoneLevels": {
+                                      "type": "array",
+                                      "items": {
+                                        "maximum": 100,
+                                        "minimum": -100,
+                                        "type": "number",
+                                        "format": "int32"
+                                      },
+                                      "description": "Midtone levels."
+                                    },
+                                    "highlightLevels": {
+                                      "type": "array",
+                                      "items": {
+                                        "maximum": 100,
+                                        "minimum": -100,
+                                        "type": "number",
+                                        "format": "int32"
+                                      },
+                                      "description": "Highlight levels."
+                                    }
+                                  }
+                                }
                               },
-                              blendMode: {
-                                title: 'BlendModeType',
-                                enum: [
-                                  'normal',
-                                  'dissolve',
-                                  'darken',
-                                  'multiply',
-                                  'colorBurn',
-                                  'linearBurn',
-                                  'darkerColor',
-                                  'lighten',
-                                  'screen',
-                                  'colorDodge',
-                                  'linearDodge',
-                                  'lighterColor',
-                                  'overlay',
-                                  'softLight',
-                                  'hardLight',
-                                  'vividLight',
-                                  'linearLight',
-                                  'pinLight',
-                                  'hardMix',
-                                  'difference',
-                                  'exclusion',
-                                  'subtract',
-                                  'divide',
-                                  'hue',
-                                  'saturation',
-                                  'color',
-                                  'luminosity',
+                              "description": "Adjustment layer information."
+                            },
+                            "bounds": {
+                              "title": "Bounds",
+                              "description": "The bounds of the layer.",
+                              "type": "object",
+                              "properties": {
+                                "top": {
+                                  "type": "number",
+                                  "description": "The top position in pixels.",
+                                  "format": "int32"
+                                },
+                                "left": {
+                                  "type": "number",
+                                  "description": "The left position in pixels.",
+                                  "format": "int32"
+                                },
+                                "width": {
+                                  "type": "number",
+                                  "description": "The width in pixels.",
+                                  "format": "int32"
+                                },
+                                "height": {
+                                  "type": "number",
+                                  "description": "The height in pixels.",
+                                  "format": "int32"
+                                }
+                              }
+                            },
+                            "blendOptions": {
+                              "title": "BlendDetails",
+                              "type": "object",
+                              "properties": {
+                                "opacity": {
+                                  "maximum": 100,
+                                  "minimum": 0,
+                                  "type": "number",
+                                  "description": "Indicates the opacity value of a layer.",
+                                  "format": "int32"
+                                },
+                                "blendMode": {
+                                  "title": "BlendModeType",
+                                  "enum": [
+                                    "normal",
+                                    "dissolve",
+                                    "darken",
+                                    "multiply",
+                                    "colorBurn",
+                                    "linearBurn",
+                                    "darkerColor",
+                                    "lighten",
+                                    "screen",
+                                    "colorDodge",
+                                    "linearDodge",
+                                    "lighterColor",
+                                    "overlay",
+                                    "softLight",
+                                    "hardLight",
+                                    "vividLight",
+                                    "linearLight",
+                                    "pinLight",
+                                    "hardMix",
+                                    "difference",
+                                    "exclusion",
+                                    "subtract",
+                                    "divide",
+                                    "hue",
+                                    "saturation",
+                                    "color",
+                                    "luminosity"
+                                  ],
+                                  "type": "string",
+                                  "description": "Blend mode of layer."
+                                }
+                              },
+                              "description": "Blend options of a layer, including opacity and blend mode."
+                            },
+                            "mask": {
+                              "title": "LayerMaskDetails",
+                              "type": "object",
+                              "properties": {
+                                "clip": {
+                                  "type": "boolean",
+                                  "description": "Indicates if this is a clipped layer."
+                                },
+                                "enabled": {
+                                  "type": "boolean",
+                                  "description": "Indicates whether a mask is enabled on that layer."
+                                },
+                                "linked": {
+                                  "type": "boolean",
+                                  "description": "Indicates whether a mask is linked to the layer."
+                                },
+                                "offset": {
+                                  "title": "Offset",
+                                  "description": "Offset details.",
+                                  "type": "object",
+                                  "properties": {
+                                    "x": {
+                                      "type": "number",
+                                      "description": "Offset to indicate horizontal move of the mask.",
+                                      "format": "int32"
+                                    },
+                                    "y": {
+                                      "type": "number",
+                                      "description": "Offset to indicate vertical move of the mask.",
+                                      "format": "int32"
+                                    }
+                                  }
+                                }
+                              },
+                              "description": "An object describing the input mask replaced or added to the layer."
+                            },
+                            "smartObject": {
+                              "title": "SmartObjectDetails",
+                              "description": "Smart object details.",
+                              "type": "object",
+                              "properties": {
+                                "type": {
+                                  "type": "string",
+                                  "description": "Desired image format for the smart object."
+                                },
+                                "linked": {
+                                  "type": "boolean",
+                                  "description": "Indicates if the smart object is linked. Currently we support embedded smart object only, which means \"linked = false\".",
+                                  "default": false
+                                },
+                                "name": {
+                                  "type": "string",
+                                  "description": "Name of the embedded or linked smart object. Currently we support embedded smart object only."
+                                },
+                                "path": {
+                                  "type": "string",
+                                  "description": "Only for a linked smart object. Indicates the relative path for the linked smart object."
+                                },
+                                "instanceId": {
+                                  "type": "string",
+                                  "description": "Only for an embedded smart object. Indicates the instance ID of the embedded smart object. This ID is unique and the value is derived from the RAW data of the document. `instanceId` may show a value as unknown, if the embedded smart object is generated using a non-Adobe application."
+                                }
+                              }
+                            },
+                            "fill": {
+                              "title": "FillDetails",
+                              "type": "object",
+                              "properties": {
+                                "solidColor": {
+                                  "title": "SolidColor",
+                                  "type": "object",
+                                  "required": [
+                                    "rgb"
+                                  ],
+                                  "properties": {
+                                    "rgb": {
+                                      "title": "RgbColor",
+                                      "type": "object",
+                                      "properties": {
+                                        "red": {
+                                          "maximum": 255,
+                                          "minimum": 0,
+                                          "type": "number",
+                                          "format": "int32"
+                                        },
+                                        "green": {
+                                          "maximum": 255,
+                                          "minimum": 0,
+                                          "type": "number",
+                                          "format": "int32"
+                                        },
+                                        "blue": {
+                                          "maximum": 255,
+                                          "minimum": 0,
+                                          "type": "number",
+                                          "format": "int32"
+                                        }
+                                      },
+                                      "description": "An object describing the RGB color format in 8 bits."
+                                    }
+                                  }
+                                }
+                              }
+                            },
+                            "text": {
+                              "title": "TextLayerDetails",
+                              "type": "object",
+                              "properties": {
+                                "content": {
+                                  "type": "string",
+                                  "description": "The text string."
+                                },
+                                "characterStyles": {
+                                  "type": "array",
+                                  "items": {
+                                    "title": "TextLayerCharacterStyleDetails",
+                                    "type": "object",
+                                    "properties": {
+                                      "from": {
+                                        "minimum": 0,
+                                        "type": "number",
+                                        "description": "The beginning of the range of characters that this character style applies to. Based on initial index of 0. For example a style applied to only the first two characters would be from=0 and to=1.",
+                                        "format": "int32"
+                                      },
+                                      "to": {
+                                        "minimum": 0,
+                                        "type": "number",
+                                        "description": "The ending of the range of characters that this character style applies to. Based on initial index of 0. For example a style applied to only the first two characters would be from=0 and to=1.",
+                                        "format": "int32"
+                                      },
+                                      "fontSize": {
+                                        "type": "number",
+                                        "description": "The font size in points."
+                                      },
+                                      "fontName": {
+                                        "type": "string",
+                                        "description": "The font's PostScript name from the [list of supported fonts](../../getting_started/technical_usage_notes/index.md#photoshop-api-supported-fonts)."
+                                      },
+                                      "orientation": {
+                                        "title": "OrientationType",
+                                        "enum": [
+                                          "horizontal",
+                                          "vertical"
+                                        ],
+                                        "type": "string",
+                                        "description": "The text orientation."
+                                      },
+                                      "fontColor": {
+                                        "title": "FontColorDetails",
+                                        "type": "object",
+                                        "properties": {
+                                          "rgb": {
+                                            "allOf": [
+                                              {
+                                                "title": "FontColorRgb",
+                                                "type": "object",
+                                                "properties": {
+                                                  "red": {
+                                                    "maximum": 32768,
+                                                    "minimum": 0,
+                                                    "type": "integer",
+                                                    "format": "int32"
+                                                  },
+                                                  "green": {
+                                                    "maximum": 32768,
+                                                    "minimum": 0,
+                                                    "type": "integer",
+                                                    "format": "int32"
+                                                  },
+                                                  "blue": {
+                                                    "maximum": 32768,
+                                                    "minimum": 0,
+                                                    "type": "integer",
+                                                    "format": "int32"
+                                                  }
+                                                },
+                                                "description": "An object describing the RGB color format in 16 bits."
+                                              },
+                                              {
+                                                "description": "An object describing the RGB color format in 16 bits."
+                                              }
+                                            ]
+                                          },
+                                          "cmyk": {
+                                            "allOf": [
+                                              {
+                                                "title": "FontColorCmyk",
+                                                "type": "object",
+                                                "properties": {
+                                                  "cyan": {
+                                                    "maximum": 32768,
+                                                    "minimum": 0,
+                                                    "type": "integer",
+                                                    "format": "int32"
+                                                  },
+                                                  "magenta": {
+                                                    "maximum": 32768,
+                                                    "minimum": 0,
+                                                    "type": "integer",
+                                                    "format": "int32"
+                                                  },
+                                                  "yellowColor": {
+                                                    "maximum": 32768,
+                                                    "minimum": 0,
+                                                    "type": "integer",
+                                                    "format": "int32"
+                                                  },
+                                                  "black": {
+                                                    "maximum": 32768,
+                                                    "minimum": 0,
+                                                    "type": "integer",
+                                                    "format": "int32"
+                                                  }
+                                                },
+                                                "description": "The font color settings for CMYK mode in 16-bit representation."
+                                              },
+                                              {
+                                                "description": "The font color settings for CMYK mode in 16-bit representation."
+                                              }
+                                            ]
+                                          },
+                                          "gray": {
+                                            "allOf": [
+                                              {
+                                                "title": "FontColorGray",
+                                                "type": "object",
+                                                "properties": {
+                                                  "gray": {
+                                                    "maximum": 32768,
+                                                    "minimum": 0,
+                                                    "type": "integer",
+                                                    "format": "int32"
+                                                  }
+                                                },
+                                                "description": "The font color settings for gray mode in 16-bit representation."
+                                              },
+                                              {
+                                                "description": "The font color settings for gray mode in 16-bit representation."
+                                              }
+                                            ]
+                                          },
+                                          "lab": {
+                                            "allOf": [
+                                              {
+                                                "title": "FontColorLab",
+                                                "type": "object",
+                                                "properties": {
+                                                  "luminance": {
+                                                    "maximum": 32768,
+                                                    "minimum": 0,
+                                                    "type": "integer",
+                                                    "format": "int32"
+                                                  },
+                                                  "a": {
+                                                    "maximum": 32768,
+                                                    "minimum": 0,
+                                                    "type": "integer",
+                                                    "format": "int32"
+                                                  },
+                                                  "b": {
+                                                    "maximum": 32768,
+                                                    "minimum": 0,
+                                                    "type": "integer",
+                                                    "format": "int32"
+                                                  }
+                                                },
+                                                "description": "The font color settings for Lab mode in 16-bit representation."
+                                              },
+                                              {
+                                                "description": "The font color settings for Lab mode in 16-bit representation."
+                                              }
+                                            ]
+                                          }
+                                        }
+                                      }
+                                    }
+                                  },
+                                  "description": "Character style settings. If the same supported attributes apply to all characters in the layer, then this will be an array of one item. Otherwise, each `characterStyle` object will have a 'from' and 'to' value indicating the range of characters that style applies to."
+                                },
+                                "paragraphStyles": {
+                                  "type": "array",
+                                  "items": {
+                                    "title": "TextLayerParagraphStyleDetails",
+                                    "type": "object",
+                                    "properties": {
+                                      "from": {
+                                        "minimum": 0,
+                                        "type": "number",
+                                        "description": "The beginning of the range of characters that this paragraph style applies to. Based on initial index of 0. For example a style applied to only the first two characters would be from=0 and to=1.",
+                                        "format": "int32"
+                                      },
+                                      "to": {
+                                        "minimum": 0,
+                                        "type": "number",
+                                        "description": "The ending of the range of characters that this paragraph style applies to. Based on initial index of 0. For example a style applied to only the first two characters would be from=0 and to=1.",
+                                        "format": "int32"
+                                      },
+                                      "alignment": {
+                                        "title": "AlignmentType",
+                                        "enum": [
+                                          "left",
+                                          "center",
+                                          "right",
+                                          "justify",
+                                          "justifyLeft",
+                                          "justifyCenter",
+                                          "justifyRight"
+                                        ],
+                                        "type": "string",
+                                        "description": "The paragraph alignment."
+                                      }
+                                    },
+                                    "description": "If the same supported attributes apply to all characters in the layer then this will be an array of one item, otherwise each paragraph style object will have a 'from' and 'to' value indicating the range of characters that the style applies to."
+                                  },
+                                  "description": "Paragraph style settings. If the same supported attributes apply to all characters in the layer then this will be an array of one item, otherwise each paragraph style object will have a 'from' and 'to' value indicating the range of characters that the style applies to."
+                                }
+                              },
+                              "description": "Text settings."
+                            }
+                          }
+                        }
+                      },
+                      "mask": {
+                        "title": "MaskDetails",
+                        "type": "object",
+                        "properties": {
+                          "input": {
+                            "title": "StorageDetails",
+                            "type": "object",
+                            "required": [
+                              "href",
+                              "storage"
+                            ],
+                            "properties": {
+                              "href": {
+                                "type": "string",
+                                "description": "A pre-signed GET URL."
+                              },
+                              "storage": {
+                                "title": "StorageType",
+                                "enum": [
+                                  "external",
+                                  "azure",
+                                  "dropbox"
                                 ],
-                                type: 'string',
-                                description: 'Blend mode of layer.',
-                              },
+                                "type": "string",
+                                "description": "Storage platforms supported."
+                              }
                             },
-                            description:
-                              'Blend options of a layer, including opacity and blend mode.',
+                            "description": "A file located on Adobe's cloud or a supported external service."
+                          },
+                          "clip": {
+                            "type": "boolean",
+                            "description": "Indicates if this is a clipped layer"
+                          },
+                          "enabled": {
+                            "type": "boolean",
+                            "description": "Indicates a mask is enabled on that layer or not"
+                          },
+                          "linked": {
+                            "type": "boolean",
+                            "description": "Indicates a mask is linked to the layer or not"
+                          },
+                          "offset": {
+                            "title": "Offset",
+                            "description": "Offset details.",
+                            "type": "object",
+                            "properties": {
+                              "x": {
+                                "type": "number",
+                                "description": "Offset to indicate horizontal move of the mask.",
+                                "format": "int32"
+                              },
+                              "y": {
+                                "type": "number",
+                                "description": "Offset to indicate vertical move of the mask.",
+                                "format": "int32"
+                              }
+                            }
+                          }
+                        }
+                      },
+                      "smartObject": {
+                        "allOf": [
+                          {
+                            "title": "SmartObject",
+                            "type": "object",
+                            "properties": {
+                              "linked": {
+                                "type": "boolean",
+                                "description": "Indicates if this Smart Object is linked. Currently we support Embedded Smart Object only which means \"linked = false\".",
+                                "default": false
+                              }
+                            },
+                            "description": "An object describing the attributes specific to creating or editing a smart object. `SmartObject` properties operate on the input smart object file. When creating a linked smart object, this is a required. When creating an embedded smart object, it is optional."
                           },
                           {
-                            description:
-                              'Blend options of a layer, including opacity and blend mode',
+                            "description": "An object describing the attributes specific to creating or editing a smart object. `smartObject` properties operate on the input smart object file. This is required with a linked smart object and optional with an embedded smart object."
+                          }
+                        ]
+                      },
+                      "fill": {
+                        "title": "FillDetails",
+                        "type": "object",
+                        "properties": {
+                          "solidColor": {
+                            "title": "SolidColor",
+                            "type": "object",
+                            "required": [
+                              "rgb"
+                            ],
+                            "properties": {
+                              "rgb": {
+                                "title": "RgbColor",
+                                "type": "object",
+                                "properties": {
+                                  "red": {
+                                    "maximum": 255,
+                                    "minimum": 0,
+                                    "type": "number",
+                                    "format": "int32"
+                                  },
+                                  "green": {
+                                    "maximum": 255,
+                                    "minimum": 0,
+                                    "type": "number",
+                                    "format": "int32"
+                                  },
+                                  "blue": {
+                                    "maximum": 255,
+                                    "minimum": 0,
+                                    "type": "number",
+                                    "format": "int32"
+                                  }
+                                },
+                                "description": "An object describing the RGB color format in 8 bits."
+                              }
+                            }
+                          }
+                        }
+                      },
+                      "text": {
+                        "allOf": [
+                          {
+                            "title": "TextLayerDetails",
+                            "type": "object",
+                            "properties": {
+                              "content": {
+                                "type": "string",
+                                "description": "The text string."
+                              },
+                              "characterStyles": {
+                                "type": "array",
+                                "items": {
+                                  "title": "TextLayerCharacterStyleDetails",
+                                  "type": "object",
+                                  "properties": {
+                                    "from": {
+                                      "minimum": 0,
+                                      "type": "integer",
+                                      "description": "The beginning of the range of characters that this character style applies to. Based on initial index of 0. For example a style applied to only the first two characters would be from=0 and to=1.",
+                                      "format": "int32"
+                                    },
+                                    "to": {
+                                      "minimum": 0,
+                                      "type": "integer",
+                                      "description": "The ending of the range of characters that this character style applies to. Based on initial index of 0. For example a style applied to only the first two characters would be from=0 and to=1.",
+                                      "format": "int32"
+                                    },
+                                    "fontSize": {
+                                      "type": "number",
+                                      "description": "The font size in points."
+                                    },
+                                    "fontName": {
+                                      "type": "string",
+                                      "description": "The font's PostScript name from the [list of supported fonts](../../getting_started/technical_usage_notes/index.md#photoshop-api-supported-fonts)."
+                                    },
+                                    "orientation": {
+                                      "title": "OrientationType",
+                                      "enum": [
+                                        "horizontal",
+                                        "vertical"
+                                      ],
+                                      "type": "string",
+                                      "description": "The text orientation."
+                                    },
+                                    "fontColor": {
+                                      "title": "FontColorDetails",
+                                      "type": "object",
+                                      "properties": {
+                                        "rgb": {
+                                          "allOf": [
+                                            {
+                                              "title": "FontColorRgb",
+                                              "type": "object",
+                                              "properties": {
+                                                "red": {
+                                                  "maximum": 32768,
+                                                  "minimum": 0,
+                                                  "type": "integer",
+                                                  "format": "int32"
+                                                },
+                                                "green": {
+                                                  "maximum": 32768,
+                                                  "minimum": 0,
+                                                  "type": "integer",
+                                                  "format": "int32"
+                                                },
+                                                "blue": {
+                                                  "maximum": 32768,
+                                                  "minimum": 0,
+                                                  "type": "integer",
+                                                  "format": "int32"
+                                                }
+                                              },
+                                              "description": "An object describing the RGB color format in 16 bits."
+                                            },
+                                            {
+                                              "description": "An object describing the RGB color format in 16 bits."
+                                            }
+                                          ]
+                                        },
+                                        "cmyk": {
+                                          "allOf": [
+                                            {
+                                              "title": "FontColorCmyk",
+                                              "type": "object",
+                                              "properties": {
+                                                "cyan": {
+                                                  "maximum": 32768,
+                                                  "minimum": 0,
+                                                  "type": "integer",
+                                                  "format": "int32"
+                                                },
+                                                "magenta": {
+                                                  "maximum": 32768,
+                                                  "minimum": 0,
+                                                  "type": "integer",
+                                                  "format": "int32"
+                                                },
+                                                "yellowColor": {
+                                                  "maximum": 32768,
+                                                  "minimum": 0,
+                                                  "type": "integer",
+                                                  "format": "int32"
+                                                },
+                                                "black": {
+                                                  "maximum": 32768,
+                                                  "minimum": 0,
+                                                  "type": "integer",
+                                                  "format": "int32"
+                                                }
+                                              },
+                                              "description": "The font color settings for CMYK mode in 16-bit representation."
+                                            },
+                                            {
+                                              "description": "The font color settings for CMYK mode in 16-bit representation."
+                                            }
+                                          ]
+                                        },
+                                        "gray": {
+                                          "allOf": [
+                                            {
+                                              "title": "FontColorGray",
+                                              "type": "object",
+                                              "properties": {
+                                                "gray": {
+                                                  "maximum": 32768,
+                                                  "minimum": 0,
+                                                  "type": "integer",
+                                                  "format": "int32"
+                                                }
+                                              },
+                                              "description": "The font color settings for gray mode in 16-bit representation."
+                                            },
+                                            {
+                                              "description": "The font color settings for gray mode in 16-bit representation."
+                                            }
+                                          ]
+                                        },
+                                        "lab": {
+                                          "allOf": [
+                                            {
+                                              "title": "FontColorLab",
+                                              "type": "object",
+                                              "properties": {
+                                                "luminance": {
+                                                  "maximum": 32768,
+                                                  "minimum": 0,
+                                                  "type": "integer",
+                                                  "format": "int32"
+                                                },
+                                                "a": {
+                                                  "maximum": 32768,
+                                                  "minimum": 0,
+                                                  "type": "integer",
+                                                  "format": "int32"
+                                                },
+                                                "b": {
+                                                  "maximum": 32768,
+                                                  "minimum": 0,
+                                                  "type": "integer",
+                                                  "format": "int32"
+                                                }
+                                              },
+                                              "description": "The font color settings for Lab mode in 16-bit representation."
+                                            },
+                                            {
+                                              "description": "The font color settings for Lab mode in 16-bit representation."
+                                            }
+                                          ]
+                                        }
+                                      }
+                                    }
+                                  }
+                                },
+                                "description": "Character style settings. If the same supported attributes apply to all characters in the layer, then this will be an array of one item. Otherwise, each `characterStyle` object will have a 'from' and 'to' value indicating the range of characters that style applies to."
+                              },
+                              "paragraphStyles": {
+                                "type": "array",
+                                "items": {
+                                  "title": "TextLayerParagraphStyleDetails",
+                                  "type": "object",
+                                  "properties": {
+                                    "from": {
+                                      "minimum": 0,
+                                      "type": "integer",
+                                      "description": "The beginning of the range of characters that this paragraph style applies to. Based on initial index of 0. For example a style applied to only the first two characters would be from=0 and to=1.",
+                                      "format": "int32"
+                                    },
+                                    "to": {
+                                      "minimum": 0,
+                                      "type": "integer",
+                                      "description": "The ending of the range of characters that this paragraph style applies to. Based on initial index of 0. For example a style applied to only the first two characters would be from=0 and to=1.",
+                                      "format": "int32"
+                                    },
+                                    "alignment": {
+                                      "title": "AlignmentType",
+                                      "enum": [
+                                        "left",
+                                        "center",
+                                        "right",
+                                        "justify",
+                                        "justifyLeft",
+                                        "justifyCenter",
+                                        "justifyRight"
+                                      ],
+                                      "type": "string",
+                                      "description": "The paragraph alignment."
+                                    }
+                                  },
+                                  "description": "If the same supported attributes apply to all characters in the layer then this will be an array of one item, otherwise each paragraph style object will have a 'from' and 'to' value indicating the range of characters that the style applies to."
+                                },
+                                "description": "Paragraph style settings. If the same supported attributes apply to all characters in the layer then this will be an array of one item, otherwise each paragraph style object will have a 'from' and 'to' value indicating the range of characters that the style applies to."
+                              }
+                            },
+                            "description": "Text settings."
                           },
+                          {
+                            "description": "text settings"
+                          }
+                        ]
+                      },
+                      "blendOptions": {
+                        "allOf": [
+                          {
+                            "title": "BlendDetails",
+                            "type": "object",
+                            "properties": {
+                              "opacity": {
+                                "maximum": 100,
+                                "minimum": 0,
+                                "type": "integer",
+                                "description": "Indicates the opacity value of a layer.",
+                                "format": "int32"
+                              },
+                              "blendMode": {
+                                "title": "BlendModeType",
+                                "enum": [
+                                  "normal",
+                                  "dissolve",
+                                  "darken",
+                                  "multiply",
+                                  "colorBurn",
+                                  "linearBurn",
+                                  "darkerColor",
+                                  "lighten",
+                                  "screen",
+                                  "colorDodge",
+                                  "linearDodge",
+                                  "lighterColor",
+                                  "overlay",
+                                  "softLight",
+                                  "hardLight",
+                                  "vividLight",
+                                  "linearLight",
+                                  "pinLight",
+                                  "hardMix",
+                                  "difference",
+                                  "exclusion",
+                                  "subtract",
+                                  "divide",
+                                  "hue",
+                                  "saturation",
+                                  "color",
+                                  "luminosity"
+                                ],
+                                "type": "string",
+                                "description": "Blend mode of layer."
+                              }
+                            },
+                            "description": "Blend options of a layer, including opacity and blend mode."
+                          },
+                          {
+                            "description": "Blend options of a layer, including opacity and blend mode"
+                          }
+                        ]
+                      }
+                    }
+                  },
+                  "description": "Array of layers to be created in the document."
+                }
+              }
+            }
+          },
+          "description": "The input psd file to create a new psd from"
+        }
+      },
+      "required": [
+        "requestBody"
+      ]
+    },
+    "method": "post",
+    "pathTemplate": "/pie/psdService/documentCreate",
+    "parameters": [
+      {
+        "name": "x-gw-ims-org-id",
+        "in": "header",
+        "description": "The IMS organization ID. This only needs to be sent if you want to receive the job status through Adobe I/O Events.",
+        "required": false,
+        "schema": {
+          "type": "string"
+        }
+      }
+    ],
+    "executionParameters": [
+      {
+        "name": "x-gw-ims-org-id",
+        "in": "header"
+      }
+    ],
+    "requestBodyContentType": "application/json",
+    "securityRequirements": [
+      {
+        "ApiKeyAuth": []
+      },
+      {
+        "BearerAuth": []
+      }
+    ],
+    "operationId": "createDocumentAsync",
+    "baseUrl": "https://image.adobe.io"
+  },
+  {
+    "name": "modifyDocumentAsync",
+    "description": "Apply basic layer edits (name, state, etc.), add/edit adjustment, pixel, and shape layers.",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "x-gw-ims-org-id": {
+          "type": "string",
+          "description": "The IMS organization ID. This only needs to be sent if you want to receive the job status through Adobe I/O Events."
+        },
+        "requestBody": {
+          "title": "ModifyDocumentRequest",
+          "type": "object",
+          "required": [
+            "inputs",
+            "options",
+            "outputs"
+          ],
+          "properties": {
+            "inputs": {
+              "type": "array",
+              "items": {
+                "title": "StorageDetails",
+                "type": "object",
+                "required": [
+                  "href",
+                  "storage"
+                ],
+                "properties": {
+                  "href": {
+                    "type": "string",
+                    "description": "A pre-signed GET URL."
+                  },
+                  "storage": {
+                    "title": "StorageType",
+                    "enum": [
+                      "external",
+                      "azure",
+                      "dropbox"
+                    ],
+                    "type": "string",
+                    "description": "Storage platforms supported."
+                  }
+                },
+                "description": "A file located on Adobe's cloud or a supported external service."
+              },
+              "description": "An array of input objects. Each input object represents a file to be processed."
+            },
+            "outputs": {
+              "type": "array",
+              "items": {
+                "title": "PsOutputDetails",
+                "type": "object",
+                "required": [
+                  "href",
+                  "storage",
+                  "type"
+                ],
+                "properties": {
+                  "href": {
+                    "type": "string",
+                    "description": "A pre-signed POST URL to the output file."
+                  },
+                  "storage": {
+                    "title": "StorageType",
+                    "enum": [
+                      "external",
+                      "azure",
+                      "dropbox"
+                    ],
+                    "type": "string",
+                    "description": "Storage platforms supported."
+                  },
+                  "type": {
+                    "title": "ImageFormatType",
+                    "enum": [
+                      "image/vnd.adobe.photoshop",
+                      "image/jpeg",
+                      "image/png",
+                      "image/tiff",
+                      "vnd.adobe.photoshop"
+                    ],
+                    "type": "string",
+                    "description": "The desired image format. Using `image/vnd.adobe.photoshop` - create a new PSD file. Using `image/jpeg`, `image/png`, `image/tiff` - create a new JPEG, PNG or TIFF rendition. Certain image modes (RGB, CMYK, greyscale, etc.) must be converted to another image mode before a rendition can be created. With TIFF requested, Multichannel and Duotone will convert to RGB. With PNG requested, CMYK, HSL, HSB, Multichannel, Duotone, Lab and XYZ will convert to RGB."
+                  },
+                  "overwrite": {
+                    "type": "boolean",
+                    "description": "If the file already exists, indicates if the output file should be overwritten. Will eventually support eTags. Only applies to CC Storage.",
+                    "default": true
+                  },
+                  "width": {
+                    "type": "number",
+                    "description": "The width, in pixels, of the renditions. A width of 0 generates a full size rendition. Height is generated automatically using the aspect ratio. Only supported for image rendition.",
+                    "format": "int32",
+                    "default": 0
+                  },
+                  "maxWidth": {
+                    "type": "number",
+                    "description": "The size, in pixels, of the renditions. When width is 0, maxWidth can be provided to get the rendition size. maxWidth when less than document width gets precedence over width. Height is not necessary as the rendition generate will automatically maintain the aspect ratio.",
+                    "format": "int32",
+                    "default": 0
+                  },
+                  "quality": {
+                    "maximum": 7,
+                    "minimum": 1,
+                    "type": "number",
+                    "description": "The quality of the renditions for JPEG. The range is 1 to 7, 7 being the highest quality.",
+                    "format": "int32",
+                    "default": 7
+                  },
+                  "compression": {
+                    "title": "CompressionType",
+                    "enum": [
+                      "small",
+                      "medium",
+                      "large"
+                    ],
+                    "type": "string",
+                    "description": "Desired PNG compression level."
+                  },
+                  "trimToCanvas": {
+                    "title": "TrimToCanvasType",
+                    "enum": [
+                      true,
+                      false
+                    ],
+                    "type": "boolean",
+                    "description": "Use this if the renditions needs to be of Canvas size. Using `True` trims the renditions to Canvas size, while `False` makes the renditions Layer Size."
+                  },
+                  "layers": {
+                    "type": "array",
+                    "items": {
+                      "title": "LayerReference",
+                      "description": "A layer reference object.",
+                      "type": "object",
+                      "properties": {
+                        "id": {
+                          "type": "number",
+                          "description": "The id of the layer. Use either `id` OR `name`.",
+                          "format": "int32"
+                        },
+                        "name": {
+                          "type": "string",
+                          "description": "The name of the layer. Use either `id` OR `name`."
+                        }
+                      }
+                    },
+                    "description": "An array of layer objects.\nBy including this array you are signaling that you'd like a rendition created from these layer id's or layer names. Excluding it will generate a document-level rendition."
+                  },
+                  "iccProfile": {
+                    "title": "IccProfileDetails",
+                    "type": "object",
+                    "properties": {
+                      "imageMode": {
+                        "title": "ImageModeType",
+                        "enum": [
+                          "grayscale",
+                          "rgb",
+                          "cmyk"
                         ],
+                        "type": "string",
+                        "description": "The image mode."
                       },
-                      horizontalAlign: {
-                        title: 'HorizontalAlignType',
-                        enum: ['left', 'center', 'right'],
-                        type: 'string',
-                        description:
-                          'Indicates the relative horizontal position of the layer with respect to the canvas of the document.',
-                      },
-                      verticalAlign: {
-                        title: 'VerticalAlignType',
-                        enum: ['top', 'center', 'bottom'],
-                        type: 'string',
-                        description:
-                          'Indicates the relative vertical position of the layer with respect to the canvas of the document.',
-                      },
-                      fillToCanvas: {
-                        type: 'boolean',
-                        description:
-                          'Indicates if the pixels need to proportionally fill into the entire canvas of the document.',
-                      },
-                    },
-                  },
-                  description: 'Array of layers to be created in the document.',
-                },
-              },
-            },
-          },
-          description:
-            'The input psd file to apply edits to and generate renditions and/or save as a new psd',
-        },
-      },
-      required: ['requestBody'],
-    },
-    method: 'post',
-    pathTemplate: '/pie/psdService/documentOperations',
-    parameters: [
-      {
-        name: 'x-gw-ims-org-id',
-        in: 'header',
-        description:
-          'The IMS organization ID. This only needs to be sent if you want to receive the job status through Adobe I/O Events.',
-        required: false,
-        schema: {
-          type: 'string',
-        },
-      },
-    ],
-    executionParameters: [
-      {
-        name: 'x-gw-ims-org-id',
-        in: 'header',
-      },
-    ],
-    requestBodyContentType: 'application/json',
-    securityRequirements: [
-      {
-        ApiKeyAuth: [],
-      },
-      {
-        BearerAuth: [],
-      },
-    ],
-    operationId: 'modifyDocumentAsync',
-    baseUrl: 'https://image.adobe.io',
-  },
-  {
-    name: 'createRenditionAsync',
-    description: 'Create flat image representations of a PSD in multiple formats.',
-    inputSchema: {
-      type: 'object',
-      properties: {
-        'x-gw-ims-org-id': {
-          type: 'string',
-          description:
-            'The IMS organization ID. This only needs to be sent if you want to receive the job status through Adobe I/O Events',
-        },
-        requestBody: {
-          title: 'CreateRenditionRequest',
-          type: 'object',
-          required: ['inputs', 'outputs'],
-          properties: {
-            inputs: {
-              type: 'array',
-              items: {
-                title: 'StorageDetails',
-                type: 'object',
-                required: ['href', 'storage'],
-                properties: {
-                  href: {
-                    type: 'string',
-                    description: 'A pre-signed GET URL.',
-                  },
-                  storage: {
-                    title: 'StorageType',
-                    enum: ['external', 'azure', 'dropbox'],
-                    type: 'string',
-                    description: 'Storage platforms supported.',
-                  },
-                },
-                description: "A file located on Adobe's cloud or a supported external service.",
-              },
-              description:
-                'An array of input objects. Only one input object is currently supported.',
-            },
-            outputs: {
-              type: 'array',
-              items: {
-                title: 'PsOutputDetails',
-                type: 'object',
-                required: ['href', 'storage', 'type'],
-                properties: {
-                  href: {
-                    type: 'string',
-                    description: 'A pre-signed POST URL to the output file.',
-                  },
-                  storage: {
-                    title: 'StorageType',
-                    enum: ['external', 'azure', 'dropbox'],
-                    type: 'string',
-                    description: 'Storage platforms supported.',
-                  },
-                  type: {
-                    title: 'ImageFormatType',
-                    enum: [
-                      'image/vnd.adobe.photoshop',
-                      'image/jpeg',
-                      'image/png',
-                      'image/tiff',
-                      'vnd.adobe.photoshop',
-                    ],
-                    type: 'string',
-                    description:
-                      'The desired image format. Using `image/vnd.adobe.photoshop` - create a new PSD file. Using `image/jpeg`, `image/png`, `image/tiff` - create a new JPEG, PNG or TIFF rendition. Certain image modes (RGB, CMYK, greyscale, etc.) must be converted to another image mode before a rendition can be created. With TIFF requested, Multichannel and Duotone will convert to RGB. With PNG requested, CMYK, HSL, HSB, Multichannel, Duotone, Lab and XYZ will convert to RGB.',
-                  },
-                  overwrite: {
-                    type: 'boolean',
-                    description:
-                      'If the file already exists, indicates if the output file should be overwritten. Will eventually support eTags. Only applies to CC Storage.',
-                    default: true,
-                  },
-                  width: {
-                    type: 'number',
-                    description:
-                      'The width, in pixels, of the renditions. A width of 0 generates a full size rendition. Height is generated automatically using the aspect ratio. Only supported for image rendition.',
-                    format: 'int32',
-                    default: 0,
-                  },
-                  maxWidth: {
-                    type: 'number',
-                    description:
-                      'The size, in pixels, of the renditions. When width is 0, maxWidth can be provided to get the rendition size. maxWidth when less than document width gets precedence over width. Height is not necessary as the rendition generate will automatically maintain the aspect ratio.',
-                    format: 'int32',
-                    default: 0,
-                  },
-                  quality: {
-                    maximum: 7,
-                    minimum: 1,
-                    type: 'number',
-                    description:
-                      'The quality of the renditions for JPEG. The range is 1 to 7, 7 being the highest quality.',
-                    format: 'int32',
-                    default: 7,
-                  },
-                  compression: {
-                    title: 'CompressionType',
-                    enum: ['small', 'medium', 'large'],
-                    type: 'string',
-                    description: 'Desired PNG compression level.',
-                  },
-                  trimToCanvas: {
-                    title: 'TrimToCanvasType',
-                    enum: [true, false],
-                    type: 'boolean',
-                    description:
-                      'Use this if the renditions needs to be of Canvas size. Using `True` trims the renditions to Canvas size, while `False` makes the renditions Layer Size.',
-                  },
-                  layers: {
-                    type: 'array',
-                    items: {
-                      title: 'LayerReference',
-                      description: 'A layer reference object.',
-                      type: 'object',
-                      properties: {
-                        id: {
-                          type: 'number',
-                          description: 'The id of the layer. Use either `id` OR `name`.',
-                          format: 'int32',
-                        },
-                        name: {
-                          type: 'string',
-                          description: 'The name of the layer. Use either `id` OR `name`.',
-                        },
-                      },
-                    },
-                    description:
-                      "An array of layer objects.\nBy including this array you are signaling that you'd like a rendition created from these layer id's or layer names. Excluding it will generate a document-level rendition.",
-                  },
-                  iccProfile: {
-                    title: 'IccProfileDetails',
-                    type: 'object',
-                    properties: {
-                      imageMode: {
-                        title: 'ImageModeType',
-                        enum: ['grayscale', 'rgb', 'cmyk'],
-                        type: 'string',
-                        description: 'The image mode.',
-                      },
-                      input: {
-                        title: 'StorageDetails',
-                        type: 'object',
-                        required: ['href', 'storage'],
-                        properties: {
-                          href: {
-                            type: 'string',
-                            description: 'A pre-signed GET URL.',
-                          },
-                          storage: {
-                            title: 'StorageType',
-                            enum: ['external', 'azure', 'dropbox'],
-                            type: 'string',
-                            description: 'Storage platforms supported.',
-                          },
-                        },
-                        description:
-                          "A file located on Adobe's cloud or a supported external service.",
-                      },
-                      profileName: {
-                        title: 'ColorProfileType',
-                        enum: [
-                          'Adobe RGB (1998)',
-                          'Apple RGB',
-                          'ColorMatch RGB',
-                          'sRGB IEC61966-2.1',
-                          'Dot Gain 10%',
-                          'Dot Gain 15%',
-                          'Dot Gain 20%',
-                          'Dot Gain 25%',
-                          'Dot Gain 30%',
-                          'Gray Gamma 1.8',
-                          'Gray Gamma 2.2',
+                      "input": {
+                        "title": "StorageDetails",
+                        "type": "object",
+                        "required": [
+                          "href",
+                          "storage"
                         ],
-                        type: 'string',
-                        description: 'The name of the color profile.',
-                      },
-                    },
-                  },
-                },
-                description: 'An output object.',
-              },
-              description: 'An array of output objects.',
-            },
-          },
-          description: 'The input psd file to create renditions from',
-        },
-      },
-      required: ['requestBody'],
-    },
-    method: 'post',
-    pathTemplate: '/pie/psdService/renditionCreate',
-    parameters: [
-      {
-        name: 'x-gw-ims-org-id',
-        in: 'header',
-        description:
-          'The IMS organization ID. This only needs to be sent if you want to receive the job status through Adobe I/O Events',
-        required: false,
-        schema: {
-          type: 'string',
-        },
-      },
-    ],
-    executionParameters: [
-      {
-        name: 'x-gw-ims-org-id',
-        in: 'header',
-      },
-    ],
-    requestBodyContentType: 'application/json',
-    securityRequirements: [
-      {
-        ApiKeyAuth: [],
-      },
-      {
-        BearerAuth: [],
-      },
-    ],
-    operationId: 'createRenditionAsync',
-    baseUrl: 'https://image.adobe.io',
-  },
-  {
-    name: 'replaceSmartObjectAsync',
-    description: 'Replace Smart Object in a PSD.',
-    inputSchema: {
-      type: 'object',
-      properties: {
-        'x-gw-ims-org-id': {
-          type: 'string',
-          description:
-            'The IMS organization ID. This only needs to be sent if you want to receive the job status through Adobe I/O Events',
-        },
-        requestBody: {
-          title: 'ReplaceSmartObjectRequest',
-          type: 'object',
-          required: ['inputs', 'options', 'outputs'],
-          properties: {
-            inputs: {
-              type: 'array',
-              items: {
-                title: 'StorageDetails',
-                type: 'object',
-                required: ['href', 'storage'],
-                properties: {
-                  href: {
-                    type: 'string',
-                    description: 'A pre-signed GET URL.',
-                  },
-                  storage: {
-                    title: 'StorageType',
-                    enum: ['external', 'azure', 'dropbox'],
-                    type: 'string',
-                    description: 'Storage platforms supported.',
-                  },
-                },
-                description: "A file located on Adobe's cloud or a supported external service.",
-              },
-              description:
-                'An array of input objects. Only one input object is currently supported.',
-            },
-            outputs: {
-              type: 'array',
-              items: {
-                title: 'SmartObjectOutputDetails',
-                type: 'object',
-                required: ['href', 'storage', 'type'],
-                properties: {
-                  href: {
-                    type: 'string',
-                    description: 'A pre-signed POST URL to the output file.',
-                  },
-                  storage: {
-                    title: 'StorageType',
-                    enum: ['external', 'azure', 'dropbox'],
-                    type: 'string',
-                    description: 'Storage platforms supported.',
-                  },
-                  type: {
-                    title: 'ImageFormatType',
-                    enum: [
-                      'image/vnd.adobe.photoshop',
-                      'image/jpeg',
-                      'image/png',
-                      'image/tiff',
-                      'vnd.adobe.photoshop',
-                    ],
-                    type: 'string',
-                    description:
-                      'The desired image format. Using `image/vnd.adobe.photoshop` - create a new PSD file. Using `image/jpeg`, `image/png`, `image/tiff` - create a new JPEG, PNG or TIFF rendition. Certain image modes (RGB, CMYK, greyscale, etc.) must be converted to another image mode before a rendition can be created. With TIFF requested, Multichannel and Duotone will convert to RGB. With PNG requested, CMYK, HSL, HSB, Multichannel, Duotone, Lab and XYZ will convert to RGB.',
-                  },
-                  overwrite: {
-                    type: 'boolean',
-                    description:
-                      'If the file already exists, indicates if the output file should be overwritten. Will eventually support eTags. Only applies to CC Storage.',
-                    default: true,
-                  },
-                  width: {
-                    type: 'number',
-                    description:
-                      'The width, in pixels, of the renditions. A width of 0 generates a full size rendition. Height is generated automatically using the aspect ratio. Only supported for image rendition.',
-                    format: 'int32',
-                    default: 0,
-                  },
-                  quality: {
-                    maximum: 7,
-                    minimum: 1,
-                    type: 'number',
-                    description:
-                      'The quality of the renditions for JPEG. The range is 1 to 7, 7 being the highest quality.',
-                    format: 'int32',
-                    default: 7,
-                  },
-                  compression: {
-                    title: 'CompressionType',
-                    enum: ['small', 'medium', 'large'],
-                    type: 'string',
-                    description: 'Desired PNG compression level.',
-                  },
-                },
-                description: 'An output object.',
-              },
-              description: 'An array of output objects.',
-            },
-            options: {
-              title: 'SmartObjectOptions',
-              type: 'object',
-              required: ['layers'],
-              properties: {
-                layers: {
-                  type: 'array',
-                  items: {
-                    title: 'SmartObjectLayer',
-                    type: 'object',
-                    required: ['input'],
-                    properties: {
-                      add: {
-                        title: 'LayerPosition',
-                        type: 'object',
-                        properties: {
-                          insertAbove: {
-                            title: 'LayerReference',
-                            description: 'A layer reference object.',
-                            type: 'object',
-                            properties: {
-                              id: {
-                                type: 'number',
-                                description: 'The id of the layer. Use either `id` OR `name`.',
-                                format: 'int32',
-                              },
-                              name: {
-                                type: 'string',
-                                description: 'The name of the layer. Use either `id` OR `name`.',
-                              },
-                            },
+                        "properties": {
+                          "href": {
+                            "type": "string",
+                            "description": "A pre-signed GET URL."
                           },
-                          insertBelow: {
-                            title: 'LayerReference',
-                            description: 'A layer reference object.',
-                            type: 'object',
-                            properties: {
-                              id: {
-                                type: 'number',
-                                description: 'The id of the layer. Use either `id` OR `name`.',
-                                format: 'int32',
-                              },
-                              name: {
-                                type: 'string',
-                                description: 'The name of the layer. Use either `id` OR `name`.',
-                              },
-                            },
-                          },
-                          insertInto: {
-                            title: 'LayerReference',
-                            description: 'A layer reference object.',
-                            type: 'object',
-                            properties: {
-                              id: {
-                                type: 'number',
-                                description: 'The id of the layer. Use either `id` OR `name`.',
-                                format: 'int32',
-                              },
-                              name: {
-                                type: 'string',
-                                description: 'The name of the layer. Use either `id` OR `name`.',
-                              },
-                            },
-                          },
-                          insertTop: {
-                            type: 'boolean',
-                          },
-                          insertBottom: {
-                            type: 'boolean',
-                          },
+                          "storage": {
+                            "title": "StorageType",
+                            "enum": [
+                              "external",
+                              "azure",
+                              "dropbox"
+                            ],
+                            "type": "string",
+                            "description": "Storage platforms supported."
+                          }
                         },
+                        "description": "A file located on Adobe's cloud or a supported external service."
                       },
-                      id: {
-                        type: 'number',
-                        description: 'the layer id',
-                        format: 'int32',
-                      },
-                      name: {
-                        type: 'string',
-                      },
-                      locked: {
-                        type: 'boolean',
-                        description: 'is the layer locked',
-                        default: false,
-                      },
-                      visible: {
-                        type: 'boolean',
-                        description: 'is the layer visible',
-                        default: true,
-                      },
-                      input: {
-                        title: 'StorageDetails',
-                        type: 'object',
-                        required: ['href', 'storage'],
-                        properties: {
-                          href: {
-                            type: 'string',
-                            description: 'A pre-signed GET URL.',
-                          },
-                          storage: {
-                            title: 'StorageType',
-                            enum: ['external', 'azure', 'dropbox'],
-                            type: 'string',
-                            description: 'Storage platforms supported.',
-                          },
-                        },
-                        description:
-                          "A file located on Adobe's cloud or a supported external service.",
-                      },
-                      bounds: {
-                        title: 'Bounds',
-                        description: 'The bounds of the layer.',
-                        type: 'object',
-                        properties: {
-                          top: {
-                            type: 'number',
-                            description: 'The top position in pixels.',
-                            format: 'int32',
-                          },
-                          left: {
-                            type: 'number',
-                            description: 'The left position in pixels.',
-                            format: 'int32',
-                          },
-                          width: {
-                            type: 'number',
-                            description: 'The width in pixels.',
-                            format: 'int32',
-                          },
-                          height: {
-                            type: 'number',
-                            description: 'The height in pixels.',
-                            format: 'int32',
-                          },
-                        },
-                      },
-                    },
-                  },
-                  description: 'Array of Smart Object layers to be created in the document',
-                },
-              },
-            },
-          },
-          description:
-            'The input psd file to apply edits for replacing embedded smart object to and generate renditions and/or save as a new psd',
-        },
-      },
-      required: ['requestBody'],
-    },
-    method: 'post',
-    pathTemplate: '/pie/psdService/smartObject',
-    parameters: [
-      {
-        name: 'x-gw-ims-org-id',
-        in: 'header',
-        description:
-          'The IMS organization ID. This only needs to be sent if you want to receive the job status through Adobe I/O Events',
-        required: false,
-        schema: {
-          type: 'string',
-        },
-      },
-    ],
-    executionParameters: [
-      {
-        name: 'x-gw-ims-org-id',
-        in: 'header',
-      },
-    ],
-    requestBodyContentType: 'application/json',
-    securityRequirements: [
-      {
-        ApiKeyAuth: [],
-      },
-      {
-        BearerAuth: [],
-      },
-    ],
-    operationId: 'replaceSmartObjectAsync',
-    baseUrl: 'https://image.adobe.io',
-  },
-  {
-    name: 'playPhotoshopActionsAsync',
-    description: 'Executes Photoshop Action file against a PSD, JPEG, PNG, or TIFF.',
-    inputSchema: {
-      type: 'object',
-      properties: {
-        'x-gw-ims-org-id': {
-          type: 'string',
-          description:
-            'The IMS organization ID. This only needs to be sent if you want to receive the job status through Adobe I/O Events',
-        },
-        requestBody: {
-          title: 'PlayPhotoshopActionsRequest',
-          type: 'object',
-          required: ['inputs', 'options', 'outputs'],
-          properties: {
-            inputs: {
-              type: 'array',
-              items: {
-                title: 'StorageDetails',
-                type: 'object',
-                required: ['href', 'storage'],
-                properties: {
-                  href: {
-                    type: 'string',
-                    description: 'A pre-signed GET URL.',
-                  },
-                  storage: {
-                    title: 'StorageType',
-                    enum: ['external', 'azure', 'dropbox'],
-                    type: 'string',
-                    description: 'Storage platforms supported.',
-                  },
-                },
-                description: "A file located on Adobe's cloud or a supported external service.",
-              },
-              description:
-                'An array of input objects. Only one input object is currently supported.',
-            },
-            outputs: {
-              type: 'array',
-              items: {
-                title: 'ActionOutputDetails',
-                type: 'object',
-                required: ['href', 'storage', 'type'],
-                properties: {
-                  href: {
-                    type: 'string',
-                    description: 'A pre-signed POST URL to the output file.',
-                  },
-                  storage: {
-                    title: 'StorageType',
-                    enum: ['external', 'azure', 'dropbox'],
-                    type: 'string',
-                    description: 'Storage platforms supported.',
-                  },
-                  type: {
-                    title: 'ImageFormatType',
-                    enum: [
-                      'image/vnd.adobe.photoshop',
-                      'image/jpeg',
-                      'image/png',
-                      'image/tiff',
-                      'vnd.adobe.photoshop',
-                    ],
-                    type: 'string',
-                    description:
-                      'The desired image format. Using `image/vnd.adobe.photoshop` - create a new PSD file. Using `image/jpeg`, `image/png`, `image/tiff` - create a new JPEG, PNG or TIFF rendition. Certain image modes (RGB, CMYK, greyscale, etc.) must be converted to another image mode before a rendition can be created. With TIFF requested, Multichannel and Duotone will convert to RGB. With PNG requested, CMYK, HSL, HSB, Multichannel, Duotone, Lab and XYZ will convert to RGB.',
-                  },
-                  overwrite: {
-                    type: 'boolean',
-                    description:
-                      'If the file already exists, indicates if the output file should be overwritten. Will eventually support eTags. Only applies to CC Storage.',
-                    default: true,
-                  },
-                  quality: {
-                    maximum: 12,
-                    minimum: 1,
-                    type: 'number',
-                    description:
-                      'The quality of the renditions for JPEG. The range is 1 to 7, 7 being the highest quality.',
-                    format: 'int32',
-                    default: 7,
-                  },
-                  compression: {
-                    title: 'CompressionType',
-                    enum: ['small', 'medium', 'large'],
-                    type: 'string',
-                    description: 'Desired PNG compression level.',
-                  },
-                },
-                description: 'An output object.',
-              },
-              description: 'An array of output objects.',
-            },
-            options: {
-              title: 'ActionOptions',
-              type: 'object',
-              required: ['actions'],
-              properties: {
-                actions: {
-                  type: 'array',
-                  items: {
-                    title: 'Action',
-                    type: 'object',
-                    properties: {
-                      storage: {
-                        allOf: [
-                          {
-                            title: 'StorageType',
-                            enum: ['external', 'azure', 'dropbox'],
-                            type: 'string',
-                            description: 'Storage platforms supported.',
-                          },
-                          {
-                            description: 'storage platforms supported',
-                          },
+                      "profileName": {
+                        "title": "ColorProfileType",
+                        "enum": [
+                          "Adobe RGB (1998)",
+                          "Apple RGB",
+                          "ColorMatch RGB",
+                          "sRGB IEC61966-2.1",
+                          "Dot Gain 10%",
+                          "Dot Gain 15%",
+                          "Dot Gain 20%",
+                          "Dot Gain 25%",
+                          "Dot Gain 30%",
+                          "Gray Gamma 1.8",
+                          "Gray Gamma 2.2"
                         ],
-                      },
-                      href: {
-                        type: 'string',
-                        description: 'Presigned GET URL',
-                      },
-                      actionName: {
-                        type: 'string',
-                        description:
-                          'If you only want to execute a particular action, you may specify which action to play from the ActionSet',
-                      },
-                    },
-                    description: 'An object describing the input Photoshop Actions to play.',
-                  },
-                  description: 'Array of Photoshop Actions to play.',
+                        "type": "string",
+                        "description": "The name of the color profile."
+                      }
+                    }
+                  }
                 },
-                patterns: {
-                  type: 'array',
-                  items: {
-                    title: 'StorageDetails',
-                    type: 'object',
-                    required: ['href', 'storage'],
-                    properties: {
-                      href: {
-                        type: 'string',
-                        description: 'A pre-signed GET URL.',
-                      },
-                      storage: {
-                        title: 'StorageType',
-                        enum: ['external', 'azure', 'dropbox'],
-                        type: 'string',
-                        description: 'Storage platforms supported.',
-                      },
-                    },
-                    description: "A file located on Adobe's cloud or a supported external service.",
-                  },
-                  description: 'array of custom pattern preset to be used in Photoshop Actions',
-                },
-                fonts: {
-                  type: 'array',
-                  items: {
-                    title: 'StorageDetails',
-                    type: 'object',
-                    required: ['href', 'storage'],
-                    properties: {
-                      href: {
-                        type: 'string',
-                        description: 'A pre-signed GET URL.',
-                      },
-                      storage: {
-                        title: 'StorageType',
-                        enum: ['external', 'azure', 'dropbox'],
-                        type: 'string',
-                        description: 'Storage platforms supported.',
-                      },
-                    },
-                    description: "A file located on Adobe's cloud or a supported external service.",
-                  },
-                  description: 'array of custom fonts needed in this document',
-                },
-                brushes: {
-                  type: 'array',
-                  items: {
-                    title: 'StorageDetails',
-                    type: 'object',
-                    required: ['href', 'storage'],
-                    properties: {
-                      href: {
-                        type: 'string',
-                        description: 'A pre-signed GET URL.',
-                      },
-                      storage: {
-                        title: 'StorageType',
-                        enum: ['external', 'azure', 'dropbox'],
-                        type: 'string',
-                        description: 'Storage platforms supported.',
-                      },
-                    },
-                    description: "A file located on Adobe's cloud or a supported external service.",
-                  },
-                  description: 'array of custom brushes needed in this document',
-                },
+                "description": "An output object."
               },
+              "description": "An array of output objects. Each output object represents a file to be created."
             },
-          },
-          description:
-            'The input file to apply Photoshop Actions to and generate renditions and/or save as a new image',
-        },
-      },
-      required: ['requestBody'],
-    },
-    method: 'post',
-    pathTemplate: '/pie/psdService/photoshopActions',
-    parameters: [
-      {
-        name: 'x-gw-ims-org-id',
-        in: 'header',
-        description:
-          'The IMS organization ID. This only needs to be sent if you want to receive the job status through Adobe I/O Events',
-        required: false,
-        schema: {
-          type: 'string',
-        },
-      },
-    ],
-    executionParameters: [
-      {
-        name: 'x-gw-ims-org-id',
-        in: 'header',
-      },
-    ],
-    requestBodyContentType: 'application/json',
-    securityRequirements: [
-      {
-        ApiKeyAuth: [],
-      },
-      {
-        BearerAuth: [],
-      },
-    ],
-    operationId: 'playPhotoshopActionsAsync',
-    baseUrl: 'https://image.adobe.io',
-  },
-  {
-    name: 'playPhotoshopActionsJsonAsync',
-    description: 'Execute given Photoshop Action specified in actionJSON format.',
-    inputSchema: {
-      type: 'object',
-      properties: {
-        'x-gw-ims-org-id': {
-          type: 'string',
-          description:
-            'The IMS organization ID. This only needs to be sent if you want to receive the job status through Adobe I/O Events',
-        },
-        requestBody: {
-          title: 'PlayPhotoshopActionsJsonRequest',
-          type: 'object',
-          required: ['inputs', 'options', 'outputs'],
-          properties: {
-            inputs: {
-              type: 'array',
-              items: {
-                title: 'StorageDetails',
-                type: 'object',
-                required: ['href', 'storage'],
-                properties: {
-                  href: {
-                    type: 'string',
-                    description: 'A pre-signed GET URL.',
-                  },
-                  storage: {
-                    title: 'StorageType',
-                    enum: ['external', 'azure', 'dropbox'],
-                    type: 'string',
-                    description: 'Storage platforms supported.',
-                  },
-                },
-                description: "A file located on Adobe's cloud or a supported external service.",
-              },
-              description:
-                'An array of input objects. Only one input object is currently supported.',
-            },
-            outputs: {
-              type: 'array',
-              items: {
-                title: 'ActionOutputDetails',
-                type: 'object',
-                required: ['href', 'storage', 'type'],
-                properties: {
-                  href: {
-                    type: 'string',
-                    description: 'A pre-signed POST URL to the output file.',
-                  },
-                  storage: {
-                    title: 'StorageType',
-                    enum: ['external', 'azure', 'dropbox'],
-                    type: 'string',
-                    description: 'Storage platforms supported.',
-                  },
-                  type: {
-                    title: 'ImageFormatType',
-                    enum: [
-                      'image/vnd.adobe.photoshop',
-                      'image/jpeg',
-                      'image/png',
-                      'image/tiff',
-                      'vnd.adobe.photoshop',
-                    ],
-                    type: 'string',
-                    description:
-                      'The desired image format. Using `image/vnd.adobe.photoshop` - create a new PSD file. Using `image/jpeg`, `image/png`, `image/tiff` - create a new JPEG, PNG or TIFF rendition. Certain image modes (RGB, CMYK, greyscale, etc.) must be converted to another image mode before a rendition can be created. With TIFF requested, Multichannel and Duotone will convert to RGB. With PNG requested, CMYK, HSL, HSB, Multichannel, Duotone, Lab and XYZ will convert to RGB.',
-                  },
-                  overwrite: {
-                    type: 'boolean',
-                    description:
-                      'If the file already exists, indicates if the output file should be overwritten. Will eventually support eTags. Only applies to CC Storage.',
-                    default: true,
-                  },
-                  quality: {
-                    maximum: 12,
-                    minimum: 1,
-                    type: 'number',
-                    description:
-                      'The quality of the renditions for JPEG. The range is 1 to 7, 7 being the highest quality.',
-                    format: 'int32',
-                    default: 7,
-                  },
-                  compression: {
-                    title: 'CompressionType',
-                    enum: ['small', 'medium', 'large'],
-                    type: 'string',
-                    description: 'Desired PNG compression level.',
-                  },
-                },
-                description: 'An output object.',
-              },
-              description: 'An array of output objects.',
-            },
-            options: {
-              title: 'ActionJsonOptions',
-              type: 'object',
-              required: ['actionJSON'],
-              properties: {
-                actionJSON: {
-                  type: 'array',
-                  items: {
-                    type: 'object',
-                  },
-                  description: 'Array of Photoshop JSON-formatted Actions to play.',
-                },
-                patterns: {
-                  type: 'array',
-                  items: {
-                    title: 'StorageDetails',
-                    type: 'object',
-                    required: ['href', 'storage'],
-                    properties: {
-                      href: {
-                        type: 'string',
-                        description: 'A pre-signed GET URL.',
-                      },
-                      storage: {
-                        title: 'StorageType',
-                        enum: ['external', 'azure', 'dropbox'],
-                        type: 'string',
-                        description: 'Storage platforms supported.',
-                      },
-                    },
-                    description: "A file located on Adobe's cloud or a supported external service.",
-                  },
-                  description: 'array of custom pattern preset to be used in Photoshop Actions',
-                },
-                fonts: {
-                  type: 'array',
-                  items: {
-                    title: 'StorageDetails',
-                    type: 'object',
-                    required: ['href', 'storage'],
-                    properties: {
-                      href: {
-                        type: 'string',
-                        description: 'A pre-signed GET URL.',
-                      },
-                      storage: {
-                        title: 'StorageType',
-                        enum: ['external', 'azure', 'dropbox'],
-                        type: 'string',
-                        description: 'Storage platforms supported.',
-                      },
-                    },
-                    description: "A file located on Adobe's cloud or a supported external service.",
-                  },
-                  description: 'array of custom fonts needed in this document',
-                },
-                brushes: {
-                  type: 'array',
-                  items: {
-                    title: 'StorageDetails',
-                    type: 'object',
-                    required: ['href', 'storage'],
-                    properties: {
-                      href: {
-                        type: 'string',
-                        description: 'A pre-signed GET URL.',
-                      },
-                      storage: {
-                        title: 'StorageType',
-                        enum: ['external', 'azure', 'dropbox'],
-                        type: 'string',
-                        description: 'Storage platforms supported.',
-                      },
-                    },
-                    description: "A file located on Adobe's cloud or a supported external service.",
-                  },
-                  description: 'array of custom brushes needed in this document',
-                },
-                additionalImages: {
-                  minItems: 1,
-                  type: 'array',
-                  items: {
-                    title: 'StorageDetails',
-                    type: 'object',
-                    required: ['href', 'storage'],
-                    properties: {
-                      href: {
-                        type: 'string',
-                        description: 'A pre-signed GET URL.',
-                      },
-                      storage: {
-                        title: 'StorageType',
-                        enum: ['external', 'azure', 'dropbox'],
-                        type: 'string',
-                        description: 'Storage platforms supported.',
-                      },
-                    },
-                    description: "A file located on Adobe's cloud or a supported external service.",
-                  },
-                  description:
-                    'Array of references to additional images, which can be referred by actionJson commands.',
-                },
-              },
-            },
-          },
-          description:
-            'The input psd file to apply Photoshop actionJSON to and generate renditions and/or save as a new image',
-        },
-      },
-      required: ['requestBody'],
-    },
-    method: 'post',
-    pathTemplate: '/pie/psdService/actionJSON',
-    parameters: [
-      {
-        name: 'x-gw-ims-org-id',
-        in: 'header',
-        description:
-          'The IMS organization ID. This only needs to be sent if you want to receive the job status through Adobe I/O Events',
-        required: false,
-        schema: {
-          type: 'string',
-        },
-      },
-    ],
-    executionParameters: [
-      {
-        name: 'x-gw-ims-org-id',
-        in: 'header',
-      },
-    ],
-    requestBodyContentType: 'application/json',
-    securityRequirements: [
-      {
-        ApiKeyAuth: [],
-      },
-      {
-        BearerAuth: [],
-      },
-    ],
-    operationId: 'playPhotoshopActionsJsonAsync',
-    baseUrl: 'https://image.adobe.io',
-  },
-  {
-    name: 'convertToActionsJsonAsync',
-    description: 'Convert an ATN file to actionJSON format.',
-    inputSchema: {
-      type: 'object',
-      properties: {
-        'x-gw-ims-org-id': {
-          type: 'string',
-          description:
-            'The IMS organization ID. This only needs to be sent if you want to receive the job status through Adobe I/O Events',
-        },
-        requestBody: {
-          title: 'ConvertToActionsJsonRequest',
-          type: 'object',
-          required: ['inputs'],
-          properties: {
-            inputs: {
-              type: 'array',
-              items: {
-                title: 'StorageDetails',
-                type: 'object',
-                required: ['href', 'storage'],
-                properties: {
-                  href: {
-                    type: 'string',
-                    description: 'A pre-signed GET URL.',
-                  },
-                  storage: {
-                    title: 'StorageType',
-                    enum: ['external', 'azure', 'dropbox'],
-                    type: 'string',
-                    description: 'Storage platforms supported.',
-                  },
-                },
-                description: "A file located on Adobe's cloud or a supported external service.",
-              },
-              description:
-                'An array of input action sets in ATN format. Only one input object is currently supported.',
-            },
-            options: {
-              title: 'ActionJsonCreateOptions',
-              required: ['actions'],
-              type: 'object',
-              properties: {
-                actions: {
-                  maxItems: 1,
-                  minItems: 1,
-                  type: 'array',
-                  items: {
-                    title: 'ActionDetails',
-                    minProperties: 1,
-                    type: 'object',
-                    properties: {
-                      actionName: {
-                        type: 'string',
-                        description:
-                          'If you only want to execute a particular action, you may specify whcih action to convert from the ActionSet',
-                      },
-                    },
-                    description: 'Details of Actions from the ActionSet.',
-                  },
-                  description: 'Array of action objects.',
-                },
-              },
-              description:
-                'This block is needed only if you want to specify which action to convert from the ActionSet.',
-            },
-          },
-          description: 'The input ATN file to convert to actionJSON.',
-        },
-      },
-      required: ['requestBody'],
-    },
-    method: 'post',
-    pathTemplate: '/pie/psdService/actionJsonCreate',
-    parameters: [
-      {
-        name: 'x-gw-ims-org-id',
-        in: 'header',
-        description:
-          'The IMS organization ID. This only needs to be sent if you want to receive the job status through Adobe I/O Events',
-        required: false,
-        schema: {
-          type: 'string',
-        },
-      },
-    ],
-    executionParameters: [
-      {
-        name: 'x-gw-ims-org-id',
-        in: 'header',
-      },
-    ],
-    requestBodyContentType: 'application/json',
-    securityRequirements: [
-      {
-        ApiKeyAuth: [],
-      },
-      {
-        BearerAuth: [],
-      },
-    ],
-    operationId: 'convertToActionsJsonAsync',
-    baseUrl: 'https://image.adobe.io',
-  },
-  {
-    name: 'applyAutoCropAsync',
-    description:
-      'This endpoint identifies the subject of the input file and automatically crops the image to keep the subject in the center. Check the status of this process with the `Get Status` endpoint.',
-    inputSchema: {
-      type: 'object',
-      properties: {
-        'x-gw-ims-org-id': {
-          type: 'string',
-          description:
-            'The IMS organization ID. This only needs to be sent if you want to receive the job status through Adobe I/O Events',
-        },
-        requestBody: {
-          title: 'ApplyAutoCropRequest',
-          type: 'object',
-          required: ['inputs', 'outputs', 'options'],
-          properties: {
-            inputs: {
-              type: 'array',
-              items: {
-                title: 'StorageDetails',
-                type: 'object',
-                required: ['href', 'storage'],
-                properties: {
-                  href: {
-                    type: 'string',
-                    description: 'A pre-signed GET URL.',
-                  },
-                  storage: {
-                    title: 'StorageType',
-                    enum: ['external', 'azure', 'dropbox'],
-                    type: 'string',
-                    description: 'Storage platforms supported.',
-                  },
-                },
-                description: "A file located on Adobe's cloud or a supported external service.",
-              },
-              description:
-                'An array of input objects. Only one input object is currently supported.',
-            },
-            outputs: {
-              type: 'array',
-              items: {
-                title: 'ActionOutputDetails',
-                type: 'object',
-                required: ['href', 'storage', 'type'],
-                properties: {
-                  href: {
-                    type: 'string',
-                    description: 'A pre-signed POST URL to the output file.',
-                  },
-                  storage: {
-                    title: 'StorageType',
-                    enum: ['external', 'azure', 'dropbox'],
-                    type: 'string',
-                    description: 'Storage platforms supported.',
-                  },
-                  type: {
-                    title: 'ImageFormatType',
-                    enum: [
-                      'image/vnd.adobe.photoshop',
-                      'image/jpeg',
-                      'image/png',
-                      'image/tiff',
-                      'vnd.adobe.photoshop',
-                    ],
-                    type: 'string',
-                    description:
-                      'The desired image format. Using `image/vnd.adobe.photoshop` - create a new PSD file. Using `image/jpeg`, `image/png`, `image/tiff` - create a new JPEG, PNG or TIFF rendition. Certain image modes (RGB, CMYK, greyscale, etc.) must be converted to another image mode before a rendition can be created. With TIFF requested, Multichannel and Duotone will convert to RGB. With PNG requested, CMYK, HSL, HSB, Multichannel, Duotone, Lab and XYZ will convert to RGB.',
-                  },
-                  overwrite: {
-                    type: 'boolean',
-                    description:
-                      'If the file already exists, indicates if the output file should be overwritten. Will eventually support eTags. Only applies to CC Storage.',
-                    default: true,
-                  },
-                  quality: {
-                    maximum: 12,
-                    minimum: 1,
-                    type: 'number',
-                    description:
-                      'The quality of the renditions for JPEG. The range is 1 to 7, 7 being the highest quality.',
-                    format: 'int32',
-                    default: 7,
-                  },
-                  compression: {
-                    title: 'CompressionType',
-                    enum: ['small', 'medium', 'large'],
-                    type: 'string',
-                    description: 'Desired PNG compression level.',
-                  },
-                },
-                description: 'An output object.',
-              },
-              description: 'An array of output objects',
-            },
-            options: {
-              title: 'CropOptions',
-              type: 'object',
-              required: ['unit', 'width', 'height'],
-              properties: {
-                unit: {
-                  allOf: [
+            "options": {
+              "title": "DocumentOperationOptions",
+              "type": "object",
+              "properties": {
+                "manageMissingFonts": {
+                  "allOf": [
                     {
-                      title: 'UnitType',
-                      enum: ['Pixels', 'Percent'],
-                      type: 'string',
-                      description: 'Unit for width and height.',
+                      "title": "ManageMissingFonts",
+                      "enum": [
+                        "useDefault",
+                        "fail"
+                      ],
+                      "type": "string",
+                      "description": "Action to take if there are one or more missing fonts in the document. Using `fail` - the job will not succeed and the status will be set to `failed` with the details of the error provided in the `details` section in the status. Using `useDefault` - the job will succeed, however all the missing fonts will use the font: ArialMT."
                     },
                     {
-                      description: 'Unit for width and height.',
-                    },
-                  ],
+                      "description": "Action to take if there are one or more missing fonts. Using `fail` - the job will not succeed and the status will be set to `failed` with the details of the error provided in the `details` section in the status. Using `useDefault` - the job will succeed, however all the missing fonts will use the font: ArialMT."
+                    }
+                  ]
                 },
-                width: {
-                  type: 'number',
-                  description: 'The width to be added as padding.',
-                  format: 'int32',
+                "globalFont": {
+                  "type": "string",
+                  "description": "The PostScript name of the font to be used as the global default. If this font is also missing, the option specified in `manageMissingFonts` will take effect"
                 },
-                height: {
-                  type: 'number',
-                  description: 'The height to be added as padding.',
-                  format: 'int32',
-                },
-              },
-            },
-          },
-          description: 'The input image to apply product crop to.',
-        },
-      },
-      required: ['requestBody'],
-    },
-    method: 'post',
-    pathTemplate: '/pie/psdService/productCrop',
-    parameters: [
-      {
-        name: 'x-gw-ims-org-id',
-        in: 'header',
-        description:
-          'The IMS organization ID. This only needs to be sent if you want to receive the job status through Adobe I/O Events',
-        required: false,
-        schema: {
-          type: 'string',
-        },
-      },
-    ],
-    executionParameters: [
-      {
-        name: 'x-gw-ims-org-id',
-        in: 'header',
-      },
-    ],
-    requestBodyContentType: 'application/json',
-    securityRequirements: [
-      {
-        ApiKeyAuth: [],
-      },
-      {
-        BearerAuth: [],
-      },
-    ],
-    operationId: 'applyAutoCropAsync',
-    baseUrl: 'https://image.adobe.io',
-  },
-  {
-    name: 'applyDepthBlurAsync',
-    description: 'Apply depth blur to an image input.',
-    inputSchema: {
-      type: 'object',
-      properties: {
-        'x-gw-ims-org-id': {
-          type: 'string',
-          description:
-            'The IMS organization ID. This only needs to be sent if you want to receive the job status through Adobe I/O Events.',
-        },
-        requestBody: {
-          title: 'ApplyDepthBlurRequest',
-          type: 'object',
-          required: ['inputs', 'outputs'],
-          properties: {
-            inputs: {
-              type: 'array',
-              items: {
-                title: 'StorageDetails',
-                type: 'object',
-                required: ['href', 'storage'],
-                properties: {
-                  href: {
-                    type: 'string',
-                    description: 'A pre-signed GET URL.',
-                  },
-                  storage: {
-                    title: 'StorageType',
-                    enum: ['external', 'azure', 'dropbox'],
-                    type: 'string',
-                    description: 'Storage platforms supported.',
-                  },
-                },
-                description: "A file located on Adobe's cloud or a supported external service.",
-              },
-              description: 'An array of input objects. We currently only support one input object',
-            },
-            outputs: {
-              type: 'array',
-              items: {
-                title: 'ActionOutputDetails',
-                type: 'object',
-                required: ['href', 'storage', 'type'],
-                properties: {
-                  href: {
-                    type: 'string',
-                    description: 'A pre-signed POST URL to the output file.',
-                  },
-                  storage: {
-                    title: 'StorageType',
-                    enum: ['external', 'azure', 'dropbox'],
-                    type: 'string',
-                    description: 'Storage platforms supported.',
-                  },
-                  type: {
-                    title: 'ImageFormatType',
-                    enum: [
-                      'image/vnd.adobe.photoshop',
-                      'image/jpeg',
-                      'image/png',
-                      'image/tiff',
-                      'vnd.adobe.photoshop',
+                "fonts": {
+                  "type": "array",
+                  "items": {
+                    "title": "StorageDetails",
+                    "type": "object",
+                    "required": [
+                      "href",
+                      "storage"
                     ],
-                    type: 'string',
-                    description:
-                      'The desired image format. Using `image/vnd.adobe.photoshop` - create a new PSD file. Using `image/jpeg`, `image/png`, `image/tiff` - create a new JPEG, PNG or TIFF rendition. Certain image modes (RGB, CMYK, greyscale, etc.) must be converted to another image mode before a rendition can be created. With TIFF requested, Multichannel and Duotone will convert to RGB. With PNG requested, CMYK, HSL, HSB, Multichannel, Duotone, Lab and XYZ will convert to RGB.',
+                    "properties": {
+                      "href": {
+                        "type": "string",
+                        "description": "A pre-signed GET URL."
+                      },
+                      "storage": {
+                        "title": "StorageType",
+                        "enum": [
+                          "external",
+                          "azure",
+                          "dropbox"
+                        ],
+                        "type": "string",
+                        "description": "Storage platforms supported."
+                      }
+                    },
+                    "description": "A file located on Adobe's cloud or a supported external service."
                   },
-                  overwrite: {
-                    type: 'boolean',
-                    description:
-                      'If the file already exists, indicates if the output file should be overwritten. Will eventually support eTags. Only applies to CC Storage.',
-                    default: true,
-                  },
-                  quality: {
-                    maximum: 12,
-                    minimum: 1,
-                    type: 'number',
-                    description:
-                      'The quality of the renditions for JPEG. The range is 1 to 7, 7 being the highest quality.',
-                    format: 'int32',
-                    default: 7,
-                  },
-                  compression: {
-                    title: 'CompressionType',
-                    enum: ['small', 'medium', 'large'],
-                    type: 'string',
-                    description: 'Desired PNG compression level.',
-                  },
+                  "description": "array of custom fonts needed in this document"
                 },
-                description: 'An output object.',
-              },
-              description: 'An array of output objects',
-            },
-            options: {
-              title: 'DepthBlurDetails',
-              type: 'object',
-              properties: {
-                focalDistance: {
-                  maximum: 100,
-                  minimum: 0,
-                  type: 'number',
-                  description:
-                    'The distance of the point to be in focus. 0 would be the nearest point, 100 would be the furthest point.',
-                  format: 'int32',
-                  default: 0,
-                },
-                focalRange: {
-                  maximum: 100,
-                  minimum: 0,
-                  type: 'number',
-                  description: 'The range of the focal point.',
-                  format: 'int32',
-                  default: 0,
-                },
-                focalSelector: {
-                  allOf: [
-                    {
-                      title: 'FocalSelector',
-                      description: 'Focal selector.',
-                      minProperties: 2,
-                      type: 'object',
-                      properties: {
-                        x: {
-                          type: 'number',
-                          description: 'X coordinate.',
+                "document": {
+                  "title": "OperationDocument",
+                  "type": "object",
+                  "properties": {
+                    "canvasSize": {
+                      "title": "CanvasSize",
+                      "type": "object",
+                      "required": [
+                        "bounds"
+                      ],
+                      "properties": {
+                        "bounds": {
+                          "title": "Bounds",
+                          "description": "The bounds of the layer.",
+                          "type": "object",
+                          "properties": {
+                            "top": {
+                              "type": "number",
+                              "description": "The top position in pixels.",
+                              "format": "int32"
+                            },
+                            "left": {
+                              "type": "number",
+                              "description": "The left position in pixels.",
+                              "format": "int32"
+                            },
+                            "width": {
+                              "type": "number",
+                              "description": "The width in pixels.",
+                              "format": "int32"
+                            },
+                            "height": {
+                              "type": "number",
+                              "description": "The height in pixels.",
+                              "format": "int32"
+                            }
+                          }
+                        }
+                      }
+                    },
+                    "imageSize": {
+                      "title": "ImageSize",
+                      "description": "The size of the image",
+                      "type": "object",
+                      "required": [
+                        "height",
+                        "width"
+                      ],
+                      "properties": {
+                        "width": {
+                          "type": "number",
+                          "format": "int32"
                         },
-                        y: {
-                          type: 'number',
-                          description: 'Y coordinate.',
-                        },
-                      },
+                        "height": {
+                          "type": "number",
+                          "format": "int32"
+                        }
+                      }
                     },
-                    {
-                      description: 'Coordinates of the specific focal point to select.',
-                    },
-                  ],
+                    "trim": {
+                      "title": "Trim",
+                      "type": "object",
+                      "required": [
+                        "basedOn"
+                      ],
+                      "properties": {
+                        "basedOn": {
+                          "title": "BasedOnType",
+                          "enum": [
+                            "transparentPixels"
+                          ],
+                          "type": "string",
+                          "description": "Based on type."
+                        }
+                      }
+                    }
+                  }
                 },
-                focusSubject: {
-                  type: 'boolean',
-                  description:
-                    'If enabled uses select subject to automatically select the prominent subject for focus. Also would override focalDistance.',
-                  default: false,
-                },
-                blurStrength: {
-                  maximum: 100,
-                  minimum: 0,
-                  type: 'number',
-                  description: 'The amount of blur to apply.',
-                  format: 'int32',
-                  default: 50,
-                },
-                haze: {
-                  maximum: 100,
-                  minimum: 0,
-                  type: 'number',
-                  description: 'The amount of haze to apply.',
-                  format: 'int32',
-                  default: 0,
-                },
-                temp: {
-                  maximum: 50,
-                  minimum: -50,
-                  type: 'number',
-                  description:
-                    'The value of the temperature to apply. -50 would be coldest and 50 would be the warmest setting.',
-                  format: 'int32',
-                  default: 0,
-                },
-                tint: {
-                  maximum: 50,
-                  minimum: -50,
-                  type: 'number',
-                  description: 'The amount of the tint to apply.',
-                  format: 'int32',
-                  default: 0,
-                },
-                saturation: {
-                  maximum: 50,
-                  minimum: -50,
-                  type: 'number',
-                  description:
-                    'The amount of the saturation to apply. -50 implies fully unsaturated colors and 50 will fully saturate the colors.',
-                  format: 'int32',
-                  default: 0,
-                },
-                brightness: {
-                  maximum: 50,
-                  minimum: -50,
-                  type: 'number',
-                  description: 'The amount of the brightness to apply.',
-                  format: 'int32',
-                  default: 0,
-                },
-                grain: {
-                  maximum: 100,
-                  minimum: 0,
-                  type: 'number',
-                  description: 'The amount of the graining to add to the image.',
-                  format: 'int32',
-                  default: 0,
-                },
-              },
-            },
-          },
-          description: 'The input image to apply depth blur to.',
-        },
-      },
-      required: ['requestBody'],
-    },
-    method: 'post',
-    pathTemplate: '/pie/psdService/depthBlur',
-    parameters: [
-      {
-        name: 'x-gw-ims-org-id',
-        in: 'header',
-        description:
-          'The IMS organization ID. This only needs to be sent if you want to receive the job status through Adobe I/O Events.',
-        required: false,
-        schema: {
-          type: 'string',
-        },
-      },
-    ],
-    executionParameters: [
-      {
-        name: 'x-gw-ims-org-id',
-        in: 'header',
-      },
-    ],
-    requestBodyContentType: 'application/json',
-    securityRequirements: [
-      {
-        ApiKeyAuth: [],
-      },
-      {
-        BearerAuth: [],
-      },
-    ],
-    operationId: 'applyDepthBlurAsync',
-    baseUrl: 'https://image.adobe.io',
-  },
-  {
-    name: 'editTextLayerAsync',
-    description: 'Change the contents of a text layer in a PSD, e.g. for localization.',
-    inputSchema: {
-      type: 'object',
-      properties: {
-        'x-gw-ims-org-id': {
-          type: 'string',
-          description:
-            'The IMS organization ID. This only needs to be sent if you want to receive the job status through Adobe I/O Events',
-        },
-        requestBody: {
-          title: 'EditTextLayerRequest',
-          type: 'object',
-          required: ['inputs', 'outputs', 'options'],
-          properties: {
-            inputs: {
-              type: 'array',
-              items: {
-                title: 'StorageDetails',
-                type: 'object',
-                required: ['href', 'storage'],
-                properties: {
-                  href: {
-                    type: 'string',
-                    description: 'A pre-signed GET URL.',
-                  },
-                  storage: {
-                    title: 'StorageType',
-                    enum: ['external', 'azure', 'dropbox'],
-                    type: 'string',
-                    description: 'Storage platforms supported.',
-                  },
-                },
-                description: "A file located on Adobe's cloud or a supported external service.",
-              },
-              description: 'An array of input objects. We currently only support one input object',
-            },
-            outputs: {
-              type: 'array',
-              items: {
-                title: 'ActionOutputDetails',
-                type: 'object',
-                required: ['href', 'storage', 'type'],
-                properties: {
-                  href: {
-                    type: 'string',
-                    description: 'A pre-signed POST URL to the output file.',
-                  },
-                  storage: {
-                    title: 'StorageType',
-                    enum: ['external', 'azure', 'dropbox'],
-                    type: 'string',
-                    description: 'Storage platforms supported.',
-                  },
-                  type: {
-                    title: 'ImageFormatType',
-                    enum: [
-                      'image/vnd.adobe.photoshop',
-                      'image/jpeg',
-                      'image/png',
-                      'image/tiff',
-                      'vnd.adobe.photoshop',
+                "layers": {
+                  "type": "array",
+                  "items": {
+                    "title": "DocumentOperationLayer",
+                    "type": "object",
+                    "required": [
+                      "id",
+                      "delete"
                     ],
-                    type: 'string',
-                    description:
-                      'The desired image format. Using `image/vnd.adobe.photoshop` - create a new PSD file. Using `image/jpeg`, `image/png`, `image/tiff` - create a new JPEG, PNG or TIFF rendition. Certain image modes (RGB, CMYK, greyscale, etc.) must be converted to another image mode before a rendition can be created. With TIFF requested, Multichannel and Duotone will convert to RGB. With PNG requested, CMYK, HSL, HSB, Multichannel, Duotone, Lab and XYZ will convert to RGB.',
-                  },
-                  overwrite: {
-                    type: 'boolean',
-                    description:
-                      'If the file already exists, indicates if the output file should be overwritten. Will eventually support eTags. Only applies to CC Storage.',
-                    default: true,
-                  },
-                  quality: {
-                    maximum: 12,
-                    minimum: 1,
-                    type: 'number',
-                    description:
-                      'The quality of the renditions for JPEG. The range is 1 to 7, 7 being the highest quality.',
-                    format: 'int32',
-                    default: 7,
-                  },
-                  compression: {
-                    title: 'CompressionType',
-                    enum: ['small', 'medium', 'large'],
-                    type: 'string',
-                    description: 'Desired PNG compression level.',
-                  },
-                },
-                description: 'An output object.',
-              },
-              description: 'An array of output objects',
-            },
-            options: {
-              title: 'TextOptions',
-              type: 'object',
-              required: ['layers'],
-              properties: {
-                manageMissingFonts: {
-                  allOf: [
-                    {
-                      title: 'ManageMissingFonts',
-                      enum: ['useDefault', 'fail'],
-                      type: 'string',
-                      description:
-                        'Action to take if there are one or more missing fonts in the document. Using `fail` - the job will not succeed and the status will be set to `failed` with the details of the error provided in the `details` section in the status. Using `useDefault` - the job will succeed, however all the missing fonts will use the font: ArialMT.',
-                    },
-                    {
-                      description:
-                        'Action to take if there are one or more missing fonts in the document. If not provided it takes the default font.',
-                    },
-                  ],
-                },
-                globalFont: {
-                  type: 'string',
-                  description:
-                    'The PostScript name of the font to be used as the global default. If this font is also missing, the option specified in `manageMissingFonts` will take effect',
-                },
-                layers: {
-                  minItems: 1,
-                  type: 'array',
-                  items: {
-                    title: 'TextOptionsLayer',
-                    type: 'object',
-                    properties: {
-                      name: {
-                        type: 'string',
-                        description:
-                          'The name of the layer you want to insert. Use either ID or name.',
+                    "properties": {
+                      "edit": {
+                        "type": "object",
+                        "description": "Indicates the layer to edit, by it's ID or name. Note the object is currently empty but leaves room for further enhancements. The layer block should contain changes from the original manifest. If you apply it to a group layer, you will be affecting the attributes of the group layer itself, not the child layers. This edit is supported for layer type `smartObject` and `fillLayer` only."
                       },
-                      id: {
-                        type: 'number',
-                        description:
-                          'The ID of the layer you want to insert. Use either ID or name.',
-                        format: 'int32',
+                      "move": {
+                        "title": "MoveDetails",
+                        "type": "object",
+                        "properties": {
+                          "moveChildren": {
+                            "type": "boolean",
+                            "default": true
+                          },
+                          "insertAbove": {
+                            "title": "LayerReference",
+                            "description": "A layer reference object.",
+                            "type": "object",
+                            "properties": {
+                              "id": {
+                                "type": "number",
+                                "description": "The id of the layer. Use either `id` OR `name`.",
+                                "format": "int32"
+                              },
+                              "name": {
+                                "type": "string",
+                                "description": "The name of the layer. Use either `id` OR `name`."
+                              }
+                            }
+                          },
+                          "insertBelow": {
+                            "title": "LayerReference",
+                            "description": "A layer reference object.",
+                            "type": "object",
+                            "properties": {
+                              "id": {
+                                "type": "number",
+                                "description": "The id of the layer. Use either `id` OR `name`.",
+                                "format": "int32"
+                              },
+                              "name": {
+                                "type": "string",
+                                "description": "The name of the layer. Use either `id` OR `name`."
+                              }
+                            }
+                          },
+                          "insertInto": {
+                            "title": "LayerReference",
+                            "description": "A layer reference object.",
+                            "type": "object",
+                            "properties": {
+                              "id": {
+                                "type": "number",
+                                "description": "The id of the layer. Use either `id` OR `name`.",
+                                "format": "int32"
+                              },
+                              "name": {
+                                "type": "string",
+                                "description": "The name of the layer. Use either `id` OR `name`."
+                              }
+                            }
+                          },
+                          "insertTop": {
+                            "type": "boolean"
+                          },
+                          "insertBottom": {
+                            "type": "boolean"
+                          }
+                        }
                       },
-                      bounds: {
-                        title: 'Bounds',
-                        description: 'The bounds of the layer.',
-                        type: 'object',
-                        properties: {
-                          top: {
-                            type: 'number',
-                            description: 'The top position in pixels.',
-                            format: 'int32',
+                      "add": {
+                        "title": "LayerPosition",
+                        "type": "object",
+                        "properties": {
+                          "insertAbove": {
+                            "title": "LayerReference",
+                            "description": "A layer reference object.",
+                            "type": "object",
+                            "properties": {
+                              "id": {
+                                "type": "number",
+                                "description": "The id of the layer. Use either `id` OR `name`.",
+                                "format": "int32"
+                              },
+                              "name": {
+                                "type": "string",
+                                "description": "The name of the layer. Use either `id` OR `name`."
+                              }
+                            }
                           },
-                          left: {
-                            type: 'number',
-                            description: 'The left position in pixels.',
-                            format: 'int32',
+                          "insertBelow": {
+                            "title": "LayerReference",
+                            "description": "A layer reference object.",
+                            "type": "object",
+                            "properties": {
+                              "id": {
+                                "type": "number",
+                                "description": "The id of the layer. Use either `id` OR `name`.",
+                                "format": "int32"
+                              },
+                              "name": {
+                                "type": "string",
+                                "description": "The name of the layer. Use either `id` OR `name`."
+                              }
+                            }
                           },
-                          width: {
-                            type: 'number',
-                            description: 'The width in pixels.',
-                            format: 'int32',
+                          "insertInto": {
+                            "title": "LayerReference",
+                            "description": "A layer reference object.",
+                            "type": "object",
+                            "properties": {
+                              "id": {
+                                "type": "number",
+                                "description": "The id of the layer. Use either `id` OR `name`.",
+                                "format": "int32"
+                              },
+                              "name": {
+                                "type": "string",
+                                "description": "The name of the layer. Use either `id` OR `name`."
+                              }
+                            }
                           },
-                          height: {
-                            type: 'number',
-                            description: 'The height in pixels.',
-                            format: 'int32',
+                          "insertTop": {
+                            "type": "boolean"
                           },
+                          "insertBottom": {
+                            "type": "boolean"
+                          }
+                        }
+                      },
+                      "delete": {
+                        "title": "DeleteDetails",
+                        "type": "object",
+                        "properties": {
+                          "includeChildren": {
+                            "type": "boolean",
+                            "default": false,
+                            "description": "Indicates that child layers are included when deleting a group layer."
+                          },
+                          "id": {
+                            "type": "number",
+                            "description": "The layer ID."
+                          },
+                          "name": {
+                            "type": "string",
+                            "description": "The layer name. You can identify a layer by id or name. That makes either id or name a required field."
+                          }
                         },
+                        "description": "Indicates you want to delete the layer, identified by the `id` or `name`. Note the object is currently empty but leaves room for further enhancements."
                       },
-                      locked: {
-                        type: 'boolean',
-                        description: 'Is the layer editable.',
+                      "id": {
+                        "type": "number",
+                        "description": "The layer ID.",
+                        "format": "int32"
                       },
-                      visible: {
-                        type: 'boolean',
-                        description: 'Is the layer visible.',
+                      "index": {
+                        "type": "number",
+                        "description": "The layer index. Required when deleting a layer, otherwise not used.",
+                        "format": "int32"
                       },
-                      text: {
-                        allOf: [
+                      "children": {
+                        "type": "array",
+                        "items": {
+                          "title": "ChildrenLayerDetails",
+                          "type": "object",
+                          "properties": {
+                            "id": {
+                              "type": "number",
+                              "description": "The layer ID. An ID of -1 is valid and indicates a PSD that only contains a background image and no layers.",
+                              "format": "int32"
+                            },
+                            "index": {
+                              "type": "number",
+                              "description": "The layer index.",
+                              "format": "int32"
+                            },
+                            "thumbnail": {
+                              "type": "string",
+                              "description": "If thumbnails were requested, a pre-signed GET URL to the thumbnail"
+                            },
+                            "type": {
+                              "title": "LayerType",
+                              "enum": [
+                                "layer",
+                                "textLayer",
+                                "adjustmentLayer",
+                                "smartObject",
+                                "fillLayer",
+                                "backgroundLayer",
+                                "layerSection"
+                              ],
+                              "type": "string",
+                              "description": "The layer type. Using `layer` - a pixel layer. Using `textLayer` - a text layer. Using `adjustmentLayer` - an adjustment layer. Using `layerSection` - a grouping layer. Using `smartObject` - a smart object. Using `backgroundLayer` - a background layer. Using `fillLayer` - a fill layer."
+                            },
+                            "name": {
+                              "type": "string",
+                              "description": "The layer name."
+                            },
+                            "locked": {
+                              "type": "boolean",
+                              "description": "Whether the layer is locked"
+                            },
+                            "visible": {
+                              "type": "boolean",
+                              "description": "Whether the layer is visible"
+                            },
+                            "adjustments": {
+                              "title": "AdjustmentDetails",
+                              "type": "object",
+                              "properties": {
+                                "brightnessContrast": {
+                                  "title": "BrightnessContrast",
+                                  "type": "object",
+                                  "properties": {
+                                    "brightness": {
+                                      "maximum": 150,
+                                      "minimum": -150,
+                                      "type": "number",
+                                      "description": "The adjustment layer's brightness.",
+                                      "format": "int32"
+                                    },
+                                    "contrast": {
+                                      "maximum": 150,
+                                      "minimum": -150,
+                                      "type": "number",
+                                      "description": "The adjustment layer's contrast.",
+                                      "format": "int32"
+                                    }
+                                  },
+                                  "description": "Brightness and contrast settings."
+                                },
+                                "exposure": {
+                                  "title": "ExposureDetails",
+                                  "description": "Exposure settings.",
+                                  "type": "object",
+                                  "properties": {
+                                    "exposure": {
+                                      "maximum": 20,
+                                      "minimum": -20,
+                                      "type": "number",
+                                      "description": "The layer's exposure.",
+                                      "default": 0
+                                    },
+                                    "offset": {
+                                      "maximum": 0.5,
+                                      "minimum": -0.5,
+                                      "type": "number",
+                                      "description": "The layer's offset.",
+                                      "default": 0
+                                    },
+                                    "gammaCorrection": {
+                                      "maximum": 9.99,
+                                      "minimum": 0.01,
+                                      "type": "number",
+                                      "description": "The layer's gamma correction.",
+                                      "default": 1
+                                    }
+                                  }
+                                },
+                                "hueSaturation": {
+                                  "title": "HueSaturation",
+                                  "type": "object",
+                                  "properties": {
+                                    "colorize": {
+                                      "type": "boolean",
+                                      "description": "Whether to colorize."
+                                    },
+                                    "channels": {
+                                      "type": "array",
+                                      "items": {
+                                        "title": "ChannelDetails",
+                                        "type": "object",
+                                        "properties": {
+                                          "channel": {
+                                            "title": "ChannelType",
+                                            "enum": [
+                                              "master"
+                                            ],
+                                            "type": "string",
+                                            "description": "The channel type."
+                                          },
+                                          "hue": {
+                                            "maximum": 180,
+                                            "minimum": -180,
+                                            "type": "number",
+                                            "format": "int32"
+                                          },
+                                          "saturation": {
+                                            "maximum": 100,
+                                            "minimum": -100,
+                                            "type": "number",
+                                            "format": "int32"
+                                          },
+                                          "lightness": {
+                                            "maximum": 100,
+                                            "minimum": -100,
+                                            "type": "number",
+                                            "format": "int32"
+                                          }
+                                        }
+                                      },
+                                      "description": "An array of hashes representing the 'master' channel (the remaining five channels of 'magentas', 'yellows', 'greens', etc. are not yet supported)."
+                                    }
+                                  }
+                                },
+                                "colorBalance": {
+                                  "title": "ColorBalance",
+                                  "description": "Color balance settings.",
+                                  "type": "object",
+                                  "properties": {
+                                    "preserveLuminosity": {
+                                      "type": "boolean",
+                                      "description": "Whether to preserve luminosity."
+                                    },
+                                    "shadowLevels": {
+                                      "type": "array",
+                                      "items": {
+                                        "maximum": 100,
+                                        "minimum": -100,
+                                        "type": "number",
+                                        "format": "int32"
+                                      },
+                                      "description": "Shadow levels."
+                                    },
+                                    "midtoneLevels": {
+                                      "type": "array",
+                                      "items": {
+                                        "maximum": 100,
+                                        "minimum": -100,
+                                        "type": "number",
+                                        "format": "int32"
+                                      },
+                                      "description": "Midtone levels."
+                                    },
+                                    "highlightLevels": {
+                                      "type": "array",
+                                      "items": {
+                                        "maximum": 100,
+                                        "minimum": -100,
+                                        "type": "number",
+                                        "format": "int32"
+                                      },
+                                      "description": "Highlight levels."
+                                    }
+                                  }
+                                }
+                              },
+                              "description": "Adjustment layer information."
+                            },
+                            "bounds": {
+                              "title": "Bounds",
+                              "description": "The bounds of the layer.",
+                              "type": "object",
+                              "properties": {
+                                "top": {
+                                  "type": "number",
+                                  "description": "The top position in pixels.",
+                                  "format": "int32"
+                                },
+                                "left": {
+                                  "type": "number",
+                                  "description": "The left position in pixels.",
+                                  "format": "int32"
+                                },
+                                "width": {
+                                  "type": "number",
+                                  "description": "The width in pixels.",
+                                  "format": "int32"
+                                },
+                                "height": {
+                                  "type": "number",
+                                  "description": "The height in pixels.",
+                                  "format": "int32"
+                                }
+                              }
+                            },
+                            "blendOptions": {
+                              "title": "BlendDetails",
+                              "type": "object",
+                              "properties": {
+                                "opacity": {
+                                  "maximum": 100,
+                                  "minimum": 0,
+                                  "type": "number",
+                                  "description": "Indicates the opacity value of a layer.",
+                                  "format": "int32"
+                                },
+                                "blendMode": {
+                                  "title": "BlendModeType",
+                                  "enum": [
+                                    "normal",
+                                    "dissolve",
+                                    "darken",
+                                    "multiply",
+                                    "colorBurn",
+                                    "linearBurn",
+                                    "darkerColor",
+                                    "lighten",
+                                    "screen",
+                                    "colorDodge",
+                                    "linearDodge",
+                                    "lighterColor",
+                                    "overlay",
+                                    "softLight",
+                                    "hardLight",
+                                    "vividLight",
+                                    "linearLight",
+                                    "pinLight",
+                                    "hardMix",
+                                    "difference",
+                                    "exclusion",
+                                    "subtract",
+                                    "divide",
+                                    "hue",
+                                    "saturation",
+                                    "color",
+                                    "luminosity"
+                                  ],
+                                  "type": "string",
+                                  "description": "Blend mode of layer."
+                                }
+                              },
+                              "description": "Blend options of a layer, including opacity and blend mode."
+                            },
+                            "mask": {
+                              "title": "LayerMaskDetails",
+                              "type": "object",
+                              "properties": {
+                                "clip": {
+                                  "type": "boolean",
+                                  "description": "Indicates if this is a clipped layer."
+                                },
+                                "enabled": {
+                                  "type": "boolean",
+                                  "description": "Indicates whether a mask is enabled on that layer."
+                                },
+                                "linked": {
+                                  "type": "boolean",
+                                  "description": "Indicates whether a mask is linked to the layer."
+                                },
+                                "offset": {
+                                  "title": "Offset",
+                                  "description": "Offset details.",
+                                  "type": "object",
+                                  "properties": {
+                                    "x": {
+                                      "type": "number",
+                                      "description": "Offset to indicate horizontal move of the mask.",
+                                      "format": "int32"
+                                    },
+                                    "y": {
+                                      "type": "number",
+                                      "description": "Offset to indicate vertical move of the mask.",
+                                      "format": "int32"
+                                    }
+                                  }
+                                }
+                              },
+                              "description": "An object describing the input mask replaced or added to the layer."
+                            },
+                            "smartObject": {
+                              "title": "SmartObjectDetails",
+                              "description": "Smart object details.",
+                              "type": "object",
+                              "properties": {
+                                "type": {
+                                  "type": "string",
+                                  "description": "Desired image format for the smart object."
+                                },
+                                "linked": {
+                                  "type": "boolean",
+                                  "description": "Indicates if the smart object is linked. Currently we support embedded smart object only, which means \"linked = false\".",
+                                  "default": false
+                                },
+                                "name": {
+                                  "type": "string",
+                                  "description": "Name of the embedded or linked smart object. Currently we support embedded smart object only."
+                                },
+                                "path": {
+                                  "type": "string",
+                                  "description": "Only for a linked smart object. Indicates the relative path for the linked smart object."
+                                },
+                                "instanceId": {
+                                  "type": "string",
+                                  "description": "Only for an embedded smart object. Indicates the instance ID of the embedded smart object. This ID is unique and the value is derived from the RAW data of the document. `instanceId` may show a value as unknown, if the embedded smart object is generated using a non-Adobe application."
+                                }
+                              }
+                            },
+                            "fill": {
+                              "title": "FillDetails",
+                              "type": "object",
+                              "properties": {
+                                "solidColor": {
+                                  "title": "SolidColor",
+                                  "type": "object",
+                                  "required": [
+                                    "rgb"
+                                  ],
+                                  "properties": {
+                                    "rgb": {
+                                      "title": "RgbColor",
+                                      "type": "object",
+                                      "properties": {
+                                        "red": {
+                                          "maximum": 255,
+                                          "minimum": 0,
+                                          "type": "number",
+                                          "format": "int32"
+                                        },
+                                        "green": {
+                                          "maximum": 255,
+                                          "minimum": 0,
+                                          "type": "number",
+                                          "format": "int32"
+                                        },
+                                        "blue": {
+                                          "maximum": 255,
+                                          "minimum": 0,
+                                          "type": "number",
+                                          "format": "int32"
+                                        }
+                                      },
+                                      "description": "An object describing the RGB color format in 8 bits."
+                                    }
+                                  }
+                                }
+                              }
+                            },
+                            "text": {
+                              "title": "TextLayerDetails",
+                              "type": "object",
+                              "properties": {
+                                "content": {
+                                  "type": "string",
+                                  "description": "The text string."
+                                },
+                                "characterStyles": {
+                                  "type": "array",
+                                  "items": {
+                                    "title": "TextLayerCharacterStyleDetails",
+                                    "type": "object",
+                                    "properties": {
+                                      "from": {
+                                        "minimum": 0,
+                                        "type": "number",
+                                        "description": "The beginning of the range of characters that this character style applies to. Based on initial index of 0. For example a style applied to only the first two characters would be from=0 and to=1.",
+                                        "format": "int32"
+                                      },
+                                      "to": {
+                                        "minimum": 0,
+                                        "type": "number",
+                                        "description": "The ending of the range of characters that this character style applies to. Based on initial index of 0. For example a style applied to only the first two characters would be from=0 and to=1.",
+                                        "format": "int32"
+                                      },
+                                      "fontSize": {
+                                        "type": "number",
+                                        "description": "The font size in points."
+                                      },
+                                      "fontName": {
+                                        "type": "string",
+                                        "description": "The font's PostScript name from the [list of supported fonts](../../getting_started/technical_usage_notes/index.md#photoshop-api-supported-fonts)."
+                                      },
+                                      "orientation": {
+                                        "title": "OrientationType",
+                                        "enum": [
+                                          "horizontal",
+                                          "vertical"
+                                        ],
+                                        "type": "string",
+                                        "description": "The text orientation."
+                                      },
+                                      "fontColor": {
+                                        "title": "FontColorDetails",
+                                        "type": "object",
+                                        "properties": {
+                                          "rgb": {
+                                            "allOf": [
+                                              {
+                                                "title": "FontColorRgb",
+                                                "type": "object",
+                                                "properties": {
+                                                  "red": {
+                                                    "maximum": 32768,
+                                                    "minimum": 0,
+                                                    "type": "integer",
+                                                    "format": "int32"
+                                                  },
+                                                  "green": {
+                                                    "maximum": 32768,
+                                                    "minimum": 0,
+                                                    "type": "integer",
+                                                    "format": "int32"
+                                                  },
+                                                  "blue": {
+                                                    "maximum": 32768,
+                                                    "minimum": 0,
+                                                    "type": "integer",
+                                                    "format": "int32"
+                                                  }
+                                                },
+                                                "description": "An object describing the RGB color format in 16 bits."
+                                              },
+                                              {
+                                                "description": "An object describing the RGB color format in 16 bits."
+                                              }
+                                            ]
+                                          },
+                                          "cmyk": {
+                                            "allOf": [
+                                              {
+                                                "title": "FontColorCmyk",
+                                                "type": "object",
+                                                "properties": {
+                                                  "cyan": {
+                                                    "maximum": 32768,
+                                                    "minimum": 0,
+                                                    "type": "integer",
+                                                    "format": "int32"
+                                                  },
+                                                  "magenta": {
+                                                    "maximum": 32768,
+                                                    "minimum": 0,
+                                                    "type": "integer",
+                                                    "format": "int32"
+                                                  },
+                                                  "yellowColor": {
+                                                    "maximum": 32768,
+                                                    "minimum": 0,
+                                                    "type": "integer",
+                                                    "format": "int32"
+                                                  },
+                                                  "black": {
+                                                    "maximum": 32768,
+                                                    "minimum": 0,
+                                                    "type": "integer",
+                                                    "format": "int32"
+                                                  }
+                                                },
+                                                "description": "The font color settings for CMYK mode in 16-bit representation."
+                                              },
+                                              {
+                                                "description": "The font color settings for CMYK mode in 16-bit representation."
+                                              }
+                                            ]
+                                          },
+                                          "gray": {
+                                            "allOf": [
+                                              {
+                                                "title": "FontColorGray",
+                                                "type": "object",
+                                                "properties": {
+                                                  "gray": {
+                                                    "maximum": 32768,
+                                                    "minimum": 0,
+                                                    "type": "integer",
+                                                    "format": "int32"
+                                                  }
+                                                },
+                                                "description": "The font color settings for gray mode in 16-bit representation."
+                                              },
+                                              {
+                                                "description": "The font color settings for gray mode in 16-bit representation."
+                                              }
+                                            ]
+                                          },
+                                          "lab": {
+                                            "allOf": [
+                                              {
+                                                "title": "FontColorLab",
+                                                "type": "object",
+                                                "properties": {
+                                                  "luminance": {
+                                                    "maximum": 32768,
+                                                    "minimum": 0,
+                                                    "type": "integer",
+                                                    "format": "int32"
+                                                  },
+                                                  "a": {
+                                                    "maximum": 32768,
+                                                    "minimum": 0,
+                                                    "type": "integer",
+                                                    "format": "int32"
+                                                  },
+                                                  "b": {
+                                                    "maximum": 32768,
+                                                    "minimum": 0,
+                                                    "type": "integer",
+                                                    "format": "int32"
+                                                  }
+                                                },
+                                                "description": "The font color settings for Lab mode in 16-bit representation."
+                                              },
+                                              {
+                                                "description": "The font color settings for Lab mode in 16-bit representation."
+                                              }
+                                            ]
+                                          }
+                                        }
+                                      }
+                                    }
+                                  },
+                                  "description": "Character style settings. If the same supported attributes apply to all characters in the layer, then this will be an array of one item. Otherwise, each `characterStyle` object will have a 'from' and 'to' value indicating the range of characters that style applies to."
+                                },
+                                "paragraphStyles": {
+                                  "type": "array",
+                                  "items": {
+                                    "title": "TextLayerParagraphStyleDetails",
+                                    "type": "object",
+                                    "properties": {
+                                      "from": {
+                                        "minimum": 0,
+                                        "type": "number",
+                                        "description": "The beginning of the range of characters that this paragraph style applies to. Based on initial index of 0. For example a style applied to only the first two characters would be from=0 and to=1.",
+                                        "format": "int32"
+                                      },
+                                      "to": {
+                                        "minimum": 0,
+                                        "type": "number",
+                                        "description": "The ending of the range of characters that this paragraph style applies to. Based on initial index of 0. For example a style applied to only the first two characters would be from=0 and to=1.",
+                                        "format": "int32"
+                                      },
+                                      "alignment": {
+                                        "title": "AlignmentType",
+                                        "enum": [
+                                          "left",
+                                          "center",
+                                          "right",
+                                          "justify",
+                                          "justifyLeft",
+                                          "justifyCenter",
+                                          "justifyRight"
+                                        ],
+                                        "type": "string",
+                                        "description": "The paragraph alignment."
+                                      }
+                                    },
+                                    "description": "If the same supported attributes apply to all characters in the layer then this will be an array of one item, otherwise each paragraph style object will have a 'from' and 'to' value indicating the range of characters that the style applies to."
+                                  },
+                                  "description": "Paragraph style settings. If the same supported attributes apply to all characters in the layer then this will be an array of one item, otherwise each paragraph style object will have a 'from' and 'to' value indicating the range of characters that the style applies to."
+                                }
+                              },
+                              "description": "Text settings."
+                            }
+                          }
+                        },
+                        "description": "A tree of layer objects representing the PSD layer structure extracted from the PSD document."
+                      },
+                      "type": {
+                        "title": "LayerType",
+                        "enum": [
+                          "layer",
+                          "textLayer",
+                          "adjustmentLayer",
+                          "smartObject",
+                          "fillLayer",
+                          "backgroundLayer",
+                          "layerSection"
+                        ],
+                        "type": "string",
+                        "description": "The layer type. Using `layer` - a pixel layer. Using `textLayer` - a text layer. Using `adjustmentLayer` - an adjustment layer. Using `layerSection` - a grouping layer. Using `smartObject` - a smart object. Using `backgroundLayer` - a background layer. Using `fillLayer` - a fill layer."
+                      },
+                      "input": {
+                        "title": "StorageDetails",
+                        "type": "object",
+                        "required": [
+                          "href",
+                          "storage"
+                        ],
+                        "properties": {
+                          "href": {
+                            "type": "string",
+                            "description": "A pre-signed GET URL."
+                          },
+                          "storage": {
+                            "title": "StorageType",
+                            "enum": [
+                              "external",
+                              "azure",
+                              "dropbox"
+                            ],
+                            "type": "string",
+                            "description": "Storage platforms supported."
+                          }
+                        },
+                        "description": "A file located on Adobe's cloud or a supported external service."
+                      },
+                      "name": {
+                        "type": "string"
+                      },
+                      "locked": {
+                        "type": "boolean",
+                        "description": "is the layer locked",
+                        "default": false
+                      },
+                      "visible": {
+                        "type": "boolean",
+                        "description": "is the layer visible",
+                        "default": true
+                      },
+                      "adjustments": {
+                        "title": "AdjustmentDetails",
+                        "type": "object",
+                        "properties": {
+                          "brightnessContrast": {
+                            "title": "BrightnessContrast",
+                            "type": "object",
+                            "properties": {
+                              "brightness": {
+                                "maximum": 150,
+                                "minimum": -150,
+                                "type": "number",
+                                "description": "The adjustment layer's brightness.",
+                                "format": "int32"
+                              },
+                              "contrast": {
+                                "maximum": 150,
+                                "minimum": -150,
+                                "type": "number",
+                                "description": "The adjustment layer's contrast.",
+                                "format": "int32"
+                              }
+                            },
+                            "description": "Brightness and contrast settings."
+                          },
+                          "exposure": {
+                            "title": "ExposureDetails",
+                            "description": "Exposure settings.",
+                            "type": "object",
+                            "properties": {
+                              "exposure": {
+                                "maximum": 20,
+                                "minimum": -20,
+                                "type": "number",
+                                "description": "The layer's exposure.",
+                                "default": 0
+                              },
+                              "offset": {
+                                "maximum": 0.5,
+                                "minimum": -0.5,
+                                "type": "number",
+                                "description": "The layer's offset.",
+                                "default": 0
+                              },
+                              "gammaCorrection": {
+                                "maximum": 9.99,
+                                "minimum": 0.01,
+                                "type": "number",
+                                "description": "The layer's gamma correction.",
+                                "default": 1
+                              }
+                            }
+                          },
+                          "hueSaturation": {
+                            "title": "HueSaturation",
+                            "type": "object",
+                            "properties": {
+                              "colorize": {
+                                "type": "boolean",
+                                "description": "Whether to colorize."
+                              },
+                              "channels": {
+                                "type": "array",
+                                "items": {
+                                  "title": "ChannelDetails",
+                                  "type": "object",
+                                  "properties": {
+                                    "channel": {
+                                      "title": "ChannelType",
+                                      "enum": [
+                                        "master"
+                                      ],
+                                      "type": "string",
+                                      "description": "The channel type."
+                                    },
+                                    "hue": {
+                                      "maximum": 180,
+                                      "minimum": -180,
+                                      "type": "number",
+                                      "format": "int32"
+                                    },
+                                    "saturation": {
+                                      "maximum": 100,
+                                      "minimum": -100,
+                                      "type": "number",
+                                      "format": "int32"
+                                    },
+                                    "lightness": {
+                                      "maximum": 100,
+                                      "minimum": -100,
+                                      "type": "number",
+                                      "format": "int32"
+                                    }
+                                  }
+                                },
+                                "description": "An array of hashes representing the 'master' channel (the remaining five channels of 'magentas', 'yellows', 'greens', etc. are not yet supported)."
+                              }
+                            }
+                          },
+                          "colorBalance": {
+                            "title": "ColorBalance",
+                            "description": "Color balance settings.",
+                            "type": "object",
+                            "properties": {
+                              "preserveLuminosity": {
+                                "type": "boolean",
+                                "description": "Whether to preserve luminosity."
+                              },
+                              "shadowLevels": {
+                                "type": "array",
+                                "items": {
+                                  "maximum": 100,
+                                  "minimum": -100,
+                                  "type": "number",
+                                  "format": "int32"
+                                },
+                                "description": "Shadow levels."
+                              },
+                              "midtoneLevels": {
+                                "type": "array",
+                                "items": {
+                                  "maximum": 100,
+                                  "minimum": -100,
+                                  "type": "number",
+                                  "format": "int32"
+                                },
+                                "description": "Midtone levels."
+                              },
+                              "highlightLevels": {
+                                "type": "array",
+                                "items": {
+                                  "maximum": 100,
+                                  "minimum": -100,
+                                  "type": "number",
+                                  "format": "int32"
+                                },
+                                "description": "Highlight levels."
+                              }
+                            }
+                          }
+                        },
+                        "description": "Adjustment layer information."
+                      },
+                      "mask": {
+                        "title": "MaskDetails",
+                        "type": "object",
+                        "properties": {
+                          "input": {
+                            "title": "StorageDetails",
+                            "type": "object",
+                            "required": [
+                              "href",
+                              "storage"
+                            ],
+                            "properties": {
+                              "href": {
+                                "type": "string",
+                                "description": "A pre-signed GET URL."
+                              },
+                              "storage": {
+                                "title": "StorageType",
+                                "enum": [
+                                  "external",
+                                  "azure",
+                                  "dropbox"
+                                ],
+                                "type": "string",
+                                "description": "Storage platforms supported."
+                              }
+                            },
+                            "description": "A file located on Adobe's cloud or a supported external service."
+                          },
+                          "clip": {
+                            "type": "boolean",
+                            "description": "Indicates if this is a clipped layer"
+                          },
+                          "enabled": {
+                            "type": "boolean",
+                            "description": "Indicates a mask is enabled on that layer or not"
+                          },
+                          "linked": {
+                            "type": "boolean",
+                            "description": "Indicates a mask is linked to the layer or not"
+                          },
+                          "offset": {
+                            "title": "Offset",
+                            "description": "Offset details.",
+                            "type": "object",
+                            "properties": {
+                              "x": {
+                                "type": "number",
+                                "description": "Offset to indicate horizontal move of the mask.",
+                                "format": "int32"
+                              },
+                              "y": {
+                                "type": "number",
+                                "description": "Offset to indicate vertical move of the mask.",
+                                "format": "int32"
+                              }
+                            }
+                          }
+                        }
+                      },
+                      "bounds": {
+                        "title": "Bounds",
+                        "description": "The bounds of the layer.",
+                        "type": "object",
+                        "properties": {
+                          "top": {
+                            "type": "number",
+                            "description": "The top position in pixels.",
+                            "format": "int32"
+                          },
+                          "left": {
+                            "type": "number",
+                            "description": "The left position in pixels.",
+                            "format": "int32"
+                          },
+                          "width": {
+                            "type": "number",
+                            "description": "The width in pixels.",
+                            "format": "int32"
+                          },
+                          "height": {
+                            "type": "number",
+                            "description": "The height in pixels.",
+                            "format": "int32"
+                          }
+                        }
+                      },
+                      "smartObject": {
+                        "allOf": [
                           {
-                            title: 'TextDetails',
-                            minProperties: 1,
-                            type: 'object',
-                            properties: {
-                              content: {
-                                type: 'string',
-                                description: 'The content of the text layer.',
+                            "title": "SmartObject",
+                            "type": "object",
+                            "properties": {
+                              "linked": {
+                                "type": "boolean",
+                                "description": "Indicates if this Smart Object is linked. Currently we support Embedded Smart Object only which means \"linked = false\".",
+                                "default": false
+                              }
+                            },
+                            "description": "An object describing the attributes specific to creating or editing a smart object. `SmartObject` properties operate on the input smart object file. When creating a linked smart object, this is a required. When creating an embedded smart object, it is optional."
+                          },
+                          {
+                            "description": "An object describing the attributes specific to creating or editing a smart object. Smart object properties operate on the input smart object file. Currently if you're creating a linked smart object, this is a required. If you're creating an embedded smart object, this is optional."
+                          }
+                        ]
+                      },
+                      "fill": {
+                        "title": "FillDetails",
+                        "type": "object",
+                        "properties": {
+                          "solidColor": {
+                            "title": "SolidColor",
+                            "type": "object",
+                            "required": [
+                              "rgb"
+                            ],
+                            "properties": {
+                              "rgb": {
+                                "title": "RgbColor",
+                                "type": "object",
+                                "properties": {
+                                  "red": {
+                                    "maximum": 255,
+                                    "minimum": 0,
+                                    "type": "number",
+                                    "format": "int32"
+                                  },
+                                  "green": {
+                                    "maximum": 255,
+                                    "minimum": 0,
+                                    "type": "number",
+                                    "format": "int32"
+                                  },
+                                  "blue": {
+                                    "maximum": 255,
+                                    "minimum": 0,
+                                    "type": "number",
+                                    "format": "int32"
+                                  }
+                                },
+                                "description": "An object describing the RGB color format in 8 bits."
+                              }
+                            }
+                          }
+                        }
+                      },
+                      "text": {
+                        "allOf": [
+                          {
+                            "title": "TextLayerDetails",
+                            "type": "object",
+                            "properties": {
+                              "content": {
+                                "type": "string",
+                                "description": "The text string."
                               },
-                              orientation: {
-                                title: 'OrientationType',
-                                enum: ['horizontal', 'vertical'],
-                                type: 'string',
-                                description: 'The text orientation.',
+                              "characterStyles": {
+                                "type": "array",
+                                "items": {
+                                  "title": "TextLayerCharacterStyleDetails",
+                                  "type": "object",
+                                  "properties": {
+                                    "from": {
+                                      "minimum": 0,
+                                      "type": "integer",
+                                      "description": "The beginning of the range of characters that this character style applies to. Based on initial index of 0. For example a style applied to only the first two characters would be from=0 and to=1.",
+                                      "format": "int32"
+                                    },
+                                    "to": {
+                                      "minimum": 0,
+                                      "type": "integer",
+                                      "description": "The ending of the range of characters that this character style applies to. Based on initial index of 0. For example a style applied to only the first two characters would be from=0 and to=1.",
+                                      "format": "int32"
+                                    },
+                                    "fontSize": {
+                                      "type": "number",
+                                      "description": "The font size in points."
+                                    },
+                                    "fontName": {
+                                      "type": "string",
+                                      "description": "The font's PostScript name from the [list of supported fonts](../../getting_started/technical_usage_notes/index.md#photoshop-api-supported-fonts)."
+                                    },
+                                    "orientation": {
+                                      "title": "OrientationType",
+                                      "enum": [
+                                        "horizontal",
+                                        "vertical"
+                                      ],
+                                      "type": "string",
+                                      "description": "The text orientation."
+                                    },
+                                    "fontColor": {
+                                      "title": "FontColorDetails",
+                                      "type": "object",
+                                      "properties": {
+                                        "rgb": {
+                                          "allOf": [
+                                            {
+                                              "title": "FontColorRgb",
+                                              "type": "object",
+                                              "properties": {
+                                                "red": {
+                                                  "maximum": 32768,
+                                                  "minimum": 0,
+                                                  "type": "integer",
+                                                  "format": "int32"
+                                                },
+                                                "green": {
+                                                  "maximum": 32768,
+                                                  "minimum": 0,
+                                                  "type": "integer",
+                                                  "format": "int32"
+                                                },
+                                                "blue": {
+                                                  "maximum": 32768,
+                                                  "minimum": 0,
+                                                  "type": "integer",
+                                                  "format": "int32"
+                                                }
+                                              },
+                                              "description": "An object describing the RGB color format in 16 bits."
+                                            },
+                                            {
+                                              "description": "An object describing the RGB color format in 16 bits."
+                                            }
+                                          ]
+                                        },
+                                        "cmyk": {
+                                          "allOf": [
+                                            {
+                                              "title": "FontColorCmyk",
+                                              "type": "object",
+                                              "properties": {
+                                                "cyan": {
+                                                  "maximum": 32768,
+                                                  "minimum": 0,
+                                                  "type": "integer",
+                                                  "format": "int32"
+                                                },
+                                                "magenta": {
+                                                  "maximum": 32768,
+                                                  "minimum": 0,
+                                                  "type": "integer",
+                                                  "format": "int32"
+                                                },
+                                                "yellowColor": {
+                                                  "maximum": 32768,
+                                                  "minimum": 0,
+                                                  "type": "integer",
+                                                  "format": "int32"
+                                                },
+                                                "black": {
+                                                  "maximum": 32768,
+                                                  "minimum": 0,
+                                                  "type": "integer",
+                                                  "format": "int32"
+                                                }
+                                              },
+                                              "description": "The font color settings for CMYK mode in 16-bit representation."
+                                            },
+                                            {
+                                              "description": "The font color settings for CMYK mode in 16-bit representation."
+                                            }
+                                          ]
+                                        },
+                                        "gray": {
+                                          "allOf": [
+                                            {
+                                              "title": "FontColorGray",
+                                              "type": "object",
+                                              "properties": {
+                                                "gray": {
+                                                  "maximum": 32768,
+                                                  "minimum": 0,
+                                                  "type": "integer",
+                                                  "format": "int32"
+                                                }
+                                              },
+                                              "description": "The font color settings for gray mode in 16-bit representation."
+                                            },
+                                            {
+                                              "description": "The font color settings for gray mode in 16-bit representation."
+                                            }
+                                          ]
+                                        },
+                                        "lab": {
+                                          "allOf": [
+                                            {
+                                              "title": "FontColorLab",
+                                              "type": "object",
+                                              "properties": {
+                                                "luminance": {
+                                                  "maximum": 32768,
+                                                  "minimum": 0,
+                                                  "type": "integer",
+                                                  "format": "int32"
+                                                },
+                                                "a": {
+                                                  "maximum": 32768,
+                                                  "minimum": 0,
+                                                  "type": "integer",
+                                                  "format": "int32"
+                                                },
+                                                "b": {
+                                                  "maximum": 32768,
+                                                  "minimum": 0,
+                                                  "type": "integer",
+                                                  "format": "int32"
+                                                }
+                                              },
+                                              "description": "The font color settings for Lab mode in 16-bit representation."
+                                            },
+                                            {
+                                              "description": "The font color settings for Lab mode in 16-bit representation."
+                                            }
+                                          ]
+                                        }
+                                      }
+                                    }
+                                  }
+                                },
+                                "description": "Character style settings. If the same supported attributes apply to all characters in the layer, then this will be an array of one item. Otherwise, each `characterStyle` object will have a 'from' and 'to' value indicating the range of characters that style applies to."
                               },
-                              rotate: {
-                                maximum: 180,
-                                minimum: -180,
-                                type: 'integer',
-                                description: "The text's rotation in angle.",
-                                format: 'int32',
+                              "paragraphStyles": {
+                                "type": "array",
+                                "items": {
+                                  "title": "TextLayerParagraphStyleDetails",
+                                  "type": "object",
+                                  "properties": {
+                                    "from": {
+                                      "minimum": 0,
+                                      "type": "integer",
+                                      "description": "The beginning of the range of characters that this paragraph style applies to. Based on initial index of 0. For example a style applied to only the first two characters would be from=0 and to=1.",
+                                      "format": "int32"
+                                    },
+                                    "to": {
+                                      "minimum": 0,
+                                      "type": "integer",
+                                      "description": "The ending of the range of characters that this paragraph style applies to. Based on initial index of 0. For example a style applied to only the first two characters would be from=0 and to=1.",
+                                      "format": "int32"
+                                    },
+                                    "alignment": {
+                                      "title": "AlignmentType",
+                                      "enum": [
+                                        "left",
+                                        "center",
+                                        "right",
+                                        "justify",
+                                        "justifyLeft",
+                                        "justifyCenter",
+                                        "justifyRight"
+                                      ],
+                                      "type": "string",
+                                      "description": "The paragraph alignment."
+                                    }
+                                  },
+                                  "description": "If the same supported attributes apply to all characters in the layer then this will be an array of one item, otherwise each paragraph style object will have a 'from' and 'to' value indicating the range of characters that the style applies to."
+                                },
+                                "description": "Paragraph style settings. If the same supported attributes apply to all characters in the layer then this will be an array of one item, otherwise each paragraph style object will have a 'from' and 'to' value indicating the range of characters that the style applies to."
+                              }
+                            },
+                            "description": "Text settings."
+                          },
+                          {
+                            "description": "text settings"
+                          }
+                        ]
+                      },
+                      "blendOptions": {
+                        "allOf": [
+                          {
+                            "title": "BlendDetails",
+                            "type": "object",
+                            "properties": {
+                              "opacity": {
+                                "maximum": 100,
+                                "minimum": 0,
+                                "type": "integer",
+                                "description": "Indicates the opacity value of a layer.",
+                                "format": "int32"
                               },
-                              antiAlias: {
-                                allOf: [
+                              "blendMode": {
+                                "title": "BlendModeType",
+                                "enum": [
+                                  "normal",
+                                  "dissolve",
+                                  "darken",
+                                  "multiply",
+                                  "colorBurn",
+                                  "linearBurn",
+                                  "darkerColor",
+                                  "lighten",
+                                  "screen",
+                                  "colorDodge",
+                                  "linearDodge",
+                                  "lighterColor",
+                                  "overlay",
+                                  "softLight",
+                                  "hardLight",
+                                  "vividLight",
+                                  "linearLight",
+                                  "pinLight",
+                                  "hardMix",
+                                  "difference",
+                                  "exclusion",
+                                  "subtract",
+                                  "divide",
+                                  "hue",
+                                  "saturation",
+                                  "color",
+                                  "luminosity"
+                                ],
+                                "type": "string",
+                                "description": "Blend mode of layer."
+                              }
+                            },
+                            "description": "Blend options of a layer, including opacity and blend mode."
+                          },
+                          {
+                            "description": "Blend options of a layer, including opacity and blend mode"
+                          }
+                        ]
+                      },
+                      "horizontalAlign": {
+                        "title": "HorizontalAlignType",
+                        "enum": [
+                          "left",
+                          "center",
+                          "right"
+                        ],
+                        "type": "string",
+                        "description": "Indicates the relative horizontal position of the layer with respect to the canvas of the document."
+                      },
+                      "verticalAlign": {
+                        "title": "VerticalAlignType",
+                        "enum": [
+                          "top",
+                          "center",
+                          "bottom"
+                        ],
+                        "type": "string",
+                        "description": "Indicates the relative vertical position of the layer with respect to the canvas of the document."
+                      },
+                      "fillToCanvas": {
+                        "type": "boolean",
+                        "description": "Indicates if the pixels need to proportionally fill into the entire canvas of the document."
+                      }
+                    }
+                  },
+                  "description": "Array of layers to be created in the document."
+                }
+              }
+            }
+          },
+          "description": "The input psd file to apply edits to and generate renditions and/or save as a new psd"
+        }
+      },
+      "required": [
+        "requestBody"
+      ]
+    },
+    "method": "post",
+    "pathTemplate": "/pie/psdService/documentOperations",
+    "parameters": [
+      {
+        "name": "x-gw-ims-org-id",
+        "in": "header",
+        "description": "The IMS organization ID. This only needs to be sent if you want to receive the job status through Adobe I/O Events.",
+        "required": false,
+        "schema": {
+          "type": "string"
+        }
+      }
+    ],
+    "executionParameters": [
+      {
+        "name": "x-gw-ims-org-id",
+        "in": "header"
+      }
+    ],
+    "requestBodyContentType": "application/json",
+    "securityRequirements": [
+      {
+        "ApiKeyAuth": []
+      },
+      {
+        "BearerAuth": []
+      }
+    ],
+    "operationId": "modifyDocumentAsync",
+    "baseUrl": "https://image.adobe.io"
+  },
+  {
+    "name": "createRenditionAsync",
+    "description": "Create flat image representations of a PSD in multiple formats.",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "x-gw-ims-org-id": {
+          "type": "string",
+          "description": "The IMS organization ID. This only needs to be sent if you want to receive the job status through Adobe I/O Events"
+        },
+        "requestBody": {
+          "title": "CreateRenditionRequest",
+          "type": "object",
+          "required": [
+            "inputs",
+            "outputs"
+          ],
+          "properties": {
+            "inputs": {
+              "type": "array",
+              "items": {
+                "title": "StorageDetails",
+                "type": "object",
+                "required": [
+                  "href",
+                  "storage"
+                ],
+                "properties": {
+                  "href": {
+                    "type": "string",
+                    "description": "A pre-signed GET URL."
+                  },
+                  "storage": {
+                    "title": "StorageType",
+                    "enum": [
+                      "external",
+                      "azure",
+                      "dropbox"
+                    ],
+                    "type": "string",
+                    "description": "Storage platforms supported."
+                  }
+                },
+                "description": "A file located on Adobe's cloud or a supported external service."
+              },
+              "description": "An array of input objects. Only one input object is currently supported."
+            },
+            "outputs": {
+              "type": "array",
+              "items": {
+                "title": "PsOutputDetails",
+                "type": "object",
+                "required": [
+                  "href",
+                  "storage",
+                  "type"
+                ],
+                "properties": {
+                  "href": {
+                    "type": "string",
+                    "description": "A pre-signed POST URL to the output file."
+                  },
+                  "storage": {
+                    "title": "StorageType",
+                    "enum": [
+                      "external",
+                      "azure",
+                      "dropbox"
+                    ],
+                    "type": "string",
+                    "description": "Storage platforms supported."
+                  },
+                  "type": {
+                    "title": "ImageFormatType",
+                    "enum": [
+                      "image/vnd.adobe.photoshop",
+                      "image/jpeg",
+                      "image/png",
+                      "image/tiff",
+                      "vnd.adobe.photoshop"
+                    ],
+                    "type": "string",
+                    "description": "The desired image format. Using `image/vnd.adobe.photoshop` - create a new PSD file. Using `image/jpeg`, `image/png`, `image/tiff` - create a new JPEG, PNG or TIFF rendition. Certain image modes (RGB, CMYK, greyscale, etc.) must be converted to another image mode before a rendition can be created. With TIFF requested, Multichannel and Duotone will convert to RGB. With PNG requested, CMYK, HSL, HSB, Multichannel, Duotone, Lab and XYZ will convert to RGB."
+                  },
+                  "overwrite": {
+                    "type": "boolean",
+                    "description": "If the file already exists, indicates if the output file should be overwritten. Will eventually support eTags. Only applies to CC Storage.",
+                    "default": true
+                  },
+                  "width": {
+                    "type": "number",
+                    "description": "The width, in pixels, of the renditions. A width of 0 generates a full size rendition. Height is generated automatically using the aspect ratio. Only supported for image rendition.",
+                    "format": "int32",
+                    "default": 0
+                  },
+                  "maxWidth": {
+                    "type": "number",
+                    "description": "The size, in pixels, of the renditions. When width is 0, maxWidth can be provided to get the rendition size. maxWidth when less than document width gets precedence over width. Height is not necessary as the rendition generate will automatically maintain the aspect ratio.",
+                    "format": "int32",
+                    "default": 0
+                  },
+                  "quality": {
+                    "maximum": 7,
+                    "minimum": 1,
+                    "type": "number",
+                    "description": "The quality of the renditions for JPEG. The range is 1 to 7, 7 being the highest quality.",
+                    "format": "int32",
+                    "default": 7
+                  },
+                  "compression": {
+                    "title": "CompressionType",
+                    "enum": [
+                      "small",
+                      "medium",
+                      "large"
+                    ],
+                    "type": "string",
+                    "description": "Desired PNG compression level."
+                  },
+                  "trimToCanvas": {
+                    "title": "TrimToCanvasType",
+                    "enum": [
+                      true,
+                      false
+                    ],
+                    "type": "boolean",
+                    "description": "Use this if the renditions needs to be of Canvas size. Using `True` trims the renditions to Canvas size, while `False` makes the renditions Layer Size."
+                  },
+                  "layers": {
+                    "type": "array",
+                    "items": {
+                      "title": "LayerReference",
+                      "description": "A layer reference object.",
+                      "type": "object",
+                      "properties": {
+                        "id": {
+                          "type": "number",
+                          "description": "The id of the layer. Use either `id` OR `name`.",
+                          "format": "int32"
+                        },
+                        "name": {
+                          "type": "string",
+                          "description": "The name of the layer. Use either `id` OR `name`."
+                        }
+                      }
+                    },
+                    "description": "An array of layer objects.\nBy including this array you are signaling that you'd like a rendition created from these layer id's or layer names. Excluding it will generate a document-level rendition."
+                  },
+                  "iccProfile": {
+                    "title": "IccProfileDetails",
+                    "type": "object",
+                    "properties": {
+                      "imageMode": {
+                        "title": "ImageModeType",
+                        "enum": [
+                          "grayscale",
+                          "rgb",
+                          "cmyk"
+                        ],
+                        "type": "string",
+                        "description": "The image mode."
+                      },
+                      "input": {
+                        "title": "StorageDetails",
+                        "type": "object",
+                        "required": [
+                          "href",
+                          "storage"
+                        ],
+                        "properties": {
+                          "href": {
+                            "type": "string",
+                            "description": "A pre-signed GET URL."
+                          },
+                          "storage": {
+                            "title": "StorageType",
+                            "enum": [
+                              "external",
+                              "azure",
+                              "dropbox"
+                            ],
+                            "type": "string",
+                            "description": "Storage platforms supported."
+                          }
+                        },
+                        "description": "A file located on Adobe's cloud or a supported external service."
+                      },
+                      "profileName": {
+                        "title": "ColorProfileType",
+                        "enum": [
+                          "Adobe RGB (1998)",
+                          "Apple RGB",
+                          "ColorMatch RGB",
+                          "sRGB IEC61966-2.1",
+                          "Dot Gain 10%",
+                          "Dot Gain 15%",
+                          "Dot Gain 20%",
+                          "Dot Gain 25%",
+                          "Dot Gain 30%",
+                          "Gray Gamma 1.8",
+                          "Gray Gamma 2.2"
+                        ],
+                        "type": "string",
+                        "description": "The name of the color profile."
+                      }
+                    }
+                  }
+                },
+                "description": "An output object."
+              },
+              "description": "An array of output objects."
+            }
+          },
+          "description": "The input psd file to create renditions from"
+        }
+      },
+      "required": [
+        "requestBody"
+      ]
+    },
+    "method": "post",
+    "pathTemplate": "/pie/psdService/renditionCreate",
+    "parameters": [
+      {
+        "name": "x-gw-ims-org-id",
+        "in": "header",
+        "description": "The IMS organization ID. This only needs to be sent if you want to receive the job status through Adobe I/O Events",
+        "required": false,
+        "schema": {
+          "type": "string"
+        }
+      }
+    ],
+    "executionParameters": [
+      {
+        "name": "x-gw-ims-org-id",
+        "in": "header"
+      }
+    ],
+    "requestBodyContentType": "application/json",
+    "securityRequirements": [
+      {
+        "ApiKeyAuth": []
+      },
+      {
+        "BearerAuth": []
+      }
+    ],
+    "operationId": "createRenditionAsync",
+    "baseUrl": "https://image.adobe.io"
+  },
+  {
+    "name": "replaceSmartObjectAsync",
+    "description": "Replace Smart Object in a PSD.",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "x-gw-ims-org-id": {
+          "type": "string",
+          "description": "The IMS organization ID. This only needs to be sent if you want to receive the job status through Adobe I/O Events"
+        },
+        "requestBody": {
+          "title": "ReplaceSmartObjectRequest",
+          "type": "object",
+          "required": [
+            "inputs",
+            "options",
+            "outputs"
+          ],
+          "properties": {
+            "inputs": {
+              "type": "array",
+              "items": {
+                "title": "StorageDetails",
+                "type": "object",
+                "required": [
+                  "href",
+                  "storage"
+                ],
+                "properties": {
+                  "href": {
+                    "type": "string",
+                    "description": "A pre-signed GET URL."
+                  },
+                  "storage": {
+                    "title": "StorageType",
+                    "enum": [
+                      "external",
+                      "azure",
+                      "dropbox"
+                    ],
+                    "type": "string",
+                    "description": "Storage platforms supported."
+                  }
+                },
+                "description": "A file located on Adobe's cloud or a supported external service."
+              },
+              "description": "An array of input objects. Only one input object is currently supported."
+            },
+            "outputs": {
+              "type": "array",
+              "items": {
+                "title": "SmartObjectOutputDetails",
+                "type": "object",
+                "required": [
+                  "href",
+                  "storage",
+                  "type"
+                ],
+                "properties": {
+                  "href": {
+                    "type": "string",
+                    "description": "A pre-signed POST URL to the output file."
+                  },
+                  "storage": {
+                    "title": "StorageType",
+                    "enum": [
+                      "external",
+                      "azure",
+                      "dropbox"
+                    ],
+                    "type": "string",
+                    "description": "Storage platforms supported."
+                  },
+                  "type": {
+                    "title": "ImageFormatType",
+                    "enum": [
+                      "image/vnd.adobe.photoshop",
+                      "image/jpeg",
+                      "image/png",
+                      "image/tiff",
+                      "vnd.adobe.photoshop"
+                    ],
+                    "type": "string",
+                    "description": "The desired image format. Using `image/vnd.adobe.photoshop` - create a new PSD file. Using `image/jpeg`, `image/png`, `image/tiff` - create a new JPEG, PNG or TIFF rendition. Certain image modes (RGB, CMYK, greyscale, etc.) must be converted to another image mode before a rendition can be created. With TIFF requested, Multichannel and Duotone will convert to RGB. With PNG requested, CMYK, HSL, HSB, Multichannel, Duotone, Lab and XYZ will convert to RGB."
+                  },
+                  "overwrite": {
+                    "type": "boolean",
+                    "description": "If the file already exists, indicates if the output file should be overwritten. Will eventually support eTags. Only applies to CC Storage.",
+                    "default": true
+                  },
+                  "width": {
+                    "type": "number",
+                    "description": "The width, in pixels, of the renditions. A width of 0 generates a full size rendition. Height is generated automatically using the aspect ratio. Only supported for image rendition.",
+                    "format": "int32",
+                    "default": 0
+                  },
+                  "quality": {
+                    "maximum": 7,
+                    "minimum": 1,
+                    "type": "number",
+                    "description": "The quality of the renditions for JPEG. The range is 1 to 7, 7 being the highest quality.",
+                    "format": "int32",
+                    "default": 7
+                  },
+                  "compression": {
+                    "title": "CompressionType",
+                    "enum": [
+                      "small",
+                      "medium",
+                      "large"
+                    ],
+                    "type": "string",
+                    "description": "Desired PNG compression level."
+                  }
+                },
+                "description": "An output object."
+              },
+              "description": "An array of output objects."
+            },
+            "options": {
+              "title": "SmartObjectOptions",
+              "type": "object",
+              "required": [
+                "layers"
+              ],
+              "properties": {
+                "layers": {
+                  "type": "array",
+                  "items": {
+                    "title": "SmartObjectLayer",
+                    "type": "object",
+                    "required": [
+                      "input"
+                    ],
+                    "properties": {
+                      "add": {
+                        "title": "LayerPosition",
+                        "type": "object",
+                        "properties": {
+                          "insertAbove": {
+                            "title": "LayerReference",
+                            "description": "A layer reference object.",
+                            "type": "object",
+                            "properties": {
+                              "id": {
+                                "type": "number",
+                                "description": "The id of the layer. Use either `id` OR `name`.",
+                                "format": "int32"
+                              },
+                              "name": {
+                                "type": "string",
+                                "description": "The name of the layer. Use either `id` OR `name`."
+                              }
+                            }
+                          },
+                          "insertBelow": {
+                            "title": "LayerReference",
+                            "description": "A layer reference object.",
+                            "type": "object",
+                            "properties": {
+                              "id": {
+                                "type": "number",
+                                "description": "The id of the layer. Use either `id` OR `name`.",
+                                "format": "int32"
+                              },
+                              "name": {
+                                "type": "string",
+                                "description": "The name of the layer. Use either `id` OR `name`."
+                              }
+                            }
+                          },
+                          "insertInto": {
+                            "title": "LayerReference",
+                            "description": "A layer reference object.",
+                            "type": "object",
+                            "properties": {
+                              "id": {
+                                "type": "number",
+                                "description": "The id of the layer. Use either `id` OR `name`.",
+                                "format": "int32"
+                              },
+                              "name": {
+                                "type": "string",
+                                "description": "The name of the layer. Use either `id` OR `name`."
+                              }
+                            }
+                          },
+                          "insertTop": {
+                            "type": "boolean"
+                          },
+                          "insertBottom": {
+                            "type": "boolean"
+                          }
+                        }
+                      },
+                      "id": {
+                        "type": "number",
+                        "description": "the layer id",
+                        "format": "int32"
+                      },
+                      "name": {
+                        "type": "string"
+                      },
+                      "locked": {
+                        "type": "boolean",
+                        "description": "is the layer locked",
+                        "default": false
+                      },
+                      "visible": {
+                        "type": "boolean",
+                        "description": "is the layer visible",
+                        "default": true
+                      },
+                      "input": {
+                        "title": "StorageDetails",
+                        "type": "object",
+                        "required": [
+                          "href",
+                          "storage"
+                        ],
+                        "properties": {
+                          "href": {
+                            "type": "string",
+                            "description": "A pre-signed GET URL."
+                          },
+                          "storage": {
+                            "title": "StorageType",
+                            "enum": [
+                              "external",
+                              "azure",
+                              "dropbox"
+                            ],
+                            "type": "string",
+                            "description": "Storage platforms supported."
+                          }
+                        },
+                        "description": "A file located on Adobe's cloud or a supported external service."
+                      },
+                      "bounds": {
+                        "title": "Bounds",
+                        "description": "The bounds of the layer.",
+                        "type": "object",
+                        "properties": {
+                          "top": {
+                            "type": "number",
+                            "description": "The top position in pixels.",
+                            "format": "int32"
+                          },
+                          "left": {
+                            "type": "number",
+                            "description": "The left position in pixels.",
+                            "format": "int32"
+                          },
+                          "width": {
+                            "type": "number",
+                            "description": "The width in pixels.",
+                            "format": "int32"
+                          },
+                          "height": {
+                            "type": "number",
+                            "description": "The height in pixels.",
+                            "format": "int32"
+                          }
+                        }
+                      }
+                    }
+                  },
+                  "description": "Array of Smart Object layers to be created in the document"
+                }
+              }
+            }
+          },
+          "description": "The input psd file to apply edits for replacing embedded smart object to and generate renditions and/or save as a new psd"
+        }
+      },
+      "required": [
+        "requestBody"
+      ]
+    },
+    "method": "post",
+    "pathTemplate": "/pie/psdService/smartObject",
+    "parameters": [
+      {
+        "name": "x-gw-ims-org-id",
+        "in": "header",
+        "description": "The IMS organization ID. This only needs to be sent if you want to receive the job status through Adobe I/O Events",
+        "required": false,
+        "schema": {
+          "type": "string"
+        }
+      }
+    ],
+    "executionParameters": [
+      {
+        "name": "x-gw-ims-org-id",
+        "in": "header"
+      }
+    ],
+    "requestBodyContentType": "application/json",
+    "securityRequirements": [
+      {
+        "ApiKeyAuth": []
+      },
+      {
+        "BearerAuth": []
+      }
+    ],
+    "operationId": "replaceSmartObjectAsync",
+    "baseUrl": "https://image.adobe.io"
+  },
+  {
+    "name": "playPhotoshopActionsAsync",
+    "description": "Executes Photoshop Action file against a PSD, JPEG, PNG, or TIFF.",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "x-gw-ims-org-id": {
+          "type": "string",
+          "description": "The IMS organization ID. This only needs to be sent if you want to receive the job status through Adobe I/O Events"
+        },
+        "requestBody": {
+          "title": "PlayPhotoshopActionsRequest",
+          "type": "object",
+          "required": [
+            "inputs",
+            "options",
+            "outputs"
+          ],
+          "properties": {
+            "inputs": {
+              "type": "array",
+              "items": {
+                "title": "StorageDetails",
+                "type": "object",
+                "required": [
+                  "href",
+                  "storage"
+                ],
+                "properties": {
+                  "href": {
+                    "type": "string",
+                    "description": "A pre-signed GET URL."
+                  },
+                  "storage": {
+                    "title": "StorageType",
+                    "enum": [
+                      "external",
+                      "azure",
+                      "dropbox"
+                    ],
+                    "type": "string",
+                    "description": "Storage platforms supported."
+                  }
+                },
+                "description": "A file located on Adobe's cloud or a supported external service."
+              },
+              "description": "An array of input objects. Only one input object is currently supported."
+            },
+            "outputs": {
+              "type": "array",
+              "items": {
+                "title": "ActionOutputDetails",
+                "type": "object",
+                "required": [
+                  "href",
+                  "storage",
+                  "type"
+                ],
+                "properties": {
+                  "href": {
+                    "type": "string",
+                    "description": "A pre-signed POST URL to the output file."
+                  },
+                  "storage": {
+                    "title": "StorageType",
+                    "enum": [
+                      "external",
+                      "azure",
+                      "dropbox"
+                    ],
+                    "type": "string",
+                    "description": "Storage platforms supported."
+                  },
+                  "type": {
+                    "title": "ImageFormatType",
+                    "enum": [
+                      "image/vnd.adobe.photoshop",
+                      "image/jpeg",
+                      "image/png",
+                      "image/tiff",
+                      "vnd.adobe.photoshop"
+                    ],
+                    "type": "string",
+                    "description": "The desired image format. Using `image/vnd.adobe.photoshop` - create a new PSD file. Using `image/jpeg`, `image/png`, `image/tiff` - create a new JPEG, PNG or TIFF rendition. Certain image modes (RGB, CMYK, greyscale, etc.) must be converted to another image mode before a rendition can be created. With TIFF requested, Multichannel and Duotone will convert to RGB. With PNG requested, CMYK, HSL, HSB, Multichannel, Duotone, Lab and XYZ will convert to RGB."
+                  },
+                  "overwrite": {
+                    "type": "boolean",
+                    "description": "If the file already exists, indicates if the output file should be overwritten. Will eventually support eTags. Only applies to CC Storage.",
+                    "default": true
+                  },
+                  "quality": {
+                    "maximum": 12,
+                    "minimum": 1,
+                    "type": "number",
+                    "description": "The quality of the renditions for JPEG. The range is 1 to 7, 7 being the highest quality.",
+                    "format": "int32",
+                    "default": 7
+                  },
+                  "compression": {
+                    "title": "CompressionType",
+                    "enum": [
+                      "small",
+                      "medium",
+                      "large"
+                    ],
+                    "type": "string",
+                    "description": "Desired PNG compression level."
+                  }
+                },
+                "description": "An output object."
+              },
+              "description": "An array of output objects."
+            },
+            "options": {
+              "title": "ActionOptions",
+              "type": "object",
+              "required": [
+                "actions"
+              ],
+              "properties": {
+                "actions": {
+                  "type": "array",
+                  "items": {
+                    "title": "Action",
+                    "type": "object",
+                    "properties": {
+                      "storage": {
+                        "allOf": [
+                          {
+                            "title": "StorageType",
+                            "enum": [
+                              "external",
+                              "azure",
+                              "dropbox"
+                            ],
+                            "type": "string",
+                            "description": "Storage platforms supported."
+                          },
+                          {
+                            "description": "storage platforms supported"
+                          }
+                        ]
+                      },
+                      "href": {
+                        "type": "string",
+                        "description": "Presigned GET URL"
+                      },
+                      "actionName": {
+                        "type": "string",
+                        "description": "If you only want to execute a particular action, you may specify which action to play from the ActionSet"
+                      }
+                    },
+                    "description": "An object describing the input Photoshop Actions to play."
+                  },
+                  "description": "Array of Photoshop Actions to play."
+                },
+                "patterns": {
+                  "type": "array",
+                  "items": {
+                    "title": "StorageDetails",
+                    "type": "object",
+                    "required": [
+                      "href",
+                      "storage"
+                    ],
+                    "properties": {
+                      "href": {
+                        "type": "string",
+                        "description": "A pre-signed GET URL."
+                      },
+                      "storage": {
+                        "title": "StorageType",
+                        "enum": [
+                          "external",
+                          "azure",
+                          "dropbox"
+                        ],
+                        "type": "string",
+                        "description": "Storage platforms supported."
+                      }
+                    },
+                    "description": "A file located on Adobe's cloud or a supported external service."
+                  },
+                  "description": "array of custom pattern preset to be used in Photoshop Actions"
+                },
+                "fonts": {
+                  "type": "array",
+                  "items": {
+                    "title": "StorageDetails",
+                    "type": "object",
+                    "required": [
+                      "href",
+                      "storage"
+                    ],
+                    "properties": {
+                      "href": {
+                        "type": "string",
+                        "description": "A pre-signed GET URL."
+                      },
+                      "storage": {
+                        "title": "StorageType",
+                        "enum": [
+                          "external",
+                          "azure",
+                          "dropbox"
+                        ],
+                        "type": "string",
+                        "description": "Storage platforms supported."
+                      }
+                    },
+                    "description": "A file located on Adobe's cloud or a supported external service."
+                  },
+                  "description": "array of custom fonts needed in this document"
+                },
+                "brushes": {
+                  "type": "array",
+                  "items": {
+                    "title": "StorageDetails",
+                    "type": "object",
+                    "required": [
+                      "href",
+                      "storage"
+                    ],
+                    "properties": {
+                      "href": {
+                        "type": "string",
+                        "description": "A pre-signed GET URL."
+                      },
+                      "storage": {
+                        "title": "StorageType",
+                        "enum": [
+                          "external",
+                          "azure",
+                          "dropbox"
+                        ],
+                        "type": "string",
+                        "description": "Storage platforms supported."
+                      }
+                    },
+                    "description": "A file located on Adobe's cloud or a supported external service."
+                  },
+                  "description": "array of custom brushes needed in this document"
+                }
+              }
+            }
+          },
+          "description": "The input file to apply Photoshop Actions to and generate renditions and/or save as a new image"
+        }
+      },
+      "required": [
+        "requestBody"
+      ]
+    },
+    "method": "post",
+    "pathTemplate": "/pie/psdService/photoshopActions",
+    "parameters": [
+      {
+        "name": "x-gw-ims-org-id",
+        "in": "header",
+        "description": "The IMS organization ID. This only needs to be sent if you want to receive the job status through Adobe I/O Events",
+        "required": false,
+        "schema": {
+          "type": "string"
+        }
+      }
+    ],
+    "executionParameters": [
+      {
+        "name": "x-gw-ims-org-id",
+        "in": "header"
+      }
+    ],
+    "requestBodyContentType": "application/json",
+    "securityRequirements": [
+      {
+        "ApiKeyAuth": []
+      },
+      {
+        "BearerAuth": []
+      }
+    ],
+    "operationId": "playPhotoshopActionsAsync",
+    "baseUrl": "https://image.adobe.io"
+  },
+  {
+    "name": "playPhotoshopActionsJsonAsync",
+    "description": "Execute given Photoshop Action specified in actionJSON format.",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "x-gw-ims-org-id": {
+          "type": "string",
+          "description": "The IMS organization ID. This only needs to be sent if you want to receive the job status through Adobe I/O Events"
+        },
+        "requestBody": {
+          "title": "PlayPhotoshopActionsJsonRequest",
+          "type": "object",
+          "required": [
+            "inputs",
+            "options",
+            "outputs"
+          ],
+          "properties": {
+            "inputs": {
+              "type": "array",
+              "items": {
+                "title": "StorageDetails",
+                "type": "object",
+                "required": [
+                  "href",
+                  "storage"
+                ],
+                "properties": {
+                  "href": {
+                    "type": "string",
+                    "description": "A pre-signed GET URL."
+                  },
+                  "storage": {
+                    "title": "StorageType",
+                    "enum": [
+                      "external",
+                      "azure",
+                      "dropbox"
+                    ],
+                    "type": "string",
+                    "description": "Storage platforms supported."
+                  }
+                },
+                "description": "A file located on Adobe's cloud or a supported external service."
+              },
+              "description": "An array of input objects. Only one input object is currently supported."
+            },
+            "outputs": {
+              "type": "array",
+              "items": {
+                "title": "ActionOutputDetails",
+                "type": "object",
+                "required": [
+                  "href",
+                  "storage",
+                  "type"
+                ],
+                "properties": {
+                  "href": {
+                    "type": "string",
+                    "description": "A pre-signed POST URL to the output file."
+                  },
+                  "storage": {
+                    "title": "StorageType",
+                    "enum": [
+                      "external",
+                      "azure",
+                      "dropbox"
+                    ],
+                    "type": "string",
+                    "description": "Storage platforms supported."
+                  },
+                  "type": {
+                    "title": "ImageFormatType",
+                    "enum": [
+                      "image/vnd.adobe.photoshop",
+                      "image/jpeg",
+                      "image/png",
+                      "image/tiff",
+                      "vnd.adobe.photoshop"
+                    ],
+                    "type": "string",
+                    "description": "The desired image format. Using `image/vnd.adobe.photoshop` - create a new PSD file. Using `image/jpeg`, `image/png`, `image/tiff` - create a new JPEG, PNG or TIFF rendition. Certain image modes (RGB, CMYK, greyscale, etc.) must be converted to another image mode before a rendition can be created. With TIFF requested, Multichannel and Duotone will convert to RGB. With PNG requested, CMYK, HSL, HSB, Multichannel, Duotone, Lab and XYZ will convert to RGB."
+                  },
+                  "overwrite": {
+                    "type": "boolean",
+                    "description": "If the file already exists, indicates if the output file should be overwritten. Will eventually support eTags. Only applies to CC Storage.",
+                    "default": true
+                  },
+                  "quality": {
+                    "maximum": 12,
+                    "minimum": 1,
+                    "type": "number",
+                    "description": "The quality of the renditions for JPEG. The range is 1 to 7, 7 being the highest quality.",
+                    "format": "int32",
+                    "default": 7
+                  },
+                  "compression": {
+                    "title": "CompressionType",
+                    "enum": [
+                      "small",
+                      "medium",
+                      "large"
+                    ],
+                    "type": "string",
+                    "description": "Desired PNG compression level."
+                  }
+                },
+                "description": "An output object."
+              },
+              "description": "An array of output objects."
+            },
+            "options": {
+              "title": "ActionJsonOptions",
+              "type": "object",
+              "required": [
+                "actionJSON"
+              ],
+              "properties": {
+                "actionJSON": {
+                  "type": "array",
+                  "items": {
+                    "type": "object"
+                  },
+                  "description": "Array of Photoshop JSON-formatted Actions to play."
+                },
+                "patterns": {
+                  "type": "array",
+                  "items": {
+                    "title": "StorageDetails",
+                    "type": "object",
+                    "required": [
+                      "href",
+                      "storage"
+                    ],
+                    "properties": {
+                      "href": {
+                        "type": "string",
+                        "description": "A pre-signed GET URL."
+                      },
+                      "storage": {
+                        "title": "StorageType",
+                        "enum": [
+                          "external",
+                          "azure",
+                          "dropbox"
+                        ],
+                        "type": "string",
+                        "description": "Storage platforms supported."
+                      }
+                    },
+                    "description": "A file located on Adobe's cloud or a supported external service."
+                  },
+                  "description": "array of custom pattern preset to be used in Photoshop Actions"
+                },
+                "fonts": {
+                  "type": "array",
+                  "items": {
+                    "title": "StorageDetails",
+                    "type": "object",
+                    "required": [
+                      "href",
+                      "storage"
+                    ],
+                    "properties": {
+                      "href": {
+                        "type": "string",
+                        "description": "A pre-signed GET URL."
+                      },
+                      "storage": {
+                        "title": "StorageType",
+                        "enum": [
+                          "external",
+                          "azure",
+                          "dropbox"
+                        ],
+                        "type": "string",
+                        "description": "Storage platforms supported."
+                      }
+                    },
+                    "description": "A file located on Adobe's cloud or a supported external service."
+                  },
+                  "description": "array of custom fonts needed in this document"
+                },
+                "brushes": {
+                  "type": "array",
+                  "items": {
+                    "title": "StorageDetails",
+                    "type": "object",
+                    "required": [
+                      "href",
+                      "storage"
+                    ],
+                    "properties": {
+                      "href": {
+                        "type": "string",
+                        "description": "A pre-signed GET URL."
+                      },
+                      "storage": {
+                        "title": "StorageType",
+                        "enum": [
+                          "external",
+                          "azure",
+                          "dropbox"
+                        ],
+                        "type": "string",
+                        "description": "Storage platforms supported."
+                      }
+                    },
+                    "description": "A file located on Adobe's cloud or a supported external service."
+                  },
+                  "description": "array of custom brushes needed in this document"
+                },
+                "additionalImages": {
+                  "minItems": 1,
+                  "type": "array",
+                  "items": {
+                    "title": "StorageDetails",
+                    "type": "object",
+                    "required": [
+                      "href",
+                      "storage"
+                    ],
+                    "properties": {
+                      "href": {
+                        "type": "string",
+                        "description": "A pre-signed GET URL."
+                      },
+                      "storage": {
+                        "title": "StorageType",
+                        "enum": [
+                          "external",
+                          "azure",
+                          "dropbox"
+                        ],
+                        "type": "string",
+                        "description": "Storage platforms supported."
+                      }
+                    },
+                    "description": "A file located on Adobe's cloud or a supported external service."
+                  },
+                  "description": "Array of references to additional images, which can be referred by actionJson commands."
+                }
+              }
+            }
+          },
+          "description": "The input psd file to apply Photoshop actionJSON to and generate renditions and/or save as a new image"
+        }
+      },
+      "required": [
+        "requestBody"
+      ]
+    },
+    "method": "post",
+    "pathTemplate": "/pie/psdService/actionJSON",
+    "parameters": [
+      {
+        "name": "x-gw-ims-org-id",
+        "in": "header",
+        "description": "The IMS organization ID. This only needs to be sent if you want to receive the job status through Adobe I/O Events",
+        "required": false,
+        "schema": {
+          "type": "string"
+        }
+      }
+    ],
+    "executionParameters": [
+      {
+        "name": "x-gw-ims-org-id",
+        "in": "header"
+      }
+    ],
+    "requestBodyContentType": "application/json",
+    "securityRequirements": [
+      {
+        "ApiKeyAuth": []
+      },
+      {
+        "BearerAuth": []
+      }
+    ],
+    "operationId": "playPhotoshopActionsJsonAsync",
+    "baseUrl": "https://image.adobe.io"
+  },
+  {
+    "name": "convertToActionsJsonAsync",
+    "description": "Convert an ATN file to actionJSON format.",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "x-gw-ims-org-id": {
+          "type": "string",
+          "description": "The IMS organization ID. This only needs to be sent if you want to receive the job status through Adobe I/O Events"
+        },
+        "requestBody": {
+          "title": "ConvertToActionsJsonRequest",
+          "type": "object",
+          "required": [
+            "inputs"
+          ],
+          "properties": {
+            "inputs": {
+              "type": "array",
+              "items": {
+                "title": "StorageDetails",
+                "type": "object",
+                "required": [
+                  "href",
+                  "storage"
+                ],
+                "properties": {
+                  "href": {
+                    "type": "string",
+                    "description": "A pre-signed GET URL."
+                  },
+                  "storage": {
+                    "title": "StorageType",
+                    "enum": [
+                      "external",
+                      "azure",
+                      "dropbox"
+                    ],
+                    "type": "string",
+                    "description": "Storage platforms supported."
+                  }
+                },
+                "description": "A file located on Adobe's cloud or a supported external service."
+              },
+              "description": "An array of input action sets in ATN format. Only one input object is currently supported."
+            },
+            "options": {
+              "title": "ActionJsonCreateOptions",
+              "required": [
+                "actions"
+              ],
+              "type": "object",
+              "properties": {
+                "actions": {
+                  "maxItems": 1,
+                  "minItems": 1,
+                  "type": "array",
+                  "items": {
+                    "title": "ActionDetails",
+                    "minProperties": 1,
+                    "type": "object",
+                    "properties": {
+                      "actionName": {
+                        "type": "string",
+                        "description": "If you only want to execute a particular action, you may specify whcih action to convert from the ActionSet"
+                      }
+                    },
+                    "description": "Details of Actions from the ActionSet."
+                  },
+                  "description": "Array of action objects."
+                }
+              },
+              "description": "This block is needed only if you want to specify which action to convert from the ActionSet."
+            }
+          },
+          "description": "The input ATN file to convert to actionJSON."
+        }
+      },
+      "required": [
+        "requestBody"
+      ]
+    },
+    "method": "post",
+    "pathTemplate": "/pie/psdService/actionJsonCreate",
+    "parameters": [
+      {
+        "name": "x-gw-ims-org-id",
+        "in": "header",
+        "description": "The IMS organization ID. This only needs to be sent if you want to receive the job status through Adobe I/O Events",
+        "required": false,
+        "schema": {
+          "type": "string"
+        }
+      }
+    ],
+    "executionParameters": [
+      {
+        "name": "x-gw-ims-org-id",
+        "in": "header"
+      }
+    ],
+    "requestBodyContentType": "application/json",
+    "securityRequirements": [
+      {
+        "ApiKeyAuth": []
+      },
+      {
+        "BearerAuth": []
+      }
+    ],
+    "operationId": "convertToActionsJsonAsync",
+    "baseUrl": "https://image.adobe.io"
+  },
+  {
+    "name": "applyAutoCropAsync",
+    "description": "This endpoint identifies the subject of the input file and automatically crops the image to keep the subject in the center. Check the status of this process with the `Get Status` endpoint.",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "x-gw-ims-org-id": {
+          "type": "string",
+          "description": "The IMS organization ID. This only needs to be sent if you want to receive the job status through Adobe I/O Events"
+        },
+        "requestBody": {
+          "title": "ApplyAutoCropRequest",
+          "type": "object",
+          "required": [
+            "inputs",
+            "outputs",
+            "options"
+          ],
+          "properties": {
+            "inputs": {
+              "type": "array",
+              "items": {
+                "title": "StorageDetails",
+                "type": "object",
+                "required": [
+                  "href",
+                  "storage"
+                ],
+                "properties": {
+                  "href": {
+                    "type": "string",
+                    "description": "A pre-signed GET URL."
+                  },
+                  "storage": {
+                    "title": "StorageType",
+                    "enum": [
+                      "external",
+                      "azure",
+                      "dropbox"
+                    ],
+                    "type": "string",
+                    "description": "Storage platforms supported."
+                  }
+                },
+                "description": "A file located on Adobe's cloud or a supported external service."
+              },
+              "description": "An array of input objects. Only one input object is currently supported."
+            },
+            "outputs": {
+              "type": "array",
+              "items": {
+                "title": "ActionOutputDetails",
+                "type": "object",
+                "required": [
+                  "href",
+                  "storage",
+                  "type"
+                ],
+                "properties": {
+                  "href": {
+                    "type": "string",
+                    "description": "A pre-signed POST URL to the output file."
+                  },
+                  "storage": {
+                    "title": "StorageType",
+                    "enum": [
+                      "external",
+                      "azure",
+                      "dropbox"
+                    ],
+                    "type": "string",
+                    "description": "Storage platforms supported."
+                  },
+                  "type": {
+                    "title": "ImageFormatType",
+                    "enum": [
+                      "image/vnd.adobe.photoshop",
+                      "image/jpeg",
+                      "image/png",
+                      "image/tiff",
+                      "vnd.adobe.photoshop"
+                    ],
+                    "type": "string",
+                    "description": "The desired image format. Using `image/vnd.adobe.photoshop` - create a new PSD file. Using `image/jpeg`, `image/png`, `image/tiff` - create a new JPEG, PNG or TIFF rendition. Certain image modes (RGB, CMYK, greyscale, etc.) must be converted to another image mode before a rendition can be created. With TIFF requested, Multichannel and Duotone will convert to RGB. With PNG requested, CMYK, HSL, HSB, Multichannel, Duotone, Lab and XYZ will convert to RGB."
+                  },
+                  "overwrite": {
+                    "type": "boolean",
+                    "description": "If the file already exists, indicates if the output file should be overwritten. Will eventually support eTags. Only applies to CC Storage.",
+                    "default": true
+                  },
+                  "quality": {
+                    "maximum": 12,
+                    "minimum": 1,
+                    "type": "number",
+                    "description": "The quality of the renditions for JPEG. The range is 1 to 7, 7 being the highest quality.",
+                    "format": "int32",
+                    "default": 7
+                  },
+                  "compression": {
+                    "title": "CompressionType",
+                    "enum": [
+                      "small",
+                      "medium",
+                      "large"
+                    ],
+                    "type": "string",
+                    "description": "Desired PNG compression level."
+                  }
+                },
+                "description": "An output object."
+              },
+              "description": "An array of output objects"
+            },
+            "options": {
+              "title": "CropOptions",
+              "type": "object",
+              "required": [
+                "unit",
+                "width",
+                "height"
+              ],
+              "properties": {
+                "unit": {
+                  "allOf": [
+                    {
+                      "title": "UnitType",
+                      "enum": [
+                        "Pixels",
+                        "Percent"
+                      ],
+                      "type": "string",
+                      "description": "Unit for width and height."
+                    },
+                    {
+                      "description": "Unit for width and height."
+                    }
+                  ]
+                },
+                "width": {
+                  "type": "number",
+                  "description": "The width to be added as padding.",
+                  "format": "int32"
+                },
+                "height": {
+                  "type": "number",
+                  "description": "The height to be added as padding.",
+                  "format": "int32"
+                }
+              }
+            }
+          },
+          "description": "The input image to apply product crop to."
+        }
+      },
+      "required": [
+        "requestBody"
+      ]
+    },
+    "method": "post",
+    "pathTemplate": "/pie/psdService/productCrop",
+    "parameters": [
+      {
+        "name": "x-gw-ims-org-id",
+        "in": "header",
+        "description": "The IMS organization ID. This only needs to be sent if you want to receive the job status through Adobe I/O Events",
+        "required": false,
+        "schema": {
+          "type": "string"
+        }
+      }
+    ],
+    "executionParameters": [
+      {
+        "name": "x-gw-ims-org-id",
+        "in": "header"
+      }
+    ],
+    "requestBodyContentType": "application/json",
+    "securityRequirements": [
+      {
+        "ApiKeyAuth": []
+      },
+      {
+        "BearerAuth": []
+      }
+    ],
+    "operationId": "applyAutoCropAsync",
+    "baseUrl": "https://image.adobe.io"
+  },
+  {
+    "name": "applyDepthBlurAsync",
+    "description": "Apply depth blur to an image input.",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "x-gw-ims-org-id": {
+          "type": "string",
+          "description": "The IMS organization ID. This only needs to be sent if you want to receive the job status through Adobe I/O Events."
+        },
+        "requestBody": {
+          "title": "ApplyDepthBlurRequest",
+          "type": "object",
+          "required": [
+            "inputs",
+            "outputs"
+          ],
+          "properties": {
+            "inputs": {
+              "type": "array",
+              "items": {
+                "title": "StorageDetails",
+                "type": "object",
+                "required": [
+                  "href",
+                  "storage"
+                ],
+                "properties": {
+                  "href": {
+                    "type": "string",
+                    "description": "A pre-signed GET URL."
+                  },
+                  "storage": {
+                    "title": "StorageType",
+                    "enum": [
+                      "external",
+                      "azure",
+                      "dropbox"
+                    ],
+                    "type": "string",
+                    "description": "Storage platforms supported."
+                  }
+                },
+                "description": "A file located on Adobe's cloud or a supported external service."
+              },
+              "description": "An array of input objects. We currently only support one input object"
+            },
+            "outputs": {
+              "type": "array",
+              "items": {
+                "title": "ActionOutputDetails",
+                "type": "object",
+                "required": [
+                  "href",
+                  "storage",
+                  "type"
+                ],
+                "properties": {
+                  "href": {
+                    "type": "string",
+                    "description": "A pre-signed POST URL to the output file."
+                  },
+                  "storage": {
+                    "title": "StorageType",
+                    "enum": [
+                      "external",
+                      "azure",
+                      "dropbox"
+                    ],
+                    "type": "string",
+                    "description": "Storage platforms supported."
+                  },
+                  "type": {
+                    "title": "ImageFormatType",
+                    "enum": [
+                      "image/vnd.adobe.photoshop",
+                      "image/jpeg",
+                      "image/png",
+                      "image/tiff",
+                      "vnd.adobe.photoshop"
+                    ],
+                    "type": "string",
+                    "description": "The desired image format. Using `image/vnd.adobe.photoshop` - create a new PSD file. Using `image/jpeg`, `image/png`, `image/tiff` - create a new JPEG, PNG or TIFF rendition. Certain image modes (RGB, CMYK, greyscale, etc.) must be converted to another image mode before a rendition can be created. With TIFF requested, Multichannel and Duotone will convert to RGB. With PNG requested, CMYK, HSL, HSB, Multichannel, Duotone, Lab and XYZ will convert to RGB."
+                  },
+                  "overwrite": {
+                    "type": "boolean",
+                    "description": "If the file already exists, indicates if the output file should be overwritten. Will eventually support eTags. Only applies to CC Storage.",
+                    "default": true
+                  },
+                  "quality": {
+                    "maximum": 12,
+                    "minimum": 1,
+                    "type": "number",
+                    "description": "The quality of the renditions for JPEG. The range is 1 to 7, 7 being the highest quality.",
+                    "format": "int32",
+                    "default": 7
+                  },
+                  "compression": {
+                    "title": "CompressionType",
+                    "enum": [
+                      "small",
+                      "medium",
+                      "large"
+                    ],
+                    "type": "string",
+                    "description": "Desired PNG compression level."
+                  }
+                },
+                "description": "An output object."
+              },
+              "description": "An array of output objects"
+            },
+            "options": {
+              "title": "DepthBlurDetails",
+              "type": "object",
+              "properties": {
+                "focalDistance": {
+                  "maximum": 100,
+                  "minimum": 0,
+                  "type": "number",
+                  "description": "The distance of the point to be in focus. 0 would be the nearest point, 100 would be the furthest point.",
+                  "format": "int32",
+                  "default": 0
+                },
+                "focalRange": {
+                  "maximum": 100,
+                  "minimum": 0,
+                  "type": "number",
+                  "description": "The range of the focal point.",
+                  "format": "int32",
+                  "default": 0
+                },
+                "focalSelector": {
+                  "allOf": [
+                    {
+                      "title": "FocalSelector",
+                      "description": "Focal selector.",
+                      "minProperties": 2,
+                      "type": "object",
+                      "properties": {
+                        "x": {
+                          "type": "number",
+                          "description": "X coordinate."
+                        },
+                        "y": {
+                          "type": "number",
+                          "description": "Y coordinate."
+                        }
+                      }
+                    },
+                    {
+                      "description": "Coordinates of the specific focal point to select."
+                    }
+                  ]
+                },
+                "focusSubject": {
+                  "type": "boolean",
+                  "description": "If enabled uses select subject to automatically select the prominent subject for focus. Also would override focalDistance.",
+                  "default": false
+                },
+                "blurStrength": {
+                  "maximum": 100,
+                  "minimum": 0,
+                  "type": "number",
+                  "description": "The amount of blur to apply.",
+                  "format": "int32",
+                  "default": 50
+                },
+                "haze": {
+                  "maximum": 100,
+                  "minimum": 0,
+                  "type": "number",
+                  "description": "The amount of haze to apply.",
+                  "format": "int32",
+                  "default": 0
+                },
+                "temp": {
+                  "maximum": 50,
+                  "minimum": -50,
+                  "type": "number",
+                  "description": "The value of the temperature to apply. -50 would be coldest and 50 would be the warmest setting.",
+                  "format": "int32",
+                  "default": 0
+                },
+                "tint": {
+                  "maximum": 50,
+                  "minimum": -50,
+                  "type": "number",
+                  "description": "The amount of the tint to apply.",
+                  "format": "int32",
+                  "default": 0
+                },
+                "saturation": {
+                  "maximum": 50,
+                  "minimum": -50,
+                  "type": "number",
+                  "description": "The amount of the saturation to apply. -50 implies fully unsaturated colors and 50 will fully saturate the colors.",
+                  "format": "int32",
+                  "default": 0
+                },
+                "brightness": {
+                  "maximum": 50,
+                  "minimum": -50,
+                  "type": "number",
+                  "description": "The amount of the brightness to apply.",
+                  "format": "int32",
+                  "default": 0
+                },
+                "grain": {
+                  "maximum": 100,
+                  "minimum": 0,
+                  "type": "number",
+                  "description": "The amount of the graining to add to the image.",
+                  "format": "int32",
+                  "default": 0
+                }
+              }
+            }
+          },
+          "description": "The input image to apply depth blur to."
+        }
+      },
+      "required": [
+        "requestBody"
+      ]
+    },
+    "method": "post",
+    "pathTemplate": "/pie/psdService/depthBlur",
+    "parameters": [
+      {
+        "name": "x-gw-ims-org-id",
+        "in": "header",
+        "description": "The IMS organization ID. This only needs to be sent if you want to receive the job status through Adobe I/O Events.",
+        "required": false,
+        "schema": {
+          "type": "string"
+        }
+      }
+    ],
+    "executionParameters": [
+      {
+        "name": "x-gw-ims-org-id",
+        "in": "header"
+      }
+    ],
+    "requestBodyContentType": "application/json",
+    "securityRequirements": [
+      {
+        "ApiKeyAuth": []
+      },
+      {
+        "BearerAuth": []
+      }
+    ],
+    "operationId": "applyDepthBlurAsync",
+    "baseUrl": "https://image.adobe.io"
+  },
+  {
+    "name": "editTextLayerAsync",
+    "description": "Change the contents of a text layer in a PSD, e.g. for localization.",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "x-gw-ims-org-id": {
+          "type": "string",
+          "description": "The IMS organization ID. This only needs to be sent if you want to receive the job status through Adobe I/O Events"
+        },
+        "requestBody": {
+          "title": "EditTextLayerRequest",
+          "type": "object",
+          "required": [
+            "inputs",
+            "outputs",
+            "options"
+          ],
+          "properties": {
+            "inputs": {
+              "type": "array",
+              "items": {
+                "title": "StorageDetails",
+                "type": "object",
+                "required": [
+                  "href",
+                  "storage"
+                ],
+                "properties": {
+                  "href": {
+                    "type": "string",
+                    "description": "A pre-signed GET URL."
+                  },
+                  "storage": {
+                    "title": "StorageType",
+                    "enum": [
+                      "external",
+                      "azure",
+                      "dropbox"
+                    ],
+                    "type": "string",
+                    "description": "Storage platforms supported."
+                  }
+                },
+                "description": "A file located on Adobe's cloud or a supported external service."
+              },
+              "description": "An array of input objects. We currently only support one input object"
+            },
+            "outputs": {
+              "type": "array",
+              "items": {
+                "title": "ActionOutputDetails",
+                "type": "object",
+                "required": [
+                  "href",
+                  "storage",
+                  "type"
+                ],
+                "properties": {
+                  "href": {
+                    "type": "string",
+                    "description": "A pre-signed POST URL to the output file."
+                  },
+                  "storage": {
+                    "title": "StorageType",
+                    "enum": [
+                      "external",
+                      "azure",
+                      "dropbox"
+                    ],
+                    "type": "string",
+                    "description": "Storage platforms supported."
+                  },
+                  "type": {
+                    "title": "ImageFormatType",
+                    "enum": [
+                      "image/vnd.adobe.photoshop",
+                      "image/jpeg",
+                      "image/png",
+                      "image/tiff",
+                      "vnd.adobe.photoshop"
+                    ],
+                    "type": "string",
+                    "description": "The desired image format. Using `image/vnd.adobe.photoshop` - create a new PSD file. Using `image/jpeg`, `image/png`, `image/tiff` - create a new JPEG, PNG or TIFF rendition. Certain image modes (RGB, CMYK, greyscale, etc.) must be converted to another image mode before a rendition can be created. With TIFF requested, Multichannel and Duotone will convert to RGB. With PNG requested, CMYK, HSL, HSB, Multichannel, Duotone, Lab and XYZ will convert to RGB."
+                  },
+                  "overwrite": {
+                    "type": "boolean",
+                    "description": "If the file already exists, indicates if the output file should be overwritten. Will eventually support eTags. Only applies to CC Storage.",
+                    "default": true
+                  },
+                  "quality": {
+                    "maximum": 12,
+                    "minimum": 1,
+                    "type": "number",
+                    "description": "The quality of the renditions for JPEG. The range is 1 to 7, 7 being the highest quality.",
+                    "format": "int32",
+                    "default": 7
+                  },
+                  "compression": {
+                    "title": "CompressionType",
+                    "enum": [
+                      "small",
+                      "medium",
+                      "large"
+                    ],
+                    "type": "string",
+                    "description": "Desired PNG compression level."
+                  }
+                },
+                "description": "An output object."
+              },
+              "description": "An array of output objects"
+            },
+            "options": {
+              "title": "TextOptions",
+              "type": "object",
+              "required": [
+                "layers"
+              ],
+              "properties": {
+                "manageMissingFonts": {
+                  "allOf": [
+                    {
+                      "title": "ManageMissingFonts",
+                      "enum": [
+                        "useDefault",
+                        "fail"
+                      ],
+                      "type": "string",
+                      "description": "Action to take if there are one or more missing fonts in the document. Using `fail` - the job will not succeed and the status will be set to `failed` with the details of the error provided in the `details` section in the status. Using `useDefault` - the job will succeed, however all the missing fonts will use the font: ArialMT."
+                    },
+                    {
+                      "description": "Action to take if there are one or more missing fonts in the document. If not provided it takes the default font."
+                    }
+                  ]
+                },
+                "globalFont": {
+                  "type": "string",
+                  "description": "The PostScript name of the font to be used as the global default. If this font is also missing, the option specified in `manageMissingFonts` will take effect"
+                },
+                "layers": {
+                  "minItems": 1,
+                  "type": "array",
+                  "items": {
+                    "title": "TextOptionsLayer",
+                    "type": "object",
+                    "properties": {
+                      "name": {
+                        "type": "string",
+                        "description": "The name of the layer you want to insert. Use either ID or name."
+                      },
+                      "id": {
+                        "type": "number",
+                        "description": "The ID of the layer you want to insert. Use either ID or name.",
+                        "format": "int32"
+                      },
+                      "bounds": {
+                        "title": "Bounds",
+                        "description": "The bounds of the layer.",
+                        "type": "object",
+                        "properties": {
+                          "top": {
+                            "type": "number",
+                            "description": "The top position in pixels.",
+                            "format": "int32"
+                          },
+                          "left": {
+                            "type": "number",
+                            "description": "The left position in pixels.",
+                            "format": "int32"
+                          },
+                          "width": {
+                            "type": "number",
+                            "description": "The width in pixels.",
+                            "format": "int32"
+                          },
+                          "height": {
+                            "type": "number",
+                            "description": "The height in pixels.",
+                            "format": "int32"
+                          }
+                        }
+                      },
+                      "locked": {
+                        "type": "boolean",
+                        "description": "Is the layer editable."
+                      },
+                      "visible": {
+                        "type": "boolean",
+                        "description": "Is the layer visible."
+                      },
+                      "text": {
+                        "allOf": [
+                          {
+                            "title": "TextDetails",
+                            "minProperties": 1,
+                            "type": "object",
+                            "properties": {
+                              "content": {
+                                "type": "string",
+                                "description": "The content of the text layer."
+                              },
+                              "orientation": {
+                                "title": "OrientationType",
+                                "enum": [
+                                  "horizontal",
+                                  "vertical"
+                                ],
+                                "type": "string",
+                                "description": "The text orientation."
+                              },
+                              "rotate": {
+                                "maximum": 180,
+                                "minimum": -180,
+                                "type": "integer",
+                                "description": "The text's rotation in angle.",
+                                "format": "int32"
+                              },
+                              "antiAlias": {
+                                "allOf": [
                                   {
-                                    title: 'AntiAliasType',
-                                    enum: [
-                                      'antiAliasNone',
-                                      'antiAliasSharp',
-                                      'antiAliasCrisp',
-                                      'antiAliasStrong',
-                                      'antiAliasSmooth',
-                                      'antiAliasPlatformLCD',
-                                      'antiAliasPlatformGray',
+                                    "title": "AntiAliasType",
+                                    "enum": [
+                                      "antiAliasNone",
+                                      "antiAliasSharp",
+                                      "antiAliasCrisp",
+                                      "antiAliasStrong",
+                                      "antiAliasSmooth",
+                                      "antiAliasPlatformLCD",
+                                      "antiAliasPlatformGray"
                                     ],
-                                    type: 'string',
-                                    description:
-                                      "The text's aliasing type which determines the smoothness of the jagged edges of the text.",
+                                    "type": "string",
+                                    "description": "The text's aliasing type which determines the smoothness of the jagged edges of the text."
                                   },
                                   {
-                                    description:
-                                      "The text's aliasing type which determines the smoothness of the jagged edges of the text.",
-                                  },
-                                ],
+                                    "description": "The text's aliasing type which determines the smoothness of the jagged edges of the text."
+                                  }
+                                ]
                               },
-                              eastAsianFeatures: {
-                                allOf: [
+                              "eastAsianFeatures": {
+                                "allOf": [
                                   {
-                                    title: 'EastAsianFeatures',
-                                    minProperties: 1,
-                                    type: 'object',
-                                    properties: {
-                                      textStyle: {
-                                        allOf: [
+                                    "title": "EastAsianFeatures",
+                                    "minProperties": 1,
+                                    "type": "object",
+                                    "properties": {
+                                      "textStyle": {
+                                        "allOf": [
                                           {
-                                            title: 'TextStyleType',
-                                            enum: ['cross', 'rotated', 'withSream'],
-                                            type: 'string',
-                                            description: 'Base line direction for text style.',
+                                            "title": "TextStyleType",
+                                            "enum": [
+                                              "cross",
+                                              "rotated",
+                                              "withSream"
+                                            ],
+                                            "type": "string",
+                                            "description": "Base line direction for text style."
                                           },
                                           {
-                                            description: 'Base line direction for text style.',
-                                          },
-                                        ],
-                                      },
+                                            "description": "Base line direction for text style."
+                                          }
+                                        ]
+                                      }
                                     },
-                                    description:
-                                      'Text features specifically for East Asian languages.',
+                                    "description": "Text features specifically for East Asian languages."
                                   },
                                   {
-                                    description:
-                                      'Text features specifically for East Asian languages.',
-                                  },
-                                ],
+                                    "description": "Text features specifically for East Asian languages."
+                                  }
+                                ]
                               },
-                              characterStyles: {
-                                minItems: 1,
-                                type: 'array',
-                                items: {
-                                  title: 'CharacterStyleDetails',
-                                  minProperties: 1,
-                                  type: 'object',
-                                  properties: {
-                                    size: {
-                                      maximum: 5400,
-                                      minimum: 0.04,
-                                      type: 'number',
-                                      description: 'The font size, in pixels.',
+                              "characterStyles": {
+                                "minItems": 1,
+                                "type": "array",
+                                "items": {
+                                  "title": "CharacterStyleDetails",
+                                  "minProperties": 1,
+                                  "type": "object",
+                                  "properties": {
+                                    "size": {
+                                      "maximum": 5400,
+                                      "minimum": 0.04,
+                                      "type": "number",
+                                      "description": "The font size, in pixels."
                                     },
-                                    fontPostScriptName: {
-                                      type: 'string',
-                                      description:
-                                        "The font's PostScript name to be used to set the font for this layer.",
+                                    "fontPostScriptName": {
+                                      "type": "string",
+                                      "description": "The font's PostScript name to be used to set the font for this layer."
                                     },
-                                    color: {
-                                      title: 'ColorDetails',
-                                      required: ['red', 'green', 'blue'],
-                                      type: 'object',
-                                      properties: {
-                                        red: {
-                                          maximum: 65535,
-                                          minimum: 0,
-                                          type: 'integer',
-                                          description: 'The color red value.',
-                                          format: 'int32',
-                                        },
-                                        green: {
-                                          maximum: 65535,
-                                          minimum: 0,
-                                          type: 'integer',
-                                          description: 'The color green value.',
-                                          format: 'int32',
-                                        },
-                                        blue: {
-                                          maximum: 65535,
-                                          minimum: 0,
-                                          type: 'integer',
-                                          description: 'The color blue value.',
-                                          format: 'int32',
-                                        },
-                                      },
-                                      description: 'Font color in RGB format.',
-                                    },
-                                    leading: {
-                                      type: 'number',
-                                      description:
-                                        "The font's leading value, where leading is the distance between each line of text.",
-                                    },
-                                    tracking: {
-                                      type: 'number',
-                                      description:
-                                        "The font's tracking value, where tracking is the horizontal spacing between a range of characters.",
-                                    },
-                                    baseline: {
-                                      title: 'BaselineType',
-                                      enum: ['subScript', 'superScript'],
-                                      type: 'string',
-                                      description:
-                                        "Indicates if the text is raised or lowered in relation to a font's baseline.",
-                                    },
-                                    fontCaps: {
-                                      title: 'FontCaps',
-                                      enum: ['allCaps', 'smallCaps'],
-                                      type: 'string',
-                                      description: "The text's capitalization values.",
-                                    },
-                                    autoKern: {
-                                      title: 'AutoKernType',
-                                      enum: ['opticalKern', 'metricsKern'],
-                                      type: 'string',
-                                      description:
-                                        "The text's kerning setting. Optical: set based on the shape of the font. Metrics: uses kern pairs included in fonts.",
-                                    },
-                                    strikethrough: {
-                                      type: 'boolean',
-                                      description: 'Toggle strikethrough for selected text.',
-                                    },
-                                    syntheticBold: {
-                                      type: 'boolean',
-                                      description: 'Toggle bold for selected text.',
-                                    },
-                                    syntheticItalic: {
-                                      type: 'boolean',
-                                      description: 'Toggle italic for selected text.',
-                                    },
-                                    underline: {
-                                      type: 'boolean',
-                                      description: 'Toggle underlining of text.',
-                                    },
-                                    ligature: {
-                                      type: 'boolean',
-                                      description:
-                                        'Toggle text ligature, which are special characters in a font that combine two (or more).',
-                                    },
-                                    fractions: {
-                                      type: 'boolean',
-                                      description:
-                                        'Toggle automatic formatting of fractions: numbers separated by a slash (such as 1/2).',
-                                    },
-                                    stylisticAlternates: {
-                                      type: 'boolean',
-                                      description:
-                                        'Toggle stylistic alternates, which formats stylized characters that create a purely aesthetic effect.',
-                                    },
-                                    verticalScale: {
-                                      maximum: 1000,
-                                      minimum: 0,
-                                      type: 'number',
-                                      description:
-                                        'The amount of vertical scaling to apply to the font.',
-                                    },
-                                    horizontalScale: {
-                                      maximum: 1000,
-                                      minimum: 0,
-                                      type: 'number',
-                                      description:
-                                        'The amount of horizontal scaling to apply to the font.',
-                                    },
-                                  },
-                                  description: 'Character style settings.',
-                                },
-                                description:
-                                  'Array of character style objects. Any of the `characterStyles` property is required.',
-                              },
-                              paragraphStyles: {
-                                minItems: 1,
-                                type: 'array',
-                                items: {
-                                  title: 'ParagraphStyleDetails',
-                                  minProperties: 1,
-                                  type: 'object',
-                                  properties: {
-                                    alignment: {
-                                      description: 'The paragraph alignment.',
-                                      title: 'ParagraphStyleAlignmentType',
-                                      enum: [
-                                        'left',
-                                        'center',
-                                        'right',
-                                        'justify',
-                                        'justifyLeft',
-                                        'justifyCenter',
-                                        'justifyRight',
-                                        'justifyAll',
+                                    "color": {
+                                      "title": "ColorDetails",
+                                      "required": [
+                                        "red",
+                                        "green",
+                                        "blue"
                                       ],
-                                      type: 'string',
+                                      "type": "object",
+                                      "properties": {
+                                        "red": {
+                                          "maximum": 65535,
+                                          "minimum": 0,
+                                          "type": "integer",
+                                          "description": "The color red value.",
+                                          "format": "int32"
+                                        },
+                                        "green": {
+                                          "maximum": 65535,
+                                          "minimum": 0,
+                                          "type": "integer",
+                                          "description": "The color green value.",
+                                          "format": "int32"
+                                        },
+                                        "blue": {
+                                          "maximum": 65535,
+                                          "minimum": 0,
+                                          "type": "integer",
+                                          "description": "The color blue value.",
+                                          "format": "int32"
+                                        }
+                                      },
+                                      "description": "Font color in RGB format."
                                     },
-                                    startIndent: {
-                                      type: 'number',
-                                      description:
-                                        'The amount of indent to add to the left margin.',
+                                    "leading": {
+                                      "type": "number",
+                                      "description": "The font's leading value, where leading is the distance between each line of text."
                                     },
-                                    endIndent: {
-                                      type: 'number',
-                                      description:
-                                        'The amount of indent to add to the right margin.',
+                                    "tracking": {
+                                      "type": "number",
+                                      "description": "The font's tracking value, where tracking is the horizontal spacing between a range of characters."
                                     },
-                                    hyphenate: {
-                                      type: 'boolean',
-                                      description: 'Toggle hyphenate for paragraph text.',
+                                    "baseline": {
+                                      "title": "BaselineType",
+                                      "enum": [
+                                        "subScript",
+                                        "superScript"
+                                      ],
+                                      "type": "string",
+                                      "description": "Indicates if the text is raised or lowered in relation to a font's baseline."
                                     },
-                                    firstLineIndent: {
-                                      type: 'number',
-                                      description:
-                                        'The amount of indent to add to the first line of the paragraph.',
+                                    "fontCaps": {
+                                      "title": "FontCaps",
+                                      "enum": [
+                                        "allCaps",
+                                        "smallCaps"
+                                      ],
+                                      "type": "string",
+                                      "description": "The text's capitalization values."
                                     },
-                                    spaceBefore: {
-                                      type: 'number',
-                                      description:
-                                        'The amount of space to add before the paragraph.',
+                                    "autoKern": {
+                                      "title": "AutoKernType",
+                                      "enum": [
+                                        "opticalKern",
+                                        "metricsKern"
+                                      ],
+                                      "type": "string",
+                                      "description": "The text's kerning setting. Optical: set based on the shape of the font. Metrics: uses kern pairs included in fonts."
                                     },
-                                    spaceAfter: {
-                                      type: 'number',
-                                      description:
-                                        'The amount of space to add after the paragraph.',
+                                    "strikethrough": {
+                                      "type": "boolean",
+                                      "description": "Toggle strikethrough for selected text."
                                     },
+                                    "syntheticBold": {
+                                      "type": "boolean",
+                                      "description": "Toggle bold for selected text."
+                                    },
+                                    "syntheticItalic": {
+                                      "type": "boolean",
+                                      "description": "Toggle italic for selected text."
+                                    },
+                                    "underline": {
+                                      "type": "boolean",
+                                      "description": "Toggle underlining of text."
+                                    },
+                                    "ligature": {
+                                      "type": "boolean",
+                                      "description": "Toggle text ligature, which are special characters in a font that combine two (or more)."
+                                    },
+                                    "fractions": {
+                                      "type": "boolean",
+                                      "description": "Toggle automatic formatting of fractions: numbers separated by a slash (such as 1/2)."
+                                    },
+                                    "stylisticAlternates": {
+                                      "type": "boolean",
+                                      "description": "Toggle stylistic alternates, which formats stylized characters that create a purely aesthetic effect."
+                                    },
+                                    "verticalScale": {
+                                      "maximum": 1000,
+                                      "minimum": 0,
+                                      "type": "number",
+                                      "description": "The amount of vertical scaling to apply to the font."
+                                    },
+                                    "horizontalScale": {
+                                      "maximum": 1000,
+                                      "minimum": 0,
+                                      "type": "number",
+                                      "description": "The amount of horizontal scaling to apply to the font."
+                                    }
                                   },
-                                  description: 'Paragraph style settings.',
+                                  "description": "Character style settings."
                                 },
-                                description:
-                                  'Array of paragraph style objects. Any of the `paragraphStyles` properties is required.',
+                                "description": "Array of character style objects. Any of the `characterStyles` property is required."
                               },
-                              textType: {
-                                allOf: [
+                              "paragraphStyles": {
+                                "minItems": 1,
+                                "type": "array",
+                                "items": {
+                                  "title": "ParagraphStyleDetails",
+                                  "minProperties": 1,
+                                  "type": "object",
+                                  "properties": {
+                                    "alignment": {
+                                      "description": "The paragraph alignment.",
+                                      "title": "ParagraphStyleAlignmentType",
+                                      "enum": [
+                                        "left",
+                                        "center",
+                                        "right",
+                                        "justify",
+                                        "justifyLeft",
+                                        "justifyCenter",
+                                        "justifyRight",
+                                        "justifyAll"
+                                      ],
+                                      "type": "string"
+                                    },
+                                    "startIndent": {
+                                      "type": "number",
+                                      "description": "The amount of indent to add to the left margin."
+                                    },
+                                    "endIndent": {
+                                      "type": "number",
+                                      "description": "The amount of indent to add to the right margin."
+                                    },
+                                    "hyphenate": {
+                                      "type": "boolean",
+                                      "description": "Toggle hyphenate for paragraph text."
+                                    },
+                                    "firstLineIndent": {
+                                      "type": "number",
+                                      "description": "The amount of indent to add to the first line of the paragraph."
+                                    },
+                                    "spaceBefore": {
+                                      "type": "number",
+                                      "description": "The amount of space to add before the paragraph."
+                                    },
+                                    "spaceAfter": {
+                                      "type": "number",
+                                      "description": "The amount of space to add after the paragraph."
+                                    }
+                                  },
+                                  "description": "Paragraph style settings."
+                                },
+                                "description": "Array of paragraph style objects. Any of the `paragraphStyles` properties is required."
+                              },
+                              "textType": {
+                                "allOf": [
                                   {
-                                    title: 'TextType',
-                                    enum: ['point', 'paragraph'],
-                                    type: 'string',
-                                    description: "The type of text's contents, point or paragraph.",
+                                    "title": "TextType",
+                                    "enum": [
+                                      "point",
+                                      "paragraph"
+                                    ],
+                                    "type": "string",
+                                    "description": "The type of text's contents, point or paragraph."
                                   },
                                   {
-                                    description: "The type of text's contents, point or paragraph.",
-                                  },
-                                ],
-                              },
+                                    "description": "The type of text's contents, point or paragraph."
+                                  }
+                                ]
+                              }
                             },
-                            description: 'Supported text layer attributes.',
+                            "description": "Supported text layer attributes."
                           },
                           {
-                            description: 'Supported text layer attributes.',
-                          },
-                        ],
-                      },
-                    },
+                            "description": "Supported text layer attributes."
+                          }
+                        ]
+                      }
+                    }
                   },
-                  description: 'Array of text layer objects you wish to act upon.',
+                  "description": "Array of text layer objects you wish to act upon."
                 },
-                fonts: {
-                  type: 'array',
-                  items: {
-                    title: 'StorageDetails',
-                    type: 'object',
-                    required: ['href', 'storage'],
-                    properties: {
-                      href: {
-                        type: 'string',
-                        description: 'A pre-signed GET URL.',
-                      },
-                      storage: {
-                        title: 'StorageType',
-                        enum: ['external', 'azure', 'dropbox'],
-                        type: 'string',
-                        description: 'Storage platforms supported.',
-                      },
-                    },
-                    description: "A file located on Adobe's cloud or a supported external service.",
-                  },
-                  description: 'Array of custom fonts needed in this document.',
-                },
-              },
-            },
-          },
-          description: 'The input text to be edited.',
-        },
-      },
-      required: ['requestBody'],
-    },
-    method: 'post',
-    pathTemplate: '/pie/psdService/text',
-    parameters: [
-      {
-        name: 'x-gw-ims-org-id',
-        in: 'header',
-        description:
-          'The IMS organization ID. This only needs to be sent if you want to receive the job status through Adobe I/O Events',
-        required: false,
-        schema: {
-          type: 'string',
-        },
-      },
-    ],
-    executionParameters: [
-      {
-        name: 'x-gw-ims-org-id',
-        in: 'header',
-      },
-    ],
-    requestBodyContentType: 'application/json',
-    securityRequirements: [
-      {
-        ApiKeyAuth: [],
-      },
-      {
-        BearerAuth: [],
-      },
-    ],
-    operationId: 'editTextLayerAsync',
-    baseUrl: 'https://image.adobe.io',
-  },
-  {
-    name: 'createArtboardAsync',
-    description: 'Create artboards from multiple PSD inputs.',
-    inputSchema: {
-      type: 'object',
-      properties: {
-        'x-gw-ims-org-id': {
-          type: 'string',
-          description:
-            'The IMS organization ID. This only needs to be sent if you want to receive the job status through Adobe I/O Events',
-        },
-        requestBody: {
-          title: 'CreateArtboardRequest',
-          type: 'object',
-          required: ['outputs', 'options'],
-          properties: {
-            options: {
-              title: 'ArtboardDetails',
-              type: 'object',
-              required: ['artboard'],
-              properties: {
-                artboard: {
-                  type: 'array',
-                  items: {
-                    title: 'StorageDetails',
-                    type: 'object',
-                    required: ['href', 'storage'],
-                    properties: {
-                      href: {
-                        type: 'string',
-                        description: 'A pre-signed GET URL.',
-                      },
-                      storage: {
-                        title: 'StorageType',
-                        enum: ['external', 'azure', 'dropbox'],
-                        type: 'string',
-                        description: 'Storage platforms supported.',
-                      },
-                    },
-                    description: "A file located on Adobe's cloud or a supported external service.",
-                  },
-                  description:
-                    "An array of hashes describing the input files to edit. Each input object will be either 'external', 'adobe', 'azure' or 'dropbox'.",
-                },
-              },
-            },
-            outputs: {
-              type: 'array',
-              items: {
-                title: 'PsOutputDetails',
-                type: 'object',
-                required: ['href', 'storage', 'type'],
-                properties: {
-                  href: {
-                    type: 'string',
-                    description: 'A pre-signed POST URL to the output file.',
-                  },
-                  storage: {
-                    title: 'StorageType',
-                    enum: ['external', 'azure', 'dropbox'],
-                    type: 'string',
-                    description: 'Storage platforms supported.',
-                  },
-                  type: {
-                    title: 'ImageFormatType',
-                    enum: [
-                      'image/vnd.adobe.photoshop',
-                      'image/jpeg',
-                      'image/png',
-                      'image/tiff',
-                      'vnd.adobe.photoshop',
+                "fonts": {
+                  "type": "array",
+                  "items": {
+                    "title": "StorageDetails",
+                    "type": "object",
+                    "required": [
+                      "href",
+                      "storage"
                     ],
-                    type: 'string',
-                    description:
-                      'The desired image format. Using `image/vnd.adobe.photoshop` - create a new PSD file. Using `image/jpeg`, `image/png`, `image/tiff` - create a new JPEG, PNG or TIFF rendition. Certain image modes (RGB, CMYK, greyscale, etc.) must be converted to another image mode before a rendition can be created. With TIFF requested, Multichannel and Duotone will convert to RGB. With PNG requested, CMYK, HSL, HSB, Multichannel, Duotone, Lab and XYZ will convert to RGB.',
-                  },
-                  overwrite: {
-                    type: 'boolean',
-                    description:
-                      'If the file already exists, indicates if the output file should be overwritten. Will eventually support eTags. Only applies to CC Storage.',
-                    default: true,
-                  },
-                  width: {
-                    type: 'number',
-                    description:
-                      'The width, in pixels, of the renditions. A width of 0 generates a full size rendition. Height is generated automatically using the aspect ratio. Only supported for image rendition.',
-                    format: 'int32',
-                    default: 0,
-                  },
-                  maxWidth: {
-                    type: 'number',
-                    description:
-                      'The size, in pixels, of the renditions. When width is 0, maxWidth can be provided to get the rendition size. maxWidth when less than document width gets precedence over width. Height is not necessary as the rendition generate will automatically maintain the aspect ratio.',
-                    format: 'int32',
-                    default: 0,
-                  },
-                  quality: {
-                    maximum: 7,
-                    minimum: 1,
-                    type: 'number',
-                    description:
-                      'The quality of the renditions for JPEG. The range is 1 to 7, 7 being the highest quality.',
-                    format: 'int32',
-                    default: 7,
-                  },
-                  compression: {
-                    title: 'CompressionType',
-                    enum: ['small', 'medium', 'large'],
-                    type: 'string',
-                    description: 'Desired PNG compression level.',
-                  },
-                  trimToCanvas: {
-                    title: 'TrimToCanvasType',
-                    enum: [true, false],
-                    type: 'boolean',
-                    description:
-                      'Use this if the renditions needs to be of Canvas size. Using `True` trims the renditions to Canvas size, while `False` makes the renditions Layer Size.',
-                  },
-                  layers: {
-                    type: 'array',
-                    items: {
-                      title: 'LayerReference',
-                      description: 'A layer reference object.',
-                      type: 'object',
-                      properties: {
-                        id: {
-                          type: 'number',
-                          description: 'The id of the layer. Use either `id` OR `name`.',
-                          format: 'int32',
-                        },
-                        name: {
-                          type: 'string',
-                          description: 'The name of the layer. Use either `id` OR `name`.',
-                        },
+                    "properties": {
+                      "href": {
+                        "type": "string",
+                        "description": "A pre-signed GET URL."
                       },
-                    },
-                    description:
-                      "An array of layer objects.\nBy including this array you are signaling that you'd like a rendition created from these layer id's or layer names. Excluding it will generate a document-level rendition.",
-                  },
-                  iccProfile: {
-                    title: 'IccProfileDetails',
-                    type: 'object',
-                    properties: {
-                      imageMode: {
-                        title: 'ImageModeType',
-                        enum: ['grayscale', 'rgb', 'cmyk'],
-                        type: 'string',
-                        description: 'The image mode.',
-                      },
-                      input: {
-                        title: 'StorageDetails',
-                        type: 'object',
-                        required: ['href', 'storage'],
-                        properties: {
-                          href: {
-                            type: 'string',
-                            description: 'A pre-signed GET URL.',
-                          },
-                          storage: {
-                            title: 'StorageType',
-                            enum: ['external', 'azure', 'dropbox'],
-                            type: 'string',
-                            description: 'Storage platforms supported.',
-                          },
-                        },
-                        description:
-                          "A file located on Adobe's cloud or a supported external service.",
-                      },
-                      profileName: {
-                        title: 'ColorProfileType',
-                        enum: [
-                          'Adobe RGB (1998)',
-                          'Apple RGB',
-                          'ColorMatch RGB',
-                          'sRGB IEC61966-2.1',
-                          'Dot Gain 10%',
-                          'Dot Gain 15%',
-                          'Dot Gain 20%',
-                          'Dot Gain 25%',
-                          'Dot Gain 30%',
-                          'Gray Gamma 1.8',
-                          'Gray Gamma 2.2',
+                      "storage": {
+                        "title": "StorageType",
+                        "enum": [
+                          "external",
+                          "azure",
+                          "dropbox"
                         ],
-                        type: 'string',
-                        description: 'The name of the color profile.',
+                        "type": "string",
+                        "description": "Storage platforms supported."
+                      }
+                    },
+                    "description": "A file located on Adobe's cloud or a supported external service."
+                  },
+                  "description": "Array of custom fonts needed in this document."
+                }
+              }
+            }
+          },
+          "description": "The input text to be edited."
+        }
+      },
+      "required": [
+        "requestBody"
+      ]
+    },
+    "method": "post",
+    "pathTemplate": "/pie/psdService/text",
+    "parameters": [
+      {
+        "name": "x-gw-ims-org-id",
+        "in": "header",
+        "description": "The IMS organization ID. This only needs to be sent if you want to receive the job status through Adobe I/O Events",
+        "required": false,
+        "schema": {
+          "type": "string"
+        }
+      }
+    ],
+    "executionParameters": [
+      {
+        "name": "x-gw-ims-org-id",
+        "in": "header"
+      }
+    ],
+    "requestBodyContentType": "application/json",
+    "securityRequirements": [
+      {
+        "ApiKeyAuth": []
+      },
+      {
+        "BearerAuth": []
+      }
+    ],
+    "operationId": "editTextLayerAsync",
+    "baseUrl": "https://image.adobe.io"
+  },
+  {
+    "name": "createArtboardAsync",
+    "description": "Create artboards from multiple PSD inputs.",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "x-gw-ims-org-id": {
+          "type": "string",
+          "description": "The IMS organization ID. This only needs to be sent if you want to receive the job status through Adobe I/O Events"
+        },
+        "requestBody": {
+          "title": "CreateArtboardRequest",
+          "type": "object",
+          "required": [
+            "outputs",
+            "options"
+          ],
+          "properties": {
+            "options": {
+              "title": "ArtboardDetails",
+              "type": "object",
+              "required": [
+                "artboard"
+              ],
+              "properties": {
+                "artboard": {
+                  "type": "array",
+                  "items": {
+                    "title": "StorageDetails",
+                    "type": "object",
+                    "required": [
+                      "href",
+                      "storage"
+                    ],
+                    "properties": {
+                      "href": {
+                        "type": "string",
+                        "description": "A pre-signed GET URL."
                       },
+                      "storage": {
+                        "title": "StorageType",
+                        "enum": [
+                          "external",
+                          "azure",
+                          "dropbox"
+                        ],
+                        "type": "string",
+                        "description": "Storage platforms supported."
+                      }
                     },
+                    "description": "A file located on Adobe's cloud or a supported external service."
                   },
+                  "description": "An array of hashes describing the input files to edit. Each input object will be either 'external', 'adobe', 'azure' or 'dropbox'."
+                }
+              }
+            },
+            "outputs": {
+              "type": "array",
+              "items": {
+                "title": "PsOutputDetails",
+                "type": "object",
+                "required": [
+                  "href",
+                  "storage",
+                  "type"
+                ],
+                "properties": {
+                  "href": {
+                    "type": "string",
+                    "description": "A pre-signed POST URL to the output file."
+                  },
+                  "storage": {
+                    "title": "StorageType",
+                    "enum": [
+                      "external",
+                      "azure",
+                      "dropbox"
+                    ],
+                    "type": "string",
+                    "description": "Storage platforms supported."
+                  },
+                  "type": {
+                    "title": "ImageFormatType",
+                    "enum": [
+                      "image/vnd.adobe.photoshop",
+                      "image/jpeg",
+                      "image/png",
+                      "image/tiff",
+                      "vnd.adobe.photoshop"
+                    ],
+                    "type": "string",
+                    "description": "The desired image format. Using `image/vnd.adobe.photoshop` - create a new PSD file. Using `image/jpeg`, `image/png`, `image/tiff` - create a new JPEG, PNG or TIFF rendition. Certain image modes (RGB, CMYK, greyscale, etc.) must be converted to another image mode before a rendition can be created. With TIFF requested, Multichannel and Duotone will convert to RGB. With PNG requested, CMYK, HSL, HSB, Multichannel, Duotone, Lab and XYZ will convert to RGB."
+                  },
+                  "overwrite": {
+                    "type": "boolean",
+                    "description": "If the file already exists, indicates if the output file should be overwritten. Will eventually support eTags. Only applies to CC Storage.",
+                    "default": true
+                  },
+                  "width": {
+                    "type": "number",
+                    "description": "The width, in pixels, of the renditions. A width of 0 generates a full size rendition. Height is generated automatically using the aspect ratio. Only supported for image rendition.",
+                    "format": "int32",
+                    "default": 0
+                  },
+                  "maxWidth": {
+                    "type": "number",
+                    "description": "The size, in pixels, of the renditions. When width is 0, maxWidth can be provided to get the rendition size. maxWidth when less than document width gets precedence over width. Height is not necessary as the rendition generate will automatically maintain the aspect ratio.",
+                    "format": "int32",
+                    "default": 0
+                  },
+                  "quality": {
+                    "maximum": 7,
+                    "minimum": 1,
+                    "type": "number",
+                    "description": "The quality of the renditions for JPEG. The range is 1 to 7, 7 being the highest quality.",
+                    "format": "int32",
+                    "default": 7
+                  },
+                  "compression": {
+                    "title": "CompressionType",
+                    "enum": [
+                      "small",
+                      "medium",
+                      "large"
+                    ],
+                    "type": "string",
+                    "description": "Desired PNG compression level."
+                  },
+                  "trimToCanvas": {
+                    "title": "TrimToCanvasType",
+                    "enum": [
+                      true,
+                      false
+                    ],
+                    "type": "boolean",
+                    "description": "Use this if the renditions needs to be of Canvas size. Using `True` trims the renditions to Canvas size, while `False` makes the renditions Layer Size."
+                  },
+                  "layers": {
+                    "type": "array",
+                    "items": {
+                      "title": "LayerReference",
+                      "description": "A layer reference object.",
+                      "type": "object",
+                      "properties": {
+                        "id": {
+                          "type": "number",
+                          "description": "The id of the layer. Use either `id` OR `name`.",
+                          "format": "int32"
+                        },
+                        "name": {
+                          "type": "string",
+                          "description": "The name of the layer. Use either `id` OR `name`."
+                        }
+                      }
+                    },
+                    "description": "An array of layer objects.\nBy including this array you are signaling that you'd like a rendition created from these layer id's or layer names. Excluding it will generate a document-level rendition."
+                  },
+                  "iccProfile": {
+                    "title": "IccProfileDetails",
+                    "type": "object",
+                    "properties": {
+                      "imageMode": {
+                        "title": "ImageModeType",
+                        "enum": [
+                          "grayscale",
+                          "rgb",
+                          "cmyk"
+                        ],
+                        "type": "string",
+                        "description": "The image mode."
+                      },
+                      "input": {
+                        "title": "StorageDetails",
+                        "type": "object",
+                        "required": [
+                          "href",
+                          "storage"
+                        ],
+                        "properties": {
+                          "href": {
+                            "type": "string",
+                            "description": "A pre-signed GET URL."
+                          },
+                          "storage": {
+                            "title": "StorageType",
+                            "enum": [
+                              "external",
+                              "azure",
+                              "dropbox"
+                            ],
+                            "type": "string",
+                            "description": "Storage platforms supported."
+                          }
+                        },
+                        "description": "A file located on Adobe's cloud or a supported external service."
+                      },
+                      "profileName": {
+                        "title": "ColorProfileType",
+                        "enum": [
+                          "Adobe RGB (1998)",
+                          "Apple RGB",
+                          "ColorMatch RGB",
+                          "sRGB IEC61966-2.1",
+                          "Dot Gain 10%",
+                          "Dot Gain 15%",
+                          "Dot Gain 20%",
+                          "Dot Gain 25%",
+                          "Dot Gain 30%",
+                          "Gray Gamma 1.8",
+                          "Gray Gamma 2.2"
+                        ],
+                        "type": "string",
+                        "description": "The name of the color profile."
+                      }
+                    }
+                  }
                 },
-                description: 'An output object.',
+                "description": "An output object."
               },
-              description: 'An array of output objects',
-            },
+              "description": "An array of output objects"
+            }
           },
-          description: 'The input artboard to be created.',
-        },
+          "description": "The input artboard to be created."
+        }
       },
-      required: ['requestBody'],
+      "required": [
+        "requestBody"
+      ]
     },
-    method: 'post',
-    pathTemplate: '/pie/psdService/artboardCreate',
-    parameters: [
+    "method": "post",
+    "pathTemplate": "/pie/psdService/artboardCreate",
+    "parameters": [
       {
-        name: 'x-gw-ims-org-id',
-        in: 'header',
-        description:
-          'The IMS organization ID. This only needs to be sent if you want to receive the job status through Adobe I/O Events',
-        required: false,
-        schema: {
-          type: 'string',
-        },
-      },
+        "name": "x-gw-ims-org-id",
+        "in": "header",
+        "description": "The IMS organization ID. This only needs to be sent if you want to receive the job status through Adobe I/O Events",
+        "required": false,
+        "schema": {
+          "type": "string"
+        }
+      }
     ],
-    executionParameters: [
+    "executionParameters": [
       {
-        name: 'x-gw-ims-org-id',
-        in: 'header',
-      },
+        "name": "x-gw-ims-org-id",
+        "in": "header"
+      }
     ],
-    requestBodyContentType: 'application/json',
-    securityRequirements: [
+    "requestBodyContentType": "application/json",
+    "securityRequirements": [
       {
-        ApiKeyAuth: [],
+        "ApiKeyAuth": []
       },
       {
-        BearerAuth: [],
-      },
+        "BearerAuth": []
+      }
     ],
-    operationId: 'createArtboardAsync',
-    baseUrl: 'https://image.adobe.io',
+    "operationId": "createArtboardAsync",
+    "baseUrl": "https://image.adobe.io"
   },
   {
-    name: 'maskObjects',
-    description:
-      'Given an image, this API generates semantic masks for the foreground objects and a list of background masks that segment the background elements of the image. Each mask includes a label and a URL for the mask image. To check the status of this process, utilize the `Get Status - V1` endpoint.',
-    inputSchema: {
-      type: 'object',
-      properties: {
-        requestBody: {
-          type: 'object',
-          properties: {
-            image: {
-              description: 'The input image.',
-              allOf: [
+    "name": "maskObjects",
+    "description": "Given an image, this API generates semantic masks for the foreground objects and a list of background masks that segment the background elements of the image. Each mask includes a label and a URL for the mask image. To check the status of this process, utilize the `Get Status - V1` endpoint.",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "requestBody": {
+          "type": "object",
+          "properties": {
+            "image": {
+              "description": "The input image.",
+              "allOf": [
                 {
-                  type: 'object',
-                  properties: {
-                    source: {
-                      description:
-                        'The source of the input image. Dimensions of the image should not be greater than (4000px X 4000px).',
-                      allOf: [
+                  "type": "object",
+                  "properties": {
+                    "source": {
+                      "description": "The source of the input image. Dimensions of the image should not be greater than (4000px X 4000px).",
+                      "allOf": [
                         {
-                          type: 'object',
-                          properties: {
-                            url: {
-                              type: 'string',
-                              description:
-                                'The URL of the resource. Only these listed domains are accepted in the request:  \n  <ul><li><code>amazonaws.com</code></li><li><code>windows.net</code></li><li><code>dropboxusercontent.com</code></li><li><code>assets.frame.io</code></li><li><code>storage.googleapis.com</code></li></ul>',
-                            },
+                          "type": "object",
+                          "properties": {
+                            "url": {
+                              "type": "string",
+                              "description": "The URL of the resource. Only these listed domains are accepted in the request:  \n  <ul><li><code>amazonaws.com</code></li><li><code>windows.net</code></li><li><code>dropboxusercontent.com</code></li><li><code>assets.frame.io</code></li><li><code>storage.googleapis.com</code></li></ul>"
+                            }
                           },
-                          required: ['url'],
-                        },
-                      ],
-                    },
+                          "required": [
+                            "url"
+                          ]
+                        }
+                      ]
+                    }
                   },
-                  required: ['source'],
-                },
-              ],
-            },
+                  "required": [
+                    "source"
+                  ]
+                }
+              ]
+            }
           },
-          required: ['image'],
-          description: 'The JSON request body.',
-        },
+          "required": [
+            "image"
+          ],
+          "description": "The JSON request body."
+        }
       },
-      required: ['requestBody'],
+      "required": [
+        "requestBody"
+      ]
     },
-    method: 'post',
-    pathTemplate: '/v1/mask-objects',
-    parameters: [],
-    executionParameters: [],
-    requestBodyContentType: 'application/json',
-    securityRequirements: [
+    "method": "post",
+    "pathTemplate": "/v1/mask-objects",
+    "parameters": [],
+    "executionParameters": [],
+    "requestBodyContentType": "application/json",
+    "securityRequirements": [
       {
-        ApiKeyAuth: [],
+        "ApiKeyAuth": []
       },
       {
-        BearerAuth: [],
-      },
+        "BearerAuth": []
+      }
     ],
-    operationId: 'maskObjects',
-    baseUrl: 'https://image.adobe.io',
+    "operationId": "maskObjects",
+    "baseUrl": "https://image.adobe.io"
   },
   {
-    name: 'maskBodyParts',
-    description:
-      'This endpoint processes an input image of a human, then identifies and creates masks for various items and sections on the body including sunglasses, hats, upper body apparel, lower body apparel, left arm, right arm, and more. The API returns an array of masks corresponding to each detected item and body part. To check the status of this process, utilize the `Get Status - V1` endpoint.',
-    inputSchema: {
-      type: 'object',
-      properties: {
-        requestBody: {
-          type: 'object',
-          properties: {
-            image: {
-              description: 'The input image.',
-              allOf: [
+    "name": "maskBodyParts",
+    "description": "This endpoint processes an input image of a human, then identifies and creates masks for various items and sections on the body including sunglasses, hats, upper body apparel, lower body apparel, left arm, right arm, and more. The API returns an array of masks corresponding to each detected item and body part. To check the status of this process, utilize the `Get Status - V1` endpoint.",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "requestBody": {
+          "type": "object",
+          "properties": {
+            "image": {
+              "description": "The input image.",
+              "allOf": [
                 {
-                  type: 'object',
-                  properties: {
-                    source: {
-                      description:
-                        'The source of the input image. Dimensions of the image should not be greater than (4000px X 4000px).',
-                      allOf: [
+                  "type": "object",
+                  "properties": {
+                    "source": {
+                      "description": "The source of the input image. Dimensions of the image should not be greater than (4000px X 4000px).",
+                      "allOf": [
                         {
-                          type: 'object',
-                          properties: {
-                            url: {
-                              type: 'string',
-                              description:
-                                'The URL of the resource. Only these listed domains are accepted in the request:  \n  <ul><li><code>amazonaws.com</code></li><li><code>windows.net</code></li><li><code>dropboxusercontent.com</code></li><li><code>assets.frame.io</code></li><li><code>storage.googleapis.com</code></li></ul>',
-                            },
+                          "type": "object",
+                          "properties": {
+                            "url": {
+                              "type": "string",
+                              "description": "The URL of the resource. Only these listed domains are accepted in the request:  \n  <ul><li><code>amazonaws.com</code></li><li><code>windows.net</code></li><li><code>dropboxusercontent.com</code></li><li><code>assets.frame.io</code></li><li><code>storage.googleapis.com</code></li></ul>"
+                            }
                           },
-                          required: ['url'],
-                        },
-                      ],
-                    },
+                          "required": [
+                            "url"
+                          ]
+                        }
+                      ]
+                    }
                   },
-                  required: ['source'],
-                },
-              ],
+                  "required": [
+                    "source"
+                  ]
+                }
+              ]
             },
-            mask: {
-              description: 'The mask of the subject in the input image.',
-              allOf: [
+            "mask": {
+              "description": "The mask of the subject in the input image.",
+              "allOf": [
                 {
-                  type: 'object',
-                  properties: {
-                    source: {
-                      description:
-                        'The URL of the mask. Dimensions of the mask should not be greater than (4000px X 4000px).',
-                      allOf: [
+                  "type": "object",
+                  "properties": {
+                    "source": {
+                      "description": "The URL of the mask. Dimensions of the mask should not be greater than (4000px X 4000px).",
+                      "allOf": [
                         {
-                          type: 'object',
-                          properties: {
-                            url: {
-                              type: 'string',
-                              description:
-                                'The URL of the resource. Only these listed domains are accepted in the request:  \n  <ul><li><code>amazonaws.com</code></li><li><code>windows.net</code></li><li><code>dropboxusercontent.com</code></li><li><code>assets.frame.io</code></li><li><code>storage.googleapis.com</code></li></ul>',
-                            },
+                          "type": "object",
+                          "properties": {
+                            "url": {
+                              "type": "string",
+                              "description": "The URL of the resource. Only these listed domains are accepted in the request:  \n  <ul><li><code>amazonaws.com</code></li><li><code>windows.net</code></li><li><code>dropboxusercontent.com</code></li><li><code>assets.frame.io</code></li><li><code>storage.googleapis.com</code></li></ul>"
+                            }
                           },
-                          required: ['url'],
-                        },
-                      ],
-                    },
+                          "required": [
+                            "url"
+                          ]
+                        }
+                      ]
+                    }
                   },
-                  required: ['source'],
-                },
-              ],
-            },
+                  "required": [
+                    "source"
+                  ]
+                }
+              ]
+            }
           },
-          required: ['image', 'mask'],
-          description: 'The JSON request body.',
-        },
+          "required": [
+            "image",
+            "mask"
+          ],
+          "description": "The JSON request body."
+        }
       },
-      required: ['requestBody'],
+      "required": [
+        "requestBody"
+      ]
     },
-    method: 'post',
-    pathTemplate: '/v1/mask-body-parts',
-    parameters: [],
-    executionParameters: [],
-    requestBodyContentType: 'application/json',
-    securityRequirements: [
+    "method": "post",
+    "pathTemplate": "/v1/mask-body-parts",
+    "parameters": [],
+    "executionParameters": [],
+    "requestBodyContentType": "application/json",
+    "securityRequirements": [
       {
-        ApiKeyAuth: [],
+        "ApiKeyAuth": []
       },
       {
-        BearerAuth: [],
-      },
+        "BearerAuth": []
+      }
     ],
-    operationId: 'maskBodyParts',
-    baseUrl: 'https://image.adobe.io',
+    "operationId": "maskBodyParts",
+    "baseUrl": "https://image.adobe.io"
   },
   {
-    name: 'refineMask',
-    description:
-      'This endpoint allows you to refine and improve the quality of existing masks. The API will enhance the edges and details of the provided masks to create more precise and accurate results. To check the status of this process, utilize the `Get Status - V1` endpoint.',
-    inputSchema: {
-      type: 'object',
-      properties: {
-        requestBody: {
-          type: 'object',
-          properties: {
-            image: {
-              description: 'The input image.',
-              allOf: [
+    "name": "refineMask",
+    "description": "This endpoint allows you to refine and improve the quality of existing masks. The API will enhance the edges and details of the provided masks to create more precise and accurate results. To check the status of this process, utilize the `Get Status - V1` endpoint.",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "requestBody": {
+          "type": "object",
+          "properties": {
+            "image": {
+              "description": "The input image.",
+              "allOf": [
                 {
-                  type: 'object',
-                  properties: {
-                    source: {
-                      description:
-                        'The source of the input image. Dimensions of the image should not be greater than (4000px X 4000px).',
-                      allOf: [
+                  "type": "object",
+                  "properties": {
+                    "source": {
+                      "description": "The source of the input image. Dimensions of the image should not be greater than (4000px X 4000px).",
+                      "allOf": [
                         {
-                          type: 'object',
-                          properties: {
-                            url: {
-                              type: 'string',
-                              description:
-                                'The URL of the resource. Only these listed domains are accepted in the request:  \n  <ul><li><code>amazonaws.com</code></li><li><code>windows.net</code></li><li><code>dropboxusercontent.com</code></li><li><code>assets.frame.io</code></li><li><code>storage.googleapis.com</code></li></ul>',
-                            },
+                          "type": "object",
+                          "properties": {
+                            "url": {
+                              "type": "string",
+                              "description": "The URL of the resource. Only these listed domains are accepted in the request:  \n  <ul><li><code>amazonaws.com</code></li><li><code>windows.net</code></li><li><code>dropboxusercontent.com</code></li><li><code>assets.frame.io</code></li><li><code>storage.googleapis.com</code></li></ul>"
+                            }
                           },
-                          required: ['url'],
-                        },
-                      ],
-                    },
+                          "required": [
+                            "url"
+                          ]
+                        }
+                      ]
+                    }
                   },
-                  required: ['source'],
-                },
-              ],
+                  "required": [
+                    "source"
+                  ]
+                }
+              ]
             },
-            mask: {
-              description: 'The mask in the input image that needs to be refined.',
-              allOf: [
+            "mask": {
+              "description": "The mask in the input image that needs to be refined.",
+              "allOf": [
                 {
-                  type: 'object',
-                  properties: {
-                    source: {
-                      description:
-                        'The source of the input image. Dimensions of the image should not be greater than (4000px X 4000px).',
-                      allOf: [
+                  "type": "object",
+                  "properties": {
+                    "source": {
+                      "description": "The source of the input image. Dimensions of the image should not be greater than (4000px X 4000px).",
+                      "allOf": [
                         {
-                          type: 'object',
-                          properties: {
-                            url: {
-                              type: 'string',
-                              description:
-                                'The URL of the resource. Only these listed domains are accepted in the request:  \n  <ul><li><code>amazonaws.com</code></li><li><code>windows.net</code></li><li><code>dropboxusercontent.com</code></li><li><code>assets.frame.io</code></li><li><code>storage.googleapis.com</code></li></ul>',
-                            },
+                          "type": "object",
+                          "properties": {
+                            "url": {
+                              "type": "string",
+                              "description": "The URL of the resource. Only these listed domains are accepted in the request:  \n  <ul><li><code>amazonaws.com</code></li><li><code>windows.net</code></li><li><code>dropboxusercontent.com</code></li><li><code>assets.frame.io</code></li><li><code>storage.googleapis.com</code></li></ul>"
+                            }
                           },
-                          required: ['url'],
-                        },
-                      ],
-                    },
+                          "required": [
+                            "url"
+                          ]
+                        }
+                      ]
+                    }
                   },
-                  required: ['source'],
-                },
-              ],
+                  "required": [
+                    "source"
+                  ]
+                }
+              ]
             },
-            colorDecontamination: {
-              type: 'boolean',
-              description:
-                'When `true`, this returns an RGBA image where the masked area has been further refined with color decontamination. A `false` value (default) means that the output will simply be the refined mask.',
-              default: false,
-            },
+            "colorDecontamination": {
+              "type": "boolean",
+              "description": "When `true`, this returns an RGBA image where the masked area has been further refined with color decontamination. A `false` value (default) means that the output will simply be the refined mask.",
+              "default": false
+            }
           },
-          required: ['image', 'mask'],
-          description: 'The JSON request body.',
-        },
+          "required": [
+            "image",
+            "mask"
+          ],
+          "description": "The JSON request body."
+        }
       },
-      required: ['requestBody'],
+      "required": [
+        "requestBody"
+      ]
     },
-    method: 'post',
-    pathTemplate: '/v1/refine-mask',
-    parameters: [],
-    executionParameters: [],
-    requestBodyContentType: 'application/json',
-    securityRequirements: [
+    "method": "post",
+    "pathTemplate": "/v1/refine-mask",
+    "parameters": [],
+    "executionParameters": [],
+    "requestBodyContentType": "application/json",
+    "securityRequirements": [
       {
-        ApiKeyAuth: [],
+        "ApiKeyAuth": []
       },
       {
-        BearerAuth: [],
-      },
+        "BearerAuth": []
+      }
     ],
-    operationId: 'refineMask',
-    baseUrl: 'https://image.adobe.io',
+    "operationId": "refineMask",
+    "baseUrl": "https://image.adobe.io"
   },
   {
-    name: 'fillMaskedAreas',
-    description:
-      'This endpoint allows you to inpaint masked areas within an image. The API will remove the objects represented by these masks and inpaint the specified areas. Provide a list of masks corresponding to the regions you wish to modify. To check the status of this process, utilize the `Get Status - V1` endpoint.',
-    inputSchema: {
-      type: 'object',
-      properties: {
-        requestBody: {
-          type: 'object',
-          properties: {
-            image: {
-              description: 'The image to be processed.',
-              allOf: [
+    "name": "fillMaskedAreas",
+    "description": "This endpoint allows you to inpaint masked areas within an image. The API will remove the objects represented by these masks and inpaint the specified areas. Provide a list of masks corresponding to the regions you wish to modify. To check the status of this process, utilize the `Get Status - V1` endpoint.",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "requestBody": {
+          "type": "object",
+          "properties": {
+            "image": {
+              "description": "The image to be processed.",
+              "allOf": [
                 {
-                  type: 'object',
-                  properties: {
-                    source: {
-                      description:
-                        'The source of the input image. Dimensions of the image should not be greater than (4000px X 4000px).',
-                      allOf: [
+                  "type": "object",
+                  "properties": {
+                    "source": {
+                      "description": "The source of the input image. Dimensions of the image should not be greater than (4000px X 4000px).",
+                      "allOf": [
                         {
-                          type: 'object',
-                          properties: {
-                            url: {
-                              type: 'string',
-                              description:
-                                'The URL of the resource. Only these listed domains are accepted in the request:  \n  <ul><li><code>amazonaws.com</code></li><li><code>windows.net</code></li><li><code>dropboxusercontent.com</code></li><li><code>assets.frame.io</code></li><li><code>storage.googleapis.com</code></li></ul>',
-                            },
+                          "type": "object",
+                          "properties": {
+                            "url": {
+                              "type": "string",
+                              "description": "The URL of the resource. Only these listed domains are accepted in the request:  \n  <ul><li><code>amazonaws.com</code></li><li><code>windows.net</code></li><li><code>dropboxusercontent.com</code></li><li><code>assets.frame.io</code></li><li><code>storage.googleapis.com</code></li></ul>"
+                            }
                           },
-                          required: ['url'],
-                        },
-                      ],
-                    },
+                          "required": [
+                            "url"
+                          ]
+                        }
+                      ]
+                    }
                   },
-                  required: ['source'],
-                },
-              ],
+                  "required": [
+                    "source"
+                  ]
+                }
+              ]
             },
-            masks: {
-              description:
-                'The areas of the image represented by this list of masks will be inpainted.',
-              type: 'array',
-              items: {
-                type: 'object',
-                properties: {
-                  source: {
-                    description:
-                      'The source of the input image. Dimensions of the image should not be greater than (4000px X 4000px).',
-                    allOf: [
+            "masks": {
+              "description": "The areas of the image represented by this list of masks will be inpainted.",
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "source": {
+                    "description": "The source of the input image. Dimensions of the image should not be greater than (4000px X 4000px).",
+                    "allOf": [
                       {
-                        type: 'object',
-                        properties: {
-                          url: {
-                            type: 'string',
-                            description:
-                              'The URL of the resource. Only these listed domains are accepted in the request:  \n  <ul><li><code>amazonaws.com</code></li><li><code>windows.net</code></li><li><code>dropboxusercontent.com</code></li><li><code>assets.frame.io</code></li><li><code>storage.googleapis.com</code></li></ul>',
-                          },
+                        "type": "object",
+                        "properties": {
+                          "url": {
+                            "type": "string",
+                            "description": "The URL of the resource. Only these listed domains are accepted in the request:  \n  <ul><li><code>amazonaws.com</code></li><li><code>windows.net</code></li><li><code>dropboxusercontent.com</code></li><li><code>assets.frame.io</code></li><li><code>storage.googleapis.com</code></li></ul>"
+                          }
                         },
-                        required: ['url'],
-                      },
-                    ],
-                  },
+                        "required": [
+                          "url"
+                        ]
+                      }
+                    ]
+                  }
                 },
-                required: ['source'],
-              },
-            },
+                "required": [
+                  "source"
+                ]
+              }
+            }
           },
-          required: ['image', 'masks'],
-          description: 'The JSON request body.',
-        },
+          "required": [
+            "image",
+            "masks"
+          ],
+          "description": "The JSON request body."
+        }
       },
-      required: ['requestBody'],
+      "required": [
+        "requestBody"
+      ]
     },
-    method: 'post',
-    pathTemplate: '/v1/fill-masked-areas',
-    parameters: [],
-    executionParameters: [],
-    requestBodyContentType: 'application/json',
-    securityRequirements: [
+    "method": "post",
+    "pathTemplate": "/v1/fill-masked-areas",
+    "parameters": [],
+    "executionParameters": [],
+    "requestBodyContentType": "application/json",
+    "securityRequirements": [
       {
-        ApiKeyAuth: [],
+        "ApiKeyAuth": []
       },
       {
-        BearerAuth: [],
-      },
+        "BearerAuth": []
+      }
     ],
-    operationId: 'fillMaskedAreas',
-    baseUrl: 'https://image.adobe.io',
+    "operationId": "fillMaskedAreas",
+    "baseUrl": "https://image.adobe.io"
   },
   {
-    name: 'getJobStatus',
-    description:
-      'This endpoint allows you to check the status of an asynchronous job for a masking operation. The schema of a 200 response varies depending on the status of the job. A job with a `succeeded` status will include the results in the response and the result objects vary depending on the operation.',
-    inputSchema: {
-      type: 'object',
-      properties: {
-        jobId: {
-          type: 'string',
-        },
+    "name": "getJobStatus",
+    "description": "This endpoint allows you to check the status of an asynchronous job for a masking operation. The schema of a 200 response varies depending on the status of the job. A job with a `succeeded` status will include the results in the response and the result objects vary depending on the operation.",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "jobId": {
+          "type": "string"
+        }
       },
-      required: ['jobId'],
+      "required": [
+        "jobId"
+      ]
     },
-    method: 'get',
-    pathTemplate: '/v1/status/{jobId}',
-    parameters: [
+    "method": "get",
+    "pathTemplate": "/v1/status/{jobId}",
+    "parameters": [
       {
-        name: 'jobId',
-        in: 'path',
-        required: true,
-        schema: {
-          type: 'string',
-        },
-      },
+        "name": "jobId",
+        "in": "path",
+        "required": true,
+        "schema": {
+          "type": "string"
+        }
+      }
     ],
-    executionParameters: [
+    "executionParameters": [
       {
-        name: 'jobId',
-        in: 'path',
-      },
+        "name": "jobId",
+        "in": "path"
+      }
     ],
-    securityRequirements: [
+    "securityRequirements": [
       {
-        ApiKeyAuth: [],
+        "ApiKeyAuth": []
       },
       {
-        BearerAuth: [],
-      },
+        "BearerAuth": []
+      }
     ],
-    operationId: 'getJobStatus',
-    baseUrl: 'https://image.adobe.io',
-  },
+    "operationId": "getJobStatus",
+    "baseUrl": "https://image.adobe.io"
+  }
 ] as const;
 
-export type OpenapiMcpTool = (typeof openapiMcpTools)[number];
+  export type OpenapiMcpTool = (typeof openapiMcpTools)[number];
+  

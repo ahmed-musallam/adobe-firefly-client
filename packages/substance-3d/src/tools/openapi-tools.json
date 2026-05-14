@@ -17,17 +17,25 @@
               "description": "A URL to the JSON schema for this object.",
               "type": "string",
               "format": "uri",
-              "examples": ["https://s3d.adobe.io/schemas/restv1.ComposeSceneRequest.json"]
+              "examples": [
+                "https://s3d.adobe.io/schemas/restv1.ComposeSceneRequest.json"
+              ]
             },
             "cameraName": {
               "description": "Name of an existing camera in the source 3D scene. The camera has to be defined in the scene.",
-              "type": ["string", "null"]
+              "type": [
+                "string",
+                "null"
+              ]
             },
             "contentClass": {
               "description": "Class of content to generate.",
               "type": "string",
               "default": "photo",
-              "enum": ["art", "photo"]
+              "enum": [
+                "art",
+                "photo"
+              ]
             },
             "enableGroundPlane": {
               "description": "Enable the auto-generated ground plane under the hero asset. This is useful if the 3D scene contains only a hero asset, without additional elements.",
@@ -53,7 +61,13 @@
                         "format": "double",
                         "type": "number"
                       },
-                      "examples": [[0, 0, 0]],
+                      "examples": [
+                        [
+                          0,
+                          0,
+                          0
+                        ]
+                      ],
                       "maxItems": 3,
                       "minItems": 3
                     },
@@ -64,7 +78,14 @@
                         "format": "double",
                         "type": "number"
                       },
-                      "examples": [[1, 0, 0, 0]],
+                      "examples": [
+                        [
+                          1,
+                          0,
+                          0,
+                          0
+                        ]
+                      ],
                       "maxItems": 4,
                       "minItems": 4
                     }
@@ -73,7 +94,9 @@
                 }
               },
               "additionalProperties": false,
-              "required": ["file"]
+              "required": [
+                "file"
+              ]
             },
             "environmentExposure": {
               "description": "Exposure, in EV (0=neutral).",
@@ -99,7 +122,11 @@
               "description": "Model version to be used to generate the background image with Adobe Firefly.",
               "type": "string",
               "default": "image4_ultra",
-              "enum": ["image3_fast", "image4_standard", "image4_ultra"]
+              "enum": [
+                "image3_fast",
+                "image4_standard",
+                "image4_ultra"
+              ]
             },
             "numVariations": {
               "description": "The number of variations to generate. `numVariations` will default to the number of seeds, or to 1 if `seeds` is not specified.",
@@ -158,7 +185,10 @@
                             },
                             "lookAt": {
                               "description": "Look at point coordinates.",
-                              "type": ["array", "null"],
+                              "type": [
+                                "array",
+                                "null"
+                              ],
                               "items": {
                                 "format": "double",
                                 "type": "number"
@@ -174,7 +204,12 @@
                             }
                           },
                           "additionalProperties": false,
-                          "required": ["azimuth", "altitude", "lookAt", "radius"]
+                          "required": [
+                            "azimuth",
+                            "altitude",
+                            "lookAt",
+                            "radius"
+                          ]
                         },
                         "matrix": {
                           "description": "Transform is defined as a matrix. If set, do not set `trs` or `azimuthAltitude`.",
@@ -200,7 +235,13 @@
                                     "format": "double",
                                     "type": "number"
                                   },
-                                  "examples": [[0, 0, 0]],
+                                  "examples": [
+                                    [
+                                      0,
+                                      0,
+                                      0
+                                    ]
+                                  ],
                                   "maxItems": 3,
                                   "minItems": 3
                                 },
@@ -211,7 +252,14 @@
                                     "format": "double",
                                     "type": "number"
                                   },
-                                  "examples": [[1, 0, 0, 0]],
+                                  "examples": [
+                                    [
+                                      1,
+                                      0,
+                                      0,
+                                      0
+                                    ]
+                                  ],
                                   "maxItems": 4,
                                   "minItems": 4
                                 }
@@ -219,7 +267,10 @@
                               "additionalProperties": false
                             },
                             "scale": {
-                              "type": ["array", "null"],
+                              "type": [
+                                "array",
+                                "null"
+                              ],
                               "items": {
                                 "format": "double",
                                 "type": "number"
@@ -228,18 +279,31 @@
                               "minItems": 3
                             },
                             "translation": {
-                              "type": ["array", "null"],
+                              "type": [
+                                "array",
+                                "null"
+                              ],
                               "items": {
                                 "format": "double",
                                 "type": "number"
                               },
-                              "examples": [[0, 0, 0]],
+                              "examples": [
+                                [
+                                  0,
+                                  0,
+                                  0
+                                ]
+                              ],
                               "maxItems": 3,
                               "minItems": 3
                             }
                           },
                           "additionalProperties": false,
-                          "required": ["translation", "rotation", "scale"]
+                          "required": [
+                            "translation",
+                            "rotation",
+                            "scale"
+                          ]
                         }
                       },
                       "additionalProperties": false
@@ -282,11 +346,17 @@
                 }
               },
               "additionalProperties": false,
-              "required": ["width", "height"]
+              "required": [
+                "width",
+                "height"
+              ]
             },
             "sources": {
               "description": "List of sources to aggregate and run the job against.",
-              "type": ["array", "null"],
+              "type": [
+                "array",
+                "null"
+              ],
               "items": {
                 "type": "object",
                 "properties": {
@@ -303,7 +373,10 @@
                       }
                     },
                     "additionalProperties": false,
-                    "required": ["folderId", "accessToken"]
+                    "required": [
+                      "folderId",
+                      "accessToken"
+                    ]
                   },
                   "mountPoint": {
                     "description": "Where to mount the content of the source in the virtual job working directory.",
@@ -325,7 +398,11 @@
                       }
                     },
                     "additionalProperties": false,
-                    "required": ["folderId", "accountId", "accessToken"]
+                    "required": [
+                      "folderId",
+                      "accountId",
+                      "accessToken"
+                    ]
                   },
                   "space": {
                     "description": "Read content from an existing space (can be another job's output, or uploaded manually with the space API). ⚠️ All sources are exclusive.'",
@@ -337,7 +414,9 @@
                       }
                     },
                     "additionalProperties": false,
-                    "required": ["id"]
+                    "required": [
+                      "id"
+                    ]
                   },
                   "url": {
                     "description": "Fetch content from a URL. ⚠️ All sources are exclusive.",
@@ -350,11 +429,15 @@
                       "url": {
                         "description": "URL to fetch content from.",
                         "type": "string",
-                        "examples": ["https://cdn.substance3d.com/v2/files/public/stepladder.usdz"]
+                        "examples": [
+                          "https://cdn.substance3d.com/v2/files/public/stepladder.usdz"
+                        ]
                       }
                     },
                     "additionalProperties": false,
-                    "required": ["url"]
+                    "required": [
+                      "url"
+                    ]
                   }
                 },
                 "additionalProperties": false
@@ -369,7 +452,9 @@
           },
           "additionalProperties": false,
           "dependentRequired": {
-            "lightingSeeds": ["seeds"]
+            "lightingSeeds": [
+              "seeds"
+            ]
           },
           "examples": [
             {
@@ -385,7 +470,11 @@
               ]
             }
           ],
-          "required": ["sources", "prompt", "heroAsset"],
+          "required": [
+            "sources",
+            "prompt",
+            "heroAsset"
+          ],
           "description": "The JSON request body."
         }
       }
@@ -438,12 +527,22 @@
               "description": "A URL to the JSON schema for this object.",
               "type": "string",
               "format": "uri",
-              "examples": ["https://s3d.adobe.io/schemas/restv1beta.CreateSceneRequest.json"]
+              "examples": [
+                "https://s3d.adobe.io/schemas/restv1beta.CreateSceneRequest.json"
+              ]
             },
             "encoding": {
               "description": "Encoding output format.",
               "type": "string",
-              "enum": ["glb", "gltf", "fbx", "usdz", "usda", "usdc", "obj"]
+              "enum": [
+                "glb",
+                "gltf",
+                "fbx",
+                "usdz",
+                "usda",
+                "usdc",
+                "obj"
+              ]
             },
             "fileBaseName": {
               "description": "Output filename.",
@@ -467,7 +566,9 @@
                     }
                   },
                   "additionalProperties": false,
-                  "required": ["file"]
+                  "required": [
+                    "file"
+                  ]
                 },
                 "camera": {
                   "description": "Define a new camera for the scene.",
@@ -511,7 +612,10 @@
                             },
                             "lookAt": {
                               "description": "Look at point coordinates.",
-                              "type": ["array", "null"],
+                              "type": [
+                                "array",
+                                "null"
+                              ],
                               "items": {
                                 "format": "double",
                                 "type": "number"
@@ -527,7 +631,12 @@
                             }
                           },
                           "additionalProperties": false,
-                          "required": ["azimuth", "altitude", "lookAt", "radius"]
+                          "required": [
+                            "azimuth",
+                            "altitude",
+                            "lookAt",
+                            "radius"
+                          ]
                         },
                         "matrix": {
                           "description": "Transform is defined as a matrix. If set, do not set `trs` or `azimuthAltitude`.",
@@ -553,7 +662,13 @@
                                     "format": "double",
                                     "type": "number"
                                   },
-                                  "examples": [[0, 0, 0]],
+                                  "examples": [
+                                    [
+                                      0,
+                                      0,
+                                      0
+                                    ]
+                                  ],
                                   "maxItems": 3,
                                   "minItems": 3
                                 },
@@ -564,7 +679,14 @@
                                     "format": "double",
                                     "type": "number"
                                   },
-                                  "examples": [[1, 0, 0, 0]],
+                                  "examples": [
+                                    [
+                                      1,
+                                      0,
+                                      0,
+                                      0
+                                    ]
+                                  ],
                                   "maxItems": 4,
                                   "minItems": 4
                                 }
@@ -572,7 +694,10 @@
                               "additionalProperties": false
                             },
                             "scale": {
-                              "type": ["array", "null"],
+                              "type": [
+                                "array",
+                                "null"
+                              ],
                               "items": {
                                 "format": "double",
                                 "type": "number"
@@ -581,18 +706,31 @@
                               "minItems": 3
                             },
                             "translation": {
-                              "type": ["array", "null"],
+                              "type": [
+                                "array",
+                                "null"
+                              ],
                               "items": {
                                 "format": "double",
                                 "type": "number"
                               },
-                              "examples": [[0, 0, 0]],
+                              "examples": [
+                                [
+                                  0,
+                                  0,
+                                  0
+                                ]
+                              ],
                               "maxItems": 3,
                               "minItems": 3
                             }
                           },
                           "additionalProperties": false,
-                          "required": ["translation", "rotation", "scale"]
+                          "required": [
+                            "translation",
+                            "rotation",
+                            "scale"
+                          ]
                         }
                       },
                       "additionalProperties": false
@@ -631,7 +769,13 @@
                             "format": "double",
                             "type": "number"
                           },
-                          "examples": [[0, 0, 0]],
+                          "examples": [
+                            [
+                              0,
+                              0,
+                              0
+                            ]
+                          ],
                           "maxItems": 3,
                           "minItems": 3
                         },
@@ -642,7 +786,14 @@
                             "format": "double",
                             "type": "number"
                           },
-                          "examples": [[1, 0, 0, 0]],
+                          "examples": [
+                            [
+                              1,
+                              0,
+                              0,
+                              0
+                            ]
+                          ],
                           "maxItems": 4,
                           "minItems": 4
                         }
@@ -655,7 +806,10 @@
                 },
                 "materials": {
                   "description": "Assign new materials to geometric primitives.",
-                  "type": ["array", "null"],
+                  "type": [
+                    "array",
+                    "null"
+                  ],
                   "items": {
                     "type": "object",
                     "properties": {
@@ -675,7 +829,17 @@
                                 "description": "Substance material render resolution. This should be a power of two.",
                                 "type": "integer",
                                 "format": "int64",
-                                "enum": [16, 32, 64, 128, 256, 512, 1024, 2048, 4096],
+                                "enum": [
+                                  16,
+                                  32,
+                                  64,
+                                  128,
+                                  256,
+                                  512,
+                                  1024,
+                                  2048,
+                                  4096
+                                ],
                                 "maximum": 4096,
                                 "minimum": 16
                               },
@@ -717,12 +881,19 @@
                             "properties": {
                               "color": {
                                 "description": "RGB color of the solid material, each component has to be in the [0,1] range.",
-                                "type": ["array", "null"],
+                                "type": [
+                                  "array",
+                                  "null"
+                                ],
                                 "items": {
                                   "format": "double",
                                   "type": "number"
                                 },
-                                "default": [0, 0, 0],
+                                "default": [
+                                  0,
+                                  0,
+                                  0
+                                ],
                                 "maxItems": 3,
                                 "minItems": 3
                               },
@@ -742,7 +913,9 @@
                               }
                             },
                             "additionalProperties": false,
-                            "required": ["color"]
+                            "required": [
+                              "color"
+                            ]
                           }
                         },
                         "additionalProperties": false
@@ -753,7 +926,10 @@
                       },
                       "nodeList": {
                         "description": "List of nodes under which geometric primitives will have this material assigned. Each entry can be a full node name or a glob expression.",
-                        "type": ["array", "null"],
+                        "type": [
+                          "array",
+                          "null"
+                        ],
                         "items": {
                           "type": "string"
                         }
@@ -766,7 +942,11 @@
                       }
                     },
                     "additionalProperties": false,
-                    "required": ["materialName", "material", "nodeList"]
+                    "required": [
+                      "materialName",
+                      "material",
+                      "nodeList"
+                    ]
                   }
                 },
                 "metersPerUnit": {
@@ -781,7 +961,10 @@
                   "properties": {
                     "imports": {
                       "description": "List of model import definitions.",
-                      "type": ["array", "null"],
+                      "type": [
+                        "array",
+                        "null"
+                      ],
                       "items": {
                         "type": "object",
                         "properties": {
@@ -803,7 +986,10 @@
                                 "properties": {
                                   "variants": {
                                     "description": "List of USD variants definition applied on USD primitives.",
-                                    "type": ["array", "null"],
+                                    "type": [
+                                      "array",
+                                      "null"
+                                    ],
                                     "items": {
                                       "type": "object",
                                       "properties": {
@@ -818,20 +1004,31 @@
                                         }
                                       },
                                       "additionalProperties": false,
-                                      "required": ["primName", "variantSet", "variant"]
+                                      "required": [
+                                        "primName",
+                                        "variantSet",
+                                        "variant"
+                                      ]
                                     }
                                   }
                                 },
                                 "additionalProperties": false,
-                                "required": ["variants"]
+                                "required": [
+                                  "variants"
+                                ]
                               }
                             },
                             "additionalProperties": false,
-                            "required": ["usd"]
+                            "required": [
+                              "usd"
+                            ]
                           },
                           "materialOverrides": {
                             "description": "Define material overrides.",
-                            "type": ["array", "null"],
+                            "type": [
+                              "array",
+                              "null"
+                            ],
                             "items": {
                               "type": "object",
                               "properties": {
@@ -842,7 +1039,11 @@
                                     "format": "double",
                                     "type": "number"
                                   },
-                                  "default": [0, 0, 0],
+                                  "default": [
+                                    0,
+                                    0,
+                                    0
+                                  ],
                                   "maxItems": 3,
                                   "minItems": 3
                                 },
@@ -864,7 +1065,11 @@
                                     "format": "double",
                                     "type": "number"
                                   },
-                                  "default": [0, 0, 0],
+                                  "default": [
+                                    0,
+                                    0,
+                                    0
+                                  ],
                                   "maxItems": 3,
                                   "minItems": 3
                                 },
@@ -878,7 +1083,11 @@
                                     "format": "double",
                                     "type": "number"
                                   },
-                                  "default": [0, 0, 0],
+                                  "default": [
+                                    0,
+                                    0,
+                                    0
+                                  ],
                                   "maxItems": 3,
                                   "minItems": 3
                                 },
@@ -946,7 +1155,17 @@
                                       "description": "Substance material render resolution. This should be a power of two.",
                                       "type": "integer",
                                       "format": "int64",
-                                      "enum": [16, 32, 64, 128, 256, 512, 1024, 2048, 4096],
+                                      "enum": [
+                                        16,
+                                        32,
+                                        64,
+                                        128,
+                                        256,
+                                        512,
+                                        1024,
+                                        2048,
+                                        4096
+                                      ],
                                       "maximum": 4096,
                                       "minimum": 16
                                     },
@@ -1010,7 +1229,9 @@
                                 }
                               },
                               "additionalProperties": false,
-                              "required": ["materialName"]
+                              "required": [
+                                "materialName"
+                              ]
                             }
                           },
                           "transform": {
@@ -1035,7 +1256,10 @@
                                   },
                                   "lookAt": {
                                     "description": "Look at point coordinates.",
-                                    "type": ["array", "null"],
+                                    "type": [
+                                      "array",
+                                      "null"
+                                    ],
                                     "items": {
                                       "format": "double",
                                       "type": "number"
@@ -1051,7 +1275,12 @@
                                   }
                                 },
                                 "additionalProperties": false,
-                                "required": ["azimuth", "altitude", "lookAt", "radius"]
+                                "required": [
+                                  "azimuth",
+                                  "altitude",
+                                  "lookAt",
+                                  "radius"
+                                ]
                               },
                               "matrix": {
                                 "description": "Transform is defined as a matrix. If set, do not set `trs` or `azimuthAltitude`.",
@@ -1077,7 +1306,13 @@
                                           "format": "double",
                                           "type": "number"
                                         },
-                                        "examples": [[0, 0, 0]],
+                                        "examples": [
+                                          [
+                                            0,
+                                            0,
+                                            0
+                                          ]
+                                        ],
                                         "maxItems": 3,
                                         "minItems": 3
                                       },
@@ -1088,7 +1323,14 @@
                                           "format": "double",
                                           "type": "number"
                                         },
-                                        "examples": [[1, 0, 0, 0]],
+                                        "examples": [
+                                          [
+                                            1,
+                                            0,
+                                            0,
+                                            0
+                                          ]
+                                        ],
                                         "maxItems": 4,
                                         "minItems": 4
                                       }
@@ -1096,7 +1338,10 @@
                                     "additionalProperties": false
                                   },
                                   "scale": {
-                                    "type": ["array", "null"],
+                                    "type": [
+                                      "array",
+                                      "null"
+                                    ],
                                     "items": {
                                       "format": "double",
                                       "type": "number"
@@ -1105,18 +1350,31 @@
                                     "minItems": 3
                                   },
                                   "translation": {
-                                    "type": ["array", "null"],
+                                    "type": [
+                                      "array",
+                                      "null"
+                                    ],
                                     "items": {
                                       "format": "double",
                                       "type": "number"
                                     },
-                                    "examples": [[0, 0, 0]],
+                                    "examples": [
+                                      [
+                                        0,
+                                        0,
+                                        0
+                                      ]
+                                    ],
                                     "maxItems": 3,
                                     "minItems": 3
                                   }
                                 },
                                 "additionalProperties": false,
-                                "required": ["translation", "rotation", "scale"]
+                                "required": [
+                                  "translation",
+                                  "rotation",
+                                  "scale"
+                                ]
                               }
                             },
                             "additionalProperties": false
@@ -1147,7 +1405,10 @@
                             },
                             "lookAt": {
                               "description": "Look at point coordinates.",
-                              "type": ["array", "null"],
+                              "type": [
+                                "array",
+                                "null"
+                              ],
                               "items": {
                                 "format": "double",
                                 "type": "number"
@@ -1163,7 +1424,12 @@
                             }
                           },
                           "additionalProperties": false,
-                          "required": ["azimuth", "altitude", "lookAt", "radius"]
+                          "required": [
+                            "azimuth",
+                            "altitude",
+                            "lookAt",
+                            "radius"
+                          ]
                         },
                         "matrix": {
                           "description": "Transform is defined as a matrix. If set, do not set `trs` or `azimuthAltitude`.",
@@ -1189,7 +1455,13 @@
                                     "format": "double",
                                     "type": "number"
                                   },
-                                  "examples": [[0, 0, 0]],
+                                  "examples": [
+                                    [
+                                      0,
+                                      0,
+                                      0
+                                    ]
+                                  ],
                                   "maxItems": 3,
                                   "minItems": 3
                                 },
@@ -1200,7 +1472,14 @@
                                     "format": "double",
                                     "type": "number"
                                   },
-                                  "examples": [[1, 0, 0, 0]],
+                                  "examples": [
+                                    [
+                                      1,
+                                      0,
+                                      0,
+                                      0
+                                    ]
+                                  ],
                                   "maxItems": 4,
                                   "minItems": 4
                                 }
@@ -1208,7 +1487,10 @@
                               "additionalProperties": false
                             },
                             "scale": {
-                              "type": ["array", "null"],
+                              "type": [
+                                "array",
+                                "null"
+                              ],
                               "items": {
                                 "format": "double",
                                 "type": "number"
@@ -1217,18 +1499,31 @@
                               "minItems": 3
                             },
                             "translation": {
-                              "type": ["array", "null"],
+                              "type": [
+                                "array",
+                                "null"
+                              ],
                               "items": {
                                 "format": "double",
                                 "type": "number"
                               },
-                              "examples": [[0, 0, 0]],
+                              "examples": [
+                                [
+                                  0,
+                                  0,
+                                  0
+                                ]
+                              ],
                               "maxItems": 3,
                               "minItems": 3
                             }
                           },
                           "additionalProperties": false,
-                          "required": ["translation", "rotation", "scale"]
+                          "required": [
+                            "translation",
+                            "rotation",
+                            "scale"
+                          ]
                         }
                       },
                       "additionalProperties": false
@@ -1241,7 +1536,10 @@
             },
             "sources": {
               "description": "List of sources to aggregate and run the job against.",
-              "type": ["array", "null"],
+              "type": [
+                "array",
+                "null"
+              ],
               "items": {
                 "type": "object",
                 "properties": {
@@ -1258,7 +1556,10 @@
                       }
                     },
                     "additionalProperties": false,
-                    "required": ["folderId", "accessToken"]
+                    "required": [
+                      "folderId",
+                      "accessToken"
+                    ]
                   },
                   "mountPoint": {
                     "description": "Where to mount the content of the source in the virtual job working directory.",
@@ -1280,7 +1581,11 @@
                       }
                     },
                     "additionalProperties": false,
-                    "required": ["folderId", "accountId", "accessToken"]
+                    "required": [
+                      "folderId",
+                      "accountId",
+                      "accessToken"
+                    ]
                   },
                   "space": {
                     "description": "Read content from an existing space (can be another job's output, or uploaded manually with the space API). ⚠️ All sources are exclusive.'",
@@ -1292,7 +1597,9 @@
                       }
                     },
                     "additionalProperties": false,
-                    "required": ["id"]
+                    "required": [
+                      "id"
+                    ]
                   },
                   "url": {
                     "description": "Fetch content from a URL. ⚠️ All sources are exclusive.",
@@ -1305,11 +1612,15 @@
                       "url": {
                         "description": "URL to fetch content from.",
                         "type": "string",
-                        "examples": ["https://cdn.substance3d.com/v2/files/public/stepladder.usdz"]
+                        "examples": [
+                          "https://cdn.substance3d.com/v2/files/public/stepladder.usdz"
+                        ]
                       }
                     },
                     "additionalProperties": false,
-                    "required": ["url"]
+                    "required": [
+                      "url"
+                    ]
                   }
                 },
                 "additionalProperties": false
@@ -1334,10 +1645,22 @@
                       "transform": {
                         "trs": {
                           "rotation": {
-                            "euler": [30, 0, 0]
+                            "euler": [
+                              30,
+                              0,
+                              0
+                            ]
                           },
-                          "scale": [1, 1, 1],
-                          "translation": [0.15, 0, 0]
+                          "scale": [
+                            1,
+                            1,
+                            1
+                          ],
+                          "translation": [
+                            0.15,
+                            0,
+                            0
+                          ]
                         }
                       }
                     }
@@ -1366,10 +1689,22 @@
                       "transform": {
                         "trs": {
                           "rotation": {
-                            "euler": [30, 0, 0]
+                            "euler": [
+                              30,
+                              0,
+                              0
+                            ]
                           },
-                          "scale": [1, 1, 1],
-                          "translation": [0.15, 0, 0]
+                          "scale": [
+                            1,
+                            1,
+                            1
+                          ],
+                          "translation": [
+                            0.15,
+                            0,
+                            0
+                          ]
                         }
                       }
                     }
@@ -1385,7 +1720,12 @@
               ]
             }
           ],
-          "required": ["scene", "sources", "encoding", "fileBaseName"],
+          "required": [
+            "scene",
+            "sources",
+            "encoding",
+            "fileBaseName"
+          ],
           "description": "The JSON request body."
         }
       }
@@ -1438,13 +1778,25 @@
               "description": "A URL to the JSON schema for this object.",
               "type": "string",
               "format": "uri",
-              "examples": ["https://s3d.adobe.io/schemas/restv1beta.ModelConvertRequest.json"]
+              "examples": [
+                "https://s3d.adobe.io/schemas/restv1beta.ModelConvertRequest.json"
+              ]
             },
             "format": {
               "description": "Output format.",
               "type": "string",
-              "enum": ["glb", "gltf", "fbx", "usdz", "usda", "usdc", "obj"],
-              "examples": ["glb"]
+              "enum": [
+                "glb",
+                "gltf",
+                "fbx",
+                "usdz",
+                "usda",
+                "usdc",
+                "obj"
+              ],
+              "examples": [
+                "glb"
+              ]
             },
             "modelEntrypoint": {
               "description": "Conversion usually takes the first file that's considered a valid 3D model. Define this entry point to disambiguate when there are multiple options.",
@@ -1452,7 +1804,10 @@
             },
             "sources": {
               "description": "List of sources to aggregate and run the job against.",
-              "type": ["array", "null"],
+              "type": [
+                "array",
+                "null"
+              ],
               "items": {
                 "type": "object",
                 "properties": {
@@ -1469,7 +1824,10 @@
                       }
                     },
                     "additionalProperties": false,
-                    "required": ["folderId", "accessToken"]
+                    "required": [
+                      "folderId",
+                      "accessToken"
+                    ]
                   },
                   "mountPoint": {
                     "description": "Where to mount the content of the source in the virtual job working directory.",
@@ -1491,7 +1849,11 @@
                       }
                     },
                     "additionalProperties": false,
-                    "required": ["folderId", "accountId", "accessToken"]
+                    "required": [
+                      "folderId",
+                      "accountId",
+                      "accessToken"
+                    ]
                   },
                   "space": {
                     "description": "Read content from an existing space (can be another job's output, or uploaded manually with the space API). ⚠️ All sources are exclusive.'",
@@ -1503,7 +1865,9 @@
                       }
                     },
                     "additionalProperties": false,
-                    "required": ["id"]
+                    "required": [
+                      "id"
+                    ]
                   },
                   "url": {
                     "description": "Fetch content from a URL. ⚠️ All sources are exclusive.",
@@ -1516,11 +1880,15 @@
                       "url": {
                         "description": "URL to fetch content from.",
                         "type": "string",
-                        "examples": ["https://cdn.substance3d.com/v2/files/public/stepladder.usdz"]
+                        "examples": [
+                          "https://cdn.substance3d.com/v2/files/public/stepladder.usdz"
+                        ]
                       }
                     },
                     "additionalProperties": false,
-                    "required": ["url"]
+                    "required": [
+                      "url"
+                    ]
                   }
                 },
                 "additionalProperties": false
@@ -1562,7 +1930,10 @@
               ]
             }
           ],
-          "required": ["format", "sources"],
+          "required": [
+            "format",
+            "sources"
+          ],
           "description": "The JSON request body."
         }
       }
@@ -1615,7 +1986,9 @@
               "description": "A URL to the JSON schema for this object.",
               "type": "string",
               "format": "uri",
-              "examples": ["https://s3d.adobe.io/schemas/restv1beta.SceneDescRequest.json"]
+              "examples": [
+                "https://s3d.adobe.io/schemas/restv1beta.SceneDescRequest.json"
+              ]
             },
             "sceneFile": {
               "description": "Path to the scene file in `sources`. If the value is `null`, the first found scene file will be used.",
@@ -1623,7 +1996,10 @@
             },
             "sources": {
               "description": "List of sources to aggregate and run the job against.",
-              "type": ["array", "null"],
+              "type": [
+                "array",
+                "null"
+              ],
               "items": {
                 "type": "object",
                 "properties": {
@@ -1640,7 +2016,10 @@
                       }
                     },
                     "additionalProperties": false,
-                    "required": ["folderId", "accessToken"]
+                    "required": [
+                      "folderId",
+                      "accessToken"
+                    ]
                   },
                   "mountPoint": {
                     "description": "Where to mount the content of the source in the virtual job working directory.",
@@ -1662,7 +2041,11 @@
                       }
                     },
                     "additionalProperties": false,
-                    "required": ["folderId", "accountId", "accessToken"]
+                    "required": [
+                      "folderId",
+                      "accountId",
+                      "accessToken"
+                    ]
                   },
                   "space": {
                     "description": "Read content from an existing space (can be another job's output, or uploaded manually with the space API). ⚠️ All sources are exclusive.'",
@@ -1674,7 +2057,9 @@
                       }
                     },
                     "additionalProperties": false,
-                    "required": ["id"]
+                    "required": [
+                      "id"
+                    ]
                   },
                   "url": {
                     "description": "Fetch content from a URL. ⚠️ All sources are exclusive.",
@@ -1687,11 +2072,15 @@
                       "url": {
                         "description": "URL to fetch content from.",
                         "type": "string",
-                        "examples": ["https://cdn.substance3d.com/v2/files/public/stepladder.usdz"]
+                        "examples": [
+                          "https://cdn.substance3d.com/v2/files/public/stepladder.usdz"
+                        ]
                       }
                     },
                     "additionalProperties": false,
-                    "required": ["url"]
+                    "required": [
+                      "url"
+                    ]
                   }
                 },
                 "additionalProperties": false
@@ -1721,7 +2110,9 @@
               ]
             }
           ],
-          "required": ["sources"],
+          "required": [
+            "sources"
+          ],
           "description": "The JSON request body."
         }
       }
@@ -1774,7 +2165,9 @@
               "description": "A URL to the JSON schema for this object.",
               "type": "string",
               "format": "uri",
-              "examples": ["https://s3d.adobe.io/schemas/restv1beta.RenderSceneRequest.json"]
+              "examples": [
+                "https://s3d.adobe.io/schemas/restv1beta.RenderSceneRequest.json"
+              ]
             },
             "autoFraming": {
               "description": "Auto-framing related options.",
@@ -1783,7 +2176,11 @@
                 "algorithm": {
                   "type": "string",
                   "default": "auto",
-                  "enum": ["auto", "bounding_cylinder", "frustum_fit"]
+                  "enum": [
+                    "auto",
+                    "bounding_cylinder",
+                    "frustum_fit"
+                  ]
                 },
                 "zoomFactor": {
                   "description": "A value of 1 indicates tight framing. Less than 1 is a zoom-out. Greater than 1 is a zoom-in.",
@@ -1802,13 +2199,28 @@
               "properties": {
                 "backgroundColor": {
                   "description": "RGBA background color. Has an effect only if `showEnvironment` is `false`. Each component has to be in the [0,1] range.",
-                  "type": ["array", "null"],
+                  "type": [
+                    "array",
+                    "null"
+                  ],
                   "items": {
                     "format": "double",
                     "type": "number"
                   },
-                  "default": [0, 0, 0, 0],
-                  "examples": [[0, 0, 0, 0]],
+                  "default": [
+                    0,
+                    0,
+                    0,
+                    0
+                  ],
+                  "examples": [
+                    [
+                      0,
+                      0,
+                      0,
+                      0
+                    ]
+                  ],
                   "maxItems": 4,
                   "minItems": 4
                 },
@@ -1843,7 +2255,10 @@
                   "properties": {
                     "selection": {
                       "description": "The list of masks to be exported, accepts glob expressions. If empty, all masks will be exported.",
-                      "type": ["array", "null"],
+                      "type": [
+                        "array",
+                        "null"
+                      ],
                       "items": {
                         "type": "string"
                       }
@@ -1862,7 +2277,10 @@
                   "properties": {
                     "selection": {
                       "description": "The list of masks to be exported, accepts glob expressions. If empty, all masks will be exported.",
-                      "type": ["array", "null"],
+                      "type": [
+                        "array",
+                        "null"
+                      ],
                       "items": {
                         "type": "string"
                       }
@@ -1941,7 +2359,9 @@
                     }
                   },
                   "additionalProperties": false,
-                  "required": ["file"]
+                  "required": [
+                    "file"
+                  ]
                 },
                 "camera": {
                   "description": "Define a new camera for the scene.",
@@ -1985,7 +2405,10 @@
                             },
                             "lookAt": {
                               "description": "Look at point coordinates.",
-                              "type": ["array", "null"],
+                              "type": [
+                                "array",
+                                "null"
+                              ],
                               "items": {
                                 "format": "double",
                                 "type": "number"
@@ -2001,7 +2424,12 @@
                             }
                           },
                           "additionalProperties": false,
-                          "required": ["azimuth", "altitude", "lookAt", "radius"]
+                          "required": [
+                            "azimuth",
+                            "altitude",
+                            "lookAt",
+                            "radius"
+                          ]
                         },
                         "matrix": {
                           "description": "Transform is defined as a matrix. If set, do not set `trs` or `azimuthAltitude`.",
@@ -2027,7 +2455,13 @@
                                     "format": "double",
                                     "type": "number"
                                   },
-                                  "examples": [[0, 0, 0]],
+                                  "examples": [
+                                    [
+                                      0,
+                                      0,
+                                      0
+                                    ]
+                                  ],
                                   "maxItems": 3,
                                   "minItems": 3
                                 },
@@ -2038,7 +2472,14 @@
                                     "format": "double",
                                     "type": "number"
                                   },
-                                  "examples": [[1, 0, 0, 0]],
+                                  "examples": [
+                                    [
+                                      1,
+                                      0,
+                                      0,
+                                      0
+                                    ]
+                                  ],
                                   "maxItems": 4,
                                   "minItems": 4
                                 }
@@ -2046,7 +2487,10 @@
                               "additionalProperties": false
                             },
                             "scale": {
-                              "type": ["array", "null"],
+                              "type": [
+                                "array",
+                                "null"
+                              ],
                               "items": {
                                 "format": "double",
                                 "type": "number"
@@ -2055,18 +2499,31 @@
                               "minItems": 3
                             },
                             "translation": {
-                              "type": ["array", "null"],
+                              "type": [
+                                "array",
+                                "null"
+                              ],
                               "items": {
                                 "format": "double",
                                 "type": "number"
                               },
-                              "examples": [[0, 0, 0]],
+                              "examples": [
+                                [
+                                  0,
+                                  0,
+                                  0
+                                ]
+                              ],
                               "maxItems": 3,
                               "minItems": 3
                             }
                           },
                           "additionalProperties": false,
-                          "required": ["translation", "rotation", "scale"]
+                          "required": [
+                            "translation",
+                            "rotation",
+                            "scale"
+                          ]
                         }
                       },
                       "additionalProperties": false
@@ -2105,7 +2562,13 @@
                             "format": "double",
                             "type": "number"
                           },
-                          "examples": [[0, 0, 0]],
+                          "examples": [
+                            [
+                              0,
+                              0,
+                              0
+                            ]
+                          ],
                           "maxItems": 3,
                           "minItems": 3
                         },
@@ -2116,7 +2579,14 @@
                             "format": "double",
                             "type": "number"
                           },
-                          "examples": [[1, 0, 0, 0]],
+                          "examples": [
+                            [
+                              1,
+                              0,
+                              0,
+                              0
+                            ]
+                          ],
                           "maxItems": 4,
                           "minItems": 4
                         }
@@ -2129,7 +2599,10 @@
                 },
                 "materials": {
                   "description": "Assign new materials to geometric primitives.",
-                  "type": ["array", "null"],
+                  "type": [
+                    "array",
+                    "null"
+                  ],
                   "items": {
                     "type": "object",
                     "properties": {
@@ -2149,7 +2622,17 @@
                                 "description": "Substance material render resolution. This should be a power of two.",
                                 "type": "integer",
                                 "format": "int64",
-                                "enum": [16, 32, 64, 128, 256, 512, 1024, 2048, 4096],
+                                "enum": [
+                                  16,
+                                  32,
+                                  64,
+                                  128,
+                                  256,
+                                  512,
+                                  1024,
+                                  2048,
+                                  4096
+                                ],
                                 "maximum": 4096,
                                 "minimum": 16
                               },
@@ -2191,12 +2674,19 @@
                             "properties": {
                               "color": {
                                 "description": "RGB color of the solid material, each component has to be in the [0,1] range.",
-                                "type": ["array", "null"],
+                                "type": [
+                                  "array",
+                                  "null"
+                                ],
                                 "items": {
                                   "format": "double",
                                   "type": "number"
                                 },
-                                "default": [0, 0, 0],
+                                "default": [
+                                  0,
+                                  0,
+                                  0
+                                ],
                                 "maxItems": 3,
                                 "minItems": 3
                               },
@@ -2216,7 +2706,9 @@
                               }
                             },
                             "additionalProperties": false,
-                            "required": ["color"]
+                            "required": [
+                              "color"
+                            ]
                           }
                         },
                         "additionalProperties": false
@@ -2227,7 +2719,10 @@
                       },
                       "nodeList": {
                         "description": "List of nodes under which geometric primitives will have this material assigned. Each entry can be a full node name or a glob expression.",
-                        "type": ["array", "null"],
+                        "type": [
+                          "array",
+                          "null"
+                        ],
                         "items": {
                           "type": "string"
                         }
@@ -2240,7 +2735,11 @@
                       }
                     },
                     "additionalProperties": false,
-                    "required": ["materialName", "material", "nodeList"]
+                    "required": [
+                      "materialName",
+                      "material",
+                      "nodeList"
+                    ]
                   }
                 },
                 "metersPerUnit": {
@@ -2255,7 +2754,10 @@
                   "properties": {
                     "imports": {
                       "description": "List of model import definitions.",
-                      "type": ["array", "null"],
+                      "type": [
+                        "array",
+                        "null"
+                      ],
                       "items": {
                         "type": "object",
                         "properties": {
@@ -2277,7 +2779,10 @@
                                 "properties": {
                                   "variants": {
                                     "description": "List of USD variants definition applied on USD primitives.",
-                                    "type": ["array", "null"],
+                                    "type": [
+                                      "array",
+                                      "null"
+                                    ],
                                     "items": {
                                       "type": "object",
                                       "properties": {
@@ -2292,20 +2797,31 @@
                                         }
                                       },
                                       "additionalProperties": false,
-                                      "required": ["primName", "variantSet", "variant"]
+                                      "required": [
+                                        "primName",
+                                        "variantSet",
+                                        "variant"
+                                      ]
                                     }
                                   }
                                 },
                                 "additionalProperties": false,
-                                "required": ["variants"]
+                                "required": [
+                                  "variants"
+                                ]
                               }
                             },
                             "additionalProperties": false,
-                            "required": ["usd"]
+                            "required": [
+                              "usd"
+                            ]
                           },
                           "materialOverrides": {
                             "description": "Define material overrides.",
-                            "type": ["array", "null"],
+                            "type": [
+                              "array",
+                              "null"
+                            ],
                             "items": {
                               "type": "object",
                               "properties": {
@@ -2316,7 +2832,11 @@
                                     "format": "double",
                                     "type": "number"
                                   },
-                                  "default": [0, 0, 0],
+                                  "default": [
+                                    0,
+                                    0,
+                                    0
+                                  ],
                                   "maxItems": 3,
                                   "minItems": 3
                                 },
@@ -2338,7 +2858,11 @@
                                     "format": "double",
                                     "type": "number"
                                   },
-                                  "default": [0, 0, 0],
+                                  "default": [
+                                    0,
+                                    0,
+                                    0
+                                  ],
                                   "maxItems": 3,
                                   "minItems": 3
                                 },
@@ -2352,7 +2876,11 @@
                                     "format": "double",
                                     "type": "number"
                                   },
-                                  "default": [0, 0, 0],
+                                  "default": [
+                                    0,
+                                    0,
+                                    0
+                                  ],
                                   "maxItems": 3,
                                   "minItems": 3
                                 },
@@ -2420,7 +2948,17 @@
                                       "description": "Substance material render resolution. This should be a power of two.",
                                       "type": "integer",
                                       "format": "int64",
-                                      "enum": [16, 32, 64, 128, 256, 512, 1024, 2048, 4096],
+                                      "enum": [
+                                        16,
+                                        32,
+                                        64,
+                                        128,
+                                        256,
+                                        512,
+                                        1024,
+                                        2048,
+                                        4096
+                                      ],
                                       "maximum": 4096,
                                       "minimum": 16
                                     },
@@ -2484,7 +3022,9 @@
                                 }
                               },
                               "additionalProperties": false,
-                              "required": ["materialName"]
+                              "required": [
+                                "materialName"
+                              ]
                             }
                           },
                           "transform": {
@@ -2509,7 +3049,10 @@
                                   },
                                   "lookAt": {
                                     "description": "Look at point coordinates.",
-                                    "type": ["array", "null"],
+                                    "type": [
+                                      "array",
+                                      "null"
+                                    ],
                                     "items": {
                                       "format": "double",
                                       "type": "number"
@@ -2525,7 +3068,12 @@
                                   }
                                 },
                                 "additionalProperties": false,
-                                "required": ["azimuth", "altitude", "lookAt", "radius"]
+                                "required": [
+                                  "azimuth",
+                                  "altitude",
+                                  "lookAt",
+                                  "radius"
+                                ]
                               },
                               "matrix": {
                                 "description": "Transform is defined as a matrix. If set, do not set `trs` or `azimuthAltitude`.",
@@ -2551,7 +3099,13 @@
                                           "format": "double",
                                           "type": "number"
                                         },
-                                        "examples": [[0, 0, 0]],
+                                        "examples": [
+                                          [
+                                            0,
+                                            0,
+                                            0
+                                          ]
+                                        ],
                                         "maxItems": 3,
                                         "minItems": 3
                                       },
@@ -2562,7 +3116,14 @@
                                           "format": "double",
                                           "type": "number"
                                         },
-                                        "examples": [[1, 0, 0, 0]],
+                                        "examples": [
+                                          [
+                                            1,
+                                            0,
+                                            0,
+                                            0
+                                          ]
+                                        ],
                                         "maxItems": 4,
                                         "minItems": 4
                                       }
@@ -2570,7 +3131,10 @@
                                     "additionalProperties": false
                                   },
                                   "scale": {
-                                    "type": ["array", "null"],
+                                    "type": [
+                                      "array",
+                                      "null"
+                                    ],
                                     "items": {
                                       "format": "double",
                                       "type": "number"
@@ -2579,18 +3143,31 @@
                                     "minItems": 3
                                   },
                                   "translation": {
-                                    "type": ["array", "null"],
+                                    "type": [
+                                      "array",
+                                      "null"
+                                    ],
                                     "items": {
                                       "format": "double",
                                       "type": "number"
                                     },
-                                    "examples": [[0, 0, 0]],
+                                    "examples": [
+                                      [
+                                        0,
+                                        0,
+                                        0
+                                      ]
+                                    ],
                                     "maxItems": 3,
                                     "minItems": 3
                                   }
                                 },
                                 "additionalProperties": false,
-                                "required": ["translation", "rotation", "scale"]
+                                "required": [
+                                  "translation",
+                                  "rotation",
+                                  "scale"
+                                ]
                               }
                             },
                             "additionalProperties": false
@@ -2621,7 +3198,10 @@
                             },
                             "lookAt": {
                               "description": "Look at point coordinates.",
-                              "type": ["array", "null"],
+                              "type": [
+                                "array",
+                                "null"
+                              ],
                               "items": {
                                 "format": "double",
                                 "type": "number"
@@ -2637,7 +3217,12 @@
                             }
                           },
                           "additionalProperties": false,
-                          "required": ["azimuth", "altitude", "lookAt", "radius"]
+                          "required": [
+                            "azimuth",
+                            "altitude",
+                            "lookAt",
+                            "radius"
+                          ]
                         },
                         "matrix": {
                           "description": "Transform is defined as a matrix. If set, do not set `trs` or `azimuthAltitude`.",
@@ -2663,7 +3248,13 @@
                                     "format": "double",
                                     "type": "number"
                                   },
-                                  "examples": [[0, 0, 0]],
+                                  "examples": [
+                                    [
+                                      0,
+                                      0,
+                                      0
+                                    ]
+                                  ],
                                   "maxItems": 3,
                                   "minItems": 3
                                 },
@@ -2674,7 +3265,14 @@
                                     "format": "double",
                                     "type": "number"
                                   },
-                                  "examples": [[1, 0, 0, 0]],
+                                  "examples": [
+                                    [
+                                      1,
+                                      0,
+                                      0,
+                                      0
+                                    ]
+                                  ],
                                   "maxItems": 4,
                                   "minItems": 4
                                 }
@@ -2682,7 +3280,10 @@
                               "additionalProperties": false
                             },
                             "scale": {
-                              "type": ["array", "null"],
+                              "type": [
+                                "array",
+                                "null"
+                              ],
                               "items": {
                                 "format": "double",
                                 "type": "number"
@@ -2691,18 +3292,31 @@
                               "minItems": 3
                             },
                             "translation": {
-                              "type": ["array", "null"],
+                              "type": [
+                                "array",
+                                "null"
+                              ],
                               "items": {
                                 "format": "double",
                                 "type": "number"
                               },
-                              "examples": [[0, 0, 0]],
+                              "examples": [
+                                [
+                                  0,
+                                  0,
+                                  0
+                                ]
+                              ],
                               "maxItems": 3,
                               "minItems": 3
                             }
                           },
                           "additionalProperties": false,
-                          "required": ["translation", "rotation", "scale"]
+                          "required": [
+                            "translation",
+                            "rotation",
+                            "scale"
+                          ]
                         }
                       },
                       "additionalProperties": false
@@ -2734,11 +3348,17 @@
                 }
               },
               "additionalProperties": false,
-              "required": ["width", "height"]
+              "required": [
+                "width",
+                "height"
+              ]
             },
             "sources": {
               "description": "List of sources to aggregate and run the job against.",
-              "type": ["array", "null"],
+              "type": [
+                "array",
+                "null"
+              ],
               "items": {
                 "type": "object",
                 "properties": {
@@ -2755,7 +3375,10 @@
                       }
                     },
                     "additionalProperties": false,
-                    "required": ["folderId", "accessToken"]
+                    "required": [
+                      "folderId",
+                      "accessToken"
+                    ]
                   },
                   "mountPoint": {
                     "description": "Where to mount the content of the source in the virtual job working directory.",
@@ -2777,7 +3400,11 @@
                       }
                     },
                     "additionalProperties": false,
-                    "required": ["folderId", "accountId", "accessToken"]
+                    "required": [
+                      "folderId",
+                      "accountId",
+                      "accessToken"
+                    ]
                   },
                   "space": {
                     "description": "Read content from an existing space (can be another job's output, or uploaded manually with the space API). ⚠️ All sources are exclusive.'",
@@ -2789,7 +3416,9 @@
                       }
                     },
                     "additionalProperties": false,
-                    "required": ["id"]
+                    "required": [
+                      "id"
+                    ]
                   },
                   "url": {
                     "description": "Fetch content from a URL. ⚠️ All sources are exclusive.",
@@ -2802,11 +3431,15 @@
                       "url": {
                         "description": "URL to fetch content from.",
                         "type": "string",
-                        "examples": ["https://cdn.substance3d.com/v2/files/public/stepladder.usdz"]
+                        "examples": [
+                          "https://cdn.substance3d.com/v2/files/public/stepladder.usdz"
+                        ]
                       }
                     },
                     "additionalProperties": false,
-                    "required": ["url"]
+                    "required": [
+                      "url"
+                    ]
                   }
                 },
                 "additionalProperties": false
@@ -2854,7 +3487,10 @@
               ]
             }
           ],
-          "required": ["scene", "sources"],
+          "required": [
+            "scene",
+            "sources"
+          ],
           "description": "The JSON request body."
         }
       }
@@ -2907,7 +3543,9 @@
               "description": "A URL to the JSON schema for this object.",
               "type": "string",
               "format": "uri",
-              "examples": ["https://s3d.adobe.io/schemas/restv1beta.RenderModelRequest.json"]
+              "examples": [
+                "https://s3d.adobe.io/schemas/restv1beta.RenderModelRequest.json"
+              ]
             },
             "autoFraming": {
               "description": "Options related to auto-framing.",
@@ -2916,7 +3554,11 @@
                 "algorithm": {
                   "type": "string",
                   "default": "auto",
-                  "enum": ["auto", "bounding_cylinder", "frustum_fit"]
+                  "enum": [
+                    "auto",
+                    "bounding_cylinder",
+                    "frustum_fit"
+                  ]
                 },
                 "zoomFactor": {
                   "description": "A value of 1 indicates tight framing. Less than 1 is a zoom-out. Greater than 1 is a zoom-in.",
@@ -2935,13 +3577,28 @@
               "properties": {
                 "backgroundColor": {
                   "description": "RGBA background color. Has an effect only if `showEnvironment` is `false`. Each component has to be in the [0,1] range.",
-                  "type": ["array", "null"],
+                  "type": [
+                    "array",
+                    "null"
+                  ],
                   "items": {
                     "format": "double",
                     "type": "number"
                   },
-                  "default": [0, 0, 0, 0],
-                  "examples": [[0, 0, 0, 0]],
+                  "default": [
+                    0,
+                    0,
+                    0,
+                    0
+                  ],
+                  "examples": [
+                    [
+                      0,
+                      0,
+                      0,
+                      0
+                    ]
+                  ],
                   "maxItems": 4,
                   "minItems": 4
                 },
@@ -2976,7 +3633,10 @@
                   "properties": {
                     "selection": {
                       "description": "The list of masks to be exported, accepts glob expressions. If empty, all masks will be exported.",
-                      "type": ["array", "null"],
+                      "type": [
+                        "array",
+                        "null"
+                      ],
                       "items": {
                         "type": "string"
                       }
@@ -2995,7 +3655,10 @@
                   "properties": {
                     "selection": {
                       "description": "The list of masks to be exported, accepts glob expressions. If empty, all masks will be exported.",
-                      "type": ["array", "null"],
+                      "type": [
+                        "array",
+                        "null"
+                      ],
                       "items": {
                         "type": "string"
                       }
@@ -3103,7 +3766,10 @@
                             },
                             "lookAt": {
                               "description": "Look at point coordinates.",
-                              "type": ["array", "null"],
+                              "type": [
+                                "array",
+                                "null"
+                              ],
                               "items": {
                                 "format": "double",
                                 "type": "number"
@@ -3119,7 +3785,12 @@
                             }
                           },
                           "additionalProperties": false,
-                          "required": ["azimuth", "altitude", "lookAt", "radius"]
+                          "required": [
+                            "azimuth",
+                            "altitude",
+                            "lookAt",
+                            "radius"
+                          ]
                         },
                         "matrix": {
                           "description": "Transform is defined as a matrix. If set, do not set `trs` or `azimuthAltitude`.",
@@ -3145,7 +3816,13 @@
                                     "format": "double",
                                     "type": "number"
                                   },
-                                  "examples": [[0, 0, 0]],
+                                  "examples": [
+                                    [
+                                      0,
+                                      0,
+                                      0
+                                    ]
+                                  ],
                                   "maxItems": 3,
                                   "minItems": 3
                                 },
@@ -3156,7 +3833,14 @@
                                     "format": "double",
                                     "type": "number"
                                   },
-                                  "examples": [[1, 0, 0, 0]],
+                                  "examples": [
+                                    [
+                                      1,
+                                      0,
+                                      0,
+                                      0
+                                    ]
+                                  ],
                                   "maxItems": 4,
                                   "minItems": 4
                                 }
@@ -3164,7 +3848,10 @@
                               "additionalProperties": false
                             },
                             "scale": {
-                              "type": ["array", "null"],
+                              "type": [
+                                "array",
+                                "null"
+                              ],
                               "items": {
                                 "format": "double",
                                 "type": "number"
@@ -3173,18 +3860,31 @@
                               "minItems": 3
                             },
                             "translation": {
-                              "type": ["array", "null"],
+                              "type": [
+                                "array",
+                                "null"
+                              ],
                               "items": {
                                 "format": "double",
                                 "type": "number"
                               },
-                              "examples": [[0, 0, 0]],
+                              "examples": [
+                                [
+                                  0,
+                                  0,
+                                  0
+                                ]
+                              ],
                               "maxItems": 3,
                               "minItems": 3
                             }
                           },
                           "additionalProperties": false,
-                          "required": ["translation", "rotation", "scale"]
+                          "required": [
+                            "translation",
+                            "rotation",
+                            "scale"
+                          ]
                         }
                       },
                       "additionalProperties": false
@@ -3223,7 +3923,13 @@
                             "format": "double",
                             "type": "number"
                           },
-                          "examples": [[0, 0, 0]],
+                          "examples": [
+                            [
+                              0,
+                              0,
+                              0
+                            ]
+                          ],
                           "maxItems": 3,
                           "minItems": 3
                         },
@@ -3234,7 +3940,14 @@
                             "format": "double",
                             "type": "number"
                           },
-                          "examples": [[1, 0, 0, 0]],
+                          "examples": [
+                            [
+                              1,
+                              0,
+                              0,
+                              0
+                            ]
+                          ],
                           "maxItems": 4,
                           "minItems": 4
                         }
@@ -3255,7 +3968,10 @@
                       "properties": {
                         "variants": {
                           "description": "List of USD variants definition applied on USD primitives.",
-                          "type": ["array", "null"],
+                          "type": [
+                            "array",
+                            "null"
+                          ],
                           "items": {
                             "type": "object",
                             "properties": {
@@ -3270,20 +3986,31 @@
                               }
                             },
                             "additionalProperties": false,
-                            "required": ["primName", "variantSet", "variant"]
+                            "required": [
+                              "primName",
+                              "variantSet",
+                              "variant"
+                            ]
                           }
                         }
                       },
                       "additionalProperties": false,
-                      "required": ["variants"]
+                      "required": [
+                        "variants"
+                      ]
                     }
                   },
                   "additionalProperties": false,
-                  "required": ["usd"]
+                  "required": [
+                    "usd"
+                  ]
                 },
                 "materialOverrides": {
                   "description": "Define material overrides.",
-                  "type": ["array", "null"],
+                  "type": [
+                    "array",
+                    "null"
+                  ],
                   "items": {
                     "type": "object",
                     "properties": {
@@ -3294,7 +4021,11 @@
                           "format": "double",
                           "type": "number"
                         },
-                        "default": [0, 0, 0],
+                        "default": [
+                          0,
+                          0,
+                          0
+                        ],
                         "maxItems": 3,
                         "minItems": 3
                       },
@@ -3316,7 +4047,11 @@
                           "format": "double",
                           "type": "number"
                         },
-                        "default": [0, 0, 0],
+                        "default": [
+                          0,
+                          0,
+                          0
+                        ],
                         "maxItems": 3,
                         "minItems": 3
                       },
@@ -3330,7 +4065,11 @@
                           "format": "double",
                           "type": "number"
                         },
-                        "default": [0, 0, 0],
+                        "default": [
+                          0,
+                          0,
+                          0
+                        ],
                         "maxItems": 3,
                         "minItems": 3
                       },
@@ -3398,7 +4137,17 @@
                             "description": "Substance material render resolution. This should be a power of two.",
                             "type": "integer",
                             "format": "int64",
-                            "enum": [16, 32, 64, 128, 256, 512, 1024, 2048, 4096],
+                            "enum": [
+                              16,
+                              32,
+                              64,
+                              128,
+                              256,
+                              512,
+                              1024,
+                              2048,
+                              4096
+                            ],
                             "maximum": 4096,
                             "minimum": 16
                           },
@@ -3462,12 +4211,17 @@
                       }
                     },
                     "additionalProperties": false,
-                    "required": ["materialName"]
+                    "required": [
+                      "materialName"
+                    ]
                   }
                 },
                 "materials": {
                   "description": "Assign new materials to geometric primitives.",
-                  "type": ["array", "null"],
+                  "type": [
+                    "array",
+                    "null"
+                  ],
                   "items": {
                     "type": "object",
                     "properties": {
@@ -3487,7 +4241,17 @@
                                 "description": "Substance material render resolution. This should be a power of two.",
                                 "type": "integer",
                                 "format": "int64",
-                                "enum": [16, 32, 64, 128, 256, 512, 1024, 2048, 4096],
+                                "enum": [
+                                  16,
+                                  32,
+                                  64,
+                                  128,
+                                  256,
+                                  512,
+                                  1024,
+                                  2048,
+                                  4096
+                                ],
                                 "maximum": 4096,
                                 "minimum": 16
                               },
@@ -3529,12 +4293,19 @@
                             "properties": {
                               "color": {
                                 "description": "RGB color of the solid material, each component has to be in the [0,1] range.",
-                                "type": ["array", "null"],
+                                "type": [
+                                  "array",
+                                  "null"
+                                ],
                                 "items": {
                                   "format": "double",
                                   "type": "number"
                                 },
-                                "default": [0, 0, 0],
+                                "default": [
+                                  0,
+                                  0,
+                                  0
+                                ],
                                 "maxItems": 3,
                                 "minItems": 3
                               },
@@ -3554,7 +4325,9 @@
                               }
                             },
                             "additionalProperties": false,
-                            "required": ["color"]
+                            "required": [
+                              "color"
+                            ]
                           }
                         },
                         "additionalProperties": false
@@ -3565,7 +4338,10 @@
                       },
                       "nodeList": {
                         "description": "List of nodes under which geometric primitives will have this material assigned. Each entry can be a full node name or a glob expression.",
-                        "type": ["array", "null"],
+                        "type": [
+                          "array",
+                          "null"
+                        ],
                         "items": {
                           "type": "string"
                         }
@@ -3578,7 +4354,11 @@
                       }
                     },
                     "additionalProperties": false,
-                    "required": ["materialName", "material", "nodeList"]
+                    "required": [
+                      "materialName",
+                      "material",
+                      "nodeList"
+                    ]
                   }
                 },
                 "metersPerUnit": {
@@ -3613,7 +4393,10 @@
                         },
                         "lookAt": {
                           "description": "Look at point coordinates.",
-                          "type": ["array", "null"],
+                          "type": [
+                            "array",
+                            "null"
+                          ],
                           "items": {
                             "format": "double",
                             "type": "number"
@@ -3629,7 +4412,12 @@
                         }
                       },
                       "additionalProperties": false,
-                      "required": ["azimuth", "altitude", "lookAt", "radius"]
+                      "required": [
+                        "azimuth",
+                        "altitude",
+                        "lookAt",
+                        "radius"
+                      ]
                     },
                     "matrix": {
                       "description": "Transform is defined as a matrix. If set, do not set `trs` or `azimuthAltitude`.",
@@ -3655,7 +4443,13 @@
                                 "format": "double",
                                 "type": "number"
                               },
-                              "examples": [[0, 0, 0]],
+                              "examples": [
+                                [
+                                  0,
+                                  0,
+                                  0
+                                ]
+                              ],
                               "maxItems": 3,
                               "minItems": 3
                             },
@@ -3666,7 +4460,14 @@
                                 "format": "double",
                                 "type": "number"
                               },
-                              "examples": [[1, 0, 0, 0]],
+                              "examples": [
+                                [
+                                  1,
+                                  0,
+                                  0,
+                                  0
+                                ]
+                              ],
                               "maxItems": 4,
                               "minItems": 4
                             }
@@ -3674,7 +4475,10 @@
                           "additionalProperties": false
                         },
                         "scale": {
-                          "type": ["array", "null"],
+                          "type": [
+                            "array",
+                            "null"
+                          ],
                           "items": {
                             "format": "double",
                             "type": "number"
@@ -3683,18 +4487,31 @@
                           "minItems": 3
                         },
                         "translation": {
-                          "type": ["array", "null"],
+                          "type": [
+                            "array",
+                            "null"
+                          ],
                           "items": {
                             "format": "double",
                             "type": "number"
                           },
-                          "examples": [[0, 0, 0]],
+                          "examples": [
+                            [
+                              0,
+                              0,
+                              0
+                            ]
+                          ],
                           "maxItems": 3,
                           "minItems": 3
                         }
                       },
                       "additionalProperties": false,
-                      "required": ["translation", "rotation", "scale"]
+                      "required": [
+                        "translation",
+                        "rotation",
+                        "scale"
+                      ]
                     }
                   },
                   "additionalProperties": false
@@ -3722,11 +4539,17 @@
                 }
               },
               "additionalProperties": false,
-              "required": ["width", "height"]
+              "required": [
+                "width",
+                "height"
+              ]
             },
             "sources": {
               "description": "List of sources to aggregate and run the job against.",
-              "type": ["array", "null"],
+              "type": [
+                "array",
+                "null"
+              ],
               "items": {
                 "type": "object",
                 "properties": {
@@ -3743,7 +4566,10 @@
                       }
                     },
                     "additionalProperties": false,
-                    "required": ["folderId", "accessToken"]
+                    "required": [
+                      "folderId",
+                      "accessToken"
+                    ]
                   },
                   "mountPoint": {
                     "description": "Where to mount the content of the source in the virtual job working directory.",
@@ -3765,7 +4591,11 @@
                       }
                     },
                     "additionalProperties": false,
-                    "required": ["folderId", "accountId", "accessToken"]
+                    "required": [
+                      "folderId",
+                      "accountId",
+                      "accessToken"
+                    ]
                   },
                   "space": {
                     "description": "Read content from an existing space (can be another job's output, or uploaded manually with the space API). ⚠️ All sources are exclusive.'",
@@ -3777,7 +4607,9 @@
                       }
                     },
                     "additionalProperties": false,
-                    "required": ["id"]
+                    "required": [
+                      "id"
+                    ]
                   },
                   "url": {
                     "description": "Fetch content from a URL. ⚠️ All sources are exclusive.",
@@ -3790,11 +4622,15 @@
                       "url": {
                         "description": "URL to fetch content from.",
                         "type": "string",
-                        "examples": ["https://cdn.substance3d.com/v2/files/public/stepladder.usdz"]
+                        "examples": [
+                          "https://cdn.substance3d.com/v2/files/public/stepladder.usdz"
+                        ]
                       }
                     },
                     "additionalProperties": false,
-                    "required": ["url"]
+                    "required": [
+                      "url"
+                    ]
                   }
                 },
                 "additionalProperties": false
@@ -3830,7 +4666,10 @@
               ]
             }
           ],
-          "required": ["scene", "sources"],
+          "required": [
+            "scene",
+            "sources"
+          ],
           "description": "The JSON request body."
         }
       }
@@ -3876,7 +4715,9 @@
           "description": "Request body (content type: multipart/form-data)"
         }
       },
-      "required": ["requestBody"]
+      "required": [
+        "requestBody"
+      ]
     },
     "method": "post",
     "pathTemplate": "/v1/spaces",

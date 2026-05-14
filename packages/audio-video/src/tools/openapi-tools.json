@@ -87,11 +87,16 @@
                 },
                 "mediaType": {
                   "type": "string",
-                  "enum": ["text/plain"],
+                  "enum": [
+                    "text/plain"
+                  ],
                   "description": "The format of the text resource."
                 }
               },
-              "required": ["localeCode", "mediaType"]
+              "required": [
+                "localeCode",
+                "mediaType"
+              ]
             },
             "voiceId": {
               "type": "string",
@@ -102,18 +107,28 @@
               "properties": {
                 "mediaType": {
                   "type": "string",
-                  "enum": ["audio/wav"],
+                  "enum": [
+                    "audio/wav"
+                  ],
                   "description": "The supported audio format for output."
                 }
               },
-              "required": ["mediaType"]
+              "required": [
+                "mediaType"
+              ]
             }
           },
-          "required": ["voiceId", "output", "script"],
+          "required": [
+            "voiceId",
+            "output",
+            "script"
+          ],
           "description": "The request body contains the transcript used for generating speech."
         }
       },
-      "required": ["requestBody"]
+      "required": [
+        "requestBody"
+      ]
     },
     "method": "post",
     "pathTemplate": "/v1/generate-speech",
@@ -140,7 +155,9 @@
           "description": "The job ID of an asynchronous job."
         }
       },
-      "required": ["jobId"]
+      "required": [
+        "jobId"
+      ]
     },
     "method": "get",
     "pathTemplate": "/v1/status/{jobId}",
@@ -178,11 +195,15 @@
       "properties": {
         "requestBody": {
           "type": "object",
-          "required": ["source"],
+          "required": [
+            "source"
+          ],
           "properties": {
             "source": {
               "type": "object",
-              "required": ["url"],
+              "required": [
+                "url"
+              ],
               "properties": {
                 "url": {
                   "type": "string",
@@ -196,7 +217,9 @@
           "description": "The JSON request body."
         }
       },
-      "required": ["requestBody"]
+      "required": [
+        "requestBody"
+      ]
     },
     "method": "post",
     "pathTemplate": "/v1/templates/describe",
@@ -240,11 +263,16 @@
       "properties": {
         "requestBody": {
           "type": "object",
-          "required": ["source", "variations"],
+          "required": [
+            "source",
+            "variations"
+          ],
           "properties": {
             "source": {
               "type": "object",
-              "required": ["url"],
+              "required": [
+                "url"
+              ],
               "properties": {
                 "url": {
                   "type": "string",
@@ -259,7 +287,10 @@
               "description": "Array of fonts to be used in the template.",
               "items": {
                 "type": "object",
-                "required": ["name", "source"],
+                "required": [
+                  "name",
+                  "source"
+                ],
                 "properties": {
                   "name": {
                     "type": "string",
@@ -267,7 +298,9 @@
                   },
                   "source": {
                     "type": "object",
-                    "required": ["url"],
+                    "required": [
+                      "url"
+                    ],
                     "properties": {
                       "url": {
                         "type": "string",
@@ -285,7 +318,10 @@
               "properties": {
                 "handleMissingFonts": {
                   "type": "string",
-                  "enum": ["fail", "use_default"],
+                  "enum": [
+                    "fail",
+                    "use_default"
+                  ],
                   "default": "use_default",
                   "description": "How to handle missing fonts. 'fail' will cause the render to fail; 'use_default' will use Premiere Pro fallback behavior."
                 }
@@ -296,11 +332,15 @@
               "description": "Array of image, video, or audio assets referenced by variations via assetIndex.",
               "items": {
                 "type": "object",
-                "required": ["source"],
+                "required": [
+                  "source"
+                ],
                 "properties": {
                   "source": {
                     "type": "object",
-                    "required": ["url"],
+                    "required": [
+                      "url"
+                    ],
                     "properties": {
                       "url": {
                         "type": "string",
@@ -317,7 +357,9 @@
               "description": "Array of export presets. Each item is either a built-in preset (by presetId) or a custom preset (by URL). Outputs reference presets by presetIndex.",
               "items": {
                 "type": "object",
-                "required": ["source"],
+                "required": [
+                  "source"
+                ],
                 "properties": {
                   "source": {
                     "type": "object",
@@ -342,14 +384,18 @@
               "minItems": 1,
               "items": {
                 "type": "object",
-                "required": ["variables"],
+                "required": [
+                  "variables"
+                ],
                 "properties": {
                   "variables": {
                     "type": "array",
                     "description": "Variable overrides for this variation. Each object targets one template variable by variableId and supplies the override value.",
                     "items": {
                       "type": "object",
-                      "required": ["variableId"],
+                      "required": [
+                        "variableId"
+                      ],
                       "properties": {
                         "variableId": {
                           "type": "string",
@@ -381,12 +427,20 @@
                         },
                         "scale": {
                           "type": "string",
-                          "enum": ["no_scale", "fit_to_frame", "stretch_to_fill", "fill_frame"],
+                          "enum": [
+                            "no_scale",
+                            "fit_to_frame",
+                            "stretch_to_fill",
+                            "fill_frame"
+                          ],
                           "description": "Scaling behavior for media controls."
                         },
                         "audioPreference": {
                           "type": "string",
-                          "enum": ["replace", "mix"],
+                          "enum": [
+                            "replace",
+                            "mix"
+                          ],
                           "description": "Audio preference for audio controls."
                         }
                       }
@@ -400,7 +454,10 @@
               "description": "Defines which variation and preset combinations to render and optional output file names.",
               "items": {
                 "type": "object",
-                "required": ["variationIndex", "presetIndex"],
+                "required": [
+                  "variationIndex",
+                  "presetIndex"
+                ],
                 "properties": {
                   "variationIndex": {
                     "type": "number",
@@ -421,7 +478,9 @@
           "description": "The JSON request body."
         }
       },
-      "required": ["requestBody"]
+      "required": [
+        "requestBody"
+      ]
     },
     "method": "post",
     "pathTemplate": "/v1/templates/render",
@@ -457,16 +516,24 @@
                       "description": "The pre-signed URL pointing to the input source."
                     }
                   },
-                  "required": ["url"],
+                  "required": [
+                    "url"
+                  ],
                   "description": "Details of the source including a pre-signed URL. See the [list of allowed domains for storage](https://developer.adobe.com/audio-video-firefly-services/getting-started/storage-solutions/)."
                 },
                 "mediaType": {
                   "type": "string",
-                  "enum": ["video/mp4", "video/quicktime"],
+                  "enum": [
+                    "video/mp4",
+                    "video/quicktime"
+                  ],
                   "description": "Supported video media types."
                 }
               },
-              "required": ["source", "mediaType"],
+              "required": [
+                "source",
+                "mediaType"
+              ],
               "description": "Video input details."
             },
             "sceneEditDetection": {
@@ -481,7 +548,11 @@
                 "properties": {
                   "mediaType": {
                     "type": "string",
-                    "enum": ["image/gif", "image/png", "image/jpeg"],
+                    "enum": [
+                      "image/gif",
+                      "image/png",
+                      "image/jpeg"
+                    ],
                     "description": "The media type of the overlay."
                   },
                   "source": {
@@ -493,7 +564,9 @@
                         "description": "The pre-signed URL pointing to the overlay source."
                       }
                     },
-                    "required": ["url"],
+                    "required": [
+                      "url"
+                    ],
                     "description": "Details of the source including a pre-signed URL. See the [list of allowed domains for storage](https://developer.adobe.com/audio-video-firefly-services/getting-started/storage-solutions/)."
                   },
                   "startTime": {
@@ -518,7 +591,10 @@
                         "description": "The height of the overlay."
                       }
                     },
-                    "required": ["width", "height"],
+                    "required": [
+                      "width",
+                      "height"
+                    ],
                     "description": "The scale of the overlay."
                   },
                   "position": {
@@ -526,7 +602,13 @@
                     "properties": {
                       "anchorPoint": {
                         "type": "string",
-                        "enum": ["top_left", "top_right", "bottom_left", "bottom_right", "center"],
+                        "enum": [
+                          "top_left",
+                          "top_right",
+                          "bottom_left",
+                          "bottom_right",
+                          "center"
+                        ],
                         "description": "The anchor point of the overlay."
                       },
                       "offsetX": {
@@ -538,16 +620,30 @@
                         "description": "The Y offset of the overlay from the anchor point."
                       }
                     },
-                    "required": ["anchorPoint", "offsetX", "offsetY"],
+                    "required": [
+                      "anchorPoint",
+                      "offsetX",
+                      "offsetY"
+                    ],
                     "description": "The position of the overlay."
                   },
                   "repeat": {
                     "type": "string",
-                    "enum": ["loop", "once"],
+                    "enum": [
+                      "loop",
+                      "once"
+                    ],
                     "description": "The repeat behavior of the overlay."
                   }
                 },
-                "required": ["mediaType", "source", "startTime", "duration", "scale", "position"],
+                "required": [
+                  "mediaType",
+                  "source",
+                  "startTime",
+                  "duration",
+                  "scale",
+                  "position"
+                ],
                 "description": "Configuration for an overlay in the reframed video."
               },
               "description": "Configuration details for video overlays."
@@ -564,16 +660,23 @@
                   "description": "A list of aspect ratios for the output video."
                 }
               },
-              "required": ["aspectRatios"],
+              "required": [
+                "aspectRatios"
+              ],
               "description": "Configuration details for the generated reframed video."
             }
           },
-          "required": ["video", "outputConfig"],
+          "required": [
+            "video",
+            "outputConfig"
+          ],
           "type": "object",
           "description": "The reframe request body."
         }
       },
-      "required": ["requestBody"]
+      "required": [
+        "requestBody"
+      ]
     },
     "method": "post",
     "pathTemplate": "/v1/reframe",
@@ -613,20 +716,33 @@
                           "description": "The pre-signed URL pointing to the input source."
                         }
                       },
-                      "required": ["url"],
+                      "required": [
+                        "url"
+                      ],
                       "description": "Source details including a pre-signed URL for accessing the input media. See the [list of allowed domains for storage](https://developer.adobe.com/audio-video-firefly-services/getting-started/storage-solutions/)."
                     },
                     "mediaType": {
                       "type": "string",
                       "description": "Media type of the audio input.",
-                      "enum": ["audio/mp3", "audio/wav", "audio/mpeg", "audio/x-m4a", "audio/aac"]
+                      "enum": [
+                        "audio/mp3",
+                        "audio/wav",
+                        "audio/mpeg",
+                        "audio/x-m4a",
+                        "audio/aac"
+                      ]
                     }
                   },
-                  "required": ["url", "mediaType"],
+                  "required": [
+                    "url",
+                    "mediaType"
+                  ],
                   "description": "The audio input details for a dub request."
                 }
               },
-              "required": ["audio"],
+              "required": [
+                "audio"
+              ],
               "description": "The request body for transcribing audio."
             },
             {
@@ -644,7 +760,9 @@
                           "description": "The pre-signed URL pointing to the input source."
                         }
                       },
-                      "required": ["url"],
+                      "required": [
+                        "url"
+                      ],
                       "description": "Source details including a pre-signed URL for accessing the input media. See the [list of allowed domains for storage](https://developer.adobe.com/audio-video-firefly-services/getting-started/storage-solutions/)."
                     },
                     "mediaType": {
@@ -667,11 +785,16 @@
                       }
                     }
                   },
-                  "required": ["url", "mediaType"],
+                  "required": [
+                    "url",
+                    "mediaType"
+                  ],
                   "description": "The video input details for a dub request."
                 }
               },
-              "required": ["video"],
+              "required": [
+                "video"
+              ],
               "description": "The request body for transcribing video."
             }
           ],
@@ -715,7 +838,9 @@
                   "items": {
                     "type": "string",
                     "description": "Target caption format.",
-                    "enum": ["SRT"]
+                    "enum": [
+                      "SRT"
+                    ]
                   },
                   "description": "Accepted values: ['SRT']"
                 }
@@ -725,7 +850,9 @@
           "description": "The transcribe request body."
         }
       },
-      "required": ["requestBody"]
+      "required": [
+        "requestBody"
+      ]
     },
     "method": "post",
     "pathTemplate": "/v1/transcribe",
@@ -798,11 +925,15 @@
                             "description": "The pre-signed URL pointing to the input source."
                           }
                         },
-                        "required": ["url"],
+                        "required": [
+                          "url"
+                        ],
                         "description": "Source details including a pre-signed URL for accessing the input media. See the [list of allowed domains for storage](https://developer.adobe.com/audio-video-firefly-services/getting-started/storage-solutions/)."
                       }
                     },
-                    "required": ["source"],
+                    "required": [
+                      "source"
+                    ],
                     "description": "Transcript input details for a transcribe request."
                   }
                 },
@@ -818,20 +949,33 @@
                           "description": "The pre-signed URL pointing to the input source."
                         }
                       },
-                      "required": ["url"],
+                      "required": [
+                        "url"
+                      ],
                       "description": "Source details including a pre-signed URL for accessing the input media. See the [list of allowed domains for storage](https://developer.adobe.com/audio-video-firefly-services/getting-started/storage-solutions/)."
                     },
                     "mediaType": {
                       "type": "string",
                       "description": "Media type of the audio input.",
-                      "enum": ["audio/mp3", "audio/wav", "audio/mpeg", "audio/x-m4a", "audio/aac"]
+                      "enum": [
+                        "audio/mp3",
+                        "audio/wav",
+                        "audio/mpeg",
+                        "audio/x-m4a",
+                        "audio/aac"
+                      ]
                     }
                   },
-                  "required": ["url", "mediaType"],
+                  "required": [
+                    "url",
+                    "mediaType"
+                  ],
                   "description": "The audio input details for a dub request."
                 }
               },
-              "required": ["audio"],
+              "required": [
+                "audio"
+              ],
               "description": "The audio dub request body."
             },
             {
@@ -882,11 +1026,15 @@
                             "description": "The pre-signed URL pointing to the input source."
                           }
                         },
-                        "required": ["url"],
+                        "required": [
+                          "url"
+                        ],
                         "description": "Source details including a pre-signed URL for accessing the input media. See the [list of allowed domains for storage](https://developer.adobe.com/audio-video-firefly-services/getting-started/storage-solutions/)."
                       }
                     },
-                    "required": ["source"],
+                    "required": [
+                      "source"
+                    ],
                     "description": "Transcript input details for a transcribe request."
                   }
                 },
@@ -902,7 +1050,9 @@
                           "description": "The pre-signed URL pointing to the input source."
                         }
                       },
-                      "required": ["url"],
+                      "required": [
+                        "url"
+                      ],
                       "description": "Source details including a pre-signed URL for accessing the input media. See the [list of allowed domains for storage](https://developer.adobe.com/audio-video-firefly-services/getting-started/storage-solutions/)."
                     },
                     "mediaType": {
@@ -925,7 +1075,10 @@
                       }
                     }
                   },
-                  "required": ["url", "mediaType"],
+                  "required": [
+                    "url",
+                    "mediaType"
+                  ],
                   "description": "The video input details for a dub request."
                 },
                 "lipSync": {
@@ -934,14 +1087,18 @@
                   "default": "false"
                 }
               },
-              "required": ["video"],
+              "required": [
+                "video"
+              ],
               "description": "The video dub request body."
             }
           ],
           "description": "The dub request body."
         }
       },
-      "required": ["requestBody"]
+      "required": [
+        "requestBody"
+      ]
     },
     "method": "post",
     "pathTemplate": "/v1/dub",
@@ -997,11 +1154,15 @@
                       "description": "The pre-signed URL pointing to the input source."
                     }
                   },
-                  "required": ["url"],
+                  "required": [
+                    "url"
+                  ],
                   "description": "Details of the source including a pre-signed URL. See the [list of allowed domains for storage](https://developer.adobe.com/audio-video-firefly-services/getting-started/storage-solutions/)."
                 }
               },
-              "required": ["source"],
+              "required": [
+                "source"
+              ],
               "description": "Video input details for generate reframed video request."
             },
             "analysis": {
@@ -1044,7 +1205,9 @@
                             "description": "The pre-signed URL pointing to the input source."
                           }
                         },
-                        "required": ["url"],
+                        "required": [
+                          "url"
+                        ],
                         "description": "Source details including a pre-signed URL for accessing the input media. See the [list of allowed domains for storage](https://developer.adobe.com/audio-video-firefly-services/getting-started/storage-solutions/)."
                       },
                       "startTime": {
@@ -1087,11 +1250,17 @@
                             "description": "Anchor point for taking the position reference."
                           },
                           "offsetX": {
-                            "type": ["integer", "null"],
+                            "type": [
+                              "integer",
+                              "null"
+                            ],
                             "description": "Horizontal offset for the anchor point."
                           },
                           "offsetY": {
-                            "type": ["integer", "null"],
+                            "type": [
+                              "integer",
+                              "null"
+                            ],
                             "description": "Vertical offset for the anchor point."
                           }
                         }
@@ -1103,7 +1272,11 @@
                           },
                           {
                             "type": "string",
-                            "enum": ["stop_on_last_frame", "loop", "time_stretch"],
+                            "enum": [
+                              "stop_on_last_frame",
+                              "loop",
+                              "time_stretch"
+                            ],
                             "description": "Defines the repeat behavior of the overlay."
                           }
                         ],
@@ -1125,17 +1298,28 @@
                   "properties": {
                     "media": {
                       "type": "string",
-                      "enum": ["none", "mp4", "mov", "source"],
+                      "enum": [
+                        "none",
+                        "mp4",
+                        "mov",
+                        "source"
+                      ],
                       "description": "Media format for the output video. If only the OTIO file is needed, set this as `none`."
                     },
                     "sidecar": {
                       "type": "string",
-                      "enum": ["json", "otio"],
+                      "enum": [
+                        "json",
+                        "otio"
+                      ],
                       "description": "Sidecar format for additional metadata."
                     }
                   },
                   "description": "Output format configuration. A media property is mandatory when this format object is specified.",
-                  "required": ["media", "sidecar"]
+                  "required": [
+                    "media",
+                    "sidecar"
+                  ]
                 },
                 "renditions": {
                   "type": "array",
@@ -1160,7 +1344,10 @@
                                 "description": "AspectRatio y ratio."
                               }
                             },
-                            "required": ["x", "y"]
+                            "required": [
+                              "x",
+                              "y"
+                            ]
                           },
                           "mediaDestination": {
                             "type": "object",
@@ -1171,7 +1358,9 @@
                                 "description": "The pre-signed URL pointing to the output destination."
                               }
                             },
-                            "required": ["url"],
+                            "required": [
+                              "url"
+                            ],
                             "description": "Destination details including a pre-signed URL for the output media."
                           },
                           "sidecarDestination": {
@@ -1183,11 +1372,15 @@
                                 "description": "The pre-signed URL pointing to the output destination."
                               }
                             },
-                            "required": ["url"],
+                            "required": [
+                              "url"
+                            ],
                             "description": "Destination details including a pre-signed URL for the output media."
                           }
                         },
-                        "required": ["aspectRatio"]
+                        "required": [
+                          "aspectRatio"
+                        ]
                       },
                       {
                         "title": "Resolution Rendition",
@@ -1205,7 +1398,10 @@
                                 "description": "Resolution height of the output in pixels."
                               }
                             },
-                            "required": ["width", "height"]
+                            "required": [
+                              "width",
+                              "height"
+                            ]
                           },
                           "mediaDestination": {
                             "type": "object",
@@ -1216,7 +1412,9 @@
                                 "description": "The pre-signed URL pointing to the output destination."
                               }
                             },
-                            "required": ["url"],
+                            "required": [
+                              "url"
+                            ],
                             "description": "Destination details including a pre-signed URL for the output media."
                           },
                           "sidecarDestination": {
@@ -1228,26 +1426,37 @@
                                 "description": "The pre-signed URL pointing to the output destination."
                               }
                             },
-                            "required": ["url"],
+                            "required": [
+                              "url"
+                            ],
                             "description": "Destination details including a pre-signed URL for the output media."
                           }
                         },
-                        "required": ["resolution"]
+                        "required": [
+                          "resolution"
+                        ]
                       }
                     ]
                   }
                 }
               },
-              "required": ["renditions"],
+              "required": [
+                "renditions"
+              ],
               "description": "Output configuration details for generating the reframed video."
             }
           },
-          "required": ["video", "output"],
+          "required": [
+            "video",
+            "output"
+          ],
           "type": "object",
           "description": "Generate reframed video request body."
         }
       },
-      "required": ["requestBody"]
+      "required": [
+        "requestBody"
+      ]
     },
     "method": "post",
     "pathTemplate": "/v2/reframe",
@@ -1274,7 +1483,9 @@
           "description": "The job ID to get status for an asynchronous generate reframed video job."
         }
       },
-      "required": ["jobId"]
+      "required": [
+        "jobId"
+      ]
     },
     "method": "get",
     "pathTemplate": "/v2/status/{jobId}",
@@ -1376,11 +1587,16 @@
                     },
                     "mediaType": {
                       "type": "string",
-                      "enum": ["text/plain"],
+                      "enum": [
+                        "text/plain"
+                      ],
                       "description": "The format of the text resource."
                     }
                   },
-                  "required": ["localeCode", "mediaType"]
+                  "required": [
+                    "localeCode",
+                    "mediaType"
+                  ]
                 },
                 "voiceId": {
                   "type": "string",
@@ -1396,7 +1612,9 @@
                   "properties": {
                     "mediaType": {
                       "type": "string",
-                      "enum": ["video/mp4"],
+                      "enum": [
+                        "video/mp4"
+                      ],
                       "description": "The supported video format for background video for Avatar."
                     },
                     "background": {
@@ -1435,7 +1653,11 @@
                       "properties": {
                         "type": {
                           "type": "string",
-                          "enum": ["color", "video", "image"],
+                          "enum": [
+                            "color",
+                            "video",
+                            "image"
+                          ],
                           "description": "Supported background type for output Avatar video."
                         }
                       }
@@ -1452,10 +1674,17 @@
                       }
                     }
                   },
-                  "required": ["mediaType"]
+                  "required": [
+                    "mediaType"
+                  ]
                 }
               },
-              "required": ["voiceId", "output", "script", "avatarId"]
+              "required": [
+                "voiceId",
+                "output",
+                "script",
+                "avatarId"
+              ]
             },
             {
               "title": "Using Audio File",
@@ -1477,7 +1706,9 @@
                     },
                     "mediaType": {
                       "type": "string",
-                      "enum": ["audio/wav"]
+                      "enum": [
+                        "audio/wav"
+                      ]
                     },
                     "localeCode": {
                       "type": "string",
@@ -1506,7 +1737,11 @@
                       "description": "The language code for the supported language desired in the result."
                     }
                   },
-                  "required": ["localeCode", "mediaType", "source"]
+                  "required": [
+                    "localeCode",
+                    "mediaType",
+                    "source"
+                  ]
                 },
                 "avatarId": {
                   "type": "string",
@@ -1518,7 +1753,9 @@
                   "properties": {
                     "mediaType": {
                       "type": "string",
-                      "enum": ["video/mp4"],
+                      "enum": [
+                        "video/mp4"
+                      ],
                       "description": "The supported video format for background video for Avatar."
                     },
                     "background": {
@@ -1557,7 +1794,11 @@
                       "properties": {
                         "type": {
                           "type": "string",
-                          "enum": ["color", "video", "image"],
+                          "enum": [
+                            "color",
+                            "video",
+                            "image"
+                          ],
                           "description": "Supported background type for output Avatar video."
                         }
                       }
@@ -1574,16 +1815,24 @@
                       }
                     }
                   },
-                  "required": ["mediaType"]
+                  "required": [
+                    "mediaType"
+                  ]
                 }
               },
-              "required": ["output", "audio", "avatarId"]
+              "required": [
+                "output",
+                "audio",
+                "avatarId"
+              ]
             }
           ],
           "description": "The request body contains the transcript and details for generating an avatar."
         }
       },
-      "required": ["requestBody"]
+      "required": [
+        "requestBody"
+      ]
     },
     "method": "post",
     "pathTemplate": "/v1/generate-avatar",

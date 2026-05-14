@@ -8,14 +8,23 @@
         "x-model-version": {
           "type": "string",
           "default": "image3",
-          "enum": ["image3", "image3_custom", "image4_standard", "image4_ultra", "image4_custom"],
+          "enum": [
+            "image3",
+            "image3_custom",
+            "image4_standard",
+            "image4_ultra",
+            "image4_custom"
+          ],
           "description": "Specify the Firefly model version to use for the image generation. When a custom model is used, a `customModelId` must also be passed in the request body."
         },
         "requestBody": {
           "properties": {
             "contentClass": {
               "description": "Directs the style of a generated image to be photographic or like fine art.",
-              "enum": ["photo", "art"],
+              "enum": [
+                "photo",
+                "art"
+              ],
               "type": "string"
             },
             "customModelId": {
@@ -68,7 +77,10 @@
                       "type": "integer"
                     }
                   },
-                  "required": ["width", "height"],
+                  "required": [
+                    "width",
+                    "height"
+                  ],
                   "type": "object"
                 }
               ],
@@ -163,7 +175,10 @@
             },
             "upsamplerType": {
               "description": "Only supported with the model version `image4_custom`. The `default` setting upscales generated images to 2k. The `low_creativity` setting refines the image generation by removing distortions, smoothing textures, and sometimes adding details (like freckles to faces in close-up). This setting is recommended for generating images with human subjects.",
-              "enum": ["default", "low_creativity"],
+              "enum": [
+                "default",
+                "low_creativity"
+              ],
               "default": "default",
               "type": "string"
             },
@@ -174,13 +189,17 @@
               "type": "number"
             }
           },
-          "required": ["prompt"],
+          "required": [
+            "prompt"
+          ],
           "title": "Generating images from prompt",
           "type": "object",
           "description": "The JSON request body."
         }
       },
-      "required": ["requestBody"]
+      "required": [
+        "requestBody"
+      ]
     },
     "method": "post",
     "pathTemplate": "/v3/images/generate-async",
@@ -193,7 +212,13 @@
         "schema": {
           "type": "string",
           "default": "image3",
-          "enum": ["image3", "image3_custom", "image4_standard", "image4_ultra", "image4_custom"]
+          "enum": [
+            "image3",
+            "image3_custom",
+            "image4_standard",
+            "image4_ultra",
+            "image4_custom"
+          ]
         }
       }
     ],
@@ -221,14 +246,18 @@
       "properties": {
         "x-model-version": {
           "type": "string",
-          "enum": ["image5"],
+          "enum": [
+            "image5"
+          ],
           "default": "image5",
           "description": "The model version to use for image generation."
         },
         "requestBody": {
           "type": "object",
           "title": "ImageGenerateRequestV3",
-          "required": ["prompt"],
+          "required": [
+            "prompt"
+          ],
           "properties": {
             "prompt": {
               "type": "string",
@@ -241,13 +270,21 @@
               "description": "The aspect ratio of the requested generations. This controls the size of the generated image.",
               "type": "string",
               "title": "AspectRatio",
-              "enum": ["1:1", "4:3", "3:4", "16:9", "9:16"]
+              "enum": [
+                "1:1",
+                "4:3",
+                "3:4",
+                "16:9",
+                "9:16"
+              ]
             },
             "modelId": {
               "description": "The specific model to use for image generation. Available options: 'firefly_image' for Firefly Image model.",
               "type": "string",
               "title": "FireflyModelId",
-              "enum": ["firefly_image"]
+              "enum": [
+                "firefly_image"
+              ]
             },
             "modelSpecificPayload": {
               "description": "Additional model-specific parameters for controlling the generation process.",
@@ -273,7 +310,9 @@
                 "type": "object",
                 "title": "ReferenceBlobV3",
                 "description": "Reference blob for V3 API. Style Guide compliant: The 'source' property specifies the input location, and other properties like 'usage' are peers of 'source'.",
-                "required": ["source"],
+                "required": [
+                  "source"
+                ],
                 "properties": {
                   "source": {
                     "description": "The source location of the reference image.",
@@ -297,7 +336,9 @@
                     "description": "The usage of the reference blob. Available options: 'general' for general reference.",
                     "type": "string",
                     "title": "ReferenceBlobUsageV3",
-                    "enum": ["general"]
+                    "enum": [
+                      "general"
+                    ]
                   }
                 }
               },
@@ -319,7 +360,10 @@
           "description": "The JSON request body."
         }
       },
-      "required": ["x-model-version", "requestBody"]
+      "required": [
+        "x-model-version",
+        "requestBody"
+      ]
     },
     "method": "post",
     "pathTemplate": "/v4/images/generate-async",
@@ -330,7 +374,9 @@
         "required": true,
         "schema": {
           "type": "string",
-          "enum": ["image5"],
+          "enum": [
+            "image5"
+          ],
           "default": "image5"
         },
         "description": "The model version to use for image generation."
@@ -361,7 +407,11 @@
         "x-model-version": {
           "type": "string",
           "default": "image3",
-          "enum": ["image3", "image4_standard", "image4_ultra"],
+          "enum": [
+            "image3",
+            "image4_standard",
+            "image4_ultra"
+          ],
           "description": "Specify the Firefly model version to use for the image generation."
         },
         "requestBody": {
@@ -391,7 +441,9 @@
                   "description": "Source image that Firefly expands, fills, uses to generate similar images, or upscales (beta)."
                 }
               },
-              "required": ["source"],
+              "required": [
+                "source"
+              ],
               "title": "BaseInputImageV3",
               "type": "object"
             },
@@ -428,7 +480,10 @@
                       "type": "integer"
                     }
                   },
-                  "required": ["width", "height"],
+                  "required": [
+                    "width",
+                    "height"
+                  ],
                   "type": "object"
                 }
               ],
@@ -440,13 +495,17 @@
               "title": "The size"
             }
           },
-          "required": ["image"],
+          "required": [
+            "image"
+          ],
           "title": "Generating similar images from a reference image",
           "type": "object",
           "description": "The JSON request body."
         }
       },
-      "required": ["requestBody"]
+      "required": [
+        "requestBody"
+      ]
     },
     "method": "post",
     "pathTemplate": "/v3/images/generate-similar-async",
@@ -459,7 +518,11 @@
         "schema": {
           "type": "string",
           "default": "image3",
-          "enum": ["image3", "image4_standard", "image4_ultra"]
+          "enum": [
+            "image3",
+            "image4_standard",
+            "image4_ultra"
+          ]
         }
       }
     ],
@@ -538,7 +601,9 @@
                   "description": "Source image that Firefly expands, fills, or uses to generate similar images."
                 }
               },
-              "required": ["source"],
+              "required": [
+                "source"
+              ],
               "title": "InputImageV3",
               "type": "object"
             },
@@ -571,7 +636,9 @@
                   "type": "object"
                 }
               },
-              "required": ["source"],
+              "required": [
+                "source"
+              ],
               "title": "InputMaskV3",
               "type": "object"
             },
@@ -593,7 +660,11 @@
                           "allOf": [
                             {
                               "description": "An enumeration.",
-                              "enum": ["center", "left", "right"],
+                              "enum": [
+                                "center",
+                                "left",
+                                "right"
+                              ],
                               "title": "AlignmentHorizontal"
                             }
                           ],
@@ -603,7 +674,11 @@
                           "allOf": [
                             {
                               "description": "An enumeration.",
-                              "enum": ["center", "top", "bottom"],
+                              "enum": [
+                                "center",
+                                "top",
+                                "bottom"
+                              ],
                               "title": "AlignmentVertical"
                             }
                           ],
@@ -686,7 +761,10 @@
                       "type": "integer"
                     }
                   },
-                  "required": ["width", "height"],
+                  "required": [
+                    "width",
+                    "height"
+                  ],
                   "type": "object"
                 }
               ],
@@ -698,13 +776,17 @@
               "title": "The size"
             }
           },
-          "required": ["image"],
+          "required": [
+            "image"
+          ],
           "title": "Images expand payload",
           "type": "object",
           "description": "The JSON request body."
         }
       },
-      "required": ["requestBody"]
+      "required": [
+        "requestBody"
+      ]
     },
     "method": "post",
     "pathTemplate": "/v3/images/expand-async",
@@ -779,7 +861,9 @@
                   "description": "Source image that Firefly expands, fills, or uses to generate similar images."
                 }
               },
-              "required": ["source"],
+              "required": [
+                "source"
+              ],
               "title": "InputImageV3",
               "type": "object"
             },
@@ -812,7 +896,9 @@
                   "type": "object"
                 }
               },
-              "required": ["source"],
+              "required": [
+                "source"
+              ],
               "title": "InputMaskV3",
               "type": "object"
             },
@@ -867,7 +953,10 @@
                       "type": "integer"
                     }
                   },
-                  "required": ["width", "height"],
+                  "required": [
+                    "width",
+                    "height"
+                  ],
                   "type": "object"
                 }
               ],
@@ -879,13 +968,18 @@
               "title": "The size"
             }
           },
-          "required": ["image", "mask"],
+          "required": [
+            "image",
+            "mask"
+          ],
           "title": "Fill images payload",
           "type": "object",
           "description": "The JSON request body."
         }
       },
-      "required": ["requestBody"]
+      "required": [
+        "requestBody"
+      ]
     },
     "method": "post",
     "pathTemplate": "/v3/images/fill-async",
@@ -911,7 +1005,10 @@
           "properties": {
             "contentClass": {
               "description": "The content class of the image.",
-              "enum": ["photo", "art"],
+              "enum": [
+                "photo",
+                "art"
+              ],
               "type": "string"
             },
             "image": {
@@ -965,7 +1062,9 @@
                   "description": "Source image that Firefly expands, fills, or uses to generate similar images."
                 }
               },
-              "required": ["source"],
+              "required": [
+                "source"
+              ],
               "title": "InputImageV3",
               "type": "object"
             },
@@ -1015,7 +1114,11 @@
                           "allOf": [
                             {
                               "description": "An enumeration.",
-                              "enum": ["center", "left", "right"],
+                              "enum": [
+                                "center",
+                                "left",
+                                "right"
+                              ],
                               "title": "AlignmentHorizontal"
                             }
                           ],
@@ -1025,7 +1128,11 @@
                           "allOf": [
                             {
                               "description": "An enumeration.",
-                              "enum": ["center", "top", "bottom"],
+                              "enum": [
+                                "center",
+                                "top",
+                                "bottom"
+                              ],
                               "title": "AlignmentVertical"
                             }
                           ],
@@ -1108,7 +1215,10 @@
                       "type": "integer"
                     }
                   },
-                  "required": ["width", "height"],
+                  "required": [
+                    "width",
+                    "height"
+                  ],
                   "type": "object"
                 }
               ],
@@ -1164,13 +1274,18 @@
               "type": "object"
             }
           },
-          "required": ["image", "prompt"],
+          "required": [
+            "image",
+            "prompt"
+          ],
           "title": "Generate object composite from prompt request",
           "type": "object",
           "description": "The JSON request body."
         }
       },
-      "required": ["requestBody"]
+      "required": [
+        "requestBody"
+      ]
     },
     "method": "post",
     "pathTemplate": "/v3/images/generate-object-composite-async",
@@ -1194,22 +1309,32 @@
       "properties": {
         "content-type": {
           "type": "string",
-          "enum": ["application/json"],
+          "enum": [
+            "application/json"
+          ],
           "description": "Must be application/json for JSON request body."
         },
         "requestBody": {
           "type": "object",
-          "required": ["background", "object"],
+          "required": [
+            "background",
+            "object"
+          ],
           "properties": {
             "background": {
               "description": "Background image and fill area mask specifying object placement.",
               "type": "object",
-              "required": ["image", "fillAreaMask"],
+              "required": [
+                "image",
+                "fillAreaMask"
+              ],
               "properties": {
                 "image": {
                   "description": "Background image on which the object will be placed.",
                   "type": "object",
-                  "required": ["source"],
+                  "required": [
+                    "source"
+                  ],
                   "properties": {
                     "source": {
                       "type": "object",
@@ -1232,7 +1357,9 @@
                 "fillAreaMask": {
                   "description": "Mask defining where the object should be placed on the background.",
                   "type": "object",
-                  "required": ["source"],
+                  "required": [
+                    "source"
+                  ],
                   "properties": {
                     "source": {
                       "type": "object",
@@ -1257,12 +1384,16 @@
             "object": {
               "description": "Object image to be placed on the background.",
               "type": "object",
-              "required": ["image"],
+              "required": [
+                "image"
+              ],
               "properties": {
                 "image": {
                   "description": "Object image to be composited onto the background.",
                   "type": "object",
-                  "required": ["source"],
+                  "required": [
+                    "source"
+                  ],
                   "properties": {
                     "source": {
                       "type": "object",
@@ -1314,7 +1445,12 @@
               "properties": {
                 "mediaType": {
                   "type": "string",
-                  "enum": ["image/png", "image/jpeg", "image/webp", "image/jxl"],
+                  "enum": [
+                    "image/png",
+                    "image/jpeg",
+                    "image/webp",
+                    "image/jxl"
+                  ],
                   "description": "MIME type for the output image."
                 }
               }
@@ -1323,7 +1459,10 @@
           "description": "The JSON request body."
         }
       },
-      "required": ["content-type", "requestBody"]
+      "required": [
+        "content-type",
+        "requestBody"
+      ]
     },
     "method": "post",
     "pathTemplate": "/v3/images/precise-composite",
@@ -1335,7 +1474,9 @@
         "description": "Must be application/json for JSON request body.",
         "schema": {
           "type": "string",
-          "enum": ["application/json"]
+          "enum": [
+            "application/json"
+          ]
         }
       }
     ],
@@ -1363,22 +1504,32 @@
       "properties": {
         "content-type": {
           "type": "string",
-          "enum": ["application/json"],
+          "enum": [
+            "application/json"
+          ],
           "description": "Must be application/json for JSON request body."
         },
         "requestBody": {
           "type": "object",
-          "required": ["background", "object"],
+          "required": [
+            "background",
+            "object"
+          ],
           "properties": {
             "background": {
               "description": "Background image and fill area mask.",
               "type": "object",
-              "required": ["image", "fillAreaMask"],
+              "required": [
+                "image",
+                "fillAreaMask"
+              ],
               "properties": {
                 "image": {
                   "description": "Background image on which the object will be placed.",
                   "type": "object",
-                  "required": ["source"],
+                  "required": [
+                    "source"
+                  ],
                   "properties": {
                     "source": {
                       "type": "object",
@@ -1401,7 +1552,9 @@
                 "fillAreaMask": {
                   "description": "Mask defining where the object should be placed on the background.",
                   "type": "object",
-                  "required": ["source"],
+                  "required": [
+                    "source"
+                  ],
                   "properties": {
                     "source": {
                       "type": "object",
@@ -1426,12 +1579,16 @@
             "object": {
               "description": "Object image and optional mask.",
               "type": "object",
-              "required": ["image"],
+              "required": [
+                "image"
+              ],
               "properties": {
                 "image": {
                   "description": "Object image to be composited onto the background.",
                   "type": "object",
-                  "required": ["source"],
+                  "required": [
+                    "source"
+                  ],
                   "properties": {
                     "source": {
                       "type": "object",
@@ -1454,7 +1611,9 @@
                 "mask": {
                   "description": "Optional object mask.",
                   "type": "object",
-                  "required": ["source"],
+                  "required": [
+                    "source"
+                  ],
                   "properties": {
                     "source": {
                       "type": "object",
@@ -1519,7 +1678,12 @@
               "properties": {
                 "mediaType": {
                   "type": "string",
-                  "enum": ["image/png", "image/jpeg", "image/webp", "image/jxl"],
+                  "enum": [
+                    "image/png",
+                    "image/jpeg",
+                    "image/webp",
+                    "image/jxl"
+                  ],
                   "description": "MIME type for the output image."
                 }
               }
@@ -1528,7 +1692,10 @@
           "description": "The JSON request body."
         }
       },
-      "required": ["content-type", "requestBody"]
+      "required": [
+        "content-type",
+        "requestBody"
+      ]
     },
     "method": "post",
     "pathTemplate": "/v3/images/adaptive-composite",
@@ -1540,7 +1707,9 @@
         "description": "Must be application/json for JSON request body.",
         "schema": {
           "type": "string",
-          "enum": ["application/json"]
+          "enum": [
+            "application/json"
+          ]
         }
       }
     ],
@@ -1575,7 +1744,10 @@
           "type": "object",
           "title": "CreativeUpsamplerRequestV3",
           "description": "Request body for upscaling an image (beta). Provide the input image via uploadId from storage or a presigned URL. Seeds are required for reproducible results.",
-          "required": ["image", "seeds"],
+          "required": [
+            "image",
+            "seeds"
+          ],
           "properties": {
             "image": {
               "description": "The input image for the upsampler (source uploadId or url).",
@@ -1602,7 +1774,9 @@
                   "description": "Source image that Firefly expands, fills, uses to generate similar images, or upscales (beta)."
                 }
               },
-              "required": ["source"],
+              "required": [
+                "source"
+              ],
               "title": "BaseInputImageV3",
               "type": "object"
             },
@@ -1621,7 +1795,12 @@
               "allOf": [
                 {
                   "type": "integer",
-                  "enum": [2, 3, 4, 6],
+                  "enum": [
+                    2,
+                    3,
+                    4,
+                    6
+                  ],
                   "description": "Supported upscale factors. Output size equals input size multiplied by this factor."
                 }
               ]
@@ -1629,7 +1808,9 @@
           }
         }
       },
-      "required": ["requestBody"]
+      "required": [
+        "requestBody"
+      ]
     },
     "method": "post",
     "pathTemplate": "/v3/images/upscale",
@@ -1670,7 +1851,9 @@
       "properties": {
         "x-model-version": {
           "type": "string",
-          "enum": ["video1_standard"],
+          "enum": [
+            "video1_standard"
+          ],
           "description": "Specify the Firefly model version to use for the video generation."
         },
         "requestBody": {
@@ -1700,7 +1883,9 @@
                             "type": "number"
                           }
                         },
-                        "required": ["position"],
+                        "required": [
+                          "position"
+                        ],
                         "title": "PlacementStart",
                         "type": "object"
                       },
@@ -1726,7 +1911,10 @@
                         "description": "The source details of the image."
                       }
                     },
-                    "required": ["source", "placement"],
+                    "required": [
+                      "source",
+                      "placement"
+                    ],
                     "title": "ImageConditionV3",
                     "type": "object"
                   },
@@ -1766,7 +1954,10 @@
                     "type": "number"
                   }
                 },
-                "required": ["width", "height"],
+                "required": [
+                  "width",
+                  "height"
+                ],
                 "title": "ClinetoSize",
                 "type": "object"
               },
@@ -1840,7 +2031,10 @@
           "description": "The request body for the video generation."
         }
       },
-      "required": ["x-model-version", "requestBody"]
+      "required": [
+        "x-model-version",
+        "requestBody"
+      ]
     },
     "method": "post",
     "pathTemplate": "/v3/videos/generate",
@@ -1852,7 +2046,9 @@
         "required": true,
         "schema": {
           "type": "string",
-          "enum": ["video1_standard"]
+          "enum": [
+            "video1_standard"
+          ]
         }
       }
     ],
@@ -1889,7 +2085,11 @@
         "sortBy": {
           "type": "string",
           "default": "modifiedDate",
-          "enum": ["assetName", "createdDate", "modifiedDate"],
+          "enum": [
+            "assetName",
+            "createdDate",
+            "modifiedDate"
+          ],
           "description": "A sorting option for the response list. For a reverse sort, use `-` (e.g., `-modifiedDate`). Multi-vector sorting is not currently supported."
         },
         "start": {
@@ -1919,7 +2119,9 @@
           "description": "This filters custom models by published state."
         }
       },
-      "required": ["x-request-id"]
+      "required": [
+        "x-request-id"
+      ]
     },
     "method": "get",
     "pathTemplate": "/v3/custom-models",
@@ -1948,7 +2150,11 @@
         "schema": {
           "type": "string",
           "default": "modifiedDate",
-          "enum": ["assetName", "createdDate", "modifiedDate"]
+          "enum": [
+            "assetName",
+            "createdDate",
+            "modifiedDate"
+          ]
         }
       },
       {
@@ -2036,7 +2242,9 @@
           "description": "The PNG, JPEG, WEBP, TIFF, or JXL image to be stored (binary data). The maximum file size supported for uploading an image is 15MB."
         }
       },
-      "required": ["requestBody"]
+      "required": [
+        "requestBody"
+      ]
     },
     "method": "post",
     "pathTemplate": "/v2/storage/image",
@@ -2064,7 +2272,9 @@
           "description": "The job ID or URN returned in async response links."
         }
       },
-      "required": ["jobId"]
+      "required": [
+        "jobId"
+      ]
     },
     "method": "get",
     "pathTemplate": "/v3/status/{jobId}",
@@ -2107,7 +2317,9 @@
           "description": "The job ID or URN returned in async response links."
         }
       },
-      "required": ["jobId"]
+      "required": [
+        "jobId"
+      ]
     },
     "method": "put",
     "pathTemplate": "/v3/cancel/{jobId}",

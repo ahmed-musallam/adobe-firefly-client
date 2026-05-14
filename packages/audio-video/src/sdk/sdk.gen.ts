@@ -4,7 +4,7 @@ import type { Client, Options as Options2, TDataShape } from './client';
 import { client } from './client.gen';
 import type { AvatarsData, AvatarsErrors, AvatarsResponses, DubData, DubErrors, DubResponses, GenerateAvatarData, GenerateAvatarErrors, GenerateAvatarResponses, GenerateReframedVideoData, GenerateReframedVideoErrors, GenerateReframedVideoResponses, GenerateReframedVideoV2Data, GenerateReframedVideoV2Errors, GenerateReframedVideoV2Responses, GenerateSpeechData, GenerateSpeechErrors, GenerateSpeechResponses, GetPresetsData, GetPresetsErrors, GetPresetsResponses, JobResultV2Data, JobResultV2Errors, JobResultV2Responses, StatusData, StatusErrors, StatusResponses, TemplateDescribeData, TemplateDescribeErrors, TemplateDescribeResponses, TemplateRenderData, TemplateRenderErrors, TemplateRenderResponses, TranscribeData, TranscribeErrors, TranscribeResponses, VoicesData, VoicesErrors, VoicesResponses } from './types.gen';
 
-export type Options<TData extends TDataShape = TDataShape, ThrowOnError extends boolean = boolean> = Options2<TData, ThrowOnError> & {
+export type Options<TData extends TDataShape = TDataShape, ThrowOnError extends boolean = boolean, TResponse = unknown> = Options2<TData, ThrowOnError, TResponse> & {
     /**
      * You can provide a client instance returned by `createClient()` instead of
      * individual options. This might be also useful if you want to implement a

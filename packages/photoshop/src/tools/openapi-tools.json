@@ -14,7 +14,9 @@
           "description": "The IMS organization ID. This only needs to be sent if you want to receive the job status through Adobe I/O Events."
         }
       },
-      "required": ["jobId"]
+      "required": [
+        "jobId"
+      ]
     },
     "method": "get",
     "pathTemplate": "/sensei/status/{jobId}",
@@ -72,12 +74,18 @@
         "requestBody": {
           "title": "RemoveBackgroundRequest",
           "type": "object",
-          "required": ["input", "output"],
+          "required": [
+            "input",
+            "output"
+          ],
           "properties": {
             "input": {
               "title": "StorageDetails",
               "type": "object",
-              "required": ["href", "storage"],
+              "required": [
+                "href",
+                "storage"
+              ],
               "properties": {
                 "href": {
                   "type": "string",
@@ -85,7 +93,11 @@
                 },
                 "storage": {
                   "title": "StorageType",
-                  "enum": ["external", "azure", "dropbox"],
+                  "enum": [
+                    "external",
+                    "azure",
+                    "dropbox"
+                  ],
                   "type": "string",
                   "description": "Storage platforms supported."
                 }
@@ -95,7 +107,10 @@
             "output": {
               "title": "SenseiOutputDetails",
               "type": "object",
-              "required": ["href", "storage"],
+              "required": [
+                "href",
+                "storage"
+              ],
               "properties": {
                 "href": {
                   "type": "string",
@@ -103,7 +118,11 @@
                 },
                 "storage": {
                   "title": "StorageType",
-                  "enum": ["external", "azure", "dropbox"],
+                  "enum": [
+                    "external",
+                    "azure",
+                    "dropbox"
+                  ],
                   "type": "string",
                   "description": "Storage platforms supported."
                 },
@@ -113,7 +132,10 @@
                   "properties": {
                     "format": {
                       "title": "MaskFormatType",
-                      "enum": ["binary", "soft"],
+                      "enum": [
+                        "binary",
+                        "soft"
+                      ],
                       "type": "string",
                       "description": "Soft mask or binary mask."
                     }
@@ -126,7 +148,10 @@
                     "space": {
                       "title": "ColorSpaceType",
                       "type": "string",
-                      "enum": ["rgb", "rgba"],
+                      "enum": [
+                        "rgb",
+                        "rgba"
+                      ],
                       "description": "Color space for output image"
                     }
                   },
@@ -144,7 +169,9 @@
           "description": "The input image and the cutout mask parameters"
         }
       },
-      "required": ["requestBody"]
+      "required": [
+        "requestBody"
+      ]
     },
     "method": "post",
     "pathTemplate": "/sensei/cutout",
@@ -215,12 +242,16 @@
                               "description": "The URL of the resource. Only these listed domains are accepted in the request:  \n  <ul><li><code>amazonaws.com</code></li><li><code>windows.net</code></li><li><code>dropboxusercontent.com</code></li><li><code>assets.frame.io</code></li><li><code>storage.googleapis.com</code></li></ul>"
                             }
                           },
-                          "required": ["url"]
+                          "required": [
+                            "url"
+                          ]
                         }
                       ]
                     }
                   },
-                  "required": ["source"]
+                  "required": [
+                    "source"
+                  ]
                 }
               ]
             },
@@ -228,7 +259,11 @@
               "type": "string",
               "description": "The mode of background removal.",
               "default": "cutout",
-              "enum": ["cutout", "mask", "psd"]
+              "enum": [
+                "cutout",
+                "mask",
+                "psd"
+              ]
             },
             "output": {
               "description": "The options for the output image.",
@@ -239,7 +274,12 @@
                     "mediaType": {
                       "type": "string",
                       "description": "The media type of the output image. By default this will match the input source file format.",
-                      "enum": ["image/jpeg", "image/png", "image/webp", "image/vnd.adobe.photoshop"]
+                      "enum": [
+                        "image/jpeg",
+                        "image/png",
+                        "image/webp",
+                        "image/vnd.adobe.photoshop"
+                      ]
                     }
                   }
                 }
@@ -281,7 +321,12 @@
                       "maximum": 1
                     }
                   },
-                  "required": ["red", "green", "blue", "alpha"]
+                  "required": [
+                    "red",
+                    "green",
+                    "blue",
+                    "alpha"
+                  ]
                 }
               ]
             },
@@ -293,11 +338,18 @@
               "default": 1
             }
           },
-          "required": ["image"],
+          "required": [
+            "image"
+          ],
           "description": "The JSON request body."
         }
       },
-      "required": ["Authorization", "x-api-key", "Content-Type", "requestBody"]
+      "required": [
+        "Authorization",
+        "x-api-key",
+        "Content-Type",
+        "requestBody"
+      ]
     },
     "method": "post",
     "pathTemplate": "/v2/remove-background",
@@ -367,7 +419,9 @@
           "description": "The job ID from the response of the Remove Background API call."
         }
       },
-      "required": ["jobId"]
+      "required": [
+        "jobId"
+      ]
     },
     "method": "get",
     "pathTemplate": "/v2/status/{jobId}",
@@ -412,12 +466,18 @@
         "requestBody": {
           "title": "CreateMaskRequest",
           "type": "object",
-          "required": ["input", "output"],
+          "required": [
+            "input",
+            "output"
+          ],
           "properties": {
             "input": {
               "title": "StorageDetails",
               "type": "object",
-              "required": ["href", "storage"],
+              "required": [
+                "href",
+                "storage"
+              ],
               "properties": {
                 "href": {
                   "type": "string",
@@ -425,7 +485,11 @@
                 },
                 "storage": {
                   "title": "StorageType",
-                  "enum": ["external", "azure", "dropbox"],
+                  "enum": [
+                    "external",
+                    "azure",
+                    "dropbox"
+                  ],
                   "type": "string",
                   "description": "Storage platforms supported."
                 }
@@ -435,7 +499,10 @@
             "output": {
               "title": "SenseiOutputDetails",
               "type": "object",
-              "required": ["href", "storage"],
+              "required": [
+                "href",
+                "storage"
+              ],
               "properties": {
                 "href": {
                   "type": "string",
@@ -443,7 +510,11 @@
                 },
                 "storage": {
                   "title": "StorageType",
-                  "enum": ["external", "azure", "dropbox"],
+                  "enum": [
+                    "external",
+                    "azure",
+                    "dropbox"
+                  ],
                   "type": "string",
                   "description": "Storage platforms supported."
                 },
@@ -453,7 +524,10 @@
                   "properties": {
                     "format": {
                       "title": "MaskFormatType",
-                      "enum": ["binary", "soft"],
+                      "enum": [
+                        "binary",
+                        "soft"
+                      ],
                       "type": "string",
                       "description": "Soft mask or binary mask."
                     }
@@ -466,7 +540,10 @@
                     "space": {
                       "title": "ColorSpaceType",
                       "type": "string",
-                      "enum": ["rgb", "rgba"],
+                      "enum": [
+                        "rgb",
+                        "rgba"
+                      ],
                       "description": "Color space for output image"
                     }
                   },
@@ -484,7 +561,9 @@
           "description": "The input image and the mask parameters"
         }
       },
-      "required": ["requestBody"]
+      "required": [
+        "requestBody"
+      ]
     },
     "method": "post",
     "pathTemplate": "/sensei/mask",
@@ -532,7 +611,9 @@
           "description": "The IMS organization ID. This only needs to be sent if you want to receive the job status through Adobe I/O Events."
         }
       },
-      "required": ["jobId"]
+      "required": [
+        "jobId"
+      ]
     },
     "method": "get",
     "pathTemplate": "/pie/psdService/status/{jobId}",
@@ -590,14 +671,19 @@
         "requestBody": {
           "title": "DocumentManifestRequest",
           "type": "object",
-          "required": ["inputs"],
+          "required": [
+            "inputs"
+          ],
           "properties": {
             "inputs": {
               "type": "array",
               "items": {
                 "title": "StorageDetails",
                 "type": "object",
-                "required": ["href", "storage"],
+                "required": [
+                  "href",
+                  "storage"
+                ],
                 "properties": {
                   "href": {
                     "type": "string",
@@ -605,7 +691,11 @@
                   },
                   "storage": {
                     "title": "StorageType",
-                    "enum": ["external", "azure", "dropbox"],
+                    "enum": [
+                      "external",
+                      "azure",
+                      "dropbox"
+                    ],
                     "type": "string",
                     "description": "Storage platforms supported."
                   }
@@ -630,7 +720,11 @@
                               "allOf": [
                                 {
                                   "title": "ThumbnailType",
-                                  "enum": ["image/jpeg", "image/png", "image/tiff"],
+                                  "enum": [
+                                    "image/jpeg",
+                                    "image/png",
+                                    "image/tiff"
+                                  ],
                                   "type": "string",
                                   "description": "Desired image format."
                                 },
@@ -659,7 +753,9 @@
           "description": "The PSD file with the layer information you want to extract."
         }
       },
-      "required": ["requestBody"]
+      "required": [
+        "requestBody"
+      ]
     },
     "method": "post",
     "pathTemplate": "/pie/psdService/documentManifest",
@@ -705,14 +801,21 @@
         "requestBody": {
           "title": "CreateDocumentRequest",
           "type": "object",
-          "required": ["outputs", "options"],
+          "required": [
+            "outputs",
+            "options"
+          ],
           "properties": {
             "outputs": {
               "type": "array",
               "items": {
                 "title": "PsOutputDetails",
                 "type": "object",
-                "required": ["href", "storage", "type"],
+                "required": [
+                  "href",
+                  "storage",
+                  "type"
+                ],
                 "properties": {
                   "href": {
                     "type": "string",
@@ -720,7 +823,11 @@
                   },
                   "storage": {
                     "title": "StorageType",
-                    "enum": ["external", "azure", "dropbox"],
+                    "enum": [
+                      "external",
+                      "azure",
+                      "dropbox"
+                    ],
                     "type": "string",
                     "description": "Storage platforms supported."
                   },
@@ -763,13 +870,20 @@
                   },
                   "compression": {
                     "title": "CompressionType",
-                    "enum": ["small", "medium", "large"],
+                    "enum": [
+                      "small",
+                      "medium",
+                      "large"
+                    ],
                     "type": "string",
                     "description": "Desired PNG compression level."
                   },
                   "trimToCanvas": {
                     "title": "TrimToCanvasType",
-                    "enum": [true, false],
+                    "enum": [
+                      true,
+                      false
+                    ],
                     "type": "boolean",
                     "description": "Use this if the renditions needs to be of Canvas size. Using `True` trims the renditions to Canvas size, while `False` makes the renditions Layer Size."
                   },
@@ -799,14 +913,21 @@
                     "properties": {
                       "imageMode": {
                         "title": "ImageModeType",
-                        "enum": ["grayscale", "rgb", "cmyk"],
+                        "enum": [
+                          "grayscale",
+                          "rgb",
+                          "cmyk"
+                        ],
                         "type": "string",
                         "description": "The image mode."
                       },
                       "input": {
                         "title": "StorageDetails",
                         "type": "object",
-                        "required": ["href", "storage"],
+                        "required": [
+                          "href",
+                          "storage"
+                        ],
                         "properties": {
                           "href": {
                             "type": "string",
@@ -814,7 +935,11 @@
                           },
                           "storage": {
                             "title": "StorageType",
-                            "enum": ["external", "azure", "dropbox"],
+                            "enum": [
+                              "external",
+                              "azure",
+                              "dropbox"
+                            ],
                             "type": "string",
                             "description": "Storage platforms supported."
                           }
@@ -849,13 +974,18 @@
             "options": {
               "title": "DocumentCreateOptions",
               "type": "object",
-              "required": ["document"],
+              "required": [
+                "document"
+              ],
               "properties": {
                 "manageMissingFonts": {
                   "allOf": [
                     {
                       "title": "ManageMissingFonts",
-                      "enum": ["useDefault", "fail"],
+                      "enum": [
+                        "useDefault",
+                        "fail"
+                      ],
                       "type": "string",
                       "description": "Action to take if there are one or more missing fonts in the document. Using `fail` - the job will not succeed and the status will be set to `failed` with the details of the error provided in the `details` section in the status. Using `useDefault` - the job will succeed, however all the missing fonts will use the font: ArialMT."
                     },
@@ -873,7 +1003,10 @@
                   "items": {
                     "title": "StorageDetails",
                     "type": "object",
-                    "required": ["href", "storage"],
+                    "required": [
+                      "href",
+                      "storage"
+                    ],
                     "properties": {
                       "href": {
                         "type": "string",
@@ -881,7 +1014,11 @@
                       },
                       "storage": {
                         "title": "StorageType",
-                        "enum": ["external", "azure", "dropbox"],
+                        "enum": [
+                          "external",
+                          "azure",
+                          "dropbox"
+                        ],
                         "type": "string",
                         "description": "Storage platforms supported."
                       }
@@ -893,7 +1030,13 @@
                 "document": {
                   "title": "DocumentDetails",
                   "type": "object",
-                  "required": ["height", "width", "resolution", "fill", "mode"],
+                  "required": [
+                    "height",
+                    "width",
+                    "resolution",
+                    "fill",
+                    "mode"
+                  ],
                   "properties": {
                     "height": {
                       "type": "number",
@@ -914,7 +1057,11 @@
                     },
                     "fill": {
                       "title": "FillType",
-                      "enum": ["white", "backgroundColor", "transparent"],
+                      "enum": [
+                        "white",
+                        "backgroundColor",
+                        "transparent"
+                      ],
                       "type": "string",
                       "description": "Type of fill for the background layer."
                     },
@@ -938,7 +1085,11 @@
                     },
                     "depth": {
                       "title": "DepthType",
-                      "enum": [8, 16, 32],
+                      "enum": [
+                        8,
+                        16,
+                        32
+                      ],
                       "type": "number",
                       "description": "Bit depth. This is either 8, 16 or 32 bit."
                     }
@@ -949,7 +1100,10 @@
                   "items": {
                     "title": "DocumentCreateLayer",
                     "type": "object",
-                    "required": ["type", "input"],
+                    "required": [
+                      "type",
+                      "input"
+                    ],
                     "properties": {
                       "type": {
                         "title": "LayerType",
@@ -970,7 +1124,10 @@
                           {
                             "title": "StorageDetails",
                             "type": "object",
-                            "required": ["href", "storage"],
+                            "required": [
+                              "href",
+                              "storage"
+                            ],
                             "properties": {
                               "href": {
                                 "type": "string",
@@ -978,7 +1135,11 @@
                               },
                               "storage": {
                                 "title": "StorageType",
-                                "enum": ["external", "azure", "dropbox"],
+                                "enum": [
+                                  "external",
+                                  "azure",
+                                  "dropbox"
+                                ],
                                 "type": "string",
                                 "description": "Storage platforms supported."
                               }
@@ -1072,7 +1233,9 @@
                                   "properties": {
                                     "channel": {
                                       "title": "ChannelType",
-                                      "enum": ["master"],
+                                      "enum": [
+                                        "master"
+                                      ],
                                       "type": "string",
                                       "description": "The channel type."
                                     },
@@ -1286,7 +1449,9 @@
                                         "properties": {
                                           "channel": {
                                             "title": "ChannelType",
-                                            "enum": ["master"],
+                                            "enum": [
+                                              "master"
+                                            ],
                                             "type": "string",
                                             "description": "The channel type."
                                           },
@@ -1504,7 +1669,9 @@
                                 "solidColor": {
                                   "title": "SolidColor",
                                   "type": "object",
-                                  "required": ["rgb"],
+                                  "required": [
+                                    "rgb"
+                                  ],
                                   "properties": {
                                     "rgb": {
                                       "title": "RgbColor",
@@ -1571,7 +1738,10 @@
                                       },
                                       "orientation": {
                                         "title": "OrientationType",
-                                        "enum": ["horizontal", "vertical"],
+                                        "enum": [
+                                          "horizontal",
+                                          "vertical"
+                                        ],
                                         "type": "string",
                                         "description": "The text orientation."
                                       },
@@ -1757,7 +1927,10 @@
                           "input": {
                             "title": "StorageDetails",
                             "type": "object",
-                            "required": ["href", "storage"],
+                            "required": [
+                              "href",
+                              "storage"
+                            ],
                             "properties": {
                               "href": {
                                 "type": "string",
@@ -1765,7 +1938,11 @@
                               },
                               "storage": {
                                 "title": "StorageType",
-                                "enum": ["external", "azure", "dropbox"],
+                                "enum": [
+                                  "external",
+                                  "azure",
+                                  "dropbox"
+                                ],
                                 "type": "string",
                                 "description": "Storage platforms supported."
                               }
@@ -1829,7 +2006,9 @@
                           "solidColor": {
                             "title": "SolidColor",
                             "type": "object",
-                            "required": ["rgb"],
+                            "required": [
+                              "rgb"
+                            ],
                             "properties": {
                               "rgb": {
                                 "title": "RgbColor",
@@ -1898,7 +2077,10 @@
                                     },
                                     "orientation": {
                                       "title": "OrientationType",
-                                      "enum": ["horizontal", "vertical"],
+                                      "enum": [
+                                        "horizontal",
+                                        "vertical"
+                                      ],
                                       "type": "string",
                                       "description": "The text orientation."
                                     },
@@ -2144,7 +2326,9 @@
           "description": "The input psd file to create a new psd from"
         }
       },
-      "required": ["requestBody"]
+      "required": [
+        "requestBody"
+      ]
     },
     "method": "post",
     "pathTemplate": "/pie/psdService/documentCreate",
@@ -2190,14 +2374,21 @@
         "requestBody": {
           "title": "ModifyDocumentRequest",
           "type": "object",
-          "required": ["inputs", "options", "outputs"],
+          "required": [
+            "inputs",
+            "options",
+            "outputs"
+          ],
           "properties": {
             "inputs": {
               "type": "array",
               "items": {
                 "title": "StorageDetails",
                 "type": "object",
-                "required": ["href", "storage"],
+                "required": [
+                  "href",
+                  "storage"
+                ],
                 "properties": {
                   "href": {
                     "type": "string",
@@ -2205,7 +2396,11 @@
                   },
                   "storage": {
                     "title": "StorageType",
-                    "enum": ["external", "azure", "dropbox"],
+                    "enum": [
+                      "external",
+                      "azure",
+                      "dropbox"
+                    ],
                     "type": "string",
                     "description": "Storage platforms supported."
                   }
@@ -2219,7 +2414,11 @@
               "items": {
                 "title": "PsOutputDetails",
                 "type": "object",
-                "required": ["href", "storage", "type"],
+                "required": [
+                  "href",
+                  "storage",
+                  "type"
+                ],
                 "properties": {
                   "href": {
                     "type": "string",
@@ -2227,7 +2426,11 @@
                   },
                   "storage": {
                     "title": "StorageType",
-                    "enum": ["external", "azure", "dropbox"],
+                    "enum": [
+                      "external",
+                      "azure",
+                      "dropbox"
+                    ],
                     "type": "string",
                     "description": "Storage platforms supported."
                   },
@@ -2270,13 +2473,20 @@
                   },
                   "compression": {
                     "title": "CompressionType",
-                    "enum": ["small", "medium", "large"],
+                    "enum": [
+                      "small",
+                      "medium",
+                      "large"
+                    ],
                     "type": "string",
                     "description": "Desired PNG compression level."
                   },
                   "trimToCanvas": {
                     "title": "TrimToCanvasType",
-                    "enum": [true, false],
+                    "enum": [
+                      true,
+                      false
+                    ],
                     "type": "boolean",
                     "description": "Use this if the renditions needs to be of Canvas size. Using `True` trims the renditions to Canvas size, while `False` makes the renditions Layer Size."
                   },
@@ -2306,14 +2516,21 @@
                     "properties": {
                       "imageMode": {
                         "title": "ImageModeType",
-                        "enum": ["grayscale", "rgb", "cmyk"],
+                        "enum": [
+                          "grayscale",
+                          "rgb",
+                          "cmyk"
+                        ],
                         "type": "string",
                         "description": "The image mode."
                       },
                       "input": {
                         "title": "StorageDetails",
                         "type": "object",
-                        "required": ["href", "storage"],
+                        "required": [
+                          "href",
+                          "storage"
+                        ],
                         "properties": {
                           "href": {
                             "type": "string",
@@ -2321,7 +2538,11 @@
                           },
                           "storage": {
                             "title": "StorageType",
-                            "enum": ["external", "azure", "dropbox"],
+                            "enum": [
+                              "external",
+                              "azure",
+                              "dropbox"
+                            ],
                             "type": "string",
                             "description": "Storage platforms supported."
                           }
@@ -2361,7 +2582,10 @@
                   "allOf": [
                     {
                       "title": "ManageMissingFonts",
-                      "enum": ["useDefault", "fail"],
+                      "enum": [
+                        "useDefault",
+                        "fail"
+                      ],
                       "type": "string",
                       "description": "Action to take if there are one or more missing fonts in the document. Using `fail` - the job will not succeed and the status will be set to `failed` with the details of the error provided in the `details` section in the status. Using `useDefault` - the job will succeed, however all the missing fonts will use the font: ArialMT."
                     },
@@ -2379,7 +2603,10 @@
                   "items": {
                     "title": "StorageDetails",
                     "type": "object",
-                    "required": ["href", "storage"],
+                    "required": [
+                      "href",
+                      "storage"
+                    ],
                     "properties": {
                       "href": {
                         "type": "string",
@@ -2387,7 +2614,11 @@
                       },
                       "storage": {
                         "title": "StorageType",
-                        "enum": ["external", "azure", "dropbox"],
+                        "enum": [
+                          "external",
+                          "azure",
+                          "dropbox"
+                        ],
                         "type": "string",
                         "description": "Storage platforms supported."
                       }
@@ -2403,7 +2634,9 @@
                     "canvasSize": {
                       "title": "CanvasSize",
                       "type": "object",
-                      "required": ["bounds"],
+                      "required": [
+                        "bounds"
+                      ],
                       "properties": {
                         "bounds": {
                           "title": "Bounds",
@@ -2438,7 +2671,10 @@
                       "title": "ImageSize",
                       "description": "The size of the image",
                       "type": "object",
-                      "required": ["height", "width"],
+                      "required": [
+                        "height",
+                        "width"
+                      ],
                       "properties": {
                         "width": {
                           "type": "number",
@@ -2453,11 +2689,15 @@
                     "trim": {
                       "title": "Trim",
                       "type": "object",
-                      "required": ["basedOn"],
+                      "required": [
+                        "basedOn"
+                      ],
                       "properties": {
                         "basedOn": {
                           "title": "BasedOnType",
-                          "enum": ["transparentPixels"],
+                          "enum": [
+                            "transparentPixels"
+                          ],
                           "type": "string",
                           "description": "Based on type."
                         }
@@ -2470,7 +2710,10 @@
                   "items": {
                     "title": "DocumentOperationLayer",
                     "type": "object",
-                    "required": ["id", "delete"],
+                    "required": [
+                      "id",
+                      "delete"
+                    ],
                     "properties": {
                       "edit": {
                         "type": "object",
@@ -2745,7 +2988,9 @@
                                         "properties": {
                                           "channel": {
                                             "title": "ChannelType",
-                                            "enum": ["master"],
+                                            "enum": [
+                                              "master"
+                                            ],
                                             "type": "string",
                                             "description": "The channel type."
                                           },
@@ -2963,7 +3208,9 @@
                                 "solidColor": {
                                   "title": "SolidColor",
                                   "type": "object",
-                                  "required": ["rgb"],
+                                  "required": [
+                                    "rgb"
+                                  ],
                                   "properties": {
                                     "rgb": {
                                       "title": "RgbColor",
@@ -3030,7 +3277,10 @@
                                       },
                                       "orientation": {
                                         "title": "OrientationType",
-                                        "enum": ["horizontal", "vertical"],
+                                        "enum": [
+                                          "horizontal",
+                                          "vertical"
+                                        ],
                                         "type": "string",
                                         "description": "The text orientation."
                                       },
@@ -3227,7 +3477,10 @@
                       "input": {
                         "title": "StorageDetails",
                         "type": "object",
-                        "required": ["href", "storage"],
+                        "required": [
+                          "href",
+                          "storage"
+                        ],
                         "properties": {
                           "href": {
                             "type": "string",
@@ -3235,7 +3488,11 @@
                           },
                           "storage": {
                             "title": "StorageType",
-                            "enum": ["external", "azure", "dropbox"],
+                            "enum": [
+                              "external",
+                              "azure",
+                              "dropbox"
+                            ],
                             "type": "string",
                             "description": "Storage platforms supported."
                           }
@@ -3324,7 +3581,9 @@
                                   "properties": {
                                     "channel": {
                                       "title": "ChannelType",
-                                      "enum": ["master"],
+                                      "enum": [
+                                        "master"
+                                      ],
                                       "type": "string",
                                       "description": "The channel type."
                                     },
@@ -3403,7 +3662,10 @@
                           "input": {
                             "title": "StorageDetails",
                             "type": "object",
-                            "required": ["href", "storage"],
+                            "required": [
+                              "href",
+                              "storage"
+                            ],
                             "properties": {
                               "href": {
                                 "type": "string",
@@ -3411,7 +3673,11 @@
                               },
                               "storage": {
                                 "title": "StorageType",
-                                "enum": ["external", "azure", "dropbox"],
+                                "enum": [
+                                  "external",
+                                  "azure",
+                                  "dropbox"
+                                ],
                                 "type": "string",
                                 "description": "Storage platforms supported."
                               }
@@ -3502,7 +3768,9 @@
                           "solidColor": {
                             "title": "SolidColor",
                             "type": "object",
-                            "required": ["rgb"],
+                            "required": [
+                              "rgb"
+                            ],
                             "properties": {
                               "rgb": {
                                 "title": "RgbColor",
@@ -3571,7 +3839,10 @@
                                     },
                                     "orientation": {
                                       "title": "OrientationType",
-                                      "enum": ["horizontal", "vertical"],
+                                      "enum": [
+                                        "horizontal",
+                                        "vertical"
+                                      ],
                                       "type": "string",
                                       "description": "The text orientation."
                                     },
@@ -3809,13 +4080,21 @@
                       },
                       "horizontalAlign": {
                         "title": "HorizontalAlignType",
-                        "enum": ["left", "center", "right"],
+                        "enum": [
+                          "left",
+                          "center",
+                          "right"
+                        ],
                         "type": "string",
                         "description": "Indicates the relative horizontal position of the layer with respect to the canvas of the document."
                       },
                       "verticalAlign": {
                         "title": "VerticalAlignType",
-                        "enum": ["top", "center", "bottom"],
+                        "enum": [
+                          "top",
+                          "center",
+                          "bottom"
+                        ],
                         "type": "string",
                         "description": "Indicates the relative vertical position of the layer with respect to the canvas of the document."
                       },
@@ -3833,7 +4112,9 @@
           "description": "The input psd file to apply edits to and generate renditions and/or save as a new psd"
         }
       },
-      "required": ["requestBody"]
+      "required": [
+        "requestBody"
+      ]
     },
     "method": "post",
     "pathTemplate": "/pie/psdService/documentOperations",
@@ -3879,14 +4160,20 @@
         "requestBody": {
           "title": "CreateRenditionRequest",
           "type": "object",
-          "required": ["inputs", "outputs"],
+          "required": [
+            "inputs",
+            "outputs"
+          ],
           "properties": {
             "inputs": {
               "type": "array",
               "items": {
                 "title": "StorageDetails",
                 "type": "object",
-                "required": ["href", "storage"],
+                "required": [
+                  "href",
+                  "storage"
+                ],
                 "properties": {
                   "href": {
                     "type": "string",
@@ -3894,7 +4181,11 @@
                   },
                   "storage": {
                     "title": "StorageType",
-                    "enum": ["external", "azure", "dropbox"],
+                    "enum": [
+                      "external",
+                      "azure",
+                      "dropbox"
+                    ],
                     "type": "string",
                     "description": "Storage platforms supported."
                   }
@@ -3908,7 +4199,11 @@
               "items": {
                 "title": "PsOutputDetails",
                 "type": "object",
-                "required": ["href", "storage", "type"],
+                "required": [
+                  "href",
+                  "storage",
+                  "type"
+                ],
                 "properties": {
                   "href": {
                     "type": "string",
@@ -3916,7 +4211,11 @@
                   },
                   "storage": {
                     "title": "StorageType",
-                    "enum": ["external", "azure", "dropbox"],
+                    "enum": [
+                      "external",
+                      "azure",
+                      "dropbox"
+                    ],
                     "type": "string",
                     "description": "Storage platforms supported."
                   },
@@ -3959,13 +4258,20 @@
                   },
                   "compression": {
                     "title": "CompressionType",
-                    "enum": ["small", "medium", "large"],
+                    "enum": [
+                      "small",
+                      "medium",
+                      "large"
+                    ],
                     "type": "string",
                     "description": "Desired PNG compression level."
                   },
                   "trimToCanvas": {
                     "title": "TrimToCanvasType",
-                    "enum": [true, false],
+                    "enum": [
+                      true,
+                      false
+                    ],
                     "type": "boolean",
                     "description": "Use this if the renditions needs to be of Canvas size. Using `True` trims the renditions to Canvas size, while `False` makes the renditions Layer Size."
                   },
@@ -3995,14 +4301,21 @@
                     "properties": {
                       "imageMode": {
                         "title": "ImageModeType",
-                        "enum": ["grayscale", "rgb", "cmyk"],
+                        "enum": [
+                          "grayscale",
+                          "rgb",
+                          "cmyk"
+                        ],
                         "type": "string",
                         "description": "The image mode."
                       },
                       "input": {
                         "title": "StorageDetails",
                         "type": "object",
-                        "required": ["href", "storage"],
+                        "required": [
+                          "href",
+                          "storage"
+                        ],
                         "properties": {
                           "href": {
                             "type": "string",
@@ -4010,7 +4323,11 @@
                           },
                           "storage": {
                             "title": "StorageType",
-                            "enum": ["external", "azure", "dropbox"],
+                            "enum": [
+                              "external",
+                              "azure",
+                              "dropbox"
+                            ],
                             "type": "string",
                             "description": "Storage platforms supported."
                           }
@@ -4046,7 +4363,9 @@
           "description": "The input psd file to create renditions from"
         }
       },
-      "required": ["requestBody"]
+      "required": [
+        "requestBody"
+      ]
     },
     "method": "post",
     "pathTemplate": "/pie/psdService/renditionCreate",
@@ -4092,14 +4411,21 @@
         "requestBody": {
           "title": "ReplaceSmartObjectRequest",
           "type": "object",
-          "required": ["inputs", "options", "outputs"],
+          "required": [
+            "inputs",
+            "options",
+            "outputs"
+          ],
           "properties": {
             "inputs": {
               "type": "array",
               "items": {
                 "title": "StorageDetails",
                 "type": "object",
-                "required": ["href", "storage"],
+                "required": [
+                  "href",
+                  "storage"
+                ],
                 "properties": {
                   "href": {
                     "type": "string",
@@ -4107,7 +4433,11 @@
                   },
                   "storage": {
                     "title": "StorageType",
-                    "enum": ["external", "azure", "dropbox"],
+                    "enum": [
+                      "external",
+                      "azure",
+                      "dropbox"
+                    ],
                     "type": "string",
                     "description": "Storage platforms supported."
                   }
@@ -4121,7 +4451,11 @@
               "items": {
                 "title": "SmartObjectOutputDetails",
                 "type": "object",
-                "required": ["href", "storage", "type"],
+                "required": [
+                  "href",
+                  "storage",
+                  "type"
+                ],
                 "properties": {
                   "href": {
                     "type": "string",
@@ -4129,7 +4463,11 @@
                   },
                   "storage": {
                     "title": "StorageType",
-                    "enum": ["external", "azure", "dropbox"],
+                    "enum": [
+                      "external",
+                      "azure",
+                      "dropbox"
+                    ],
                     "type": "string",
                     "description": "Storage platforms supported."
                   },
@@ -4166,7 +4504,11 @@
                   },
                   "compression": {
                     "title": "CompressionType",
-                    "enum": ["small", "medium", "large"],
+                    "enum": [
+                      "small",
+                      "medium",
+                      "large"
+                    ],
                     "type": "string",
                     "description": "Desired PNG compression level."
                   }
@@ -4178,14 +4520,18 @@
             "options": {
               "title": "SmartObjectOptions",
               "type": "object",
-              "required": ["layers"],
+              "required": [
+                "layers"
+              ],
               "properties": {
                 "layers": {
                   "type": "array",
                   "items": {
                     "title": "SmartObjectLayer",
                     "type": "object",
-                    "required": ["input"],
+                    "required": [
+                      "input"
+                    ],
                     "properties": {
                       "add": {
                         "title": "LayerPosition",
@@ -4268,7 +4614,10 @@
                       "input": {
                         "title": "StorageDetails",
                         "type": "object",
-                        "required": ["href", "storage"],
+                        "required": [
+                          "href",
+                          "storage"
+                        ],
                         "properties": {
                           "href": {
                             "type": "string",
@@ -4276,7 +4625,11 @@
                           },
                           "storage": {
                             "title": "StorageType",
-                            "enum": ["external", "azure", "dropbox"],
+                            "enum": [
+                              "external",
+                              "azure",
+                              "dropbox"
+                            ],
                             "type": "string",
                             "description": "Storage platforms supported."
                           }
@@ -4320,7 +4673,9 @@
           "description": "The input psd file to apply edits for replacing embedded smart object to and generate renditions and/or save as a new psd"
         }
       },
-      "required": ["requestBody"]
+      "required": [
+        "requestBody"
+      ]
     },
     "method": "post",
     "pathTemplate": "/pie/psdService/smartObject",
@@ -4366,14 +4721,21 @@
         "requestBody": {
           "title": "PlayPhotoshopActionsRequest",
           "type": "object",
-          "required": ["inputs", "options", "outputs"],
+          "required": [
+            "inputs",
+            "options",
+            "outputs"
+          ],
           "properties": {
             "inputs": {
               "type": "array",
               "items": {
                 "title": "StorageDetails",
                 "type": "object",
-                "required": ["href", "storage"],
+                "required": [
+                  "href",
+                  "storage"
+                ],
                 "properties": {
                   "href": {
                     "type": "string",
@@ -4381,7 +4743,11 @@
                   },
                   "storage": {
                     "title": "StorageType",
-                    "enum": ["external", "azure", "dropbox"],
+                    "enum": [
+                      "external",
+                      "azure",
+                      "dropbox"
+                    ],
                     "type": "string",
                     "description": "Storage platforms supported."
                   }
@@ -4395,7 +4761,11 @@
               "items": {
                 "title": "ActionOutputDetails",
                 "type": "object",
-                "required": ["href", "storage", "type"],
+                "required": [
+                  "href",
+                  "storage",
+                  "type"
+                ],
                 "properties": {
                   "href": {
                     "type": "string",
@@ -4403,7 +4773,11 @@
                   },
                   "storage": {
                     "title": "StorageType",
-                    "enum": ["external", "azure", "dropbox"],
+                    "enum": [
+                      "external",
+                      "azure",
+                      "dropbox"
+                    ],
                     "type": "string",
                     "description": "Storage platforms supported."
                   },
@@ -4434,7 +4808,11 @@
                   },
                   "compression": {
                     "title": "CompressionType",
-                    "enum": ["small", "medium", "large"],
+                    "enum": [
+                      "small",
+                      "medium",
+                      "large"
+                    ],
                     "type": "string",
                     "description": "Desired PNG compression level."
                   }
@@ -4446,7 +4824,9 @@
             "options": {
               "title": "ActionOptions",
               "type": "object",
-              "required": ["actions"],
+              "required": [
+                "actions"
+              ],
               "properties": {
                 "actions": {
                   "type": "array",
@@ -4458,7 +4838,11 @@
                         "allOf": [
                           {
                             "title": "StorageType",
-                            "enum": ["external", "azure", "dropbox"],
+                            "enum": [
+                              "external",
+                              "azure",
+                              "dropbox"
+                            ],
                             "type": "string",
                             "description": "Storage platforms supported."
                           },
@@ -4485,7 +4869,10 @@
                   "items": {
                     "title": "StorageDetails",
                     "type": "object",
-                    "required": ["href", "storage"],
+                    "required": [
+                      "href",
+                      "storage"
+                    ],
                     "properties": {
                       "href": {
                         "type": "string",
@@ -4493,7 +4880,11 @@
                       },
                       "storage": {
                         "title": "StorageType",
-                        "enum": ["external", "azure", "dropbox"],
+                        "enum": [
+                          "external",
+                          "azure",
+                          "dropbox"
+                        ],
                         "type": "string",
                         "description": "Storage platforms supported."
                       }
@@ -4507,7 +4898,10 @@
                   "items": {
                     "title": "StorageDetails",
                     "type": "object",
-                    "required": ["href", "storage"],
+                    "required": [
+                      "href",
+                      "storage"
+                    ],
                     "properties": {
                       "href": {
                         "type": "string",
@@ -4515,7 +4909,11 @@
                       },
                       "storage": {
                         "title": "StorageType",
-                        "enum": ["external", "azure", "dropbox"],
+                        "enum": [
+                          "external",
+                          "azure",
+                          "dropbox"
+                        ],
                         "type": "string",
                         "description": "Storage platforms supported."
                       }
@@ -4529,7 +4927,10 @@
                   "items": {
                     "title": "StorageDetails",
                     "type": "object",
-                    "required": ["href", "storage"],
+                    "required": [
+                      "href",
+                      "storage"
+                    ],
                     "properties": {
                       "href": {
                         "type": "string",
@@ -4537,7 +4938,11 @@
                       },
                       "storage": {
                         "title": "StorageType",
-                        "enum": ["external", "azure", "dropbox"],
+                        "enum": [
+                          "external",
+                          "azure",
+                          "dropbox"
+                        ],
                         "type": "string",
                         "description": "Storage platforms supported."
                       }
@@ -4552,7 +4957,9 @@
           "description": "The input file to apply Photoshop Actions to and generate renditions and/or save as a new image"
         }
       },
-      "required": ["requestBody"]
+      "required": [
+        "requestBody"
+      ]
     },
     "method": "post",
     "pathTemplate": "/pie/psdService/photoshopActions",
@@ -4598,14 +5005,21 @@
         "requestBody": {
           "title": "PlayPhotoshopActionsJsonRequest",
           "type": "object",
-          "required": ["inputs", "options", "outputs"],
+          "required": [
+            "inputs",
+            "options",
+            "outputs"
+          ],
           "properties": {
             "inputs": {
               "type": "array",
               "items": {
                 "title": "StorageDetails",
                 "type": "object",
-                "required": ["href", "storage"],
+                "required": [
+                  "href",
+                  "storage"
+                ],
                 "properties": {
                   "href": {
                     "type": "string",
@@ -4613,7 +5027,11 @@
                   },
                   "storage": {
                     "title": "StorageType",
-                    "enum": ["external", "azure", "dropbox"],
+                    "enum": [
+                      "external",
+                      "azure",
+                      "dropbox"
+                    ],
                     "type": "string",
                     "description": "Storage platforms supported."
                   }
@@ -4627,7 +5045,11 @@
               "items": {
                 "title": "ActionOutputDetails",
                 "type": "object",
-                "required": ["href", "storage", "type"],
+                "required": [
+                  "href",
+                  "storage",
+                  "type"
+                ],
                 "properties": {
                   "href": {
                     "type": "string",
@@ -4635,7 +5057,11 @@
                   },
                   "storage": {
                     "title": "StorageType",
-                    "enum": ["external", "azure", "dropbox"],
+                    "enum": [
+                      "external",
+                      "azure",
+                      "dropbox"
+                    ],
                     "type": "string",
                     "description": "Storage platforms supported."
                   },
@@ -4666,7 +5092,11 @@
                   },
                   "compression": {
                     "title": "CompressionType",
-                    "enum": ["small", "medium", "large"],
+                    "enum": [
+                      "small",
+                      "medium",
+                      "large"
+                    ],
                     "type": "string",
                     "description": "Desired PNG compression level."
                   }
@@ -4678,7 +5108,9 @@
             "options": {
               "title": "ActionJsonOptions",
               "type": "object",
-              "required": ["actionJSON"],
+              "required": [
+                "actionJSON"
+              ],
               "properties": {
                 "actionJSON": {
                   "type": "array",
@@ -4692,7 +5124,10 @@
                   "items": {
                     "title": "StorageDetails",
                     "type": "object",
-                    "required": ["href", "storage"],
+                    "required": [
+                      "href",
+                      "storage"
+                    ],
                     "properties": {
                       "href": {
                         "type": "string",
@@ -4700,7 +5135,11 @@
                       },
                       "storage": {
                         "title": "StorageType",
-                        "enum": ["external", "azure", "dropbox"],
+                        "enum": [
+                          "external",
+                          "azure",
+                          "dropbox"
+                        ],
                         "type": "string",
                         "description": "Storage platforms supported."
                       }
@@ -4714,7 +5153,10 @@
                   "items": {
                     "title": "StorageDetails",
                     "type": "object",
-                    "required": ["href", "storage"],
+                    "required": [
+                      "href",
+                      "storage"
+                    ],
                     "properties": {
                       "href": {
                         "type": "string",
@@ -4722,7 +5164,11 @@
                       },
                       "storage": {
                         "title": "StorageType",
-                        "enum": ["external", "azure", "dropbox"],
+                        "enum": [
+                          "external",
+                          "azure",
+                          "dropbox"
+                        ],
                         "type": "string",
                         "description": "Storage platforms supported."
                       }
@@ -4736,7 +5182,10 @@
                   "items": {
                     "title": "StorageDetails",
                     "type": "object",
-                    "required": ["href", "storage"],
+                    "required": [
+                      "href",
+                      "storage"
+                    ],
                     "properties": {
                       "href": {
                         "type": "string",
@@ -4744,7 +5193,11 @@
                       },
                       "storage": {
                         "title": "StorageType",
-                        "enum": ["external", "azure", "dropbox"],
+                        "enum": [
+                          "external",
+                          "azure",
+                          "dropbox"
+                        ],
                         "type": "string",
                         "description": "Storage platforms supported."
                       }
@@ -4759,7 +5212,10 @@
                   "items": {
                     "title": "StorageDetails",
                     "type": "object",
-                    "required": ["href", "storage"],
+                    "required": [
+                      "href",
+                      "storage"
+                    ],
                     "properties": {
                       "href": {
                         "type": "string",
@@ -4767,7 +5223,11 @@
                       },
                       "storage": {
                         "title": "StorageType",
-                        "enum": ["external", "azure", "dropbox"],
+                        "enum": [
+                          "external",
+                          "azure",
+                          "dropbox"
+                        ],
                         "type": "string",
                         "description": "Storage platforms supported."
                       }
@@ -4782,7 +5242,9 @@
           "description": "The input psd file to apply Photoshop actionJSON to and generate renditions and/or save as a new image"
         }
       },
-      "required": ["requestBody"]
+      "required": [
+        "requestBody"
+      ]
     },
     "method": "post",
     "pathTemplate": "/pie/psdService/actionJSON",
@@ -4828,14 +5290,19 @@
         "requestBody": {
           "title": "ConvertToActionsJsonRequest",
           "type": "object",
-          "required": ["inputs"],
+          "required": [
+            "inputs"
+          ],
           "properties": {
             "inputs": {
               "type": "array",
               "items": {
                 "title": "StorageDetails",
                 "type": "object",
-                "required": ["href", "storage"],
+                "required": [
+                  "href",
+                  "storage"
+                ],
                 "properties": {
                   "href": {
                     "type": "string",
@@ -4843,7 +5310,11 @@
                   },
                   "storage": {
                     "title": "StorageType",
-                    "enum": ["external", "azure", "dropbox"],
+                    "enum": [
+                      "external",
+                      "azure",
+                      "dropbox"
+                    ],
                     "type": "string",
                     "description": "Storage platforms supported."
                   }
@@ -4854,7 +5325,9 @@
             },
             "options": {
               "title": "ActionJsonCreateOptions",
-              "required": ["actions"],
+              "required": [
+                "actions"
+              ],
               "type": "object",
               "properties": {
                 "actions": {
@@ -4882,7 +5355,9 @@
           "description": "The input ATN file to convert to actionJSON."
         }
       },
-      "required": ["requestBody"]
+      "required": [
+        "requestBody"
+      ]
     },
     "method": "post",
     "pathTemplate": "/pie/psdService/actionJsonCreate",
@@ -4928,14 +5403,21 @@
         "requestBody": {
           "title": "ApplyAutoCropRequest",
           "type": "object",
-          "required": ["inputs", "outputs", "options"],
+          "required": [
+            "inputs",
+            "outputs",
+            "options"
+          ],
           "properties": {
             "inputs": {
               "type": "array",
               "items": {
                 "title": "StorageDetails",
                 "type": "object",
-                "required": ["href", "storage"],
+                "required": [
+                  "href",
+                  "storage"
+                ],
                 "properties": {
                   "href": {
                     "type": "string",
@@ -4943,7 +5425,11 @@
                   },
                   "storage": {
                     "title": "StorageType",
-                    "enum": ["external", "azure", "dropbox"],
+                    "enum": [
+                      "external",
+                      "azure",
+                      "dropbox"
+                    ],
                     "type": "string",
                     "description": "Storage platforms supported."
                   }
@@ -4957,7 +5443,11 @@
               "items": {
                 "title": "ActionOutputDetails",
                 "type": "object",
-                "required": ["href", "storage", "type"],
+                "required": [
+                  "href",
+                  "storage",
+                  "type"
+                ],
                 "properties": {
                   "href": {
                     "type": "string",
@@ -4965,7 +5455,11 @@
                   },
                   "storage": {
                     "title": "StorageType",
-                    "enum": ["external", "azure", "dropbox"],
+                    "enum": [
+                      "external",
+                      "azure",
+                      "dropbox"
+                    ],
                     "type": "string",
                     "description": "Storage platforms supported."
                   },
@@ -4996,7 +5490,11 @@
                   },
                   "compression": {
                     "title": "CompressionType",
-                    "enum": ["small", "medium", "large"],
+                    "enum": [
+                      "small",
+                      "medium",
+                      "large"
+                    ],
                     "type": "string",
                     "description": "Desired PNG compression level."
                   }
@@ -5008,13 +5506,20 @@
             "options": {
               "title": "CropOptions",
               "type": "object",
-              "required": ["unit", "width", "height"],
+              "required": [
+                "unit",
+                "width",
+                "height"
+              ],
               "properties": {
                 "unit": {
                   "allOf": [
                     {
                       "title": "UnitType",
-                      "enum": ["Pixels", "Percent"],
+                      "enum": [
+                        "Pixels",
+                        "Percent"
+                      ],
                       "type": "string",
                       "description": "Unit for width and height."
                     },
@@ -5039,7 +5544,9 @@
           "description": "The input image to apply product crop to."
         }
       },
-      "required": ["requestBody"]
+      "required": [
+        "requestBody"
+      ]
     },
     "method": "post",
     "pathTemplate": "/pie/psdService/productCrop",
@@ -5085,14 +5592,20 @@
         "requestBody": {
           "title": "ApplyDepthBlurRequest",
           "type": "object",
-          "required": ["inputs", "outputs"],
+          "required": [
+            "inputs",
+            "outputs"
+          ],
           "properties": {
             "inputs": {
               "type": "array",
               "items": {
                 "title": "StorageDetails",
                 "type": "object",
-                "required": ["href", "storage"],
+                "required": [
+                  "href",
+                  "storage"
+                ],
                 "properties": {
                   "href": {
                     "type": "string",
@@ -5100,7 +5613,11 @@
                   },
                   "storage": {
                     "title": "StorageType",
-                    "enum": ["external", "azure", "dropbox"],
+                    "enum": [
+                      "external",
+                      "azure",
+                      "dropbox"
+                    ],
                     "type": "string",
                     "description": "Storage platforms supported."
                   }
@@ -5114,7 +5631,11 @@
               "items": {
                 "title": "ActionOutputDetails",
                 "type": "object",
-                "required": ["href", "storage", "type"],
+                "required": [
+                  "href",
+                  "storage",
+                  "type"
+                ],
                 "properties": {
                   "href": {
                     "type": "string",
@@ -5122,7 +5643,11 @@
                   },
                   "storage": {
                     "title": "StorageType",
-                    "enum": ["external", "azure", "dropbox"],
+                    "enum": [
+                      "external",
+                      "azure",
+                      "dropbox"
+                    ],
                     "type": "string",
                     "description": "Storage platforms supported."
                   },
@@ -5153,7 +5678,11 @@
                   },
                   "compression": {
                     "title": "CompressionType",
-                    "enum": ["small", "medium", "large"],
+                    "enum": [
+                      "small",
+                      "medium",
+                      "large"
+                    ],
                     "type": "string",
                     "description": "Desired PNG compression level."
                   }
@@ -5272,7 +5801,9 @@
           "description": "The input image to apply depth blur to."
         }
       },
-      "required": ["requestBody"]
+      "required": [
+        "requestBody"
+      ]
     },
     "method": "post",
     "pathTemplate": "/pie/psdService/depthBlur",
@@ -5318,14 +5849,21 @@
         "requestBody": {
           "title": "EditTextLayerRequest",
           "type": "object",
-          "required": ["inputs", "outputs", "options"],
+          "required": [
+            "inputs",
+            "outputs",
+            "options"
+          ],
           "properties": {
             "inputs": {
               "type": "array",
               "items": {
                 "title": "StorageDetails",
                 "type": "object",
-                "required": ["href", "storage"],
+                "required": [
+                  "href",
+                  "storage"
+                ],
                 "properties": {
                   "href": {
                     "type": "string",
@@ -5333,7 +5871,11 @@
                   },
                   "storage": {
                     "title": "StorageType",
-                    "enum": ["external", "azure", "dropbox"],
+                    "enum": [
+                      "external",
+                      "azure",
+                      "dropbox"
+                    ],
                     "type": "string",
                     "description": "Storage platforms supported."
                   }
@@ -5347,7 +5889,11 @@
               "items": {
                 "title": "ActionOutputDetails",
                 "type": "object",
-                "required": ["href", "storage", "type"],
+                "required": [
+                  "href",
+                  "storage",
+                  "type"
+                ],
                 "properties": {
                   "href": {
                     "type": "string",
@@ -5355,7 +5901,11 @@
                   },
                   "storage": {
                     "title": "StorageType",
-                    "enum": ["external", "azure", "dropbox"],
+                    "enum": [
+                      "external",
+                      "azure",
+                      "dropbox"
+                    ],
                     "type": "string",
                     "description": "Storage platforms supported."
                   },
@@ -5386,7 +5936,11 @@
                   },
                   "compression": {
                     "title": "CompressionType",
-                    "enum": ["small", "medium", "large"],
+                    "enum": [
+                      "small",
+                      "medium",
+                      "large"
+                    ],
                     "type": "string",
                     "description": "Desired PNG compression level."
                   }
@@ -5398,13 +5952,18 @@
             "options": {
               "title": "TextOptions",
               "type": "object",
-              "required": ["layers"],
+              "required": [
+                "layers"
+              ],
               "properties": {
                 "manageMissingFonts": {
                   "allOf": [
                     {
                       "title": "ManageMissingFonts",
-                      "enum": ["useDefault", "fail"],
+                      "enum": [
+                        "useDefault",
+                        "fail"
+                      ],
                       "type": "string",
                       "description": "Action to take if there are one or more missing fonts in the document. Using `fail` - the job will not succeed and the status will be set to `failed` with the details of the error provided in the `details` section in the status. Using `useDefault` - the job will succeed, however all the missing fonts will use the font: ArialMT."
                     },
@@ -5481,7 +6040,10 @@
                               },
                               "orientation": {
                                 "title": "OrientationType",
-                                "enum": ["horizontal", "vertical"],
+                                "enum": [
+                                  "horizontal",
+                                  "vertical"
+                                ],
                                 "type": "string",
                                 "description": "The text orientation."
                               },
@@ -5524,7 +6086,11 @@
                                         "allOf": [
                                           {
                                             "title": "TextStyleType",
-                                            "enum": ["cross", "rotated", "withSream"],
+                                            "enum": [
+                                              "cross",
+                                              "rotated",
+                                              "withSream"
+                                            ],
                                             "type": "string",
                                             "description": "Base line direction for text style."
                                           },
@@ -5561,7 +6127,11 @@
                                     },
                                     "color": {
                                       "title": "ColorDetails",
-                                      "required": ["red", "green", "blue"],
+                                      "required": [
+                                        "red",
+                                        "green",
+                                        "blue"
+                                      ],
                                       "type": "object",
                                       "properties": {
                                         "red": {
@@ -5598,19 +6168,28 @@
                                     },
                                     "baseline": {
                                       "title": "BaselineType",
-                                      "enum": ["subScript", "superScript"],
+                                      "enum": [
+                                        "subScript",
+                                        "superScript"
+                                      ],
                                       "type": "string",
                                       "description": "Indicates if the text is raised or lowered in relation to a font's baseline."
                                     },
                                     "fontCaps": {
                                       "title": "FontCaps",
-                                      "enum": ["allCaps", "smallCaps"],
+                                      "enum": [
+                                        "allCaps",
+                                        "smallCaps"
+                                      ],
                                       "type": "string",
                                       "description": "The text's capitalization values."
                                     },
                                     "autoKern": {
                                       "title": "AutoKernType",
-                                      "enum": ["opticalKern", "metricsKern"],
+                                      "enum": [
+                                        "opticalKern",
+                                        "metricsKern"
+                                      ],
                                       "type": "string",
                                       "description": "The text's kerning setting. Optical: set based on the shape of the font. Metrics: uses kern pairs included in fonts."
                                     },
@@ -5715,7 +6294,10 @@
                                 "allOf": [
                                   {
                                     "title": "TextType",
-                                    "enum": ["point", "paragraph"],
+                                    "enum": [
+                                      "point",
+                                      "paragraph"
+                                    ],
                                     "type": "string",
                                     "description": "The type of text's contents, point or paragraph."
                                   },
@@ -5741,7 +6323,10 @@
                   "items": {
                     "title": "StorageDetails",
                     "type": "object",
-                    "required": ["href", "storage"],
+                    "required": [
+                      "href",
+                      "storage"
+                    ],
                     "properties": {
                       "href": {
                         "type": "string",
@@ -5749,7 +6334,11 @@
                       },
                       "storage": {
                         "title": "StorageType",
-                        "enum": ["external", "azure", "dropbox"],
+                        "enum": [
+                          "external",
+                          "azure",
+                          "dropbox"
+                        ],
                         "type": "string",
                         "description": "Storage platforms supported."
                       }
@@ -5764,7 +6353,9 @@
           "description": "The input text to be edited."
         }
       },
-      "required": ["requestBody"]
+      "required": [
+        "requestBody"
+      ]
     },
     "method": "post",
     "pathTemplate": "/pie/psdService/text",
@@ -5810,19 +6401,27 @@
         "requestBody": {
           "title": "CreateArtboardRequest",
           "type": "object",
-          "required": ["outputs", "options"],
+          "required": [
+            "outputs",
+            "options"
+          ],
           "properties": {
             "options": {
               "title": "ArtboardDetails",
               "type": "object",
-              "required": ["artboard"],
+              "required": [
+                "artboard"
+              ],
               "properties": {
                 "artboard": {
                   "type": "array",
                   "items": {
                     "title": "StorageDetails",
                     "type": "object",
-                    "required": ["href", "storage"],
+                    "required": [
+                      "href",
+                      "storage"
+                    ],
                     "properties": {
                       "href": {
                         "type": "string",
@@ -5830,7 +6429,11 @@
                       },
                       "storage": {
                         "title": "StorageType",
-                        "enum": ["external", "azure", "dropbox"],
+                        "enum": [
+                          "external",
+                          "azure",
+                          "dropbox"
+                        ],
                         "type": "string",
                         "description": "Storage platforms supported."
                       }
@@ -5846,7 +6449,11 @@
               "items": {
                 "title": "PsOutputDetails",
                 "type": "object",
-                "required": ["href", "storage", "type"],
+                "required": [
+                  "href",
+                  "storage",
+                  "type"
+                ],
                 "properties": {
                   "href": {
                     "type": "string",
@@ -5854,7 +6461,11 @@
                   },
                   "storage": {
                     "title": "StorageType",
-                    "enum": ["external", "azure", "dropbox"],
+                    "enum": [
+                      "external",
+                      "azure",
+                      "dropbox"
+                    ],
                     "type": "string",
                     "description": "Storage platforms supported."
                   },
@@ -5897,13 +6508,20 @@
                   },
                   "compression": {
                     "title": "CompressionType",
-                    "enum": ["small", "medium", "large"],
+                    "enum": [
+                      "small",
+                      "medium",
+                      "large"
+                    ],
                     "type": "string",
                     "description": "Desired PNG compression level."
                   },
                   "trimToCanvas": {
                     "title": "TrimToCanvasType",
-                    "enum": [true, false],
+                    "enum": [
+                      true,
+                      false
+                    ],
                     "type": "boolean",
                     "description": "Use this if the renditions needs to be of Canvas size. Using `True` trims the renditions to Canvas size, while `False` makes the renditions Layer Size."
                   },
@@ -5933,14 +6551,21 @@
                     "properties": {
                       "imageMode": {
                         "title": "ImageModeType",
-                        "enum": ["grayscale", "rgb", "cmyk"],
+                        "enum": [
+                          "grayscale",
+                          "rgb",
+                          "cmyk"
+                        ],
                         "type": "string",
                         "description": "The image mode."
                       },
                       "input": {
                         "title": "StorageDetails",
                         "type": "object",
-                        "required": ["href", "storage"],
+                        "required": [
+                          "href",
+                          "storage"
+                        ],
                         "properties": {
                           "href": {
                             "type": "string",
@@ -5948,7 +6573,11 @@
                           },
                           "storage": {
                             "title": "StorageType",
-                            "enum": ["external", "azure", "dropbox"],
+                            "enum": [
+                              "external",
+                              "azure",
+                              "dropbox"
+                            ],
                             "type": "string",
                             "description": "Storage platforms supported."
                           }
@@ -5984,7 +6613,9 @@
           "description": "The input artboard to be created."
         }
       },
-      "required": ["requestBody"]
+      "required": [
+        "requestBody"
+      ]
     },
     "method": "post",
     "pathTemplate": "/pie/psdService/artboardCreate",
@@ -6043,21 +6674,29 @@
                               "description": "The URL of the resource. Only these listed domains are accepted in the request:  \n  <ul><li><code>amazonaws.com</code></li><li><code>windows.net</code></li><li><code>dropboxusercontent.com</code></li><li><code>assets.frame.io</code></li><li><code>storage.googleapis.com</code></li></ul>"
                             }
                           },
-                          "required": ["url"]
+                          "required": [
+                            "url"
+                          ]
                         }
                       ]
                     }
                   },
-                  "required": ["source"]
+                  "required": [
+                    "source"
+                  ]
                 }
               ]
             }
           },
-          "required": ["image"],
+          "required": [
+            "image"
+          ],
           "description": "The JSON request body."
         }
       },
-      "required": ["requestBody"]
+      "required": [
+        "requestBody"
+      ]
     },
     "method": "post",
     "pathTemplate": "/v1/mask-objects",
@@ -6101,12 +6740,16 @@
                               "description": "The URL of the resource. Only these listed domains are accepted in the request:  \n  <ul><li><code>amazonaws.com</code></li><li><code>windows.net</code></li><li><code>dropboxusercontent.com</code></li><li><code>assets.frame.io</code></li><li><code>storage.googleapis.com</code></li></ul>"
                             }
                           },
-                          "required": ["url"]
+                          "required": [
+                            "url"
+                          ]
                         }
                       ]
                     }
                   },
-                  "required": ["source"]
+                  "required": [
+                    "source"
+                  ]
                 }
               ]
             },
@@ -6127,21 +6770,30 @@
                               "description": "The URL of the resource. Only these listed domains are accepted in the request:  \n  <ul><li><code>amazonaws.com</code></li><li><code>windows.net</code></li><li><code>dropboxusercontent.com</code></li><li><code>assets.frame.io</code></li><li><code>storage.googleapis.com</code></li></ul>"
                             }
                           },
-                          "required": ["url"]
+                          "required": [
+                            "url"
+                          ]
                         }
                       ]
                     }
                   },
-                  "required": ["source"]
+                  "required": [
+                    "source"
+                  ]
                 }
               ]
             }
           },
-          "required": ["image", "mask"],
+          "required": [
+            "image",
+            "mask"
+          ],
           "description": "The JSON request body."
         }
       },
-      "required": ["requestBody"]
+      "required": [
+        "requestBody"
+      ]
     },
     "method": "post",
     "pathTemplate": "/v1/mask-body-parts",
@@ -6185,12 +6837,16 @@
                               "description": "The URL of the resource. Only these listed domains are accepted in the request:  \n  <ul><li><code>amazonaws.com</code></li><li><code>windows.net</code></li><li><code>dropboxusercontent.com</code></li><li><code>assets.frame.io</code></li><li><code>storage.googleapis.com</code></li></ul>"
                             }
                           },
-                          "required": ["url"]
+                          "required": [
+                            "url"
+                          ]
                         }
                       ]
                     }
                   },
-                  "required": ["source"]
+                  "required": [
+                    "source"
+                  ]
                 }
               ]
             },
@@ -6211,12 +6867,16 @@
                               "description": "The URL of the resource. Only these listed domains are accepted in the request:  \n  <ul><li><code>amazonaws.com</code></li><li><code>windows.net</code></li><li><code>dropboxusercontent.com</code></li><li><code>assets.frame.io</code></li><li><code>storage.googleapis.com</code></li></ul>"
                             }
                           },
-                          "required": ["url"]
+                          "required": [
+                            "url"
+                          ]
                         }
                       ]
                     }
                   },
-                  "required": ["source"]
+                  "required": [
+                    "source"
+                  ]
                 }
               ]
             },
@@ -6226,11 +6886,16 @@
               "default": false
             }
           },
-          "required": ["image", "mask"],
+          "required": [
+            "image",
+            "mask"
+          ],
           "description": "The JSON request body."
         }
       },
-      "required": ["requestBody"]
+      "required": [
+        "requestBody"
+      ]
     },
     "method": "post",
     "pathTemplate": "/v1/refine-mask",
@@ -6274,12 +6939,16 @@
                               "description": "The URL of the resource. Only these listed domains are accepted in the request:  \n  <ul><li><code>amazonaws.com</code></li><li><code>windows.net</code></li><li><code>dropboxusercontent.com</code></li><li><code>assets.frame.io</code></li><li><code>storage.googleapis.com</code></li></ul>"
                             }
                           },
-                          "required": ["url"]
+                          "required": [
+                            "url"
+                          ]
                         }
                       ]
                     }
                   },
-                  "required": ["source"]
+                  "required": [
+                    "source"
+                  ]
                 }
               ]
             },
@@ -6300,20 +6969,29 @@
                             "description": "The URL of the resource. Only these listed domains are accepted in the request:  \n  <ul><li><code>amazonaws.com</code></li><li><code>windows.net</code></li><li><code>dropboxusercontent.com</code></li><li><code>assets.frame.io</code></li><li><code>storage.googleapis.com</code></li></ul>"
                           }
                         },
-                        "required": ["url"]
+                        "required": [
+                          "url"
+                        ]
                       }
                     ]
                   }
                 },
-                "required": ["source"]
+                "required": [
+                  "source"
+                ]
               }
             }
           },
-          "required": ["image", "masks"],
+          "required": [
+            "image",
+            "masks"
+          ],
           "description": "The JSON request body."
         }
       },
-      "required": ["requestBody"]
+      "required": [
+        "requestBody"
+      ]
     },
     "method": "post",
     "pathTemplate": "/v1/fill-masked-areas",
@@ -6341,7 +7019,9 @@
           "type": "string"
         }
       },
-      "required": ["jobId"]
+      "required": [
+        "jobId"
+      ]
     },
     "method": "get",
     "pathTemplate": "/v1/status/{jobId}",

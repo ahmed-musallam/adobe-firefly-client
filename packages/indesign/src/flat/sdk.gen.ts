@@ -24,7 +24,7 @@ export type Options<TData extends TDataShape = TDataShape, ThrowOnError extends 
  * Creates InDesign documents or PDFs by merging CSV data with InDesign templates. Supports multiple output formats: JPEG (`image/jpeg`), PNG (`image/png`), PDF (`application/pdf`), and InDesign (`application/x-indesign`).
  */
 export const dataMerge = <ThrowOnError extends boolean = false>(options: Options<DataMergeData, ThrowOnError>) => (options.client ?? client).post<DataMergeResponses, DataMergeErrors, ThrowOnError>({
-    security: [{ name: 'x-api-key', type: 'apiKey' }, { scheme: 'bearer', type: 'http' }],
+    security: [{ scheme: 'bearer', type: 'http' }, { name: 'x-api-key', type: 'apiKey' }],
     url: '/v3/merge-data',
     ...options,
     headers: {
@@ -39,7 +39,7 @@ export const dataMerge = <ThrowOnError extends boolean = false>(options: Options
  * Retrieves the data merge tags from a document.
  */
 export const dataMergeTags = <ThrowOnError extends boolean = false>(options: Options<DataMergeTagsData, ThrowOnError>) => (options.client ?? client).post<DataMergeTagsResponses, DataMergeTagsErrors, ThrowOnError>({
-    security: [{ name: 'x-api-key', type: 'apiKey' }, { scheme: 'bearer', type: 'http' }],
+    security: [{ scheme: 'bearer', type: 'http' }, { name: 'x-api-key', type: 'apiKey' }],
     url: '/v3/merge-data-tags',
     ...options,
     headers: {
@@ -54,7 +54,7 @@ export const dataMergeTags = <ThrowOnError extends boolean = false>(options: Opt
  * Replaces file-based links in InDesign documents with AEM URLs. Particularly useful for customers working with Adobe Experience Manager (AEM) using Adobe Asset Link, enabling designers to work with output files that have direct links to AEM URLs.
  */
 export const remapLinks = <ThrowOnError extends boolean = false>(options: Options<RemapLinksData, ThrowOnError>) => (options.client ?? client).post<RemapLinksResponses, RemapLinksErrors, ThrowOnError>({
-    security: [{ name: 'x-api-key', type: 'apiKey' }, { scheme: 'bearer', type: 'http' }],
+    security: [{ scheme: 'bearer', type: 'http' }, { name: 'x-api-key', type: 'apiKey' }],
     url: '/v3/remap-links',
     ...options,
     headers: {
@@ -69,7 +69,7 @@ export const remapLinks = <ThrowOnError extends boolean = false>(options: Option
  * Creates JPEG, PNG, or PDF renditions of InDesign documents. Supports multiple output formats: JPEG (`image/jpeg`), PNG (`image/png`), and PDF (`application/pdf`).
  */
 export const renditionJob = <ThrowOnError extends boolean = false>(options: Options<RenditionJobData, ThrowOnError>) => (options.client ?? client).post<RenditionJobResponses, RenditionJobErrors, ThrowOnError>({
-    security: [{ name: 'x-api-key', type: 'apiKey' }, { scheme: 'bearer', type: 'http' }],
+    security: [{ scheme: 'bearer', type: 'http' }, { name: 'x-api-key', type: 'apiKey' }],
     url: '/v3/create-rendition',
     ...options,
     headers: {
@@ -83,8 +83,8 @@ export const renditionJob = <ThrowOnError extends boolean = false>(options: Opti
  *
  * Retrieves details of the latest version of all registered custom scripts. Includes version, download link, registration date, and script name. Response is paginated based on list length.
  */
-export const listCustomScripts = <ThrowOnError extends boolean = false>(options: Options<ListCustomScriptsData, ThrowOnError>) => (options.client ?? client).get<ListCustomScriptsResponses, ListCustomScriptsErrors, ThrowOnError>({
-    security: [{ name: 'x-api-key', type: 'apiKey' }, { scheme: 'bearer', type: 'http' }],
+export const listCustomScripts = <ThrowOnError extends boolean = false>(options?: Options<ListCustomScriptsData, ThrowOnError>) => (options?.client ?? client).get<ListCustomScriptsResponses, ListCustomScriptsErrors, ThrowOnError>({
+    security: [{ scheme: 'bearer', type: 'http' }, { name: 'x-api-key', type: 'apiKey' }],
     url: '/v3/scripts',
     ...options
 });
@@ -96,7 +96,7 @@ export const listCustomScripts = <ThrowOnError extends boolean = false>(options:
  */
 export const submitCustomScript = <ThrowOnError extends boolean = false>(options: Options<SubmitCustomScriptData, ThrowOnError>) => (options.client ?? client).post<SubmitCustomScriptResponses, SubmitCustomScriptErrors, ThrowOnError>({
     ...formDataBodySerializer,
-    security: [{ name: 'x-api-key', type: 'apiKey' }, { scheme: 'bearer', type: 'http' }],
+    security: [{ scheme: 'bearer', type: 'http' }, { name: 'x-api-key', type: 'apiKey' }],
     url: '/v3/scripts',
     ...options,
     headers: {
@@ -111,7 +111,7 @@ export const submitCustomScript = <ThrowOnError extends boolean = false>(options
  * Submits execution requests for custom scripts. Defines input assets and parameters that the custom script will use during execution.
  */
 export const executeCustomScript = <ThrowOnError extends boolean = false>(options: Options<ExecuteCustomScriptData, ThrowOnError>) => (options.client ?? client).post<ExecuteCustomScriptResponses, ExecuteCustomScriptErrors, ThrowOnError>({
-    security: [{ name: 'x-api-key', type: 'apiKey' }, { scheme: 'bearer', type: 'http' }],
+    security: [{ scheme: 'bearer', type: 'http' }, { name: 'x-api-key', type: 'apiKey' }],
     url: '/v3/{script_id}/{script_name}',
     ...options,
     headers: {
@@ -126,7 +126,7 @@ export const executeCustomScript = <ThrowOnError extends boolean = false>(option
  * Deletes a single registered custom script. All versions of the script will be permanently removed.
  */
 export const deleteCustomScript = <ThrowOnError extends boolean = false>(options: Options<DeleteCustomScriptData, ThrowOnError>) => (options.client ?? client).delete<DeleteCustomScriptResponses, DeleteCustomScriptErrors, ThrowOnError>({
-    security: [{ name: 'x-api-key', type: 'apiKey' }, { scheme: 'bearer', type: 'http' }],
+    security: [{ scheme: 'bearer', type: 'http' }, { name: 'x-api-key', type: 'apiKey' }],
     url: '/v3/scripts/{script_name}',
     ...options
 });
@@ -137,7 +137,7 @@ export const deleteCustomScript = <ThrowOnError extends boolean = false>(options
  * Retrieves details of a single registered custom script. Includes version, download link, registration date, and script name.
  */
 export const getCustomScriptDetails = <ThrowOnError extends boolean = false>(options: Options<GetCustomScriptDetailsData, ThrowOnError>) => (options.client ?? client).get<GetCustomScriptDetailsResponses, GetCustomScriptDetailsErrors, ThrowOnError>({
-    security: [{ name: 'x-api-key', type: 'apiKey' }, { scheme: 'bearer', type: 'http' }],
+    security: [{ scheme: 'bearer', type: 'http' }, { name: 'x-api-key', type: 'apiKey' }],
     url: '/v3/scripts/{script_name}',
     ...options
 });
@@ -148,7 +148,7 @@ export const getCustomScriptDetails = <ThrowOnError extends boolean = false>(opt
  * Updates the InDesign app version configuration for a registered custom script. Allows customers to specify version strategies: use latest version, fix to a major version, or fix to a specific major and minor version.
  */
 export const updateScriptAppVersion = <ThrowOnError extends boolean = false>(options: Options<UpdateScriptAppVersionData, ThrowOnError>) => (options.client ?? client).put<UpdateScriptAppVersionResponses, UpdateScriptAppVersionErrors, ThrowOnError>({
-    security: [{ name: 'x-api-key', type: 'apiKey' }, { scheme: 'bearer', type: 'http' }],
+    security: [{ scheme: 'bearer', type: 'http' }, { name: 'x-api-key', type: 'apiKey' }],
     url: '/v3/scripts/{script_name}/app-version',
     ...options,
     headers: {
@@ -162,8 +162,8 @@ export const updateScriptAppVersion = <ThrowOnError extends boolean = false>(opt
  *
  * Retrieves information about all available InDesign app versions. Returns major version, minor version, and status for each registered app version.
  */
-export const listAppVersions = <ThrowOnError extends boolean = false>(options: Options<ListAppVersionsData, ThrowOnError>) => (options.client ?? client).get<ListAppVersionsResponses, ListAppVersionsErrors, ThrowOnError>({
-    security: [{ name: 'x-api-key', type: 'apiKey' }, { scheme: 'bearer', type: 'http' }],
+export const listAppVersions = <ThrowOnError extends boolean = false>(options?: Options<ListAppVersionsData, ThrowOnError>) => (options?.client ?? client).get<ListAppVersionsResponses, ListAppVersionsErrors, ThrowOnError>({
+    security: [{ scheme: 'bearer', type: 'http' }, { name: 'x-api-key', type: 'apiKey' }],
     url: '/v3/app-versions',
     ...options
 });
@@ -174,7 +174,7 @@ export const listAppVersions = <ThrowOnError extends boolean = false>(options: O
  * Retrieve comprehensive information about INDD/IDML documents. Returns data based on the enabled information types specified in the request.
  */
 export const getDocumentInfo = <ThrowOnError extends boolean = false>(options: Options<GetDocumentInfoData, ThrowOnError>) => (options.client ?? client).post<GetDocumentInfoResponses, GetDocumentInfoErrors, ThrowOnError>({
-    security: [{ name: 'x-api-key', type: 'apiKey' }, { scheme: 'bearer', type: 'http' }],
+    security: [{ scheme: 'bearer', type: 'http' }, { name: 'x-api-key', type: 'apiKey' }],
     url: '/v3/document-info',
     ...options,
     headers: {
@@ -189,7 +189,7 @@ export const getDocumentInfo = <ThrowOnError extends boolean = false>(options: O
  * Returns the latest status of a Document Info job. Poll this endpoint to retrieve the extracted document information including pages, links, fonts, page items, and text stories.
  */
 export const getDocumentInfoJobStatus = <ThrowOnError extends boolean = false>(options: Options<GetDocumentInfoJobStatusData, ThrowOnError>) => (options.client ?? client).get<GetDocumentInfoJobStatusResponses, unknown, ThrowOnError>({
-    security: [{ name: 'x-api-key', type: 'apiKey' }, { scheme: 'bearer', type: 'http' }],
+    security: [{ scheme: 'bearer', type: 'http' }, { name: 'x-api-key', type: 'apiKey' }],
     url: '/v3/status/{document-info_job_id}',
     ...options
 });
@@ -200,7 +200,7 @@ export const getDocumentInfoJobStatus = <ThrowOnError extends boolean = false>(o
  * Converts PDF documents to editable InDesign (INDD or IDML) format. The output is a ZIP file (default name 'output.zip') containing subfolders (named after each input PDF) with the converted document and associated assets. If `embedLinks` is false, assets are provided in a separate folder within the ZIP. If `embedLinks` is true, all links are embedded in the InDesign file. Returns warnings for missing fonts and links.
  */
 export const convertPdfToInDesign = <ThrowOnError extends boolean = false>(options: Options<ConvertPdfToInDesignData, ThrowOnError>) => (options.client ?? client).post<ConvertPdfToInDesignResponses, ConvertPdfToInDesignErrors, ThrowOnError>({
-    security: [{ name: 'x-api-key', type: 'apiKey' }, { scheme: 'bearer', type: 'http' }],
+    security: [{ scheme: 'bearer', type: 'http' }, { name: 'x-api-key', type: 'apiKey' }],
     url: '/v3/convert-pdf-to-indesign',
     ...options,
     headers: {
@@ -215,7 +215,7 @@ export const convertPdfToInDesign = <ThrowOnError extends boolean = false>(optio
  * Returns the latest status of a job, in this case a PDF to InDesign conversion job. Poll this endpoint to retrieve the job results, warnings, and download URL of the output, in this case an output ZIP file.
  */
 export const getConvertPdfToInDesignJobStatus = <ThrowOnError extends boolean = false>(options: Options<GetConvertPdfToInDesignJobStatusData, ThrowOnError>) => (options.client ?? client).get<GetConvertPdfToInDesignJobStatusResponses, GetConvertPdfToInDesignJobStatusErrors, ThrowOnError>({
-    security: [{ name: 'x-api-key', type: 'apiKey' }, { scheme: 'bearer', type: 'http' }],
+    security: [{ scheme: 'bearer', type: 'http' }, { name: 'x-api-key', type: 'apiKey' }],
     url: '/v3/status/{convert-pdf-to-indesign_job_id}',
     ...options
 });
@@ -226,7 +226,7 @@ export const getConvertPdfToInDesignJobStatus = <ThrowOnError extends boolean = 
  * Returns the latest status of an executed custom script job.
  */
 export const getJobStatus = <ThrowOnError extends boolean = false>(options: Options<GetJobStatusData, ThrowOnError>) => (options.client ?? client).get<GetJobStatusResponses, GetJobStatusErrors, ThrowOnError>({
-    security: [{ name: 'x-api-key', type: 'apiKey' }, { scheme: 'bearer', type: 'http' }],
+    security: [{ scheme: 'bearer', type: 'http' }, { name: 'x-api-key', type: 'apiKey' }],
     url: '/v3/status/{id}',
     ...options
 });

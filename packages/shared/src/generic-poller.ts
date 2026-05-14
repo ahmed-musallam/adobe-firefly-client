@@ -173,12 +173,12 @@ export interface PollJobOptions<T> extends SharedPollJobOptions {
   resetAtMs?: (result: T) => number | undefined;
 }
 
-/** Result of a job fetch operation. */
+/** Result of a job fetch operation (matches hey-api client return shape). */
 interface JobFetchResult<T, E = unknown> {
   data?: T;
   error?: E;
-  request: Request;
-  response: Response;
+  request?: Request;
+  response?: Response;
 }
 
 export interface PollJobResult<T> {
@@ -221,7 +221,7 @@ export const pollJob = async <T>(options: PollJobOptions<T>): Promise<PollJobRes
     }
 
     const { delayMs } = resolveNextDelayMs({
-      headers: result.response.headers,
+      headers: result.response?.headers,
       fallbackDelayMs: options.intervalMs ?? 2_000,
       minDelayMs: options.minDelayMs ?? 250,
       maxDelayMs: options.maxDelayMs ?? 60_000,

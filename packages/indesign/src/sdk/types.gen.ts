@@ -787,20 +787,6 @@ export type DataMergeData = {
      * This job request object specifies parameters for merging the data with the given template.
      */
     body: MergeDataRequest;
-    headers: {
-        /**
-         * The authorization token with bearer "token_value". For example: `Bearer <access_token>`.
-         */
-        Authorization: string;
-        /**
-         * The API key as defined in Adobe's Developer Console.
-         */
-        'x-api-key': string;
-        /**
-         * This is the identifier for Adobe Identity Management Service (IMS) as defined in Adobe's Developer Console. This is optional.
-         */
-        'x-gw-ims-org-id'?: string;
-    };
     path?: never;
     query?: never;
     url: '/v3/merge-data';
@@ -858,20 +844,6 @@ export type DataMergeTagsData = {
      * This job request object specifies parameters for retrieving the data merge tags.
      */
     body: MergeDataTagsRequest;
-    headers: {
-        /**
-         * The authorization token with bearer "token_value". For example: `Bearer <access_token>`.
-         */
-        Authorization: string;
-        /**
-         * The API key as defined in Adobe's Developer Console.
-         */
-        'x-api-key': string;
-        /**
-         * This is the identifier for Adobe Identity Management Service (IMS) as defined in Adobe's Developer Console. This is optional.
-         */
-        'x-gw-ims-org-id'?: string;
-    };
     path?: never;
     query?: never;
     url: '/v3/merge-data-tags';
@@ -931,21 +903,9 @@ export type RemapLinksData = {
     body: RemapLinksRequest;
     headers: {
         /**
-         * The authorization token with bearer "token_value". For example: `Bearer <access_token>`.
-         */
-        Authorization: string;
-        /**
-         * API key as defined in Adobe's Developer Console.
-         */
-        'x-api-key': string;
-        /**
          * Bearer token generated for the AEM technical account without the bearer keyword.
          */
         'x-aem-token': string;
-        /**
-         * This is the identifier for Adobe Identity Management Service (IMS) as defined in Adobe's Developer Console. This is optional.
-         */
-        'x-gw-ims-org-id'?: string;
     };
     path?: never;
     query?: never;
@@ -1000,20 +960,6 @@ export type RenditionJobData = {
      * This object specifies parameters for the JPEG, PNG or PDF output.
      */
     body: CreateRenditionRequest;
-    headers: {
-        /**
-         * The authorization token with bearer "token_value". For example: `Bearer <access_token>`.
-         */
-        Authorization: string;
-        /**
-         * The API key as defined in Adobe's Developer Console.
-         */
-        'x-api-key': string;
-        /**
-         * This is the identifier for Adobe Identity Management Service (IMS) as defined in Adobe's Developer Console. This is optional.
-         */
-        'x-gw-ims-org-id'?: string;
-    };
     path?: never;
     query?: never;
     url: '/v3/create-rendition';
@@ -1068,20 +1014,6 @@ export type RenditionJobResponse = RenditionJobResponses[keyof RenditionJobRespo
 
 export type ListCustomScriptsData = {
     body?: never;
-    headers: {
-        /**
-         * The authorization token with bearer "token_value". For example: `Bearer <access_token>`.
-         */
-        Authorization: string;
-        /**
-         * The API key as defined in Adobe's Developer Console.
-         */
-        'x-api-key': string;
-        /**
-         * This is the identifier for Adobe Identity Management Service (IMS) as defined in Adobe's Developer Console. This is optional.
-         */
-        'x-gw-ims-org-id'?: string;
-    };
     path?: never;
     query?: {
         /**
@@ -1132,20 +1064,6 @@ export type SubmitCustomScriptData = {
      */
     body: {
         [key: string]: unknown;
-    };
-    headers: {
-        /**
-         * The authorization token with bearer "token_value". For example: `Bearer <access_token>`.
-         */
-        Authorization: string;
-        /**
-         * The API key as defined in Adobe's Developer Console.
-         */
-        'x-api-key': string;
-        /**
-         * This is the identifier for Adobe Identity Management Service (IMS) as defined in Adobe's Developer Console. This is optional.
-         */
-        'x-gw-ims-org-id'?: string;
     };
     path?: never;
     query?: never;
@@ -1208,20 +1126,6 @@ export type ExecuteCustomScriptData = {
      * This job request object specifies parameters for the execution of the custom script.
      */
     body: BaseJobRequestWithOutput;
-    headers: {
-        /**
-         * The authorization token with bearer "token_value". For example: `Bearer <access_token>`.
-         */
-        Authorization: string;
-        /**
-         * The API key as defined in Adobe's Developer Console.
-         */
-        'x-api-key': string;
-        /**
-         * This is the identifier for Adobe Identity Management Service (IMS) as defined in Adobe's Developer Console. This is optional.
-         */
-        'x-gw-ims-org-id'?: string;
-    };
     path: {
         /**
          * script_id as reported in the response to custom script submit request.
@@ -1285,20 +1189,6 @@ export type ExecuteCustomScriptResponse = ExecuteCustomScriptResponses[keyof Exe
 
 export type DeleteCustomScriptData = {
     body?: never;
-    headers: {
-        /**
-         * The authorization token with bearer "token_value". For example: `Bearer <access_token>`.
-         */
-        Authorization: string;
-        /**
-         * The API key as defined in Adobe's Developer Console.
-         */
-        'x-api-key': string;
-        /**
-         * This is the identifier for Adobe Identity Management Service (IMS) as defined in Adobe's Developer Console. This is optional.
-         */
-        'x-gw-ims-org-id'?: string;
-    };
     path: {
         /**
          * Name of the custom script to delete
@@ -1345,20 +1235,6 @@ export type DeleteCustomScriptResponse = DeleteCustomScriptResponses[keyof Delet
 
 export type GetCustomScriptDetailsData = {
     body?: never;
-    headers: {
-        /**
-         * The authorization token with bearer "token_value". For example: `Bearer <access_token>`.
-         */
-        Authorization: string;
-        /**
-         * The API key as defined in Adobe's Developer Console.
-         */
-        'x-api-key': string;
-        /**
-         * This is the identifier for Adobe Identity Management Service (IMS) as defined in Adobe's Developer Console. This is optional.
-         */
-        'x-gw-ims-org-id'?: string;
-    };
     path: {
         /**
          * Name of the custom script
@@ -1408,16 +1284,6 @@ export type UpdateScriptAppVersionData = {
      * Configuration for the app version strategy. The majorAppVersion and minorAppVersion fields are optional and their requirement depends on the selected strategy.
      */
     body: AppVersionUpdateRequest;
-    headers: {
-        /**
-         * The API key as defined in Adobe's Developer Console.
-         */
-        'x-api-key': string;
-        /**
-         * The authorization token with bearer "token_value". For example: `Bearer <access_token>`.
-         */
-        Authorization: string;
-    };
     path: {
         /**
          * Name of the custom script to update
@@ -1466,20 +1332,6 @@ export type UpdateScriptAppVersionResponse = UpdateScriptAppVersionResponses[key
 
 export type ListAppVersionsData = {
     body?: never;
-    headers: {
-        /**
-         * The authorization token with bearer "token_value". For example: `Bearer <access_token>`.
-         */
-        Authorization: string;
-        /**
-         * The API key as defined in Adobe's Developer Console.
-         */
-        'x-api-key': string;
-        /**
-         * This is the identifier for Adobe Identity Management Service (IMS) as defined in Adobe's Developer Console. This is optional.
-         */
-        'x-gw-ims-org-id'?: string;
-    };
     path?: never;
     query?: never;
     url: '/v3/app-versions';
@@ -1520,20 +1372,6 @@ export type GetDocumentInfoData = {
      * This job request object specifies parameters for extracting document information.
      */
     body: DocumentInfoRequest;
-    headers: {
-        /**
-         * The authorization token with bearer "token_value". For example: `Bearer <access_token>`.
-         */
-        Authorization: string;
-        /**
-         * The API key as defined in Adobe's Developer Console.
-         */
-        'x-api-key': string;
-        /**
-         * This is the identifier for Adobe Identity Management Service (IMS) as defined in Adobe's Developer Console. This is optional.
-         */
-        'x-gw-ims-org-id'?: string;
-    };
     path?: never;
     query?: never;
     url: '/v3/document-info';
@@ -1588,20 +1426,6 @@ export type GetDocumentInfoResponse = GetDocumentInfoResponses[keyof GetDocument
 
 export type GetDocumentInfoJobStatusData = {
     body?: never;
-    headers: {
-        /**
-         * The authorization token with bearer "token_value". For example: `Bearer <access_token>`.
-         */
-        Authorization: string;
-        /**
-         * The API key as defined in Adobe's Developer Console.
-         */
-        'x-api-key': string;
-        /**
-         * This is the identifier for Adobe Identity Management Service (IMS) as defined in Adobe's Developer Console. This is optional.
-         */
-        'x-gw-ims-org-id'?: string;
-    };
     path: {
         /**
          * The ID of the Document Info job you want to see the status of. This comes from the response of the Document Info request.
@@ -1626,20 +1450,6 @@ export type ConvertPdfToInDesignData = {
      * This job request object specifies parameters for converting PDF to InDesign format.
      */
     body: ConvertToInDesignRequest;
-    headers: {
-        /**
-         * The authorization token with bearer "token_value". For example: `Bearer <access_token>`.
-         */
-        Authorization: string;
-        /**
-         * The API key as defined in Adobe's Developer Console.
-         */
-        'x-api-key': string;
-        /**
-         * This is the identifier for Adobe Identity Management Service (IMS) as defined in Adobe's Developer Console. This is optional.
-         */
-        'x-gw-ims-org-id'?: string;
-    };
     path?: never;
     query?: never;
     url: '/v3/convert-pdf-to-indesign';
@@ -1694,20 +1504,6 @@ export type ConvertPdfToInDesignResponse = ConvertPdfToInDesignResponses[keyof C
 
 export type GetConvertPdfToInDesignJobStatusData = {
     body?: never;
-    headers: {
-        /**
-         * The authorization token with bearer "token_value". For example: `Bearer <access_token>`.
-         */
-        Authorization: string;
-        /**
-         * The API key as defined in Adobe's Developer Console.
-         */
-        'x-api-key': string;
-        /**
-         * This is the identifier for Adobe Identity Management Service (IMS) as defined in Adobe's Developer Console. This is optional.
-         */
-        'x-gw-ims-org-id'?: string;
-    };
     path: {
         /**
          * The ID of the Convert PDF to InDesign job you want to see the status of. This comes from the response of the Convert PDF to InDesign request.
@@ -1758,20 +1554,6 @@ export type GetConvertPdfToInDesignJobStatusResponse = GetConvertPdfToInDesignJo
 
 export type GetJobStatusData = {
     body?: never;
-    headers: {
-        /**
-         * The authorization token with bearer "token_value". For example: `Bearer <access_token>`.
-         */
-        Authorization: string;
-        /**
-         * The API key as defined in Adobe's Developer Console.
-         */
-        'x-api-key': string;
-        /**
-         * This is the identifier for Adobe Identity Management Service (IMS) as defined in Adobe's Developer Console. This is optional.
-         */
-        'x-gw-ims-org-id'?: string;
-    };
     path: {
         /**
          * The ID of the job you want to see the status of. This comes from the response of the executed job request.

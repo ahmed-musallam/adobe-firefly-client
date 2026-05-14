@@ -6,4 +6,8 @@
   "excludePrivate": true,
   "excludeInternal": true,
   "readme": "none",
+  // OpenAPI-generated comments often link to paths that are not in this repo.
+  "validation": {
+    "invalidPath": false,
+  },
 }

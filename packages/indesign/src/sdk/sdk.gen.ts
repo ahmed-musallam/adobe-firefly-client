@@ -64,7 +64,7 @@ export class IndesignSdk extends HeyApiClient {
      */
     public dataMerge<ThrowOnError extends boolean = false>(options: Options<DataMergeData, ThrowOnError>) {
         return (options.client ?? this.client).post<DataMergeResponses, DataMergeErrors, ThrowOnError>({
-            security: [{ name: 'x-api-key', type: 'apiKey' }, { scheme: 'bearer', type: 'http' }],
+            security: [{ scheme: 'bearer', type: 'http' }, { name: 'x-api-key', type: 'apiKey' }],
             url: '/v3/merge-data',
             ...options,
             headers: {
@@ -81,7 +81,7 @@ export class IndesignSdk extends HeyApiClient {
      */
     public dataMergeTags<ThrowOnError extends boolean = false>(options: Options<DataMergeTagsData, ThrowOnError>) {
         return (options.client ?? this.client).post<DataMergeTagsResponses, DataMergeTagsErrors, ThrowOnError>({
-            security: [{ name: 'x-api-key', type: 'apiKey' }, { scheme: 'bearer', type: 'http' }],
+            security: [{ scheme: 'bearer', type: 'http' }, { name: 'x-api-key', type: 'apiKey' }],
             url: '/v3/merge-data-tags',
             ...options,
             headers: {
@@ -98,7 +98,7 @@ export class IndesignSdk extends HeyApiClient {
      */
     public remapLinks<ThrowOnError extends boolean = false>(options: Options<RemapLinksData, ThrowOnError>) {
         return (options.client ?? this.client).post<RemapLinksResponses, RemapLinksErrors, ThrowOnError>({
-            security: [{ name: 'x-api-key', type: 'apiKey' }, { scheme: 'bearer', type: 'http' }],
+            security: [{ scheme: 'bearer', type: 'http' }, { name: 'x-api-key', type: 'apiKey' }],
             url: '/v3/remap-links',
             ...options,
             headers: {
@@ -115,7 +115,7 @@ export class IndesignSdk extends HeyApiClient {
      */
     public renditionJob<ThrowOnError extends boolean = false>(options: Options<RenditionJobData, ThrowOnError>) {
         return (options.client ?? this.client).post<RenditionJobResponses, RenditionJobErrors, ThrowOnError>({
-            security: [{ name: 'x-api-key', type: 'apiKey' }, { scheme: 'bearer', type: 'http' }],
+            security: [{ scheme: 'bearer', type: 'http' }, { name: 'x-api-key', type: 'apiKey' }],
             url: '/v3/create-rendition',
             ...options,
             headers: {
@@ -130,9 +130,9 @@ export class IndesignSdk extends HeyApiClient {
      *
      * Retrieves details of the latest version of all registered custom scripts. Includes version, download link, registration date, and script name. Response is paginated based on list length.
      */
-    public listCustomScripts<ThrowOnError extends boolean = false>(options: Options<ListCustomScriptsData, ThrowOnError>) {
-        return (options.client ?? this.client).get<ListCustomScriptsResponses, ListCustomScriptsErrors, ThrowOnError>({
-            security: [{ name: 'x-api-key', type: 'apiKey' }, { scheme: 'bearer', type: 'http' }],
+    public listCustomScripts<ThrowOnError extends boolean = false>(options?: Options<ListCustomScriptsData, ThrowOnError>) {
+        return (options?.client ?? this.client).get<ListCustomScriptsResponses, ListCustomScriptsErrors, ThrowOnError>({
+            security: [{ scheme: 'bearer', type: 'http' }, { name: 'x-api-key', type: 'apiKey' }],
             url: '/v3/scripts',
             ...options
         });
@@ -146,7 +146,7 @@ export class IndesignSdk extends HeyApiClient {
     public submitCustomScript<ThrowOnError extends boolean = false>(options: Options<SubmitCustomScriptData, ThrowOnError>) {
         return (options.client ?? this.client).post<SubmitCustomScriptResponses, SubmitCustomScriptErrors, ThrowOnError>({
             ...formDataBodySerializer,
-            security: [{ name: 'x-api-key', type: 'apiKey' }, { scheme: 'bearer', type: 'http' }],
+            security: [{ scheme: 'bearer', type: 'http' }, { name: 'x-api-key', type: 'apiKey' }],
             url: '/v3/scripts',
             ...options,
             headers: {
@@ -163,7 +163,7 @@ export class IndesignSdk extends HeyApiClient {
      */
     public executeCustomScript<ThrowOnError extends boolean = false>(options: Options<ExecuteCustomScriptData, ThrowOnError>) {
         return (options.client ?? this.client).post<ExecuteCustomScriptResponses, ExecuteCustomScriptErrors, ThrowOnError>({
-            security: [{ name: 'x-api-key', type: 'apiKey' }, { scheme: 'bearer', type: 'http' }],
+            security: [{ scheme: 'bearer', type: 'http' }, { name: 'x-api-key', type: 'apiKey' }],
             url: '/v3/{script_id}/{script_name}',
             ...options,
             headers: {
@@ -180,7 +180,7 @@ export class IndesignSdk extends HeyApiClient {
      */
     public deleteCustomScript<ThrowOnError extends boolean = false>(options: Options<DeleteCustomScriptData, ThrowOnError>) {
         return (options.client ?? this.client).delete<DeleteCustomScriptResponses, DeleteCustomScriptErrors, ThrowOnError>({
-            security: [{ name: 'x-api-key', type: 'apiKey' }, { scheme: 'bearer', type: 'http' }],
+            security: [{ scheme: 'bearer', type: 'http' }, { name: 'x-api-key', type: 'apiKey' }],
             url: '/v3/scripts/{script_name}',
             ...options
         });
@@ -193,7 +193,7 @@ export class IndesignSdk extends HeyApiClient {
      */
     public getCustomScriptDetails<ThrowOnError extends boolean = false>(options: Options<GetCustomScriptDetailsData, ThrowOnError>) {
         return (options.client ?? this.client).get<GetCustomScriptDetailsResponses, GetCustomScriptDetailsErrors, ThrowOnError>({
-            security: [{ name: 'x-api-key', type: 'apiKey' }, { scheme: 'bearer', type: 'http' }],
+            security: [{ scheme: 'bearer', type: 'http' }, { name: 'x-api-key', type: 'apiKey' }],
             url: '/v3/scripts/{script_name}',
             ...options
         });
@@ -206,7 +206,7 @@ export class IndesignSdk extends HeyApiClient {
      */
     public updateScriptAppVersion<ThrowOnError extends boolean = false>(options: Options<UpdateScriptAppVersionData, ThrowOnError>) {
         return (options.client ?? this.client).put<UpdateScriptAppVersionResponses, UpdateScriptAppVersionErrors, ThrowOnError>({
-            security: [{ name: 'x-api-key', type: 'apiKey' }, { scheme: 'bearer', type: 'http' }],
+            security: [{ scheme: 'bearer', type: 'http' }, { name: 'x-api-key', type: 'apiKey' }],
             url: '/v3/scripts/{script_name}/app-version',
             ...options,
             headers: {
@@ -221,9 +221,9 @@ export class IndesignSdk extends HeyApiClient {
      *
      * Retrieves information about all available InDesign app versions. Returns major version, minor version, and status for each registered app version.
      */
-    public listAppVersions<ThrowOnError extends boolean = false>(options: Options<ListAppVersionsData, ThrowOnError>) {
-        return (options.client ?? this.client).get<ListAppVersionsResponses, ListAppVersionsErrors, ThrowOnError>({
-            security: [{ name: 'x-api-key', type: 'apiKey' }, { scheme: 'bearer', type: 'http' }],
+    public listAppVersions<ThrowOnError extends boolean = false>(options?: Options<ListAppVersionsData, ThrowOnError>) {
+        return (options?.client ?? this.client).get<ListAppVersionsResponses, ListAppVersionsErrors, ThrowOnError>({
+            security: [{ scheme: 'bearer', type: 'http' }, { name: 'x-api-key', type: 'apiKey' }],
             url: '/v3/app-versions',
             ...options
         });
@@ -236,7 +236,7 @@ export class IndesignSdk extends HeyApiClient {
      */
     public getDocumentInfo<ThrowOnError extends boolean = false>(options: Options<GetDocumentInfoData, ThrowOnError>) {
         return (options.client ?? this.client).post<GetDocumentInfoResponses, GetDocumentInfoErrors, ThrowOnError>({
-            security: [{ name: 'x-api-key', type: 'apiKey' }, { scheme: 'bearer', type: 'http' }],
+            security: [{ scheme: 'bearer', type: 'http' }, { name: 'x-api-key', type: 'apiKey' }],
             url: '/v3/document-info',
             ...options,
             headers: {
@@ -253,7 +253,7 @@ export class IndesignSdk extends HeyApiClient {
      */
     public getDocumentInfoJobStatus<ThrowOnError extends boolean = false>(options: Options<GetDocumentInfoJobStatusData, ThrowOnError>) {
         return (options.client ?? this.client).get<GetDocumentInfoJobStatusResponses, unknown, ThrowOnError>({
-            security: [{ name: 'x-api-key', type: 'apiKey' }, { scheme: 'bearer', type: 'http' }],
+            security: [{ scheme: 'bearer', type: 'http' }, { name: 'x-api-key', type: 'apiKey' }],
             url: '/v3/status/{document-info_job_id}',
             ...options
         });
@@ -266,7 +266,7 @@ export class IndesignSdk extends HeyApiClient {
      */
     public convertPdfToInDesign<ThrowOnError extends boolean = false>(options: Options<ConvertPdfToInDesignData, ThrowOnError>) {
         return (options.client ?? this.client).post<ConvertPdfToInDesignResponses, ConvertPdfToInDesignErrors, ThrowOnError>({
-            security: [{ name: 'x-api-key', type: 'apiKey' }, { scheme: 'bearer', type: 'http' }],
+            security: [{ scheme: 'bearer', type: 'http' }, { name: 'x-api-key', type: 'apiKey' }],
             url: '/v3/convert-pdf-to-indesign',
             ...options,
             headers: {
@@ -283,7 +283,7 @@ export class IndesignSdk extends HeyApiClient {
      */
     public getConvertPdfToInDesignJobStatus<ThrowOnError extends boolean = false>(options: Options<GetConvertPdfToInDesignJobStatusData, ThrowOnError>) {
         return (options.client ?? this.client).get<GetConvertPdfToInDesignJobStatusResponses, GetConvertPdfToInDesignJobStatusErrors, ThrowOnError>({
-            security: [{ name: 'x-api-key', type: 'apiKey' }, { scheme: 'bearer', type: 'http' }],
+            security: [{ scheme: 'bearer', type: 'http' }, { name: 'x-api-key', type: 'apiKey' }],
             url: '/v3/status/{convert-pdf-to-indesign_job_id}',
             ...options
         });
@@ -296,7 +296,7 @@ export class IndesignSdk extends HeyApiClient {
      */
     public getJobStatus<ThrowOnError extends boolean = false>(options: Options<GetJobStatusData, ThrowOnError>) {
         return (options.client ?? this.client).get<GetJobStatusResponses, GetJobStatusErrors, ThrowOnError>({
-            security: [{ name: 'x-api-key', type: 'apiKey' }, { scheme: 'bearer', type: 'http' }],
+            security: [{ scheme: 'bearer', type: 'http' }, { name: 'x-api-key', type: 'apiKey' }],
             url: '/v3/status/{id}',
             ...options
         });

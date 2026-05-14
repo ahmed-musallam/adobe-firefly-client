@@ -10,18 +10,6 @@ export const openapiMcpTools = [
     "inputSchema": {
       "type": "object",
       "properties": {
-        "Authorization": {
-          "type": "string",
-          "description": "The authorization token with bearer \"token_value\". For example: `Bearer <access_token>`."
-        },
-        "x-api-key": {
-          "type": "string",
-          "description": "The API key as defined in Adobe's Developer Console."
-        },
-        "x-gw-ims-org-id": {
-          "type": "string",
-          "description": "This is the identifier for Adobe Identity Management Service (IMS) as defined in Adobe's Developer Console. This is optional."
-        },
         "requestBody": {
           "allOf": [
             {
@@ -499,63 +487,18 @@ export const openapiMcpTools = [
         }
       },
       "required": [
-        "Authorization",
-        "x-api-key",
         "requestBody"
       ]
     },
     "method": "post",
     "pathTemplate": "/v3/merge-data",
-    "parameters": [
-      {
-        "name": "Authorization",
-        "in": "header",
-        "description": "The authorization token with bearer \"token_value\". For example: `Bearer <access_token>`.",
-        "required": true,
-        "schema": {
-          "type": "string"
-        }
-      },
-      {
-        "name": "x-api-key",
-        "in": "header",
-        "description": "The API key as defined in Adobe's Developer Console.",
-        "required": true,
-        "schema": {
-          "type": "string"
-        }
-      },
-      {
-        "name": "x-gw-ims-org-id",
-        "in": "header",
-        "description": "This is the identifier for Adobe Identity Management Service (IMS) as defined in Adobe's Developer Console. This is optional.",
-        "required": false,
-        "schema": {
-          "type": "string"
-        }
-      }
-    ],
-    "executionParameters": [
-      {
-        "name": "Authorization",
-        "in": "header"
-      },
-      {
-        "name": "x-api-key",
-        "in": "header"
-      },
-      {
-        "name": "x-gw-ims-org-id",
-        "in": "header"
-      }
-    ],
+    "parameters": [],
+    "executionParameters": [],
     "requestBodyContentType": "application/json",
     "securityRequirements": [
       {
-        "ApiKeyAuth": []
-      },
-      {
-        "BearerAuth": []
+        "AccessToken": [],
+        "X-Api-Key": []
       }
     ],
     "operationId": "dataMerge",
@@ -567,18 +510,6 @@ export const openapiMcpTools = [
     "inputSchema": {
       "type": "object",
       "properties": {
-        "Authorization": {
-          "type": "string",
-          "description": "The authorization token with bearer \"token_value\". For example: `Bearer <access_token>`."
-        },
-        "x-api-key": {
-          "type": "string",
-          "description": "The API key as defined in Adobe's Developer Console."
-        },
-        "x-gw-ims-org-id": {
-          "type": "string",
-          "description": "This is the identifier for Adobe Identity Management Service (IMS) as defined in Adobe's Developer Console. This is optional."
-        },
         "requestBody": {
           "allOf": [
             {
@@ -748,63 +679,18 @@ export const openapiMcpTools = [
         }
       },
       "required": [
-        "Authorization",
-        "x-api-key",
         "requestBody"
       ]
     },
     "method": "post",
     "pathTemplate": "/v3/merge-data-tags",
-    "parameters": [
-      {
-        "name": "Authorization",
-        "in": "header",
-        "description": "The authorization token with bearer \"token_value\". For example: `Bearer <access_token>`.",
-        "required": true,
-        "schema": {
-          "type": "string"
-        }
-      },
-      {
-        "name": "x-api-key",
-        "in": "header",
-        "description": "The API key as defined in Adobe's Developer Console.",
-        "required": true,
-        "schema": {
-          "type": "string"
-        }
-      },
-      {
-        "name": "x-gw-ims-org-id",
-        "in": "header",
-        "description": "This is the identifier for Adobe Identity Management Service (IMS) as defined in Adobe's Developer Console. This is optional.",
-        "required": false,
-        "schema": {
-          "type": "string"
-        }
-      }
-    ],
-    "executionParameters": [
-      {
-        "name": "Authorization",
-        "in": "header"
-      },
-      {
-        "name": "x-api-key",
-        "in": "header"
-      },
-      {
-        "name": "x-gw-ims-org-id",
-        "in": "header"
-      }
-    ],
+    "parameters": [],
+    "executionParameters": [],
     "requestBodyContentType": "application/json",
     "securityRequirements": [
       {
-        "ApiKeyAuth": []
-      },
-      {
-        "BearerAuth": []
+        "AccessToken": [],
+        "X-Api-Key": []
       }
     ],
     "operationId": "dataMergeTags",
@@ -816,21 +702,9 @@ export const openapiMcpTools = [
     "inputSchema": {
       "type": "object",
       "properties": {
-        "Authorization": {
-          "type": "string",
-          "description": "The authorization token with bearer \"token_value\". For example: `Bearer <access_token>`."
-        },
-        "x-api-key": {
-          "type": "string",
-          "description": "API key as defined in Adobe's Developer Console."
-        },
         "x-aem-token": {
           "type": "string",
           "description": "Bearer token generated for the AEM technical account without the bearer keyword."
-        },
-        "x-gw-ims-org-id": {
-          "type": "string",
-          "description": "This is the identifier for Adobe Identity Management Service (IMS) as defined in Adobe's Developer Console. This is optional."
         },
         "requestBody": {
           "description": "Job request object that specifies parameters for remapping links in the InDesign document.",
@@ -949,8 +823,6 @@ export const openapiMcpTools = [
         }
       },
       "required": [
-        "Authorization",
-        "x-api-key",
         "x-aem-token",
         "requestBody"
       ]
@@ -959,24 +831,6 @@ export const openapiMcpTools = [
     "pathTemplate": "/v3/remap-links",
     "parameters": [
       {
-        "name": "Authorization",
-        "in": "header",
-        "description": "The authorization token with bearer \"token_value\". For example: `Bearer <access_token>`.",
-        "required": true,
-        "schema": {
-          "type": "string"
-        }
-      },
-      {
-        "name": "x-api-key",
-        "in": "header",
-        "description": "API key as defined in Adobe's Developer Console.",
-        "required": true,
-        "schema": {
-          "type": "string"
-        }
-      },
-      {
         "name": "x-aem-token",
         "in": "header",
         "description": "Bearer token generated for the AEM technical account without the bearer keyword.",
@@ -984,42 +838,19 @@ export const openapiMcpTools = [
         "schema": {
           "type": "string"
         }
-      },
-      {
-        "name": "x-gw-ims-org-id",
-        "in": "header",
-        "description": "This is the identifier for Adobe Identity Management Service (IMS) as defined in Adobe's Developer Console. This is optional.",
-        "required": false,
-        "schema": {
-          "type": "string"
-        }
       }
     ],
     "executionParameters": [
       {
-        "name": "Authorization",
-        "in": "header"
-      },
-      {
-        "name": "x-api-key",
-        "in": "header"
-      },
-      {
         "name": "x-aem-token",
-        "in": "header"
-      },
-      {
-        "name": "x-gw-ims-org-id",
         "in": "header"
       }
     ],
     "requestBodyContentType": "application/json",
     "securityRequirements": [
       {
-        "ApiKeyAuth": []
-      },
-      {
-        "BearerAuth": []
+        "AccessToken": [],
+        "X-Api-Key": []
       }
     ],
     "operationId": "remapLinks",
@@ -1031,18 +862,6 @@ export const openapiMcpTools = [
     "inputSchema": {
       "type": "object",
       "properties": {
-        "Authorization": {
-          "type": "string",
-          "description": "The authorization token with bearer \"token_value\". For example: `Bearer <access_token>`."
-        },
-        "x-api-key": {
-          "type": "string",
-          "description": "The API key as defined in Adobe's Developer Console."
-        },
-        "x-gw-ims-org-id": {
-          "type": "string",
-          "description": "This is the identifier for Adobe Identity Management Service (IMS) as defined in Adobe's Developer Console. This is optional."
-        },
         "requestBody": {
           "allOf": [
             {
@@ -1414,63 +1233,18 @@ export const openapiMcpTools = [
         }
       },
       "required": [
-        "Authorization",
-        "x-api-key",
         "requestBody"
       ]
     },
     "method": "post",
     "pathTemplate": "/v3/create-rendition",
-    "parameters": [
-      {
-        "name": "Authorization",
-        "in": "header",
-        "description": "The authorization token with bearer \"token_value\". For example: `Bearer <access_token>`.",
-        "required": true,
-        "schema": {
-          "type": "string"
-        }
-      },
-      {
-        "name": "x-api-key",
-        "in": "header",
-        "description": "The API key as defined in Adobe's Developer Console.",
-        "required": true,
-        "schema": {
-          "type": "string"
-        }
-      },
-      {
-        "name": "x-gw-ims-org-id",
-        "in": "header",
-        "description": "This is the identifier for Adobe Identity Management Service (IMS) as defined in Adobe's Developer Console. This is optional.",
-        "required": false,
-        "schema": {
-          "type": "string"
-        }
-      }
-    ],
-    "executionParameters": [
-      {
-        "name": "Authorization",
-        "in": "header"
-      },
-      {
-        "name": "x-api-key",
-        "in": "header"
-      },
-      {
-        "name": "x-gw-ims-org-id",
-        "in": "header"
-      }
-    ],
+    "parameters": [],
+    "executionParameters": [],
     "requestBodyContentType": "application/json",
     "securityRequirements": [
       {
-        "ApiKeyAuth": []
-      },
-      {
-        "BearerAuth": []
+        "AccessToken": [],
+        "X-Api-Key": []
       }
     ],
     "operationId": "renditionJob",
@@ -1482,59 +1256,16 @@ export const openapiMcpTools = [
     "inputSchema": {
       "type": "object",
       "properties": {
-        "Authorization": {
-          "type": "string",
-          "description": "The authorization token with bearer \"token_value\". For example: `Bearer <access_token>`."
-        },
-        "x-api-key": {
-          "type": "string",
-          "description": "The API key as defined in Adobe's Developer Console."
-        },
-        "x-gw-ims-org-id": {
-          "type": "string",
-          "description": "This is the identifier for Adobe Identity Management Service (IMS) as defined in Adobe's Developer Console. This is optional."
-        },
         "page": {
           "type": "number",
           "default": 0,
           "description": "Page number for pagination"
         }
-      },
-      "required": [
-        "Authorization",
-        "x-api-key"
-      ]
+      }
     },
     "method": "get",
     "pathTemplate": "/v3/scripts",
     "parameters": [
-      {
-        "name": "Authorization",
-        "in": "header",
-        "description": "The authorization token with bearer \"token_value\". For example: `Bearer <access_token>`.",
-        "required": true,
-        "schema": {
-          "type": "string"
-        }
-      },
-      {
-        "name": "x-api-key",
-        "in": "header",
-        "description": "The API key as defined in Adobe's Developer Console.",
-        "required": true,
-        "schema": {
-          "type": "string"
-        }
-      },
-      {
-        "name": "x-gw-ims-org-id",
-        "in": "header",
-        "description": "This is the identifier for Adobe Identity Management Service (IMS) as defined in Adobe's Developer Console. This is optional.",
-        "required": false,
-        "schema": {
-          "type": "string"
-        }
-      },
       {
         "name": "page",
         "in": "query",
@@ -1548,28 +1279,14 @@ export const openapiMcpTools = [
     ],
     "executionParameters": [
       {
-        "name": "Authorization",
-        "in": "header"
-      },
-      {
-        "name": "x-api-key",
-        "in": "header"
-      },
-      {
-        "name": "x-gw-ims-org-id",
-        "in": "header"
-      },
-      {
         "name": "page",
         "in": "query"
       }
     ],
     "securityRequirements": [
       {
-        "ApiKeyAuth": []
-      },
-      {
-        "BearerAuth": []
+        "AccessToken": [],
+        "X-Api-Key": []
       }
     ],
     "operationId": "listCustomScripts",
@@ -1581,81 +1298,24 @@ export const openapiMcpTools = [
     "inputSchema": {
       "type": "object",
       "properties": {
-        "Authorization": {
-          "type": "string",
-          "description": "The authorization token with bearer \"token_value\". For example: `Bearer <access_token>`."
-        },
-        "x-api-key": {
-          "type": "string",
-          "description": "The API key as defined in Adobe's Developer Console."
-        },
-        "x-gw-ims-org-id": {
-          "type": "string",
-          "description": "This is the identifier for Adobe Identity Management Service (IMS) as defined in Adobe's Developer Console. This is optional."
-        },
         "requestBody": {
           "type": "string",
           "description": "The custom script bundle, in ZIP format. This package describes the script to the app engine."
         }
       },
       "required": [
-        "Authorization",
-        "x-api-key",
         "requestBody"
       ]
     },
     "method": "post",
     "pathTemplate": "/v3/scripts",
-    "parameters": [
-      {
-        "name": "Authorization",
-        "in": "header",
-        "description": "The authorization token with bearer \"token_value\". For example: `Bearer <access_token>`.",
-        "required": true,
-        "schema": {
-          "type": "string"
-        }
-      },
-      {
-        "name": "x-api-key",
-        "in": "header",
-        "description": "The API key as defined in Adobe's Developer Console.",
-        "required": true,
-        "schema": {
-          "type": "string"
-        }
-      },
-      {
-        "name": "x-gw-ims-org-id",
-        "in": "header",
-        "description": "This is the identifier for Adobe Identity Management Service (IMS) as defined in Adobe's Developer Console. This is optional.",
-        "required": false,
-        "schema": {
-          "type": "string"
-        }
-      }
-    ],
-    "executionParameters": [
-      {
-        "name": "Authorization",
-        "in": "header"
-      },
-      {
-        "name": "x-api-key",
-        "in": "header"
-      },
-      {
-        "name": "x-gw-ims-org-id",
-        "in": "header"
-      }
-    ],
+    "parameters": [],
+    "executionParameters": [],
     "requestBodyContentType": "multipart/form-data",
     "securityRequirements": [
       {
-        "ApiKeyAuth": []
-      },
-      {
-        "BearerAuth": []
+        "AccessToken": [],
+        "X-Api-Key": []
       }
     ],
     "operationId": "submitCustomScript",
@@ -1667,14 +1327,6 @@ export const openapiMcpTools = [
     "inputSchema": {
       "type": "object",
       "properties": {
-        "Authorization": {
-          "type": "string",
-          "description": "The authorization token with bearer \"token_value\". For example: `Bearer <access_token>`."
-        },
-        "x-api-key": {
-          "type": "string",
-          "description": "The API key as defined in Adobe's Developer Console."
-        },
         "script_id": {
           "type": "string",
           "description": "script_id as reported in the response to custom script submit request."
@@ -1682,10 +1334,6 @@ export const openapiMcpTools = [
         "script_name": {
           "type": "string",
           "description": "The name of the custom script, specified in the custom script manifest."
-        },
-        "x-gw-ims-org-id": {
-          "type": "string",
-          "description": "This is the identifier for Adobe Identity Management Service (IMS) as defined in Adobe's Developer Console. This is optional."
         },
         "requestBody": {
           "allOf": [
@@ -1855,8 +1503,6 @@ export const openapiMcpTools = [
         }
       },
       "required": [
-        "Authorization",
-        "x-api-key",
         "script_id",
         "script_name",
         "requestBody"
@@ -1865,24 +1511,6 @@ export const openapiMcpTools = [
     "method": "post",
     "pathTemplate": "/v3/{script_id}/{script_name}",
     "parameters": [
-      {
-        "name": "Authorization",
-        "in": "header",
-        "description": "The authorization token with bearer \"token_value\". For example: `Bearer <access_token>`.",
-        "required": true,
-        "schema": {
-          "type": "string"
-        }
-      },
-      {
-        "name": "x-api-key",
-        "in": "header",
-        "description": "The API key as defined in Adobe's Developer Console.",
-        "required": true,
-        "schema": {
-          "type": "string"
-        }
-      },
       {
         "name": "script_id",
         "in": "path",
@@ -1900,26 +1528,9 @@ export const openapiMcpTools = [
         "schema": {
           "type": "string"
         }
-      },
-      {
-        "name": "x-gw-ims-org-id",
-        "in": "header",
-        "description": "This is the identifier for Adobe Identity Management Service (IMS) as defined in Adobe's Developer Console. This is optional.",
-        "required": false,
-        "schema": {
-          "type": "string"
-        }
       }
     ],
     "executionParameters": [
-      {
-        "name": "Authorization",
-        "in": "header"
-      },
-      {
-        "name": "x-api-key",
-        "in": "header"
-      },
       {
         "name": "script_id",
         "in": "path"
@@ -1927,19 +1538,13 @@ export const openapiMcpTools = [
       {
         "name": "script_name",
         "in": "path"
-      },
-      {
-        "name": "x-gw-ims-org-id",
-        "in": "header"
       }
     ],
     "requestBodyContentType": "application/json",
     "securityRequirements": [
       {
-        "ApiKeyAuth": []
-      },
-      {
-        "BearerAuth": []
+        "AccessToken": [],
+        "X-Api-Key": []
       }
     ],
     "operationId": "executeCustomScript",
@@ -1951,50 +1556,18 @@ export const openapiMcpTools = [
     "inputSchema": {
       "type": "object",
       "properties": {
-        "Authorization": {
-          "type": "string",
-          "description": "The authorization token with bearer \"token_value\". For example: `Bearer <access_token>`."
-        },
-        "x-api-key": {
-          "type": "string",
-          "description": "The API key as defined in Adobe's Developer Console."
-        },
         "script_name": {
           "type": "string",
           "description": "Name of the custom script"
-        },
-        "x-gw-ims-org-id": {
-          "type": "string",
-          "description": "This is the identifier for Adobe Identity Management Service (IMS) as defined in Adobe's Developer Console. This is optional."
         }
       },
       "required": [
-        "Authorization",
-        "x-api-key",
         "script_name"
       ]
     },
     "method": "get",
     "pathTemplate": "/v3/scripts/{script_name}",
     "parameters": [
-      {
-        "name": "Authorization",
-        "in": "header",
-        "description": "The authorization token with bearer \"token_value\". For example: `Bearer <access_token>`.",
-        "required": true,
-        "schema": {
-          "type": "string"
-        }
-      },
-      {
-        "name": "x-api-key",
-        "in": "header",
-        "description": "The API key as defined in Adobe's Developer Console.",
-        "required": true,
-        "schema": {
-          "type": "string"
-        }
-      },
       {
         "name": "script_name",
         "in": "path",
@@ -2003,41 +1576,18 @@ export const openapiMcpTools = [
         "schema": {
           "type": "string"
         }
-      },
-      {
-        "name": "x-gw-ims-org-id",
-        "in": "header",
-        "description": "This is the identifier for Adobe Identity Management Service (IMS) as defined in Adobe's Developer Console. This is optional.",
-        "required": false,
-        "schema": {
-          "type": "string"
-        }
       }
     ],
     "executionParameters": [
       {
-        "name": "Authorization",
-        "in": "header"
-      },
-      {
-        "name": "x-api-key",
-        "in": "header"
-      },
-      {
         "name": "script_name",
         "in": "path"
-      },
-      {
-        "name": "x-gw-ims-org-id",
-        "in": "header"
       }
     ],
     "securityRequirements": [
       {
-        "ApiKeyAuth": []
-      },
-      {
-        "BearerAuth": []
+        "AccessToken": [],
+        "X-Api-Key": []
       }
     ],
     "operationId": "getCustomScriptDetails",
@@ -2049,50 +1599,18 @@ export const openapiMcpTools = [
     "inputSchema": {
       "type": "object",
       "properties": {
-        "Authorization": {
-          "type": "string",
-          "description": "The authorization token with bearer \"token_value\". For example: `Bearer <access_token>`."
-        },
-        "x-api-key": {
-          "type": "string",
-          "description": "The API key as defined in Adobe's Developer Console."
-        },
         "script_name": {
           "type": "string",
           "description": "Name of the custom script to delete"
-        },
-        "x-gw-ims-org-id": {
-          "type": "string",
-          "description": "This is the identifier for Adobe Identity Management Service (IMS) as defined in Adobe's Developer Console. This is optional."
         }
       },
       "required": [
-        "Authorization",
-        "x-api-key",
         "script_name"
       ]
     },
     "method": "delete",
     "pathTemplate": "/v3/scripts/{script_name}",
     "parameters": [
-      {
-        "name": "Authorization",
-        "in": "header",
-        "description": "The authorization token with bearer \"token_value\". For example: `Bearer <access_token>`.",
-        "required": true,
-        "schema": {
-          "type": "string"
-        }
-      },
-      {
-        "name": "x-api-key",
-        "in": "header",
-        "description": "The API key as defined in Adobe's Developer Console.",
-        "required": true,
-        "schema": {
-          "type": "string"
-        }
-      },
       {
         "name": "script_name",
         "in": "path",
@@ -2101,41 +1619,18 @@ export const openapiMcpTools = [
         "schema": {
           "type": "string"
         }
-      },
-      {
-        "name": "x-gw-ims-org-id",
-        "in": "header",
-        "description": "This is the identifier for Adobe Identity Management Service (IMS) as defined in Adobe's Developer Console. This is optional.",
-        "required": false,
-        "schema": {
-          "type": "string"
-        }
       }
     ],
     "executionParameters": [
       {
-        "name": "Authorization",
-        "in": "header"
-      },
-      {
-        "name": "x-api-key",
-        "in": "header"
-      },
-      {
         "name": "script_name",
         "in": "path"
-      },
-      {
-        "name": "x-gw-ims-org-id",
-        "in": "header"
       }
     ],
     "securityRequirements": [
       {
-        "ApiKeyAuth": []
-      },
-      {
-        "BearerAuth": []
+        "AccessToken": [],
+        "X-Api-Key": []
       }
     ],
     "operationId": "deleteCustomScript",
@@ -2147,14 +1642,6 @@ export const openapiMcpTools = [
     "inputSchema": {
       "type": "object",
       "properties": {
-        "x-api-key": {
-          "type": "string",
-          "description": "The API key as defined in Adobe's Developer Console."
-        },
-        "Authorization": {
-          "type": "string",
-          "description": "The authorization token with bearer \"token_value\". For example: `Bearer <access_token>`."
-        },
         "script_name": {
           "type": "string",
           "description": "Name of the custom script to update"
@@ -2187,8 +1674,6 @@ export const openapiMcpTools = [
         }
       },
       "required": [
-        "x-api-key",
-        "Authorization",
         "script_name",
         "requestBody"
       ]
@@ -2196,24 +1681,6 @@ export const openapiMcpTools = [
     "method": "put",
     "pathTemplate": "/v3/scripts/{script_name}/app-version",
     "parameters": [
-      {
-        "name": "x-api-key",
-        "in": "header",
-        "description": "The API key as defined in Adobe's Developer Console.",
-        "required": true,
-        "schema": {
-          "type": "string"
-        }
-      },
-      {
-        "name": "Authorization",
-        "in": "header",
-        "description": "The authorization token with bearer \"token_value\". For example: `Bearer <access_token>`.",
-        "required": true,
-        "schema": {
-          "type": "string"
-        }
-      },
       {
         "name": "script_name",
         "in": "path",
@@ -2226,14 +1693,6 @@ export const openapiMcpTools = [
     ],
     "executionParameters": [
       {
-        "name": "x-api-key",
-        "in": "header"
-      },
-      {
-        "name": "Authorization",
-        "in": "header"
-      },
-      {
         "name": "script_name",
         "in": "path"
       }
@@ -2241,10 +1700,8 @@ export const openapiMcpTools = [
     "requestBodyContentType": "application/json",
     "securityRequirements": [
       {
-        "ApiKeyAuth": []
-      },
-      {
-        "BearerAuth": []
+        "AccessToken": [],
+        "X-Api-Key": []
       }
     ],
     "operationId": "updateScriptAppVersion",
@@ -2255,76 +1712,16 @@ export const openapiMcpTools = [
     "description": "Retrieves information about all available InDesign app versions. Returns major version, minor version, and status for each registered app version.",
     "inputSchema": {
       "type": "object",
-      "properties": {
-        "Authorization": {
-          "type": "string",
-          "description": "The authorization token with bearer \"token_value\". For example: `Bearer <access_token>`."
-        },
-        "x-api-key": {
-          "type": "string",
-          "description": "The API key as defined in Adobe's Developer Console."
-        },
-        "x-gw-ims-org-id": {
-          "type": "string",
-          "description": "This is the identifier for Adobe Identity Management Service (IMS) as defined in Adobe's Developer Console. This is optional."
-        }
-      },
-      "required": [
-        "Authorization",
-        "x-api-key"
-      ]
+      "properties": {}
     },
     "method": "get",
     "pathTemplate": "/v3/app-versions",
-    "parameters": [
-      {
-        "name": "Authorization",
-        "in": "header",
-        "description": "The authorization token with bearer \"token_value\". For example: `Bearer <access_token>`.",
-        "required": true,
-        "schema": {
-          "type": "string"
-        }
-      },
-      {
-        "name": "x-api-key",
-        "in": "header",
-        "description": "The API key as defined in Adobe's Developer Console.",
-        "required": true,
-        "schema": {
-          "type": "string"
-        }
-      },
-      {
-        "name": "x-gw-ims-org-id",
-        "in": "header",
-        "description": "This is the identifier for Adobe Identity Management Service (IMS) as defined in Adobe's Developer Console. This is optional.",
-        "required": false,
-        "schema": {
-          "type": "string"
-        }
-      }
-    ],
-    "executionParameters": [
-      {
-        "name": "Authorization",
-        "in": "header"
-      },
-      {
-        "name": "x-api-key",
-        "in": "header"
-      },
-      {
-        "name": "x-gw-ims-org-id",
-        "in": "header"
-      }
-    ],
+    "parameters": [],
+    "executionParameters": [],
     "securityRequirements": [
       {
-        "ApiKeyAuth": []
-      },
-      {
-        "BearerAuth": []
+        "AccessToken": [],
+        "X-Api-Key": []
       }
     ],
     "operationId": "listAppVersions",
@@ -2336,18 +1733,6 @@ export const openapiMcpTools = [
     "inputSchema": {
       "type": "object",
       "properties": {
-        "Authorization": {
-          "type": "string",
-          "description": "The authorization token with bearer \"token_value\". For example: `Bearer <access_token>`."
-        },
-        "x-api-key": {
-          "type": "string",
-          "description": "The API key as defined in Adobe's Developer Console."
-        },
-        "x-gw-ims-org-id": {
-          "type": "string",
-          "description": "This is the identifier for Adobe Identity Management Service (IMS) as defined in Adobe's Developer Console. This is optional."
-        },
         "requestBody": {
           "allOf": [
             {
@@ -2548,63 +1933,18 @@ export const openapiMcpTools = [
         }
       },
       "required": [
-        "Authorization",
-        "x-api-key",
         "requestBody"
       ]
     },
     "method": "post",
     "pathTemplate": "/v3/document-info",
-    "parameters": [
-      {
-        "name": "Authorization",
-        "in": "header",
-        "description": "The authorization token with bearer \"token_value\". For example: `Bearer <access_token>`.",
-        "required": true,
-        "schema": {
-          "type": "string"
-        }
-      },
-      {
-        "name": "x-api-key",
-        "in": "header",
-        "description": "The API key as defined in Adobe's Developer Console.",
-        "required": true,
-        "schema": {
-          "type": "string"
-        }
-      },
-      {
-        "name": "x-gw-ims-org-id",
-        "in": "header",
-        "description": "This is the identifier for Adobe Identity Management Service (IMS) as defined in Adobe's Developer Console. This is optional.",
-        "required": false,
-        "schema": {
-          "type": "string"
-        }
-      }
-    ],
-    "executionParameters": [
-      {
-        "name": "Authorization",
-        "in": "header"
-      },
-      {
-        "name": "x-api-key",
-        "in": "header"
-      },
-      {
-        "name": "x-gw-ims-org-id",
-        "in": "header"
-      }
-    ],
+    "parameters": [],
+    "executionParameters": [],
     "requestBodyContentType": "application/json",
     "securityRequirements": [
       {
-        "ApiKeyAuth": []
-      },
-      {
-        "BearerAuth": []
+        "AccessToken": [],
+        "X-Api-Key": []
       }
     ],
     "operationId": "getDocumentInfo",
@@ -2616,50 +1956,18 @@ export const openapiMcpTools = [
     "inputSchema": {
       "type": "object",
       "properties": {
-        "Authorization": {
-          "type": "string",
-          "description": "The authorization token with bearer \"token_value\". For example: `Bearer <access_token>`."
-        },
-        "x-api-key": {
-          "type": "string",
-          "description": "The API key as defined in Adobe's Developer Console."
-        },
         "document-info_job_id": {
           "type": "string",
           "description": "The ID of the Document Info job you want to see the status of. This comes from the response of the Document Info request."
-        },
-        "x-gw-ims-org-id": {
-          "type": "string",
-          "description": "This is the identifier for Adobe Identity Management Service (IMS) as defined in Adobe's Developer Console. This is optional."
         }
       },
       "required": [
-        "Authorization",
-        "x-api-key",
         "document-info_job_id"
       ]
     },
     "method": "get",
     "pathTemplate": "/v3/status/{document-info_job_id}",
     "parameters": [
-      {
-        "name": "Authorization",
-        "in": "header",
-        "description": "The authorization token with bearer \"token_value\". For example: `Bearer <access_token>`.",
-        "required": true,
-        "schema": {
-          "type": "string"
-        }
-      },
-      {
-        "name": "x-api-key",
-        "in": "header",
-        "description": "The API key as defined in Adobe's Developer Console.",
-        "required": true,
-        "schema": {
-          "type": "string"
-        }
-      },
       {
         "name": "document-info_job_id",
         "in": "path",
@@ -2668,41 +1976,18 @@ export const openapiMcpTools = [
         "schema": {
           "type": "string"
         }
-      },
-      {
-        "name": "x-gw-ims-org-id",
-        "in": "header",
-        "description": "This is the identifier for Adobe Identity Management Service (IMS) as defined in Adobe's Developer Console. This is optional.",
-        "required": false,
-        "schema": {
-          "type": "string"
-        }
       }
     ],
     "executionParameters": [
       {
-        "name": "Authorization",
-        "in": "header"
-      },
-      {
-        "name": "x-api-key",
-        "in": "header"
-      },
-      {
         "name": "document-info_job_id",
         "in": "path"
-      },
-      {
-        "name": "x-gw-ims-org-id",
-        "in": "header"
       }
     ],
     "securityRequirements": [
       {
-        "ApiKeyAuth": []
-      },
-      {
-        "BearerAuth": []
+        "AccessToken": [],
+        "X-Api-Key": []
       }
     ],
     "operationId": "getDocumentInfoJobStatus",
@@ -2714,18 +1999,6 @@ export const openapiMcpTools = [
     "inputSchema": {
       "type": "object",
       "properties": {
-        "Authorization": {
-          "type": "string",
-          "description": "The authorization token with bearer \"token_value\". For example: `Bearer <access_token>`."
-        },
-        "x-api-key": {
-          "type": "string",
-          "description": "The API key as defined in Adobe's Developer Console."
-        },
-        "x-gw-ims-org-id": {
-          "type": "string",
-          "description": "This is the identifier for Adobe Identity Management Service (IMS) as defined in Adobe's Developer Console. This is optional."
-        },
         "requestBody": {
           "allOf": [
             {
@@ -2944,63 +2217,18 @@ export const openapiMcpTools = [
         }
       },
       "required": [
-        "Authorization",
-        "x-api-key",
         "requestBody"
       ]
     },
     "method": "post",
     "pathTemplate": "/v3/convert-pdf-to-indesign",
-    "parameters": [
-      {
-        "name": "Authorization",
-        "in": "header",
-        "description": "The authorization token with bearer \"token_value\". For example: `Bearer <access_token>`.",
-        "required": true,
-        "schema": {
-          "type": "string"
-        }
-      },
-      {
-        "name": "x-api-key",
-        "in": "header",
-        "description": "The API key as defined in Adobe's Developer Console.",
-        "required": true,
-        "schema": {
-          "type": "string"
-        }
-      },
-      {
-        "name": "x-gw-ims-org-id",
-        "in": "header",
-        "description": "This is the identifier for Adobe Identity Management Service (IMS) as defined in Adobe's Developer Console. This is optional.",
-        "required": false,
-        "schema": {
-          "type": "string"
-        }
-      }
-    ],
-    "executionParameters": [
-      {
-        "name": "Authorization",
-        "in": "header"
-      },
-      {
-        "name": "x-api-key",
-        "in": "header"
-      },
-      {
-        "name": "x-gw-ims-org-id",
-        "in": "header"
-      }
-    ],
+    "parameters": [],
+    "executionParameters": [],
     "requestBodyContentType": "application/json",
     "securityRequirements": [
       {
-        "ApiKeyAuth": []
-      },
-      {
-        "BearerAuth": []
+        "AccessToken": [],
+        "X-Api-Key": []
       }
     ],
     "operationId": "convertPDFToInDesign",
@@ -3012,50 +2240,18 @@ export const openapiMcpTools = [
     "inputSchema": {
       "type": "object",
       "properties": {
-        "Authorization": {
-          "type": "string",
-          "description": "The authorization token with bearer \"token_value\". For example: `Bearer <access_token>`."
-        },
-        "x-api-key": {
-          "type": "string",
-          "description": "The API key as defined in Adobe's Developer Console."
-        },
         "convert-pdf-to-indesign_job_id": {
           "type": "string",
           "description": "The ID of the Convert PDF to InDesign job you want to see the status of. This comes from the response of the Convert PDF to InDesign request."
-        },
-        "x-gw-ims-org-id": {
-          "type": "string",
-          "description": "This is the identifier for Adobe Identity Management Service (IMS) as defined in Adobe's Developer Console. This is optional."
         }
       },
       "required": [
-        "Authorization",
-        "x-api-key",
         "convert-pdf-to-indesign_job_id"
       ]
     },
     "method": "get",
     "pathTemplate": "/v3/status/{convert-pdf-to-indesign_job_id}",
     "parameters": [
-      {
-        "name": "Authorization",
-        "in": "header",
-        "description": "The authorization token with bearer \"token_value\". For example: `Bearer <access_token>`.",
-        "required": true,
-        "schema": {
-          "type": "string"
-        }
-      },
-      {
-        "name": "x-api-key",
-        "in": "header",
-        "description": "The API key as defined in Adobe's Developer Console.",
-        "required": true,
-        "schema": {
-          "type": "string"
-        }
-      },
       {
         "name": "convert-pdf-to-indesign_job_id",
         "in": "path",
@@ -3064,41 +2260,18 @@ export const openapiMcpTools = [
         "schema": {
           "type": "string"
         }
-      },
-      {
-        "name": "x-gw-ims-org-id",
-        "in": "header",
-        "description": "This is the identifier for Adobe Identity Management Service (IMS) as defined in Adobe's Developer Console. This is optional.",
-        "required": false,
-        "schema": {
-          "type": "string"
-        }
       }
     ],
     "executionParameters": [
       {
-        "name": "Authorization",
-        "in": "header"
-      },
-      {
-        "name": "x-api-key",
-        "in": "header"
-      },
-      {
         "name": "convert-pdf-to-indesign_job_id",
         "in": "path"
-      },
-      {
-        "name": "x-gw-ims-org-id",
-        "in": "header"
       }
     ],
     "securityRequirements": [
       {
-        "ApiKeyAuth": []
-      },
-      {
-        "BearerAuth": []
+        "AccessToken": [],
+        "X-Api-Key": []
       }
     ],
     "operationId": "getConvertPDFToInDesignJobStatus",
@@ -3110,21 +2283,9 @@ export const openapiMcpTools = [
     "inputSchema": {
       "type": "object",
       "properties": {
-        "Authorization": {
-          "type": "string",
-          "description": "The authorization token with bearer \"token_value\". For example: `Bearer <access_token>`."
-        },
-        "x-api-key": {
-          "type": "string",
-          "description": "The API key as defined in Adobe's Developer Console."
-        },
         "id": {
           "type": "string",
           "description": "The ID of the job you want to see the status of. This comes from the response of the executed job request."
-        },
-        "x-gw-ims-org-id": {
-          "type": "string",
-          "description": "This is the identifier for Adobe Identity Management Service (IMS) as defined in Adobe's Developer Console. This is optional."
         },
         "size": {
           "type": "number",
@@ -3140,8 +2301,6 @@ export const openapiMcpTools = [
         }
       },
       "required": [
-        "Authorization",
-        "x-api-key",
         "id"
       ]
     },
@@ -3149,37 +2308,10 @@ export const openapiMcpTools = [
     "pathTemplate": "/v3/status/{id}",
     "parameters": [
       {
-        "name": "Authorization",
-        "in": "header",
-        "description": "The authorization token with bearer \"token_value\". For example: `Bearer <access_token>`.",
-        "required": true,
-        "schema": {
-          "type": "string"
-        }
-      },
-      {
-        "name": "x-api-key",
-        "in": "header",
-        "description": "The API key as defined in Adobe's Developer Console.",
-        "required": true,
-        "schema": {
-          "type": "string"
-        }
-      },
-      {
         "name": "id",
         "in": "path",
         "description": "The ID of the job you want to see the status of. This comes from the response of the executed job request.",
         "required": true,
-        "schema": {
-          "type": "string"
-        }
-      },
-      {
-        "name": "x-gw-ims-org-id",
-        "in": "header",
-        "description": "This is the identifier for Adobe Identity Management Service (IMS) as defined in Adobe's Developer Console. This is optional.",
-        "required": false,
         "schema": {
           "type": "string"
         }
@@ -3209,20 +2341,8 @@ export const openapiMcpTools = [
     ],
     "executionParameters": [
       {
-        "name": "Authorization",
-        "in": "header"
-      },
-      {
-        "name": "x-api-key",
-        "in": "header"
-      },
-      {
         "name": "id",
         "in": "path"
-      },
-      {
-        "name": "x-gw-ims-org-id",
-        "in": "header"
       },
       {
         "name": "size",
@@ -3235,10 +2355,8 @@ export const openapiMcpTools = [
     ],
     "securityRequirements": [
       {
-        "ApiKeyAuth": []
-      },
-      {
-        "BearerAuth": []
+        "AccessToken": [],
+        "X-Api-Key": []
       }
     ],
     "operationId": "getJobStatus",

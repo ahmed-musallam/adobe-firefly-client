@@ -1,3 +1,9 @@
+# @musallam/ffs-indesign-client [2.2.0](https://github.com/ahmed-musallam/adobe-firefly-client/compare/@musallam/ffs-indesign-client@2.1.1...@musallam/ffs-indesign-client@2.2.0) (2026-05-14)
+
+### Features
+
+- add new indesign API spec ([bf9556c](https://github.com/ahmed-musallam/adobe-firefly-client/commit/bf9556c802d6e73bce7a072b614f056633f8ff83))
+
 ## @musallam/ffs-indesign-client [2.1.1](https://github.com/ahmed-musallam/adobe-firefly-client/compare/@musallam/ffs-indesign-client@2.1.0...@musallam/ffs-indesign-client@2.1.1) (2026-04-09)
 
 ### Bug Fixes

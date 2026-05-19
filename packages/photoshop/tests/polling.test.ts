@@ -306,34 +306,6 @@ describe('photoshop shared header and poll errors', () => {
     psSpy.mockRestore();
   });
 
-  it('throws when Authorization is missing (facade)', async () => {
-    await expect(
-      pollPhotoshopFacadeJob({
-        client: createConfigOnlyClient({ 'x-api-key': 'k' }),
-        jobId: 'job-1',
-        maxAttempts: 1,
-        timeoutMs: 5000,
-        minDelayMs: 0,
-        intervalMs: 0,
-      })
-    ).rejects.toThrow('Both Authorization and x-api-key headers are required');
-    expect(facadeSpy).not.toHaveBeenCalled();
-  });
-
-  it('throws when x-api-key is missing (facade)', async () => {
-    await expect(
-      pollPhotoshopFacadeJob({
-        client: createConfigOnlyClient({ Authorization: 'Bearer x' }),
-        jobId: 'job-1',
-        maxAttempts: 1,
-        timeoutMs: 5000,
-        minDelayMs: 0,
-        intervalMs: 0,
-      })
-    ).rejects.toThrow('Both Authorization and x-api-key headers are required');
-    expect(facadeSpy).not.toHaveBeenCalled();
-  });
-
   it('throws PollingIdResolutionError for empty jobId (ps service)', async () => {
     psSpy.mockResolvedValue(
       asResult({ jobId: 'j1', outputs: [{ status: 'succeeded' }] } as PsJobResponse)

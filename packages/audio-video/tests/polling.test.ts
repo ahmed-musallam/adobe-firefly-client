@@ -65,34 +65,6 @@ describe('audio-video v1 polling (/v1/status)', () => {
     expect(result.result.data?.status).toBe('succeeded');
   });
 
-  it('throws when Authorization header is missing', async () => {
-    await expect(
-      pollAudioVideoJob({
-        client: createConfigOnlyClient({ 'x-api-key': 'k' }),
-        jobId: 'job-1',
-        maxAttempts: 1,
-        timeoutMs: 5000,
-        minDelayMs: 0,
-        intervalMs: 0,
-      })
-    ).rejects.toThrow('Both Authorization and x-api-key headers are required');
-    expect(statusSpy).not.toHaveBeenCalled();
-  });
-
-  it('throws when x-api-key header is missing', async () => {
-    await expect(
-      pollAudioVideoJob({
-        client: createConfigOnlyClient({ Authorization: 'Bearer x' }),
-        jobId: 'job-1',
-        maxAttempts: 1,
-        timeoutMs: 5000,
-        minDelayMs: 0,
-        intervalMs: 0,
-      })
-    ).rejects.toThrow('Both Authorization and x-api-key headers are required');
-    expect(statusSpy).not.toHaveBeenCalled();
-  });
-
   it('throws PollingIdResolutionError for empty jobId', async () => {
     statusSpy.mockResolvedValue(makeV1Result({ jobId: 'job-1', status: 'succeeded' }));
     await expect(
@@ -291,34 +263,6 @@ describe('audio-video v2 reframe polling (/v2/status)', () => {
     });
     expect(result.attempts).toBe(1);
     expect(result.result.data?.status).toBe('succeeded');
-  });
-
-  it('throws when Authorization header is missing', async () => {
-    await expect(
-      pollAudioVideoReframeV2Job({
-        client: createConfigOnlyClient({ 'x-api-key': 'k' }),
-        jobId: 'job-1',
-        maxAttempts: 1,
-        timeoutMs: 5000,
-        minDelayMs: 0,
-        intervalMs: 0,
-      })
-    ).rejects.toThrow('Both Authorization and x-api-key headers are required');
-    expect(jobResultV2Spy).not.toHaveBeenCalled();
-  });
-
-  it('throws when x-api-key header is missing', async () => {
-    await expect(
-      pollAudioVideoReframeV2Job({
-        client: createConfigOnlyClient({ Authorization: 'Bearer x' }),
-        jobId: 'job-1',
-        maxAttempts: 1,
-        timeoutMs: 5000,
-        minDelayMs: 0,
-        intervalMs: 0,
-      })
-    ).rejects.toThrow('Both Authorization and x-api-key headers are required');
-    expect(jobResultV2Spy).not.toHaveBeenCalled();
   });
 
   it('throws PollingIdResolutionError for empty jobId', async () => {

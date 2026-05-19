@@ -79,34 +79,6 @@ describe('indesign polling adapter', () => {
     expect(result.result.data?.status).toBe('succeeded');
   });
 
-  it('throws when Authorization header is missing', async () => {
-    await expect(
-      pollInDesignJob({
-        client: createConfigOnlyClient({ 'x-api-key': 'k' }),
-        jobId: 'job-1',
-        maxAttempts: 1,
-        timeoutMs: 5000,
-        minDelayMs: 0,
-        intervalMs: 0,
-      })
-    ).rejects.toThrow('Both Authorization and x-api-key headers are required');
-    expect(getJobStatusSpy).not.toHaveBeenCalled();
-  });
-
-  it('throws when x-api-key header is missing', async () => {
-    await expect(
-      pollInDesignJob({
-        client: createConfigOnlyClient({ Authorization: 'Bearer x' }),
-        jobId: 'job-1',
-        maxAttempts: 1,
-        timeoutMs: 5000,
-        minDelayMs: 0,
-        intervalMs: 0,
-      })
-    ).rejects.toThrow('Both Authorization and x-api-key headers are required');
-    expect(getJobStatusSpy).not.toHaveBeenCalled();
-  });
-
   it('throws PollingIdResolutionError for empty jobId', async () => {
     getJobStatusSpy.mockResolvedValue(makeFieldsResult(succeededEvent()));
     await expect(

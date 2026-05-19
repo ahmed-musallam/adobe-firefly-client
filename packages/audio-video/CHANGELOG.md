@@ -1,3 +1,9 @@
+## @musallam/ffs-audio-video-client [2.1.2](https://github.com/ahmed-musallam/adobe-firefly-client/compare/@musallam/ffs-audio-video-client@2.1.1...@musallam/ffs-audio-video-client@2.1.2) (2026-05-19)
+
+### Bug Fixes
+
+- poll headers can be added in an interceptor ([4211aaa](https://github.com/ahmed-musallam/adobe-firefly-client/commit/4211aaac2c4e2116ba0eaae998f2b78080992879))
+
 ## @musallam/ffs-audio-video-client [2.1.1](https://github.com/ahmed-musallam/adobe-firefly-client/compare/@musallam/ffs-audio-video-client@2.1.0...@musallam/ffs-audio-video-client@2.1.1) (2026-04-09)
 
 ### Bug Fixes

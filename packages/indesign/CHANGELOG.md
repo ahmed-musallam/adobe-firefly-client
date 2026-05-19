@@ -1,3 +1,9 @@
+## @musallam/ffs-indesign-client [2.2.1](https://github.com/ahmed-musallam/adobe-firefly-client/compare/@musallam/ffs-indesign-client@2.2.0...@musallam/ffs-indesign-client@2.2.1) (2026-05-19)
+
+### Bug Fixes
+
+- poll headers can be added in an interceptor ([4211aaa](https://github.com/ahmed-musallam/adobe-firefly-client/commit/4211aaac2c4e2116ba0eaae998f2b78080992879))
+
 # @musallam/ffs-indesign-client [2.2.0](https://github.com/ahmed-musallam/adobe-firefly-client/compare/@musallam/ffs-indesign-client@2.1.1...@musallam/ffs-indesign-client@2.2.0) (2026-05-14)
 
 ### Features

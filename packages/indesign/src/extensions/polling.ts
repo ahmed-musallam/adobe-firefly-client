@@ -43,10 +43,6 @@ type JobHeaders = HeadersInit & {
 
 // fetches the job status
 const doFetchJob = async (client: Client, jobId: string) => {
-  const clientHeaders = client.getConfig().headers as JobHeaders;
-  if (!clientHeaders?.Authorization || !clientHeaders?.['x-api-key']) {
-    throw new Error('Both Authorization and x-api-key headers are required');
-  }
   return getJobStatus({
     client: client,
     path: { id: jobId },

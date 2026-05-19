@@ -7,9 +7,7 @@ import type {
   SenseiJobApiResponse,
 } from '../flat/types.gen';
 import {
-  type HeaderMap,
   pollJob,
-  readHttpHeader,
   resolveJobId,
   SharedPollJobOptions,
   type PollJobResult,
@@ -24,13 +22,6 @@ export interface PhotoshopPollJobOptions extends SharedPollJobOptions {
   client: Client;
   jobId: string;
 }
-
-const assertPhotoshopJobHeaders = (client: Client): void => {
-  const headers = client.getConfig().headers as HeaderMap;
-  if (!readHttpHeader(headers, 'Authorization') || !readHttpHeader(headers, 'x-api-key')) {
-    throw new Error('Both Authorization and x-api-key headers are required');
-  }
-};
 
 const TERMINAL = new Set<string>(['succeeded', 'failed']);
 
@@ -61,7 +52,6 @@ const getPsServiceAggregateStatus = (data: PsJobResponse | undefined): string | 
 };
 
 const fetchFacade = async (client: Client, jobId: string) => {
-  assertPhotoshopJobHeaders(client);
   return facadeJobStatus({
     client,
     path: { jobId },
@@ -70,7 +60,6 @@ const fetchFacade = async (client: Client, jobId: string) => {
 };
 
 const fetchPsService = async (client: Client, jobId: string) => {
-  assertPhotoshopJobHeaders(client);
   return psJobStatus({
     client,
     path: { jobId },
@@ -79,7 +68,6 @@ const fetchPsService = async (client: Client, jobId: string) => {
 };
 
 const fetchV1Mask = async (client: Client, jobId: string) => {
-  assertPhotoshopJobHeaders(client);
   return getJobStatus({
     client,
     path: { jobId },
@@ -88,7 +76,6 @@ const fetchV1Mask = async (client: Client, jobId: string) => {
 };
 
 const fetchSensei = async (client: Client, jobId: string) => {
-  assertPhotoshopJobHeaders(client);
   return senseiJobStatus({
     client,
     path: { jobId },

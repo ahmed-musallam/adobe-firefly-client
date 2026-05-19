@@ -22,13 +22,6 @@ export interface AudioVideoPollJobOptions extends SharedPollJobOptions {
 /** v1 + v2 job status strings that end polling (non-success except `succeeded`). */
 const TERMINAL = new Set<string>(['succeeded', 'failed', 'partially_succeeded']);
 
-const assertJobHeaders = (client: Client): void => {
-  const clientHeaders = client.getConfig().headers as JobHeaders;
-  if (!clientHeaders?.Authorization || !clientHeaders?.['x-api-key']) {
-    throw new Error('Both Authorization and x-api-key headers are required');
-  }
-};
-
 // both v1 and v2 job statuses are string, so we can use the same function for both
 const getStatusText = (
   data: StatusApiResponse | JobResultV2Response | undefined
@@ -37,7 +30,6 @@ const getStatusText = (
 };
 
 const fetchV1Status = async (client: Client, jobId: string) => {
-  assertJobHeaders(client);
   return status({
     client,
     path: { jobId },
@@ -46,7 +38,6 @@ const fetchV1Status = async (client: Client, jobId: string) => {
 };
 
 const fetchV2JobResult = async (client: Client, jobId: string) => {
-  assertJobHeaders(client);
   return jobResultV2({
     client,
     path: { jobId },

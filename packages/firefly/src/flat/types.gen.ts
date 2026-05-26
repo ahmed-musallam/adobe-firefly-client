@@ -42,7 +42,7 @@ export type ApiError = {
 /**
  * AspectRatio
  */
-export type AspectRatio = '1:1' | '4:3' | '3:4' | '16:9' | '9:16';
+export type AspectRatio = '1:1' | '4:3' | '3:4' | '16:9' | '9:16' | 'auto';
 
 /**
  * ApiErrorGeneric
@@ -342,7 +342,7 @@ export type JobSucceededPayload = {
     /**
      * The result of the completed job. The schema depends on the async operation (for example generation, composite, or upscale).
      */
-    result: JobResult | CreativeUpsamplerResponse;
+    result: JobResult | PreciseUpsamplerResponse;
 };
 
 /**
@@ -475,22 +475,22 @@ export type AsyncTaskResponseV3 = {
  */
 export type BaseInputImageV3 = {
     /**
-     * Source image that Firefly expands, fills, uses to generate similar images, or upscales (beta).
+     * Source image that Firefly expands, fills, uses to generate similar images, or upscales.
      */
     source: PublicBinaryInputV3;
 };
 
 /**
- * CreativeUpscaleAcceptResponseV3
+ * PreciseUpscaleAcceptResponseV3
  *
- * Response for async upscale requests (beta). Use links.result.href to poll for status and links.cancel.href to cancel.
+ * Response for async upscale requests. Use links.result.href to poll for status and links.cancel.href to cancel.
  */
-export type CreativeUpscaleAcceptResponseV3 = {
+export type PreciseUpscaleAcceptResponseV3 = {
     /**
      * Links to cancel and to fetch the job status or result.
      */
     links: {
-        [key: string]: CreativeUpscaleTaskLink;
+        [key: string]: PreciseUpscaleTaskLink;
     };
     /**
      * Progress percentage when available (for example when polling status).
@@ -499,9 +499,9 @@ export type CreativeUpscaleAcceptResponseV3 = {
 };
 
 /**
- * CreativeUpscaleTaskLink
+ * PreciseUpscaleTaskLink
  */
-export type CreativeUpscaleTaskLink = {
+export type PreciseUpscaleTaskLink = {
     /**
      * URL for the cancel or result endpoint.
      */
@@ -509,11 +509,11 @@ export type CreativeUpscaleTaskLink = {
 };
 
 /**
- * CreativeUpsamplerRequestV3
+ * PreciseUpsamplerRequestV3
  *
- * Request body for upscaling an image (beta). Provide the input image via uploadId from storage or a presigned URL. Seeds are required for reproducible results.
+ * Request body for upscaling an image. Provide the input image via uploadId from storage or a presigned URL. Seeds are required for reproducible results.
  */
-export type CreativeUpsamplerRequestV3 = {
+export type PreciseUpsamplerRequestV3 = {
     /**
      * The input image for the upsampler (source uploadId or url).
      */
@@ -529,11 +529,11 @@ export type CreativeUpsamplerRequestV3 = {
 };
 
 /**
- * CreativeUpsamplerResponse
+ * PreciseUpsamplerResponse
  *
- * Upscale result (beta). Each item in outputs is a storage reference for an upscaled image.
+ * Upscale result. Each item in outputs is a storage reference for an upscaled image.
  */
-export type CreativeUpsamplerResponse = {
+export type PreciseUpsamplerResponse = {
     /**
      * The list of upscaled images (storage items).
      */
@@ -858,9 +858,15 @@ export type ImageGenerateRequestV3 = {
      */
     prompt: string;
     /**
-     * The aspect ratio of the requested generations. This controls the size of the generated image.
+     * The aspect ratio of the requested generations. This controls the size of the generated image. When <code>referenceBlobs</code> is included in the request, this property should be omitted or set to <code>auto</code>.
      */
     aspectRatio?: AspectRatio;
+    /**
+     * Resolution level
+     *
+     * The resolution level.
+     */
+    resolutionLevel?: '1MP' | '2.4MP' | '4MP';
     /**
      * The specific model to use for image generation. Available options: 'firefly_image' for Firefly Image model.
      */
@@ -878,7 +884,7 @@ export type ImageGenerateRequestV3 = {
     /**
      * Reference blobs
      *
-     * List of reference blobs that will be used as additional input for the generation process. Only one reference image is supported. [Pre-signed URLs can be used from supported domains](https://developer.adobe.com/firefly-services/docs/firefly-api/getting-started/usage-notes/#image-api-usage).
+     * List of reference blobs that will be used as additional input for the generation process. Only one reference image is supported. When this array is not empty, <code>aspectRatio</code> must be omitted or set to <code>auto</code>. [Pre-signed URLs can be used from supported domains](https://developer.adobe.com/firefly-services/docs/firefly-api/getting-started/usage-notes/#image-api-usage).
      */
     referenceBlobs?: Array<ReferenceBlobV3>;
     /**
@@ -901,12 +907,18 @@ export type ModelSpecificPayloadV3 = {
      * The locale code (following RFC 5646 format, e.g., 'en-US') will be used to generate content that is more relevant for user's country and language.
      */
     localeCode?: string;
+    /**
+     * Prompt reasoner mode
+     *
+     * Controls the prompt reasoning strategy used during image generation. When set to <code>quality</code>, the response includes a populated <code>altText</code> field with a generated description of the image. When set to <code>speed</code>, prompt reasoning is optimized for speed and the <code>altText</code> field is returned empty.
+     */
+    prompt_reasoner?: 'quality' | 'speed';
 };
 
 /**
  * ReferenceBlobV3
  *
- * Reference blob for V3 API. Style Guide compliant: The 'source' property specifies the input location, and other properties like 'usage' are peers of 'source'.
+ * Reference blob for V3 API. Style Guide compliant: The <code>source</code> property specifies the input location, and other properties like <code>usage</code> are peers of <code>source</code>.
  */
 export type ReferenceBlobV3 = {
     /**
@@ -934,7 +946,7 @@ export type ReferenceBlobSourceV3 = {
     /**
      * URL
      *
-     * URL of the reference image. Presigned URLs are not supported for Image5; images must be uploaded to Adobe storage.
+     * URL of the reference image.
      */
     url?: string;
 };
@@ -948,6 +960,12 @@ export type ReferenceBlobUsageV3 = 'general';
  * Generating images from prompt
  */
 export type GenerateImagesResponseV3 = {
+    /**
+     * Alt text
+     *
+     * A generated text description of the image. Populated when <code>prompt_reasoner</code> is set to <code>quality</code> in the request. Returns an empty string otherwise.
+     */
+    altText?: string;
     /**
      * Generate an image to being more photographic or more like art. Either <code>photo</code> or <code>art</code>.
      */
@@ -1318,7 +1336,7 @@ export type GenerateVideoRequestV3 = {
         number
     ];
     /**
-     * The dimensions of the generated video.
+     * The dimensions of the generated video. Consult the [supported aspect ratios in the usage notes](https://developer.adobe.com/firefly-services/docs/firefly-api/getting-started/usage-notes/#supported-aspect-ratios) for allowed values.
      */
     sizes?: Array<ClinetoSize>;
     /**
@@ -2163,20 +2181,20 @@ export type AdaptiveCompositeResponses = {
 
 export type AdaptiveCompositeResponse = AdaptiveCompositeResponses[keyof AdaptiveCompositeResponses];
 
-export type CreativeUpsamplerV3AsyncData = {
-    body: CreativeUpsamplerRequestV3;
+export type PreciseUpsamplerV3AsyncData = {
+    body: PreciseUpsamplerRequestV3;
     headers?: {
         /**
-         * Model version for the upscale operation. Use creative_upsampler_v1.
+         * Model version for the upscale operation. Only `precise_upsampler_v1` is supported. Passing `creative_upsampler_v1` will return a 422 validation error.
          */
-        'x-model-version'?: string;
+        'x-model-version'?: 'precise_upsampler_v1';
     };
     path?: never;
     query?: never;
     url: '/v3/images/upscale';
 };
 
-export type CreativeUpsamplerV3AsyncErrors = {
+export type PreciseUpsamplerV3AsyncErrors = {
     /**
      * Bad Request
      */
@@ -2211,16 +2229,16 @@ export type CreativeUpsamplerV3AsyncErrors = {
     503: ApiErrorGeneric;
 };
 
-export type CreativeUpsamplerV3AsyncError = CreativeUpsamplerV3AsyncErrors[keyof CreativeUpsamplerV3AsyncErrors];
+export type PreciseUpsamplerV3AsyncError = PreciseUpsamplerV3AsyncErrors[keyof PreciseUpsamplerV3AsyncErrors];
 
-export type CreativeUpsamplerV3AsyncResponses = {
+export type PreciseUpsamplerV3AsyncResponses = {
     /**
      * Accepted
      */
-    202: CreativeUpscaleAcceptResponseV3;
+    202: PreciseUpscaleAcceptResponseV3;
 };
 
-export type CreativeUpsamplerV3AsyncResponse = CreativeUpsamplerV3AsyncResponses[keyof CreativeUpsamplerV3AsyncResponses];
+export type PreciseUpsamplerV3AsyncResponse = PreciseUpsamplerV3AsyncResponses[keyof PreciseUpsamplerV3AsyncResponses];
 
 export type GenerateVideoV3Data = {
     /**

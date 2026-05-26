@@ -245,7 +245,7 @@ export const openapiMcpTools = [
   },
   {
     "name": "firefly_image_v5_generate_async_v4",
-    "description": "Generate images asynchronously using Firefly's Image5 model.",
+    "description": "Generate images asynchronously using Firefly's Image5 model. When <code>referenceBlobs</code> is included in the request, omit <code>aspectRatio</code> or set it to <code>auto</code>.",
     "inputSchema": {
       "type": "object",
       "properties": {
@@ -272,7 +272,7 @@ export const openapiMcpTools = [
               "maxLength": 1500
             },
             "aspectRatio": {
-              "description": "The aspect ratio of the requested generations. This controls the size of the generated image.",
+              "description": "The aspect ratio of the requested generations. This controls the size of the generated image. When <code>referenceBlobs</code> is included in the request, this property should be omitted or set to <code>auto</code>.",
               "type": "string",
               "title": "AspectRatio",
               "enum": [
@@ -280,8 +280,20 @@ export const openapiMcpTools = [
                 "4:3",
                 "3:4",
                 "16:9",
-                "9:16"
+                "9:16",
+                "auto"
               ]
+            },
+            "resolutionLevel": {
+              "type": "string",
+              "title": "Resolution level",
+              "description": "The resolution level.",
+              "enum": [
+                "1MP",
+                "2.4MP",
+                "4MP"
+              ],
+              "default": "2.4MP"
             },
             "modelId": {
               "description": "The specific model to use for image generation. Available options: 'firefly_image' for Firefly Image model.",
@@ -300,6 +312,16 @@ export const openapiMcpTools = [
                   "type": "string",
                   "title": "The locale code used for image generations",
                   "description": "The locale code (following RFC 5646 format, e.g., 'en-US') will be used to generate content that is more relevant for user's country and language."
+                },
+                "prompt_reasoner": {
+                  "type": "string",
+                  "title": "Prompt reasoner mode",
+                  "description": "Controls the prompt reasoning strategy used during image generation. When set to <code>quality</code>, the response includes a populated <code>altText</code> field with a generated description of the image. When set to <code>speed</code>, prompt reasoning is optimized for speed and the <code>altText</code> field is returned empty.",
+                  "enum": [
+                    "quality",
+                    "speed"
+                  ],
+                  "default": "speed"
                 }
               }
             },
@@ -314,7 +336,7 @@ export const openapiMcpTools = [
               "items": {
                 "type": "object",
                 "title": "ReferenceBlobV3",
-                "description": "Reference blob for V3 API. Style Guide compliant: The 'source' property specifies the input location, and other properties like 'usage' are peers of 'source'.",
+                "description": "Reference blob for V3 API. Style Guide compliant: The <code>source</code> property specifies the input location, and other properties like <code>usage</code> are peers of <code>source</code>.",
                 "required": [
                   "source"
                 ],
@@ -333,7 +355,7 @@ export const openapiMcpTools = [
                       "url": {
                         "type": "string",
                         "title": "URL",
-                        "description": "URL of the reference image. Presigned URLs are not supported for Image5; images must be uploaded to Adobe storage."
+                        "description": "URL of the reference image."
                       }
                     }
                   },
@@ -348,7 +370,7 @@ export const openapiMcpTools = [
                 }
               },
               "title": "Reference blobs",
-              "description": "List of reference blobs that will be used as additional input for the generation process. Only one reference image is supported. [Pre-signed URLs can be used from supported domains](https://developer.adobe.com/firefly-services/docs/firefly-api/getting-started/usage-notes/#image-api-usage).",
+              "description": "List of reference blobs that will be used as additional input for the generation process. Only one reference image is supported. When this array is not empty, <code>aspectRatio</code> must be omitted or set to <code>auto</code>. [Pre-signed URLs can be used from supported domains](https://developer.adobe.com/firefly-services/docs/firefly-api/getting-started/usage-notes/#image-api-usage).",
               "default": [],
               "maxItems": 1
             },
@@ -443,7 +465,7 @@ export const openapiMcpTools = [
                   },
                   "title": "PublicBinaryInputV3",
                   "type": "object",
-                  "description": "Source image that Firefly expands, fills, uses to generate similar images, or upscales (beta)."
+                  "description": "Source image that Firefly expands, fills, uses to generate similar images, or upscales."
                 }
               },
               "required": [
@@ -1735,20 +1757,23 @@ export const openapiMcpTools = [
     "baseUrl": "https://firefly-api.adobe.io"
   },
   {
-    "name": "creativeUpsamplerV3Async",
-    "description": "Upscales an image asynchronously using the creative upsampler (beta). Provide the input image via an upload ID from the storage API or a presigned URL. The response includes links to check status and retrieve the result. Poll the status URL until the job completes, then fetch the result for the upscaled image(s).",
+    "name": "preciseUpsamplerV3Async",
+    "description": "Upscales an image asynchronously using the precise upsampler. Provide the input image via an upload ID from the storage API or a presigned URL. The response includes links to check status and retrieve the result. Poll the status URL until the job completes, then fetch the result for the upscaled image(s).",
     "inputSchema": {
       "type": "object",
       "properties": {
         "x-model-version": {
           "type": "string",
-          "default": "creative_upsampler_v1",
-          "description": "Model version for the upscale operation. Use creative_upsampler_v1."
+          "enum": [
+            "precise_upsampler_v1"
+          ],
+          "default": "precise_upsampler_v1",
+          "description": "Model version for the upscale operation. Only `precise_upsampler_v1` is supported. Passing `creative_upsampler_v1` will return a 422 validation error."
         },
         "requestBody": {
           "type": "object",
-          "title": "CreativeUpsamplerRequestV3",
-          "description": "Request body for upscaling an image (beta). Provide the input image via uploadId from storage or a presigned URL. Seeds are required for reproducible results.",
+          "title": "PreciseUpsamplerRequestV3",
+          "description": "Request body for upscaling an image. Provide the input image via uploadId from storage or a presigned URL. Seeds are required for reproducible results.",
           "required": [
             "image",
             "seeds"
@@ -1776,7 +1801,7 @@ export const openapiMcpTools = [
                   },
                   "title": "PublicBinaryInputV3",
                   "type": "object",
-                  "description": "Source image that Firefly expands, fills, uses to generate similar images, or upscales (beta)."
+                  "description": "Source image that Firefly expands, fills, uses to generate similar images, or upscales."
                 }
               },
               "required": [
@@ -1824,11 +1849,14 @@ export const openapiMcpTools = [
         "name": "x-model-version",
         "in": "header",
         "required": false,
-        "description": "Model version for the upscale operation. Use creative_upsampler_v1.",
+        "description": "Model version for the upscale operation. Only `precise_upsampler_v1` is supported. Passing `creative_upsampler_v1` will return a 422 validation error.",
         "schema": {
           "type": "string",
-          "default": "creative_upsampler_v1",
-          "example": "creative_upsampler_v1"
+          "enum": [
+            "precise_upsampler_v1"
+          ],
+          "default": "precise_upsampler_v1",
+          "example": "precise_upsampler_v1"
         }
       }
     ],
@@ -1845,7 +1873,7 @@ export const openapiMcpTools = [
         "AccessToken": []
       }
     ],
-    "operationId": "creativeUpsamplerV3Async",
+    "operationId": "preciseUpsamplerV3Async",
     "baseUrl": "https://firefly-api.adobe.io"
   },
   {
@@ -1943,7 +1971,7 @@ export const openapiMcpTools = [
               "type": "array"
             },
             "sizes": {
-              "description": "The dimensions of the generated video.",
+              "description": "The dimensions of the generated video. Consult the [supported aspect ratios in the usage notes](https://developer.adobe.com/firefly-services/docs/firefly-api/getting-started/usage-notes/#supported-aspect-ratios) for allowed values.",
               "items": {
                 "properties": {
                   "height": {
@@ -2238,7 +2266,7 @@ export const openapiMcpTools = [
   },
   {
     "name": "storageImageV2",
-    "description": "Upload source image or mask for image-to-image operations, such as fill, expand, or upscale (beta). This API returns an identifier that is used to refer to uploaded content. The uploaded assets will be valid for 7 days from the date you upload them.",
+    "description": "Upload source image or mask for image-to-image operations, such as fill, expand, or upscale. This API returns an identifier that is used to refer to uploaded content. The uploaded assets will be valid for 7 days from the date you upload them.",
     "inputSchema": {
       "type": "object",
       "properties": {

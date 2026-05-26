@@ -1,3 +1,9 @@
+# @musallam/ffs-firefly-client [2.2.0](https://github.com/ahmed-musallam/adobe-firefly-client/compare/@musallam/ffs-firefly-client@2.1.1...@musallam/ffs-firefly-client@2.2.0) (2026-05-26)
+
+### Features
+
+- update firefly spec to latest ([5c5dec8](https://github.com/ahmed-musallam/adobe-firefly-client/commit/5c5dec86deed152416bd626b7532ba361d6e87be))
+
 ## @musallam/ffs-firefly-client [2.1.1](https://github.com/ahmed-musallam/adobe-firefly-client/compare/@musallam/ffs-firefly-client@2.1.0...@musallam/ffs-firefly-client@2.1.1) (2026-04-09)
 
 ### Bug Fixes

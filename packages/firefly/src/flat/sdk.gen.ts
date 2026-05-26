@@ -2,7 +2,7 @@
 
 import type { Client, Options as Options2, TDataShape } from './client';
 import { client } from './client.gen';
-import type { AdaptiveCompositeData, AdaptiveCompositeErrors, AdaptiveCompositeResponses, CancelJobV4Data, CancelJobV4Errors, CancelJobV4Responses, CreativeUpsamplerV3AsyncData, CreativeUpsamplerV3AsyncErrors, CreativeUpsamplerV3AsyncResponses, ExpandImagesV3AsyncData, ExpandImagesV3AsyncErrors, ExpandImagesV3AsyncResponses, FillImagesV3AsyncData, FillImagesV3AsyncErrors, FillImagesV3AsyncResponses, FireflyImageV5GenerateAsyncV4Data, FireflyImageV5GenerateAsyncV4Errors, FireflyImageV5GenerateAsyncV4Responses, GenerateImagesV3AsyncData, GenerateImagesV3AsyncErrors, GenerateImagesV3AsyncResponses, GenerateObjectCompositeV3AsyncData, GenerateObjectCompositeV3AsyncErrors, GenerateObjectCompositeV3AsyncResponses, GenerateSimilarImagesV3AsyncData, GenerateSimilarImagesV3AsyncErrors, GenerateSimilarImagesV3AsyncResponses, GenerateVideoV3Data, GenerateVideoV3Errors, GenerateVideoV3Responses, GetCustomModelsData, GetCustomModelsErrors, GetCustomModelsResponses, JobResultV3Data, JobResultV3Errors, JobResultV3Responses, PreciseCompositeData, PreciseCompositeErrors, PreciseCompositeResponses, StorageImageV2Data, StorageImageV2Errors, StorageImageV2Responses } from './types.gen';
+import type { AdaptiveCompositeData, AdaptiveCompositeErrors, AdaptiveCompositeResponses, CancelJobV4Data, CancelJobV4Errors, CancelJobV4Responses, ExpandImagesV3AsyncData, ExpandImagesV3AsyncErrors, ExpandImagesV3AsyncResponses, FillImagesV3AsyncData, FillImagesV3AsyncErrors, FillImagesV3AsyncResponses, FireflyImageV5GenerateAsyncV4Data, FireflyImageV5GenerateAsyncV4Errors, FireflyImageV5GenerateAsyncV4Responses, GenerateImagesV3AsyncData, GenerateImagesV3AsyncErrors, GenerateImagesV3AsyncResponses, GenerateObjectCompositeV3AsyncData, GenerateObjectCompositeV3AsyncErrors, GenerateObjectCompositeV3AsyncResponses, GenerateSimilarImagesV3AsyncData, GenerateSimilarImagesV3AsyncErrors, GenerateSimilarImagesV3AsyncResponses, GenerateVideoV3Data, GenerateVideoV3Errors, GenerateVideoV3Responses, GetCustomModelsData, GetCustomModelsErrors, GetCustomModelsResponses, JobResultV3Data, JobResultV3Errors, JobResultV3Responses, PreciseCompositeData, PreciseCompositeErrors, PreciseCompositeResponses, PreciseUpsamplerV3AsyncData, PreciseUpsamplerV3AsyncErrors, PreciseUpsamplerV3AsyncResponses, StorageImageV2Data, StorageImageV2Errors, StorageImageV2Responses } from './types.gen';
 
 export type Options<TData extends TDataShape = TDataShape, ThrowOnError extends boolean = boolean, TResponse = unknown> = Options2<TData, ThrowOnError, TResponse> & {
     /**
@@ -36,7 +36,7 @@ export const generateImagesV3Async = <ThrowOnError extends boolean = false>(opti
 /**
  * Generate images with Image5
  *
- * Generate images asynchronously using Firefly's Image5 model.
+ * Generate images asynchronously using Firefly's Image5 model. When <code>referenceBlobs</code> is included in the request, omit <code>aspectRatio</code> or set it to <code>auto</code>.
  */
 export const fireflyImageV5GenerateAsyncV4 = <ThrowOnError extends boolean = false>(options: Options<FireflyImageV5GenerateAsyncV4Data, ThrowOnError>) => (options.client ?? client).post<FireflyImageV5GenerateAsyncV4Responses, FireflyImageV5GenerateAsyncV4Errors, ThrowOnError>({
     security: [{ name: 'x-api-key', type: 'apiKey' }, { scheme: 'bearer', type: 'http' }],
@@ -131,11 +131,11 @@ export const adaptiveComposite = <ThrowOnError extends boolean = false>(options:
 });
 
 /**
- * Upscale image (beta)
+ * Upscale image
  *
- * Upscales an image asynchronously using the creative upsampler (beta). Provide the input image via an upload ID from the storage API or a presigned URL. The response includes links to check status and retrieve the result. Poll the status URL until the job completes, then fetch the result for the upscaled image(s).
+ * Upscales an image asynchronously using the precise upsampler. Provide the input image via an upload ID from the storage API or a presigned URL. The response includes links to check status and retrieve the result. Poll the status URL until the job completes, then fetch the result for the upscaled image(s).
  */
-export const creativeUpsamplerV3Async = <ThrowOnError extends boolean = false>(options: Options<CreativeUpsamplerV3AsyncData, ThrowOnError>) => (options.client ?? client).post<CreativeUpsamplerV3AsyncResponses, CreativeUpsamplerV3AsyncErrors, ThrowOnError>({
+export const preciseUpsamplerV3Async = <ThrowOnError extends boolean = false>(options: Options<PreciseUpsamplerV3AsyncData, ThrowOnError>) => (options.client ?? client).post<PreciseUpsamplerV3AsyncResponses, PreciseUpsamplerV3AsyncErrors, ThrowOnError>({
     security: [{ name: 'x-api-key', type: 'apiKey' }, { scheme: 'bearer', type: 'http' }],
     url: '/v3/images/upscale',
     ...options,
@@ -174,7 +174,7 @@ export const getCustomModels = <ThrowOnError extends boolean = false>(options: O
 /**
  * Upload image
  *
- * Upload source image or mask for image-to-image operations, such as fill, expand, or upscale (beta). This API returns an identifier that is used to refer to uploaded content. The uploaded assets will be valid for 7 days from the date you upload them.
+ * Upload source image or mask for image-to-image operations, such as fill, expand, or upscale. This API returns an identifier that is used to refer to uploaded content. The uploaded assets will be valid for 7 days from the date you upload them.
  */
 export const storageImageV2 = <ThrowOnError extends boolean = false>(options: Options<StorageImageV2Data, ThrowOnError>) => (options.client ?? client).post<StorageImageV2Responses, StorageImageV2Errors, ThrowOnError>({
     bodySerializer: null,

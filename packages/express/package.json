@@ -1,0 +1,51 @@
+{
+  "name": "@musallam/ffs-express-client",
+  "version": "2.1.1",
+  "description": "Adobe Express API SDK",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/ahmed-musallam/adobe-firefly-client",
+    "directory": "packages/express"
+  },
+  "main": "./dist/flat.cjs",
+  "module": "./dist/flat.mjs",
+  "types": "./dist/flat.d.mts",
+  "exports": {
+    ".": {
+      "import": "./dist/flat.mjs",
+      "require": "./dist/flat.cjs",
+      "types": "./dist/flat.d.mts"
+    },
+    "./sdk": {
+      "import": "./dist/sdk.mjs",
+      "require": "./dist/sdk.cjs",
+      "types": "./dist/sdk.d.mts"
+    },
+    "./tools": {
+      "types": "./src/tools/index.ts",
+      "import": "./src/tools/index.ts",
+      "require": "./src/tools/index.ts"
+    }
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "files": [
+    "dist",
+    "src/tools"
+  ],
+  "scripts": {
+    "build": "tsdown --config ../../tsdown.config.ts",
+    "test": "vitest run"
+  },
+  "peerDependencies": {
+    "ky": "^1.0.0"
+  },
+  "devDependencies": {
+    "@vitest/coverage-v8": "catalog:",
+    "ky": "catalog:",
+    "tsdown": "catalog:",
+    "typescript": "catalog:",
+    "vitest": "catalog:"
+  }
+}

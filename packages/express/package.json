@@ -1,6 +1,6 @@
 {
   "name": "@musallam/ffs-express-client",
-  "version": "2.1.1",
+  "version": "1.0.0",
   "description": "Adobe Express API SDK",
   "repository": {
     "type": "git",

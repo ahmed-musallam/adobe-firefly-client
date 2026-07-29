@@ -45,6 +45,48 @@ export type FfapierrorsFfapiErrorDetail = {
     msg: string;
 };
 
+export type RestBaseFileFrameIo = {
+    /**
+     * A URL to the JSON Schema for this object.
+     */
+    readonly $schema?: string;
+    /**
+     * Frame.io access token or Developer token. See https://developer.frame.io/docs/getting-started/authentication for obtaining a token.
+     */
+    accessToken: string;
+    /**
+     * Frame.io folder ID containing the assets. This should be the ID of the folder (not an asset ID). For best performance and to avoid [size limitations](/#what-is-the-maximum-size-of-assets-i-can-process), use the folder ID closest to your target assets. The system will retrieve all content from the specified folder, so choosing a parent folder with many subfolders may exceed the maximum retrieval size limit
+     */
+    folderId: string;
+};
+
+export type RestBaseFileNextFrameIo = {
+    /**
+     * A URL to the JSON Schema for this object.
+     */
+    readonly $schema?: string;
+    /**
+     * Frame.io access token. See https://developer.adobe.com/frameio/guides/Authentication/ for obtaining a token.
+     */
+    accessToken: string;
+    /**
+     * Frame.io account ID. This is the account identifier for the next.frame.io account owner. To find your account ID, log in to next.frame.io, navigate to your inbox, and extract the UUID from the URL (e.g., in https://next.frame.io/inbox/abcdefgh-1234-1234-1234-abcdefghijk, the account ID is abcdefgh-1234-1234-1234-abcdefghijk)
+     */
+    accountId: string;
+    /**
+     * Frame.io folder ID containing the assets. This should be the ID of the folder (not an asset ID). For best performance and to avoid [size limitations](/#what-is-the-maximum-size-of-assets-i-can-process), use the folder ID closest to your target assets. The system will retrieve all content from the specified folder, so choosing a parent folder with many subfolders may exceed the maximum retrieval size limit
+     */
+    folderId: string;
+};
+
+export type RestBaseFileUrl = {
+    /**
+     * The filename in the filepath overrides filename. If filepath is unset, will try to detect filename from content disposition header, then url itself. If a path is specified before the filename in the filepath, the file will be mounted at that location in the space.
+     */
+    filepath?: string;
+    url: string;
+};
+
 export type RestBaseMountedSource = {
     /**
      * Fetch content from a Frame.io folder. ⚠️ All sources are exclusive.
@@ -71,13 +113,28 @@ export type RestBaseMountedSource = {
 };
 
 export type RestBaseSourceFrameIo = {
+    /**
+     * Frame.io access token or Developer token. See https://developer.frame.io/docs/getting-started/authentication for obtaining a token.
+     */
     accessToken: string;
+    /**
+     * Frame.io folder ID containing the assets. This should be the ID of the folder (not an asset ID). For best performance and to avoid [size limitations](/#what-is-the-maximum-size-of-assets-i-can-process), use the folder ID closest to your target assets. The system will retrieve all content from the specified folder, so choosing a parent folder with many subfolders may exceed the maximum retrieval size limit
+     */
     folderId: string;
 };
 
 export type RestBaseSourceFrameIov4 = {
+    /**
+     * Frame.io access token. See https://developer.adobe.com/frameio/guides/Authentication/ for obtaining a token.
+     */
     accessToken: string;
+    /**
+     * Frame.io account ID. This is the account identifier for the next.frame.io account owner. To find your account ID, log in to next.frame.io, navigate to your inbox, and extract the UUID from the URL (e.g., in https://next.frame.io/inbox/abcdefgh-1234-1234-1234-abcdefghijk, the account ID is abcdefgh-1234-1234-1234-abcdefghijk)
+     */
     accountId: string;
+    /**
+     * Frame.io folder ID containing the assets. This should be the ID of the folder (not an asset ID). For best performance and to avoid [size limitations](/#what-is-the-maximum-size-of-assets-i-can-process), use the folder ID closest to your target assets. The system will retrieve all content from the specified folder, so choosing a parent folder with many subfolders may exceed the maximum retrieval size limit
+     */
     folderId: string;
 };
 
@@ -140,11 +197,15 @@ export type Restv1ComposeSceneRequest = {
     /**
      * Name of an existing camera in the source 3D scene. The camera has to be defined in the scene.
      */
-    cameraName?: string | null;
+    cameraName?: string;
     /**
      * Class of content to generate.
      */
     contentClass?: 'art' | 'photo';
+    /**
+     * ID of the custom model to be used for the generation. You can retrieve your custom model ID (assetId) with the Firefly retrieve custom model endpoint (https://developer.adobe.com/firefly-services/docs/firefly-api/api/#operation/getCustomModels).
+     */
+    customModelId?: string;
     /**
      * Enable the auto-generated ground plane under the hero asset. This is useful if the 3D scene contains only a hero asset, without additional elements.
      */
@@ -177,6 +238,9 @@ export type Restv1ComposeSceneRequest = {
      * Prompt to be used to generate the background image with Adobe Firefly.
      */
     prompt: string;
+    /**
+     * Optional scene-level details, such as a custom camera.
+     */
     scene?: TypesComposeSceneSceneDetails;
     /**
      * The path of the scene file in `sources`. If value is null, the first found scene file will be used.
@@ -203,7 +267,7 @@ export type Restv1ComposeSceneRequest = {
     /**
      * List of sources to aggregate and run the job against.
      */
-    sources: Array<RestBaseMountedSource> | null;
+    sources: Array<RestBaseMountedSource>;
     /**
      * Optional 'style image' to be used to generate the background. The style image has to be present in `sources`.
      */
@@ -223,11 +287,11 @@ export type Restv1BetaComposeOutputImage = {
 };
 
 export type Restv1BetaComposeSceneJobResult = {
-    outputSpace?: RestBaseSpace;
-    outputs: Array<Restv1BetaComposeOutput> | null;
+    outputSpace: RestBaseSpace;
+    outputs: Array<Restv1BetaComposeOutput>;
     promptHasBlockedArtists: boolean;
     promptHasDeniedWords: boolean;
-    warnings: Array<TypesWarning> | null;
+    warnings?: Array<TypesWarning> | null;
 };
 
 export type Restv1BetaComposeSceneRequest = {
@@ -236,13 +300,17 @@ export type Restv1BetaComposeSceneRequest = {
      */
     readonly $schema?: string;
     /**
-     * Name of an existing camera in the source 3D scene (the camera has to be defined in the scene). This is exclusive with 'scene.camera'.
+     * Name of an existing camera in the 3D scene (must be defined in the scene). Mutually exclusive with 'scene.camera'.
      */
-    cameraName?: string | null;
+    cameraName?: string;
     /**
-     * Class of content to generate ('photo' or 'art'). If omitted, defaults to 'photo'.
+     * Class of content to generate: 'photo' for photorealistic images or 'art' for artistic renditions. Defaults to 'photo'.
      */
     contentClass?: 'art' | 'photo';
+    /**
+     * ID of the custom model to be used for the generation. You can retrieve your custom model ID (assetId) with the Firefly retrieve custom model endpoint (https://developer.adobe.com/firefly-services/docs/firefly-api/api/#operation/getCustomModels).
+     */
+    customModelId?: string;
     /**
      * Allow to enable the auto-generated ground plane under the hero asset. Useful if the 3D scene contains only a hero asset without additional elements. Disabled by default.
      */
@@ -260,7 +328,7 @@ export type Restv1BetaComposeSceneRequest = {
      */
     heroAsset: string;
     /**
-     * Optional seeds to be used to generate the lighting for the scene. The first seed will be used with the first seed of the background, the second one with the second seed of the background and so on. Background seeds must be defined and the number of lighting seeds should equal the number of background seeds. If not set, random seeds will be used. You will be able to retrieve the seeds used for the generation in the output details of the job.
+     * LightingSeeds defines optional, fixed random seeds for reproducible Image-Based Lighting (IBL) when generating AI backgrounds. It is only used when 'environment' is not provided. Each lighting seed maps to the corresponding background seed by index (first lighting seed with first background seed, etc.) when 'seeds' is specified. If the number of lighting seeds does not match the number of background seeds, the slice is automatically truncated or padded with random values. When omitted or set to nil, random lighting seeds are generated. The actual seeds used are returned in the response payload.
      */
     lightingSeeds?: Array<number>;
     /**
@@ -275,6 +343,9 @@ export type Restv1BetaComposeSceneRequest = {
      * Prompt to be used to generate the background image with Adobe Firefly.
      */
     prompt: string;
+    /**
+     * Optional scene-level details, such as a custom camera.
+     */
     scene?: TypesComposeSceneSceneDetails;
     /**
      * The path of the scene file in `sources`. If value is null, the first found scene file will be used.
@@ -285,7 +356,7 @@ export type Restv1BetaComposeSceneRequest = {
      */
     seeds?: Array<number>;
     /**
-     * The size of the requested generations. The supported dimensions for image generations are:
+     * Output image dimensions. Supported resolutions:
      * | Dimensions | Description |
      * | -----------| ----- |
      * | { "width": 2048, "height": 2048} | Square (1:1) |
@@ -297,9 +368,9 @@ export type Restv1BetaComposeSceneRequest = {
     /**
      * List of sources to aggregate and run the job against.
      */
-    sources: Array<RestBaseMountedSource> | null;
+    sources: Array<RestBaseMountedSource>;
     /**
-     * Optional 'style image' to be used to generate the background (the style image has to be present in sources)
+     * Optional reference image to influence the visual style and aesthetics of the generated background. Must be provided in sources.
      */
     styleImage?: string;
 };
@@ -336,7 +407,7 @@ export type Restv1BetaComposeSceneResponse = {
 };
 
 export type Restv1BetaCreateSceneJobResult = {
-    outputSpace?: RestBaseSpace;
+    outputSpace: RestBaseSpace;
     /**
      * URL for the created scene.
      */
@@ -360,7 +431,7 @@ export type Restv1BetaCreateSceneRequest = {
     /**
      * List of sources to aggregate and run the job against.
      */
-    sources: Array<RestBaseMountedSource> | null;
+    sources: Array<RestBaseMountedSource>;
 };
 
 export type Restv1BetaCreateSceneResponse = {
@@ -395,7 +466,7 @@ export type Restv1BetaCreateSceneResponse = {
 };
 
 export type Restv1BetaModelConvertJobResult = {
-    outputSpace?: RestBaseSpace;
+    outputSpace: RestBaseSpace;
 };
 
 export type Restv1BetaModelConvertRequest = {
@@ -414,7 +485,7 @@ export type Restv1BetaModelConvertRequest = {
     /**
      * List of sources to aggregate and run the job against.
      */
-    sources: Array<RestBaseMountedSource> | null;
+    sources: Array<RestBaseMountedSource>;
 };
 
 export type Restv1BetaModelConvertResponse = {
@@ -484,7 +555,7 @@ export type Restv1BetaRenderModelRequest = {
     /**
      * List of sources to aggregate and run the job against.
      */
-    sources: Array<RestBaseMountedSource> | null;
+    sources: Array<RestBaseMountedSource>;
 };
 
 export type Restv1BetaRenderModelResponse = {
@@ -549,6 +620,10 @@ export type Restv1BetaRenderModelTurntableRequest = {
      */
     mode?: 'rotate_camera' | 'rotate_model' | 'rotate_environment';
     /**
+     * Set the rotation direction of the turntable.
+     */
+    rotationDirection?: 'clockwise' | 'counter_clockwise';
+    /**
      * Define rendering scene primitives.
      */
     scene: TypesSimpleSceneDescription;
@@ -560,7 +635,7 @@ export type Restv1BetaRenderModelTurntableRequest = {
     /**
      * List of sources to aggregate and run the job against.
      */
-    sources: Array<RestBaseMountedSource> | null;
+    sources: Array<RestBaseMountedSource>;
     /**
      * Set to true to use a very fast rendering technique but with less accurate lighting.
      */
@@ -600,19 +675,23 @@ export type Restv1BetaRenderModelTurntableResponse = {
 
 export type Restv1BetaRenderSceneJobResult = {
     /**
-     * List of URLs to the rendered frames. The rendered frames are ordered by frame number.
+     * URL to the distance-to-camera map in NumPy .npy format, present when exportDistanceToCamera was requested
      */
-    framesUrls?: Array<string> | null;
+    distanceToCameraUrl?: string;
     materialIds?: TypesIdsMapData;
     materialMasks?: Array<TypesMaskNameToFileBinding>;
+    /**
+     * URL to the matte grayscale image, present when exportMatte was requested
+     */
+    matteUrl?: string;
     objectIds?: TypesIdsMapData;
     objectMasks?: Array<TypesMaskNameToFileBinding>;
-    outputSpace?: RestBaseSpace;
+    outputSpace: RestBaseSpace;
     /**
      * URL to the rendered scene.
      */
     renderUrl: string;
-    warnings: Array<TypesWarning> | null;
+    warnings?: Array<TypesWarning> | null;
 };
 
 export type Restv1BetaRenderSceneRequest = {
@@ -651,7 +730,7 @@ export type Restv1BetaRenderSceneRequest = {
     /**
      * List of sources to aggregate and run the job against.
      */
-    sources: Array<RestBaseMountedSource> | null;
+    sources: Array<RestBaseMountedSource>;
 };
 
 export type Restv1BetaRenderSceneResponse = {
@@ -689,13 +768,13 @@ export type Restv1BetaRenderSceneTurntableJobResult = {
     /**
      * List of URLs to the rendered frames. The rendered frames are ordered by frame number.
      */
-    framesUrls?: Array<string> | null;
-    outputSpace?: RestBaseSpace;
+    framesUrls: Array<string>;
+    outputSpace: RestBaseSpace;
     /**
      * URL to the rendered scene.
      */
     renderUrl: string;
-    warnings: Array<TypesWarning> | null;
+    warnings?: Array<TypesWarning> | null;
 };
 
 export type Restv1BetaSceneDescJobResult = {
@@ -714,7 +793,7 @@ export type Restv1BetaSceneDescRequest = {
     /**
      * List of sources to aggregate and run the job against.
      */
-    sources: Array<RestBaseMountedSource> | null;
+    sources: Array<RestBaseMountedSource>;
 };
 
 export type Restv1BetaSceneDescResponse = {
@@ -823,20 +902,9 @@ export type TypesComposeEnvironment = {
     rotation?: TypesRotation;
 };
 
-export type TypesComposeSceneCustomModel = {
-    /**
-     * ID of the custom model to be used for the generation.
-     */
-    customModelId: string | null;
-    /**
-     * Token to be used to access the custom model.
-     */
-    customModelToken: string | null;
-};
-
 export type TypesComposeSceneSceneDetails = {
     /**
-     * Custom camera, exclusive with 'cameraName'.
+     * Custom camera definition for the scene render. Mutually exclusive with 'cameraName' at the top level. Use this to define camera parameters programmatically instead of referencing a named camera from the 3D scene.
      */
     camera?: TypesSceneCamera;
 };
@@ -850,7 +918,7 @@ export type TypesExportMasksOptions = {
 
 export type TypesFormatOptions = {
     /**
-     * USD format options.
+     * options specific to USD file format
      */
     usd: TypesUsdOptions;
 };
@@ -1012,7 +1080,18 @@ export type TypesOutputSize = {
     width: number;
 };
 
+export type TypesRenderExtraOutputExportMatte = {
+    /**
+     * Nodes to be included into the matte, the list can contain glob patterns. If empty, the matte will contain all scene objects.
+     */
+    includeNodes: Array<string> | null;
+};
+
 export type TypesRenderExtraOutputs = {
+    /**
+     * export a distance-to-camera map as a NumPy .npy file (float32 2D array)
+     */
+    exportDistanceToCamera?: boolean;
     /**
      * Export an image with one color per material.
      */
@@ -1022,6 +1101,10 @@ export type TypesRenderExtraOutputs = {
      */
     exportMaterialMasks?: TypesExportMasksOptions;
     /**
+     * export compositing matte for a selection of objects
+     */
+    exportMatte?: TypesRenderExtraOutputExportMatte;
+    /**
      * Export an image with one color per object.
      */
     exportObjectIds?: boolean;
@@ -1029,6 +1112,13 @@ export type TypesRenderExtraOutputs = {
      * Export one mask per object.
      */
     exportObjectMasks?: TypesExportMasksOptions;
+};
+
+export type TypesRendererConfig = {
+    /**
+     * Renderer to use. 'ssca' is the default path-tracing renderer; 'rtx' uses NVidia RTX renderer.
+     */
+    type: 'ssca' | 'rtx';
 };
 
 export type TypesRotation = {
@@ -1123,6 +1213,10 @@ export type TypesSceneDescription = {
      * Define the environment for the scene. Override the previous existing environment.
      */
     environment?: TypesSceneEnvironment;
+    /**
+     * define options specific for model file format
+     */
+    formatOptions?: TypesFormatOptions;
     /**
      * Assign new materials to geometric primitives.
      */
@@ -1355,8 +1449,17 @@ export type TypesUsdOptions = {
 };
 
 export type TypesUsdVariant = {
+    /**
+     * name of the USD prim on which the variant is defined
+     */
     primName: string;
+    /**
+     * name of the variant option to apply from the variant set
+     */
     variant: string;
+    /**
+     * name of the variant set to select from
+     */
     variantSet: string;
 };
 
@@ -1381,6 +1484,32 @@ export type FfapierrorsFfapiErrorWritable = {
      * Error message.
      */
     message?: string;
+};
+
+export type RestBaseFileFrameIoWritable = {
+    /**
+     * Frame.io access token or Developer token. See https://developer.frame.io/docs/getting-started/authentication for obtaining a token.
+     */
+    accessToken: string;
+    /**
+     * Frame.io folder ID containing the assets. This should be the ID of the folder (not an asset ID). For best performance and to avoid [size limitations](/#what-is-the-maximum-size-of-assets-i-can-process), use the folder ID closest to your target assets. The system will retrieve all content from the specified folder, so choosing a parent folder with many subfolders may exceed the maximum retrieval size limit
+     */
+    folderId: string;
+};
+
+export type RestBaseFileNextFrameIoWritable = {
+    /**
+     * Frame.io access token. See https://developer.adobe.com/frameio/guides/Authentication/ for obtaining a token.
+     */
+    accessToken: string;
+    /**
+     * Frame.io account ID. This is the account identifier for the next.frame.io account owner. To find your account ID, log in to next.frame.io, navigate to your inbox, and extract the UUID from the URL (e.g., in https://next.frame.io/inbox/abcdefgh-1234-1234-1234-abcdefghijk, the account ID is abcdefgh-1234-1234-1234-abcdefghijk)
+     */
+    accountId: string;
+    /**
+     * Frame.io folder ID containing the assets. This should be the ID of the folder (not an asset ID). For best performance and to avoid [size limitations](/#what-is-the-maximum-size-of-assets-i-can-process), use the folder ID closest to your target assets. The system will retrieve all content from the specified folder, so choosing a parent folder with many subfolders may exceed the maximum retrieval size limit
+     */
+    folderId: string;
 };
 
 export type RestBaseSpaceWritable = {
@@ -1410,11 +1539,15 @@ export type Restv1ComposeSceneRequestWritable = {
     /**
      * Name of an existing camera in the source 3D scene. The camera has to be defined in the scene.
      */
-    cameraName?: string | null;
+    cameraName?: string;
     /**
      * Class of content to generate.
      */
     contentClass?: 'art' | 'photo';
+    /**
+     * ID of the custom model to be used for the generation. You can retrieve your custom model ID (assetId) with the Firefly retrieve custom model endpoint (https://developer.adobe.com/firefly-services/docs/firefly-api/api/#operation/getCustomModels).
+     */
+    customModelId?: string;
     /**
      * Enable the auto-generated ground plane under the hero asset. This is useful if the 3D scene contains only a hero asset, without additional elements.
      */
@@ -1447,6 +1580,9 @@ export type Restv1ComposeSceneRequestWritable = {
      * Prompt to be used to generate the background image with Adobe Firefly.
      */
     prompt: string;
+    /**
+     * Optional scene-level details, such as a custom camera.
+     */
     scene?: TypesComposeSceneSceneDetails;
     /**
      * The path of the scene file in `sources`. If value is null, the first found scene file will be used.
@@ -1473,7 +1609,7 @@ export type Restv1ComposeSceneRequestWritable = {
     /**
      * List of sources to aggregate and run the job against.
      */
-    sources: Array<RestBaseMountedSource> | null;
+    sources: Array<RestBaseMountedSource>;
     /**
      * Optional 'style image' to be used to generate the background. The style image has to be present in `sources`.
      */
@@ -1481,22 +1617,26 @@ export type Restv1ComposeSceneRequestWritable = {
 };
 
 export type Restv1BetaComposeSceneJobResultWritable = {
-    outputSpace?: RestBaseSpaceWritable;
-    outputs: Array<Restv1BetaComposeOutput> | null;
+    outputSpace: RestBaseSpaceWritable;
+    outputs: Array<Restv1BetaComposeOutput>;
     promptHasBlockedArtists: boolean;
     promptHasDeniedWords: boolean;
-    warnings: Array<TypesWarning> | null;
+    warnings?: Array<TypesWarning> | null;
 };
 
 export type Restv1BetaComposeSceneRequestWritable = {
     /**
-     * Name of an existing camera in the source 3D scene (the camera has to be defined in the scene). This is exclusive with 'scene.camera'.
+     * Name of an existing camera in the 3D scene (must be defined in the scene). Mutually exclusive with 'scene.camera'.
      */
-    cameraName?: string | null;
+    cameraName?: string;
     /**
-     * Class of content to generate ('photo' or 'art'). If omitted, defaults to 'photo'.
+     * Class of content to generate: 'photo' for photorealistic images or 'art' for artistic renditions. Defaults to 'photo'.
      */
     contentClass?: 'art' | 'photo';
+    /**
+     * ID of the custom model to be used for the generation. You can retrieve your custom model ID (assetId) with the Firefly retrieve custom model endpoint (https://developer.adobe.com/firefly-services/docs/firefly-api/api/#operation/getCustomModels).
+     */
+    customModelId?: string;
     /**
      * Allow to enable the auto-generated ground plane under the hero asset. Useful if the 3D scene contains only a hero asset without additional elements. Disabled by default.
      */
@@ -1514,7 +1654,7 @@ export type Restv1BetaComposeSceneRequestWritable = {
      */
     heroAsset: string;
     /**
-     * Optional seeds to be used to generate the lighting for the scene. The first seed will be used with the first seed of the background, the second one with the second seed of the background and so on. Background seeds must be defined and the number of lighting seeds should equal the number of background seeds. If not set, random seeds will be used. You will be able to retrieve the seeds used for the generation in the output details of the job.
+     * LightingSeeds defines optional, fixed random seeds for reproducible Image-Based Lighting (IBL) when generating AI backgrounds. It is only used when 'environment' is not provided. Each lighting seed maps to the corresponding background seed by index (first lighting seed with first background seed, etc.) when 'seeds' is specified. If the number of lighting seeds does not match the number of background seeds, the slice is automatically truncated or padded with random values. When omitted or set to nil, random lighting seeds are generated. The actual seeds used are returned in the response payload.
      */
     lightingSeeds?: Array<number>;
     /**
@@ -1529,6 +1669,9 @@ export type Restv1BetaComposeSceneRequestWritable = {
      * Prompt to be used to generate the background image with Adobe Firefly.
      */
     prompt: string;
+    /**
+     * Optional scene-level details, such as a custom camera.
+     */
     scene?: TypesComposeSceneSceneDetails;
     /**
      * The path of the scene file in `sources`. If value is null, the first found scene file will be used.
@@ -1539,7 +1682,7 @@ export type Restv1BetaComposeSceneRequestWritable = {
      */
     seeds?: Array<number>;
     /**
-     * The size of the requested generations. The supported dimensions for image generations are:
+     * Output image dimensions. Supported resolutions:
      * | Dimensions | Description |
      * | -----------| ----- |
      * | { "width": 2048, "height": 2048} | Square (1:1) |
@@ -1551,9 +1694,9 @@ export type Restv1BetaComposeSceneRequestWritable = {
     /**
      * List of sources to aggregate and run the job against.
      */
-    sources: Array<RestBaseMountedSource> | null;
+    sources: Array<RestBaseMountedSource>;
     /**
-     * Optional 'style image' to be used to generate the background (the style image has to be present in sources)
+     * Optional reference image to influence the visual style and aesthetics of the generated background. Must be provided in sources.
      */
     styleImage?: string;
 };
@@ -1586,7 +1729,7 @@ export type Restv1BetaComposeSceneResponseWritable = {
 };
 
 export type Restv1BetaCreateSceneJobResultWritable = {
-    outputSpace?: RestBaseSpaceWritable;
+    outputSpace: RestBaseSpaceWritable;
     /**
      * URL for the created scene.
      */
@@ -1606,7 +1749,7 @@ export type Restv1BetaCreateSceneRequestWritable = {
     /**
      * List of sources to aggregate and run the job against.
      */
-    sources: Array<RestBaseMountedSource> | null;
+    sources: Array<RestBaseMountedSource>;
 };
 
 export type Restv1BetaCreateSceneResponseWritable = {
@@ -1637,7 +1780,7 @@ export type Restv1BetaCreateSceneResponseWritable = {
 };
 
 export type Restv1BetaModelConvertJobResultWritable = {
-    outputSpace?: RestBaseSpaceWritable;
+    outputSpace: RestBaseSpaceWritable;
 };
 
 export type Restv1BetaModelConvertRequestWritable = {
@@ -1652,7 +1795,7 @@ export type Restv1BetaModelConvertRequestWritable = {
     /**
      * List of sources to aggregate and run the job against.
      */
-    sources: Array<RestBaseMountedSource> | null;
+    sources: Array<RestBaseMountedSource>;
 };
 
 export type Restv1BetaModelConvertResponseWritable = {
@@ -1714,7 +1857,7 @@ export type Restv1BetaRenderModelRequestWritable = {
     /**
      * List of sources to aggregate and run the job against.
      */
-    sources: Array<RestBaseMountedSource> | null;
+    sources: Array<RestBaseMountedSource>;
 };
 
 export type Restv1BetaRenderModelResponseWritable = {
@@ -1771,6 +1914,10 @@ export type Restv1BetaRenderModelTurntableRequestWritable = {
      */
     mode?: 'rotate_camera' | 'rotate_model' | 'rotate_environment';
     /**
+     * Set the rotation direction of the turntable.
+     */
+    rotationDirection?: 'clockwise' | 'counter_clockwise';
+    /**
      * Define rendering scene primitives.
      */
     scene: TypesSimpleSceneDescription;
@@ -1782,7 +1929,7 @@ export type Restv1BetaRenderModelTurntableRequestWritable = {
     /**
      * List of sources to aggregate and run the job against.
      */
-    sources: Array<RestBaseMountedSource> | null;
+    sources: Array<RestBaseMountedSource>;
     /**
      * Set to true to use a very fast rendering technique but with less accurate lighting.
      */
@@ -1818,19 +1965,23 @@ export type Restv1BetaRenderModelTurntableResponseWritable = {
 
 export type Restv1BetaRenderSceneJobResultWritable = {
     /**
-     * List of URLs to the rendered frames. The rendered frames are ordered by frame number.
+     * URL to the distance-to-camera map in NumPy .npy format, present when exportDistanceToCamera was requested
      */
-    framesUrls?: Array<string> | null;
+    distanceToCameraUrl?: string;
     materialIds?: TypesIdsMapData;
     materialMasks?: Array<TypesMaskNameToFileBinding>;
+    /**
+     * URL to the matte grayscale image, present when exportMatte was requested
+     */
+    matteUrl?: string;
     objectIds?: TypesIdsMapData;
     objectMasks?: Array<TypesMaskNameToFileBinding>;
-    outputSpace?: RestBaseSpaceWritable;
+    outputSpace: RestBaseSpaceWritable;
     /**
      * URL to the rendered scene.
      */
     renderUrl: string;
-    warnings: Array<TypesWarning> | null;
+    warnings?: Array<TypesWarning> | null;
 };
 
 export type Restv1BetaRenderSceneRequestWritable = {
@@ -1865,7 +2016,7 @@ export type Restv1BetaRenderSceneRequestWritable = {
     /**
      * List of sources to aggregate and run the job against.
      */
-    sources: Array<RestBaseMountedSource> | null;
+    sources: Array<RestBaseMountedSource>;
 };
 
 export type Restv1BetaRenderSceneResponseWritable = {
@@ -1899,13 +2050,13 @@ export type Restv1BetaRenderSceneTurntableJobResultWritable = {
     /**
      * List of URLs to the rendered frames. The rendered frames are ordered by frame number.
      */
-    framesUrls?: Array<string> | null;
-    outputSpace?: RestBaseSpaceWritable;
+    framesUrls: Array<string>;
+    outputSpace: RestBaseSpaceWritable;
     /**
      * URL to the rendered scene.
      */
     renderUrl: string;
-    warnings: Array<TypesWarning> | null;
+    warnings?: Array<TypesWarning> | null;
 };
 
 export type Restv1BetaSceneDescRequestWritable = {
@@ -1916,7 +2067,7 @@ export type Restv1BetaSceneDescRequestWritable = {
     /**
      * List of sources to aggregate and run the job against.
      */
-    sources: Array<RestBaseMountedSource> | null;
+    sources: Array<RestBaseMountedSource>;
 };
 
 export type Restv1BetaSceneDescResponseWritable = {
@@ -1947,7 +2098,13 @@ export type Restv1BetaSceneDescResponseWritable = {
 };
 
 export type V1CompositesComposeData = {
-    body?: Restv1ComposeSceneRequestWritable;
+    body: Restv1ComposeSceneRequestWritable;
+    headers?: {
+        /**
+         * A user token referencing the user's individual account, obtained using their credentials.
+         */
+        'X-User-Token'?: string;
+    };
     path?: never;
     query?: {
         /**
@@ -2001,7 +2158,7 @@ export type V1CompositesComposeResponses = {
 export type V1CompositesComposeResponse = V1CompositesComposeResponses[keyof V1CompositesComposeResponses];
 
 export type V1ScenesAssembleData = {
-    body?: Restv1BetaCreateSceneRequestWritable;
+    body: Restv1BetaCreateSceneRequestWritable;
     path?: never;
     query?: {
         /**
@@ -2055,7 +2212,7 @@ export type V1ScenesAssembleResponses = {
 export type V1ScenesAssembleResponse = V1ScenesAssembleResponses[keyof V1ScenesAssembleResponses];
 
 export type V1ScenesConvertData = {
-    body?: Restv1BetaModelConvertRequestWritable;
+    body: Restv1BetaModelConvertRequestWritable;
     path?: never;
     query?: {
         /**
@@ -2109,7 +2266,7 @@ export type V1ScenesConvertResponses = {
 export type V1ScenesConvertResponse = V1ScenesConvertResponses[keyof V1ScenesConvertResponses];
 
 export type V1ScenesDescribeData = {
-    body?: Restv1BetaSceneDescRequestWritable;
+    body: Restv1BetaSceneDescRequestWritable;
     path?: never;
     query?: {
         /**
@@ -2163,7 +2320,7 @@ export type V1ScenesDescribeResponses = {
 export type V1ScenesDescribeResponse = V1ScenesDescribeResponses[keyof V1ScenesDescribeResponses];
 
 export type V1ScenesRenderData = {
-    body?: Restv1BetaRenderSceneRequestWritable;
+    body: Restv1BetaRenderSceneRequestWritable;
     path?: never;
     query?: {
         /**
@@ -2217,7 +2374,7 @@ export type V1ScenesRenderResponses = {
 export type V1ScenesRenderResponse = V1ScenesRenderResponses[keyof V1ScenesRenderResponses];
 
 export type V1ScenesRenderBasicData = {
-    body?: Restv1BetaRenderModelRequestWritable;
+    body: Restv1BetaRenderModelRequestWritable;
     path?: never;
     query?: {
         /**
@@ -2288,6 +2445,10 @@ export type CreateSpaceV1Data = {
 
 export type CreateSpaceV1Errors = {
     /**
+     * Bad Request
+     */
+    400: FfapierrorsFfapiError;
+    /**
      * Forbidden
      */
     403: FfapierrorsFfapiError;
@@ -2323,3 +2484,189 @@ export type CreateSpaceV1Responses = {
 };
 
 export type CreateSpaceV1Response = CreateSpaceV1Responses[keyof CreateSpaceV1Responses];
+
+export type CreateSpaceV2Data = {
+    body: {
+        files: Array<Blob | File>;
+    };
+    path?: never;
+    query?: never;
+    url: '/v2/spaces';
+};
+
+export type CreateSpaceV2Errors = {
+    /**
+     * Bad Request
+     */
+    400: FfapierrorsFfapiError;
+    /**
+     * Forbidden
+     */
+    403: FfapierrorsFfapiError;
+    /**
+     * Request Timeout
+     */
+    408: FfapierrorsFfapiError;
+    /**
+     * Request Entity Too Large
+     */
+    413: FfapierrorsFfapiError;
+    /**
+     * Unprocessable Entity
+     */
+    422: FfapierrorsFfapiError;
+    /**
+     * Too Many Requests
+     */
+    429: FfapierrorsFfapiError;
+    /**
+     * Internal Server Error
+     */
+    500: FfapierrorsFfapiError;
+};
+
+export type CreateSpaceV2Error = CreateSpaceV2Errors[keyof CreateSpaceV2Errors];
+
+export type CreateSpaceV2Responses = {
+    /**
+     * Created
+     */
+    201: RestBaseSpace;
+};
+
+export type CreateSpaceV2Response = CreateSpaceV2Responses[keyof CreateSpaceV2Responses];
+
+export type CreateSpaceFromFrameIoV2Data = {
+    body: RestBaseFileFrameIoWritable;
+    path?: never;
+    query?: never;
+    url: '/v2/spacesFrameIO';
+};
+
+export type CreateSpaceFromFrameIoV2Errors = {
+    /**
+     * Forbidden
+     */
+    403: FfapierrorsFfapiError;
+    /**
+     * Request Timeout
+     */
+    408: FfapierrorsFfapiError;
+    /**
+     * Request Entity Too Large
+     */
+    413: FfapierrorsFfapiError;
+    /**
+     * Unprocessable Entity
+     */
+    422: FfapierrorsFfapiError;
+    /**
+     * Too Many Requests
+     */
+    429: FfapierrorsFfapiError;
+    /**
+     * Internal Server Error
+     */
+    500: FfapierrorsFfapiError;
+};
+
+export type CreateSpaceFromFrameIoV2Error = CreateSpaceFromFrameIoV2Errors[keyof CreateSpaceFromFrameIoV2Errors];
+
+export type CreateSpaceFromFrameIoV2Responses = {
+    /**
+     * Created
+     */
+    201: RestBaseSpace;
+};
+
+export type CreateSpaceFromFrameIoV2Response = CreateSpaceFromFrameIoV2Responses[keyof CreateSpaceFromFrameIoV2Responses];
+
+export type CreateSpaceFromNextFrameIoV2Data = {
+    body: RestBaseFileNextFrameIoWritable;
+    path?: never;
+    query?: never;
+    url: '/v2/spacesNextFrameIO';
+};
+
+export type CreateSpaceFromNextFrameIoV2Errors = {
+    /**
+     * Forbidden
+     */
+    403: FfapierrorsFfapiError;
+    /**
+     * Request Timeout
+     */
+    408: FfapierrorsFfapiError;
+    /**
+     * Request Entity Too Large
+     */
+    413: FfapierrorsFfapiError;
+    /**
+     * Unprocessable Entity
+     */
+    422: FfapierrorsFfapiError;
+    /**
+     * Too Many Requests
+     */
+    429: FfapierrorsFfapiError;
+    /**
+     * Internal Server Error
+     */
+    500: FfapierrorsFfapiError;
+};
+
+export type CreateSpaceFromNextFrameIoV2Error = CreateSpaceFromNextFrameIoV2Errors[keyof CreateSpaceFromNextFrameIoV2Errors];
+
+export type CreateSpaceFromNextFrameIoV2Responses = {
+    /**
+     * Created
+     */
+    201: RestBaseSpace;
+};
+
+export type CreateSpaceFromNextFrameIoV2Response = CreateSpaceFromNextFrameIoV2Responses[keyof CreateSpaceFromNextFrameIoV2Responses];
+
+export type CreateSpaceUrlV2Data = {
+    body: Array<RestBaseFileUrl> | null;
+    path?: never;
+    query?: never;
+    url: '/v2/spacesURL';
+};
+
+export type CreateSpaceUrlV2Errors = {
+    /**
+     * Forbidden
+     */
+    403: FfapierrorsFfapiError;
+    /**
+     * Request Timeout
+     */
+    408: FfapierrorsFfapiError;
+    /**
+     * Request Entity Too Large
+     */
+    413: FfapierrorsFfapiError;
+    /**
+     * Unprocessable Entity
+     */
+    422: FfapierrorsFfapiError;
+    /**
+     * Too Many Requests
+     */
+    429: FfapierrorsFfapiError;
+    /**
+     * Internal Server Error
+     */
+    500: FfapierrorsFfapiError;
+};
+
+export type CreateSpaceUrlV2Error = CreateSpaceUrlV2Errors[keyof CreateSpaceUrlV2Errors];
+
+export type CreateSpaceUrlV2Responses = {
+    /**
+     * Created
+     */
+    201: RestBaseSpace;
+};
+
+export type CreateSpaceUrlV2Response = CreateSpaceUrlV2Responses[keyof CreateSpaceUrlV2Responses];

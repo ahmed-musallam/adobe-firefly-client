@@ -2,7 +2,7 @@
 
 import { type Client, formDataBodySerializer, type Options as Options2, type TDataShape } from './client';
 import { client } from './client.gen';
-import type { CreateSpaceV1Data, CreateSpaceV1Errors, CreateSpaceV1Responses, V1CompositesComposeData, V1CompositesComposeErrors, V1CompositesComposeResponses, V1ScenesAssembleData, V1ScenesAssembleErrors, V1ScenesAssembleResponses, V1ScenesConvertData, V1ScenesConvertErrors, V1ScenesConvertResponses, V1ScenesDescribeData, V1ScenesDescribeErrors, V1ScenesDescribeResponses, V1ScenesRenderBasicData, V1ScenesRenderBasicErrors, V1ScenesRenderBasicResponses, V1ScenesRenderData, V1ScenesRenderErrors, V1ScenesRenderResponses } from './types.gen';
+import type { CreateSpaceFromFrameIoV2Data, CreateSpaceFromFrameIoV2Errors, CreateSpaceFromFrameIoV2Responses, CreateSpaceFromNextFrameIoV2Data, CreateSpaceFromNextFrameIoV2Errors, CreateSpaceFromNextFrameIoV2Responses, CreateSpaceUrlV2Data, CreateSpaceUrlV2Errors, CreateSpaceUrlV2Responses, CreateSpaceV1Data, CreateSpaceV1Errors, CreateSpaceV1Responses, CreateSpaceV2Data, CreateSpaceV2Errors, CreateSpaceV2Responses, V1CompositesComposeData, V1CompositesComposeErrors, V1CompositesComposeResponses, V1ScenesAssembleData, V1ScenesAssembleErrors, V1ScenesAssembleResponses, V1ScenesConvertData, V1ScenesConvertErrors, V1ScenesConvertResponses, V1ScenesDescribeData, V1ScenesDescribeErrors, V1ScenesDescribeResponses, V1ScenesRenderBasicData, V1ScenesRenderBasicErrors, V1ScenesRenderBasicResponses, V1ScenesRenderData, V1ScenesRenderErrors, V1ScenesRenderResponses } from './types.gen';
 
 export type Options<TData extends TDataShape = TDataShape, ThrowOnError extends boolean = boolean, TResponse = unknown> = Options2<TData, ThrowOnError, TResponse> & {
     /**
@@ -23,13 +23,13 @@ export type Options<TData extends TDataShape = TDataShape, ThrowOnError extends 
  *
  * Generate a 3D Object Composite with the Substance 3D API.
  */
-export const v1CompositesCompose = <ThrowOnError extends boolean = false>(options?: Options<V1CompositesComposeData, ThrowOnError>) => (options?.client ?? client).post<V1CompositesComposeResponses, V1CompositesComposeErrors, ThrowOnError>({
-    security: [{ scheme: 'bearer', type: 'http' }],
+export const v1CompositesCompose = <ThrowOnError extends boolean = false>(options: Options<V1CompositesComposeData, ThrowOnError>) => (options.client ?? client).post<V1CompositesComposeResponses, V1CompositesComposeErrors, ThrowOnError>({
+    security: [{ scheme: 'bearer', type: 'http' }, { name: 'x-api-key', type: 'apiKey' }],
     url: '/v1/composites/compose',
     ...options,
     headers: {
         'Content-Type': 'application/json',
-        ...options?.headers
+        ...options.headers
     }
 });
 
@@ -38,13 +38,13 @@ export const v1CompositesCompose = <ThrowOnError extends boolean = false>(option
  *
  * Assemble a 3D scene with the Substance 3D API.
  */
-export const v1ScenesAssemble = <ThrowOnError extends boolean = false>(options?: Options<V1ScenesAssembleData, ThrowOnError>) => (options?.client ?? client).post<V1ScenesAssembleResponses, V1ScenesAssembleErrors, ThrowOnError>({
-    security: [{ scheme: 'bearer', type: 'http' }],
+export const v1ScenesAssemble = <ThrowOnError extends boolean = false>(options: Options<V1ScenesAssembleData, ThrowOnError>) => (options.client ?? client).post<V1ScenesAssembleResponses, V1ScenesAssembleErrors, ThrowOnError>({
+    security: [{ scheme: 'bearer', type: 'http' }, { name: 'x-api-key', type: 'apiKey' }],
     url: '/v1/scenes/assemble',
     ...options,
     headers: {
         'Content-Type': 'application/json',
-        ...options?.headers
+        ...options.headers
     }
 });
 
@@ -53,13 +53,13 @@ export const v1ScenesAssemble = <ThrowOnError extends boolean = false>(options?:
  *
  * Convert a 3D file into another 3D format with the Substance 3D API.
  */
-export const v1ScenesConvert = <ThrowOnError extends boolean = false>(options?: Options<V1ScenesConvertData, ThrowOnError>) => (options?.client ?? client).post<V1ScenesConvertResponses, V1ScenesConvertErrors, ThrowOnError>({
-    security: [{ scheme: 'bearer', type: 'http' }],
+export const v1ScenesConvert = <ThrowOnError extends boolean = false>(options: Options<V1ScenesConvertData, ThrowOnError>) => (options.client ?? client).post<V1ScenesConvertResponses, V1ScenesConvertErrors, ThrowOnError>({
+    security: [{ scheme: 'bearer', type: 'http' }, { name: 'x-api-key', type: 'apiKey' }],
     url: '/v1/scenes/convert',
     ...options,
     headers: {
         'Content-Type': 'application/json',
-        ...options?.headers
+        ...options.headers
     }
 });
 
@@ -68,13 +68,13 @@ export const v1ScenesConvert = <ThrowOnError extends boolean = false>(options?: 
  *
  * Describe a 3D scene.
  */
-export const v1ScenesDescribe = <ThrowOnError extends boolean = false>(options?: Options<V1ScenesDescribeData, ThrowOnError>) => (options?.client ?? client).post<V1ScenesDescribeResponses, V1ScenesDescribeErrors, ThrowOnError>({
-    security: [{ scheme: 'bearer', type: 'http' }],
+export const v1ScenesDescribe = <ThrowOnError extends boolean = false>(options: Options<V1ScenesDescribeData, ThrowOnError>) => (options.client ?? client).post<V1ScenesDescribeResponses, V1ScenesDescribeErrors, ThrowOnError>({
+    security: [{ scheme: 'bearer', type: 'http' }, { name: 'x-api-key', type: 'apiKey' }],
     url: '/v1/scenes/describe',
     ...options,
     headers: {
         'Content-Type': 'application/json',
-        ...options?.headers
+        ...options.headers
     }
 });
 
@@ -83,13 +83,13 @@ export const v1ScenesDescribe = <ThrowOnError extends boolean = false>(options?:
  *
  * Render a 3D object with the Substance 3D API.
  */
-export const v1ScenesRender = <ThrowOnError extends boolean = false>(options?: Options<V1ScenesRenderData, ThrowOnError>) => (options?.client ?? client).post<V1ScenesRenderResponses, V1ScenesRenderErrors, ThrowOnError>({
-    security: [{ scheme: 'bearer', type: 'http' }],
+export const v1ScenesRender = <ThrowOnError extends boolean = false>(options: Options<V1ScenesRenderData, ThrowOnError>) => (options.client ?? client).post<V1ScenesRenderResponses, V1ScenesRenderErrors, ThrowOnError>({
+    security: [{ scheme: 'bearer', type: 'http' }, { name: 'x-api-key', type: 'apiKey' }],
     url: '/v1/scenes/render',
     ...options,
     headers: {
         'Content-Type': 'application/json',
-        ...options?.headers
+        ...options.headers
     }
 });
 
@@ -98,13 +98,13 @@ export const v1ScenesRender = <ThrowOnError extends boolean = false>(options?: O
  *
  * Render a 3D object (basic version) with the Substance 3D API.
  */
-export const v1ScenesRenderBasic = <ThrowOnError extends boolean = false>(options?: Options<V1ScenesRenderBasicData, ThrowOnError>) => (options?.client ?? client).post<V1ScenesRenderBasicResponses, V1ScenesRenderBasicErrors, ThrowOnError>({
-    security: [{ scheme: 'bearer', type: 'http' }],
+export const v1ScenesRenderBasic = <ThrowOnError extends boolean = false>(options: Options<V1ScenesRenderBasicData, ThrowOnError>) => (options.client ?? client).post<V1ScenesRenderBasicResponses, V1ScenesRenderBasicErrors, ThrowOnError>({
+    security: [{ scheme: 'bearer', type: 'http' }, { name: 'x-api-key', type: 'apiKey' }],
     url: '/v1/scenes/render-basic',
     ...options,
     headers: {
         'Content-Type': 'application/json',
-        ...options?.headers
+        ...options.headers
     }
 });
 
@@ -115,11 +115,230 @@ export const v1ScenesRenderBasic = <ThrowOnError extends boolean = false>(option
  */
 export const createSpaceV1 = <ThrowOnError extends boolean = false>(options: Options<CreateSpaceV1Data, ThrowOnError>) => (options.client ?? client).post<CreateSpaceV1Responses, CreateSpaceV1Errors, ThrowOnError>({
     ...formDataBodySerializer,
-    security: [{ scheme: 'bearer', type: 'http' }],
+    security: [{ scheme: 'bearer', type: 'http' }, { name: 'x-api-key', type: 'apiKey' }],
     url: '/v1/spaces',
     ...options,
     headers: {
         'Content-Type': null,
+        ...options.headers
+    }
+});
+
+/**
+ * Create Space API
+ *
+ * ## Overview
+ *
+ * The **Substance 3D API** provides a way to upload and temporarily store files.
+ * Uploading files requires a **multipart/form-data** request to send data.
+ *
+ * The request requires a **files** field containing a list of files. Each file's **filename** field can contain a filepath to specify where the file will be stored in the space.
+ *
+ * Example for this files tree:
+ *
+ * ```
+ * ├── textures
+ * │   ├── diffuse.png
+ * │   └── normal.png
+ * └── lighthouse.fbx
+ * ```
+ *
+ * HTTP data relative to the previous files tree:
+ *
+ * ```HTTP
+ * POST /spaces HTTP/1.1
+ * Host: localhost:8080
+ * Content-Type: multipart/form-data; boundary=----WebKitFormBoundary7MA4YWxkTrZu0gW
+ *
+ * ------WebKitFormBoundary7MA4YWxkTrZu0gW
+ * Content-Disposition: form-data; name="files"; filename="lighthouse.fbx"
+ * Content-Type: model/vnd.autodesk.fbx
+ *
+ * (data)
+ * ------WebKitFormBoundary7MA4YWxkTrZu0gW
+ * Content-Disposition: form-data; name="files"; filename="textures/diffuse.png"
+ * Content-Type: image/png
+ *
+ * (data)
+ *
+ * ------WebKitFormBoundary7MA4YWxkTrZu0gW
+ * Content-Disposition: form-data; name="files"; filename="textures/normal.png"
+ * Content-Type: image/png
+ *
+ * (data)
+ * ------WebKitFormBoundary7MA4YWxkTrZu0gW--
+ * ```
+ *
+ * Curl command to create this file tree:
+ *
+ * ```
+ * curl -X POST https://s3d.adobe.io/v2/spaces \
+ * -F "files=@Local/Path/To/The/Local/File/lighthouse.fbx;filename=lighthouse.fbx" \
+ * -F "files=@Local/Path/To/The/Local/File/diffuse.png;filename=textures/diffuse.png" \
+ * -F "files=@Local/Path/To/The/Local/File/normal.png;filename=textures/normal.png"
+ * ```
+ *
+ * The result of the post is a **JSON** which contained the **id** of the space created.
+ * Space **id** can be used into a space source to use space content as a source for API operations.
+ *
+ * Example of a space source:
+ *
+ * ```json
+ * {
+ * "space": {
+ * "id": "<space_id>"
+ * }
+ * }
+ * ```
+ *
+ */
+export const createSpaceV2 = <ThrowOnError extends boolean = false>(options: Options<CreateSpaceV2Data, ThrowOnError>) => (options.client ?? client).post<CreateSpaceV2Responses, CreateSpaceV2Errors, ThrowOnError>({
+    ...formDataBodySerializer,
+    security: [{ scheme: 'bearer', type: 'http' }, { name: 'x-api-key', type: 'apiKey' }],
+    url: '/v2/spaces',
+    ...options,
+    headers: {
+        'Content-Type': null,
+        ...options.headers
+    }
+});
+
+/**
+ * Create Space From Frame IO API
+ *
+ * ## Overview
+ *
+ * The **Substance 3D API** provides a way to upload and temporary store files.
+ * You can upload folders from **frame.io** to create a space.
+ * To upload a folder from frame.io, you must pass the following parameters:
+ *
+ * - **access Token**
+ * - **folder ID**
+ *
+ * The result of the post is a **JSON** which contained the **id** of the space created.
+ * Space **id** can be used into a space source to use space content as a source for API operations.
+ *
+ * Example of a space source:
+ *
+ * ```json
+ * {
+ * "space": {
+ * "id": "<space_id>"
+ * }
+ * }
+ * ```
+ */
+export const createSpaceFromFrameIoV2 = <ThrowOnError extends boolean = false>(options: Options<CreateSpaceFromFrameIoV2Data, ThrowOnError>) => (options.client ?? client).post<CreateSpaceFromFrameIoV2Responses, CreateSpaceFromFrameIoV2Errors, ThrowOnError>({
+    security: [{ scheme: 'bearer', type: 'http' }, { name: 'x-api-key', type: 'apiKey' }],
+    url: '/v2/spacesFrameIO',
+    ...options,
+    headers: {
+        'Content-Type': 'application/json',
+        ...options.headers
+    }
+});
+
+/**
+ * Create Space From Next Frame IO API
+ *
+ * ## Overview
+ *
+ * The **Substance 3D API** provides a way to upload and temporary store files.
+ * You can upload folders from **next.frame.io** to create a space.
+ * To upload a folder from next.frame.io, you must pass the following parameters:
+ *
+ * - **access Token**
+ * - **account ID**
+ * - **folder ID**
+ *
+ * The result of the post is a **JSON** which contained the **id** of the space created.
+ * Space **id** can be used into a space source to use space content as a source for API operations.
+ *
+ * Example of a space source:
+ *
+ * ```json
+ * {
+ * "space": {
+ * "id": "<space_id>"
+ * }
+ * }
+ * ```
+ *
+ *
+ */
+export const createSpaceFromNextFrameIoV2 = <ThrowOnError extends boolean = false>(options: Options<CreateSpaceFromNextFrameIoV2Data, ThrowOnError>) => (options.client ?? client).post<CreateSpaceFromNextFrameIoV2Responses, CreateSpaceFromNextFrameIoV2Errors, ThrowOnError>({
+    security: [{ scheme: 'bearer', type: 'http' }, { name: 'x-api-key', type: 'apiKey' }],
+    url: '/v2/spacesNextFrameIO',
+    ...options,
+    headers: {
+        'Content-Type': 'application/json',
+        ...options.headers
+    }
+});
+
+/**
+ * Create Space from URL API
+ *
+ * ## Overview
+ *
+ * The **Substance 3D API** provides a way to upload and temporary store files.
+ * You can upload one or more files from one or more URLs.
+ * For each URL, there is an optional **filepath** parameter that allows you to specify the file name and its path.
+ * By combining multiple URLs with different **filepath** paths, you can compose a complete file tree structure.
+ *
+ * Example for this files tree:
+ *
+ * ```
+ * ├── textures
+ * │   ├── diffuse.png
+ * │   └── normal.png
+ * └── lighthouse.fbx
+ * ```
+ *
+ * Curl request:
+ *
+ * ```
+ * curl --request POST \
+ * --url https://s3d.adobe.io/v2/spacesURL \
+ * --header 'Accept: application/json' \
+ * --header 'Authorization: Bearer 123' \
+ * --header 'Content-Type: application/json' \
+ * --data '[
+ * {
+ * "filepath": "lighthouse.fbx",
+ * "url": "https://url/to/lighthouse.fbx"
+ * },
+ * {
+ * "filepath": "textures/diffuse.png",
+ * "url": "https://url/to/diffuse.png"
+ * },
+ * {
+ * "filepath": "textures/normal.png",
+ * "url": "https://url/to/normal.png"
+ * }
+ * ]'
+ * ```
+ *
+ * The result of the post is a **JSON** which contained the **id** of the space created.
+ * Space **id** can be used into a space source to use space content as a source for API operations.
+ *
+ * Example of a space source:
+ *
+ * ```json
+ * {
+ * "space": {
+ * "id": "<space_id>"
+ * }
+ * }
+ * ```
+ *
+ */
+export const createSpaceUrlV2 = <ThrowOnError extends boolean = false>(options: Options<CreateSpaceUrlV2Data, ThrowOnError>) => (options.client ?? client).post<CreateSpaceUrlV2Responses, CreateSpaceUrlV2Errors, ThrowOnError>({
+    security: [{ scheme: 'bearer', type: 'http' }, { name: 'x-api-key', type: 'apiKey' }],
+    url: '/v2/spacesURL',
+    ...options,
+    headers: {
+        'Content-Type': 'application/json',
         ...options.headers
     }
 });

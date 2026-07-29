@@ -10,6 +10,10 @@ export const openapiMcpTools = [
     "inputSchema": {
       "type": "object",
       "properties": {
+        "X-User-Token": {
+          "type": "string",
+          "description": "A user token referencing the user's individual account, obtained using their credentials."
+        },
         "wait": {
           "description": "Blocking mode (acts like a synchronous API call). Wait for the result before returning. ⚠️ Some operations are long, please be sure to configure your client timeout settings accordingly.",
           "type": "boolean",
@@ -28,10 +32,7 @@ export const openapiMcpTools = [
             },
             "cameraName": {
               "description": "Name of an existing camera in the source 3D scene. The camera has to be defined in the scene.",
-              "type": [
-                "string",
-                "null"
-              ]
+              "type": "string"
             },
             "contentClass": {
               "description": "Class of content to generate.",
@@ -41,6 +42,10 @@ export const openapiMcpTools = [
                 "art",
                 "photo"
               ]
+            },
+            "customModelId": {
+              "description": "ID of the custom model to be used for the generation. You can retrieve your custom model ID (assetId) with the Firefly retrieve custom model endpoint (https://developer.adobe.com/firefly-services/docs/firefly-api/api/#operation/getCustomModels).",
+              "type": "string"
             },
             "enableGroundPlane": {
               "description": "Enable the auto-generated ground plane under the hero asset. This is useful if the 3D scene contains only a hero asset, without additional elements.",
@@ -121,7 +126,8 @@ export const openapiMcpTools = [
               "items": {
                 "format": "int64",
                 "type": "number"
-              }
+              },
+              "maxItems": 4
             },
             "modelVersion": {
               "description": "Model version to be used to generate the background image with Adobe Firefly.",
@@ -146,10 +152,11 @@ export const openapiMcpTools = [
               "minLength": 1
             },
             "scene": {
+              "description": "Optional scene-level details, such as a custom camera.",
               "type": "object",
               "properties": {
                 "camera": {
-                  "description": "Custom camera, exclusive with 'cameraName'.",
+                  "description": "Custom camera definition for the scene render. Mutually exclusive with 'cameraName' at the top level. Use this to define camera parameters programmatically instead of referencing a named camera from the 3D scene.",
                   "type": "object",
                   "properties": {
                     "focal": {
@@ -329,7 +336,8 @@ export const openapiMcpTools = [
               "items": {
                 "format": "int64",
                 "type": "number"
-              }
+              },
+              "maxItems": 4
             },
             "size": {
               "description": "The size of the image generations. The supported dimensions for image generations are: \n  | Dimensions | Description | \n  | -----------| ----- |\n  | { \"width\": 2048, \"height\": 2048} | Square (1:1) |\n  | { \"width\": 2304, \"height\": 1792 } | Landscape (4:3) |\n  | { \"width\": 1792, \"height\": 2304 } | Portrait (3:4) | \n  | { \"width\": 2688, \"height\": 1536 } | Widescreen (16:9) |  \n  | { \"width\": 1344, \"height\": 768 } |(7:4) |  \n  |{ \"width\": 1152, \"height\": 896 } |(9:7) |  \n  |{ \"width\": 896, \"height\": 1152 } |(7:9) |  \n  | { \"width\": 1024, \"height\": 1024} | Square (1:1) |",
@@ -358,22 +366,20 @@ export const openapiMcpTools = [
             },
             "sources": {
               "description": "List of sources to aggregate and run the job against.",
-              "type": [
-                "array",
-                "null"
-              ],
+              "type": "array",
               "items": {
                 "type": "object",
                 "properties": {
                   "frame.io": {
                     "description": "Fetch content from a Frame.io folder. ⚠️ All sources are exclusive.",
-                    "deprecated": true,
                     "type": "object",
                     "properties": {
                       "accessToken": {
+                        "description": "Frame.io access token or Developer token. See https://developer.frame.io/docs/getting-started/authentication for obtaining a token.",
                         "type": "string"
                       },
                       "folderId": {
+                        "description": "Frame.io folder ID containing the assets. This should be the ID of the folder (not an asset ID). For best performance and to avoid [size limitations](/#what-is-the-maximum-size-of-assets-i-can-process), use the folder ID closest to your target assets. The system will retrieve all content from the specified folder, so choosing a parent folder with many subfolders may exceed the maximum retrieval size limit",
                         "type": "string"
                       }
                     },
@@ -393,12 +399,15 @@ export const openapiMcpTools = [
                     "type": "object",
                     "properties": {
                       "accessToken": {
+                        "description": "Frame.io access token. See https://developer.adobe.com/frameio/guides/Authentication/ for obtaining a token.",
                         "type": "string"
                       },
                       "accountId": {
+                        "description": "Frame.io account ID. This is the account identifier for the next.frame.io account owner. To find your account ID, log in to next.frame.io, navigate to your inbox, and extract the UUID from the URL (e.g., in https://next.frame.io/inbox/abcdefgh-1234-1234-1234-abcdefghijk, the account ID is abcdefgh-1234-1234-1234-abcdefghijk)",
                         "type": "string"
                       },
                       "folderId": {
+                        "description": "Frame.io folder ID containing the assets. This should be the ID of the folder (not an asset ID). For best performance and to avoid [size limitations](/#what-is-the-maximum-size-of-assets-i-can-process), use the folder ID closest to your target assets. The system will retrieve all content from the specified folder, so choosing a parent folder with many subfolders may exceed the maximum retrieval size limit",
                         "type": "string"
                       }
                     },
@@ -456,16 +465,11 @@ export const openapiMcpTools = [
             }
           },
           "additionalProperties": false,
-          "dependentRequired": {
-            "lightingSeeds": [
-              "seeds"
-            ]
-          },
           "examples": [
             {
               "cameraName": "main_camera",
               "heroAsset": "bottle",
-              "prompt": "french style kitchen with empty wooden table window on the left focal length 50mm",
+              "prompt": "french style kitchen with a glass bottle sitting on an empty wooden table window on the left focal length 50mm",
               "sources": [
                 {
                   "url": {
@@ -482,11 +486,22 @@ export const openapiMcpTools = [
           ],
           "description": "The JSON request body."
         }
-      }
+      },
+      "required": [
+        "requestBody"
+      ]
     },
     "method": "post",
     "pathTemplate": "/v1/composites/compose",
     "parameters": [
+      {
+        "name": "X-User-Token",
+        "in": "header",
+        "description": "A user token referencing the user's individual account, obtained using their credentials.",
+        "schema": {
+          "type": "string"
+        }
+      },
       {
         "name": "wait",
         "in": "query",
@@ -501,6 +516,10 @@ export const openapiMcpTools = [
     ],
     "executionParameters": [
       {
+        "name": "X-User-Token",
+        "in": "header"
+      },
+      {
         "name": "wait",
         "in": "query"
       }
@@ -508,7 +527,8 @@ export const openapiMcpTools = [
     "requestBodyContentType": "application/json",
     "securityRequirements": [
       {
-        "bearerAuth": []
+        "bearerAuth": [],
+        "ApiKeyAuth": []
       }
     ],
     "operationId": "v1_composites_compose",
@@ -809,6 +829,56 @@ export const openapiMcpTools = [
                   },
                   "additionalProperties": false
                 },
+                "formatOptions": {
+                  "description": "define options specific for model file format",
+                  "type": "object",
+                  "properties": {
+                    "usd": {
+                      "description": "options specific to USD file format",
+                      "type": "object",
+                      "properties": {
+                        "variants": {
+                          "description": "List of USD variants definition applied on USD primitives.",
+                          "type": [
+                            "array",
+                            "null"
+                          ],
+                          "items": {
+                            "type": "object",
+                            "properties": {
+                              "primName": {
+                                "description": "name of the USD prim on which the variant is defined",
+                                "type": "string"
+                              },
+                              "variant": {
+                                "description": "name of the variant option to apply from the variant set",
+                                "type": "string"
+                              },
+                              "variantSet": {
+                                "description": "name of the variant set to select from",
+                                "type": "string"
+                              }
+                            },
+                            "additionalProperties": false,
+                            "required": [
+                              "primName",
+                              "variantSet",
+                              "variant"
+                            ]
+                          }
+                        }
+                      },
+                      "additionalProperties": false,
+                      "required": [
+                        "variants"
+                      ]
+                    }
+                  },
+                  "additionalProperties": false,
+                  "required": [
+                    "usd"
+                  ]
+                },
                 "materials": {
                   "description": "Assign new materials to geometric primitives.",
                   "type": [
@@ -986,7 +1056,7 @@ export const openapiMcpTools = [
                             "type": "object",
                             "properties": {
                               "usd": {
-                                "description": "USD format options.",
+                                "description": "options specific to USD file format",
                                 "type": "object",
                                 "properties": {
                                   "variants": {
@@ -999,12 +1069,15 @@ export const openapiMcpTools = [
                                       "type": "object",
                                       "properties": {
                                         "primName": {
+                                          "description": "name of the USD prim on which the variant is defined",
                                           "type": "string"
                                         },
                                         "variant": {
+                                          "description": "name of the variant option to apply from the variant set",
                                           "type": "string"
                                         },
                                         "variantSet": {
+                                          "description": "name of the variant set to select from",
                                           "type": "string"
                                         }
                                       },
@@ -1541,22 +1614,20 @@ export const openapiMcpTools = [
             },
             "sources": {
               "description": "List of sources to aggregate and run the job against.",
-              "type": [
-                "array",
-                "null"
-              ],
+              "type": "array",
               "items": {
                 "type": "object",
                 "properties": {
                   "frame.io": {
                     "description": "Fetch content from a Frame.io folder. ⚠️ All sources are exclusive.",
-                    "deprecated": true,
                     "type": "object",
                     "properties": {
                       "accessToken": {
+                        "description": "Frame.io access token or Developer token. See https://developer.frame.io/docs/getting-started/authentication for obtaining a token.",
                         "type": "string"
                       },
                       "folderId": {
+                        "description": "Frame.io folder ID containing the assets. This should be the ID of the folder (not an asset ID). For best performance and to avoid [size limitations](/#what-is-the-maximum-size-of-assets-i-can-process), use the folder ID closest to your target assets. The system will retrieve all content from the specified folder, so choosing a parent folder with many subfolders may exceed the maximum retrieval size limit",
                         "type": "string"
                       }
                     },
@@ -1576,12 +1647,15 @@ export const openapiMcpTools = [
                     "type": "object",
                     "properties": {
                       "accessToken": {
+                        "description": "Frame.io access token. See https://developer.adobe.com/frameio/guides/Authentication/ for obtaining a token.",
                         "type": "string"
                       },
                       "accountId": {
+                        "description": "Frame.io account ID. This is the account identifier for the next.frame.io account owner. To find your account ID, log in to next.frame.io, navigate to your inbox, and extract the UUID from the URL (e.g., in https://next.frame.io/inbox/abcdefgh-1234-1234-1234-abcdefghijk, the account ID is abcdefgh-1234-1234-1234-abcdefghijk)",
                         "type": "string"
                       },
                       "folderId": {
+                        "description": "Frame.io folder ID containing the assets. This should be the ID of the folder (not an asset ID). For best performance and to avoid [size limitations](/#what-is-the-maximum-size-of-assets-i-can-process), use the folder ID closest to your target assets. The system will retrieve all content from the specified folder, so choosing a parent folder with many subfolders may exceed the maximum retrieval size limit",
                         "type": "string"
                       }
                     },
@@ -1733,7 +1807,10 @@ export const openapiMcpTools = [
           ],
           "description": "The JSON request body."
         }
-      }
+      },
+      "required": [
+        "requestBody"
+      ]
     },
     "method": "post",
     "pathTemplate": "/v1/scenes/assemble",
@@ -1759,7 +1836,8 @@ export const openapiMcpTools = [
     "requestBodyContentType": "application/json",
     "securityRequirements": [
       {
-        "bearerAuth": []
+        "bearerAuth": [],
+        "ApiKeyAuth": []
       }
     ],
     "operationId": "v1_scenes_assemble",
@@ -1809,22 +1887,20 @@ export const openapiMcpTools = [
             },
             "sources": {
               "description": "List of sources to aggregate and run the job against.",
-              "type": [
-                "array",
-                "null"
-              ],
+              "type": "array",
               "items": {
                 "type": "object",
                 "properties": {
                   "frame.io": {
                     "description": "Fetch content from a Frame.io folder. ⚠️ All sources are exclusive.",
-                    "deprecated": true,
                     "type": "object",
                     "properties": {
                       "accessToken": {
+                        "description": "Frame.io access token or Developer token. See https://developer.frame.io/docs/getting-started/authentication for obtaining a token.",
                         "type": "string"
                       },
                       "folderId": {
+                        "description": "Frame.io folder ID containing the assets. This should be the ID of the folder (not an asset ID). For best performance and to avoid [size limitations](/#what-is-the-maximum-size-of-assets-i-can-process), use the folder ID closest to your target assets. The system will retrieve all content from the specified folder, so choosing a parent folder with many subfolders may exceed the maximum retrieval size limit",
                         "type": "string"
                       }
                     },
@@ -1844,12 +1920,15 @@ export const openapiMcpTools = [
                     "type": "object",
                     "properties": {
                       "accessToken": {
+                        "description": "Frame.io access token. See https://developer.adobe.com/frameio/guides/Authentication/ for obtaining a token.",
                         "type": "string"
                       },
                       "accountId": {
+                        "description": "Frame.io account ID. This is the account identifier for the next.frame.io account owner. To find your account ID, log in to next.frame.io, navigate to your inbox, and extract the UUID from the URL (e.g., in https://next.frame.io/inbox/abcdefgh-1234-1234-1234-abcdefghijk, the account ID is abcdefgh-1234-1234-1234-abcdefghijk)",
                         "type": "string"
                       },
                       "folderId": {
+                        "description": "Frame.io folder ID containing the assets. This should be the ID of the folder (not an asset ID). For best performance and to avoid [size limitations](/#what-is-the-maximum-size-of-assets-i-can-process), use the folder ID closest to your target assets. The system will retrieve all content from the specified folder, so choosing a parent folder with many subfolders may exceed the maximum retrieval size limit",
                         "type": "string"
                       }
                     },
@@ -1941,7 +2020,10 @@ export const openapiMcpTools = [
           ],
           "description": "The JSON request body."
         }
-      }
+      },
+      "required": [
+        "requestBody"
+      ]
     },
     "method": "post",
     "pathTemplate": "/v1/scenes/convert",
@@ -1967,7 +2049,8 @@ export const openapiMcpTools = [
     "requestBodyContentType": "application/json",
     "securityRequirements": [
       {
-        "bearerAuth": []
+        "bearerAuth": [],
+        "ApiKeyAuth": []
       }
     ],
     "operationId": "v1_scenes_convert",
@@ -2001,22 +2084,20 @@ export const openapiMcpTools = [
             },
             "sources": {
               "description": "List of sources to aggregate and run the job against.",
-              "type": [
-                "array",
-                "null"
-              ],
+              "type": "array",
               "items": {
                 "type": "object",
                 "properties": {
                   "frame.io": {
                     "description": "Fetch content from a Frame.io folder. ⚠️ All sources are exclusive.",
-                    "deprecated": true,
                     "type": "object",
                     "properties": {
                       "accessToken": {
+                        "description": "Frame.io access token or Developer token. See https://developer.frame.io/docs/getting-started/authentication for obtaining a token.",
                         "type": "string"
                       },
                       "folderId": {
+                        "description": "Frame.io folder ID containing the assets. This should be the ID of the folder (not an asset ID). For best performance and to avoid [size limitations](/#what-is-the-maximum-size-of-assets-i-can-process), use the folder ID closest to your target assets. The system will retrieve all content from the specified folder, so choosing a parent folder with many subfolders may exceed the maximum retrieval size limit",
                         "type": "string"
                       }
                     },
@@ -2036,12 +2117,15 @@ export const openapiMcpTools = [
                     "type": "object",
                     "properties": {
                       "accessToken": {
+                        "description": "Frame.io access token. See https://developer.adobe.com/frameio/guides/Authentication/ for obtaining a token.",
                         "type": "string"
                       },
                       "accountId": {
+                        "description": "Frame.io account ID. This is the account identifier for the next.frame.io account owner. To find your account ID, log in to next.frame.io, navigate to your inbox, and extract the UUID from the URL (e.g., in https://next.frame.io/inbox/abcdefgh-1234-1234-1234-abcdefghijk, the account ID is abcdefgh-1234-1234-1234-abcdefghijk)",
                         "type": "string"
                       },
                       "folderId": {
+                        "description": "Frame.io folder ID containing the assets. This should be the ID of the folder (not an asset ID). For best performance and to avoid [size limitations](/#what-is-the-maximum-size-of-assets-i-can-process), use the folder ID closest to your target assets. The system will retrieve all content from the specified folder, so choosing a parent folder with many subfolders may exceed the maximum retrieval size limit",
                         "type": "string"
                       }
                     },
@@ -2120,7 +2204,10 @@ export const openapiMcpTools = [
           ],
           "description": "The JSON request body."
         }
-      }
+      },
+      "required": [
+        "requestBody"
+      ]
     },
     "method": "post",
     "pathTemplate": "/v1/scenes/describe",
@@ -2146,7 +2233,8 @@ export const openapiMcpTools = [
     "requestBodyContentType": "application/json",
     "securityRequirements": [
       {
-        "bearerAuth": []
+        "bearerAuth": [],
+        "ApiKeyAuth": []
       }
     ],
     "operationId": "v1_scenes_describe",
@@ -2249,6 +2337,11 @@ export const openapiMcpTools = [
               "description": "Request additional outputs from the renderer.",
               "type": "object",
               "properties": {
+                "exportDistanceToCamera": {
+                  "description": "export a distance-to-camera map as a NumPy .npy file (float32 2D array)",
+                  "type": "boolean",
+                  "default": false
+                },
                 "exportMaterialIds": {
                   "description": "Export an image with one color per material.",
                   "type": "boolean",
@@ -2270,6 +2363,26 @@ export const openapiMcpTools = [
                     }
                   },
                   "additionalProperties": false
+                },
+                "exportMatte": {
+                  "description": "export compositing matte for a selection of objects",
+                  "type": "object",
+                  "properties": {
+                    "includeNodes": {
+                      "description": "Nodes to be included into the matte, the list can contain glob patterns. If empty, the matte will contain all scene objects.",
+                      "type": [
+                        "array",
+                        "null"
+                      ],
+                      "items": {
+                        "type": "string"
+                      }
+                    }
+                  },
+                  "additionalProperties": false,
+                  "required": [
+                    "includeNodes"
+                  ]
                 },
                 "exportObjectIds": {
                   "description": "Export an image with one color per object.",
@@ -2602,6 +2715,56 @@ export const openapiMcpTools = [
                   },
                   "additionalProperties": false
                 },
+                "formatOptions": {
+                  "description": "define options specific for model file format",
+                  "type": "object",
+                  "properties": {
+                    "usd": {
+                      "description": "options specific to USD file format",
+                      "type": "object",
+                      "properties": {
+                        "variants": {
+                          "description": "List of USD variants definition applied on USD primitives.",
+                          "type": [
+                            "array",
+                            "null"
+                          ],
+                          "items": {
+                            "type": "object",
+                            "properties": {
+                              "primName": {
+                                "description": "name of the USD prim on which the variant is defined",
+                                "type": "string"
+                              },
+                              "variant": {
+                                "description": "name of the variant option to apply from the variant set",
+                                "type": "string"
+                              },
+                              "variantSet": {
+                                "description": "name of the variant set to select from",
+                                "type": "string"
+                              }
+                            },
+                            "additionalProperties": false,
+                            "required": [
+                              "primName",
+                              "variantSet",
+                              "variant"
+                            ]
+                          }
+                        }
+                      },
+                      "additionalProperties": false,
+                      "required": [
+                        "variants"
+                      ]
+                    }
+                  },
+                  "additionalProperties": false,
+                  "required": [
+                    "usd"
+                  ]
+                },
                 "materials": {
                   "description": "Assign new materials to geometric primitives.",
                   "type": [
@@ -2779,7 +2942,7 @@ export const openapiMcpTools = [
                             "type": "object",
                             "properties": {
                               "usd": {
-                                "description": "USD format options.",
+                                "description": "options specific to USD file format",
                                 "type": "object",
                                 "properties": {
                                   "variants": {
@@ -2792,12 +2955,15 @@ export const openapiMcpTools = [
                                       "type": "object",
                                       "properties": {
                                         "primName": {
+                                          "description": "name of the USD prim on which the variant is defined",
                                           "type": "string"
                                         },
                                         "variant": {
+                                          "description": "name of the variant option to apply from the variant set",
                                           "type": "string"
                                         },
                                         "variantSet": {
+                                          "description": "name of the variant set to select from",
                                           "type": "string"
                                         }
                                       },
@@ -3360,22 +3526,20 @@ export const openapiMcpTools = [
             },
             "sources": {
               "description": "List of sources to aggregate and run the job against.",
-              "type": [
-                "array",
-                "null"
-              ],
+              "type": "array",
               "items": {
                 "type": "object",
                 "properties": {
                   "frame.io": {
                     "description": "Fetch content from a Frame.io folder. ⚠️ All sources are exclusive.",
-                    "deprecated": true,
                     "type": "object",
                     "properties": {
                       "accessToken": {
+                        "description": "Frame.io access token or Developer token. See https://developer.frame.io/docs/getting-started/authentication for obtaining a token.",
                         "type": "string"
                       },
                       "folderId": {
+                        "description": "Frame.io folder ID containing the assets. This should be the ID of the folder (not an asset ID). For best performance and to avoid [size limitations](/#what-is-the-maximum-size-of-assets-i-can-process), use the folder ID closest to your target assets. The system will retrieve all content from the specified folder, so choosing a parent folder with many subfolders may exceed the maximum retrieval size limit",
                         "type": "string"
                       }
                     },
@@ -3395,12 +3559,15 @@ export const openapiMcpTools = [
                     "type": "object",
                     "properties": {
                       "accessToken": {
+                        "description": "Frame.io access token. See https://developer.adobe.com/frameio/guides/Authentication/ for obtaining a token.",
                         "type": "string"
                       },
                       "accountId": {
+                        "description": "Frame.io account ID. This is the account identifier for the next.frame.io account owner. To find your account ID, log in to next.frame.io, navigate to your inbox, and extract the UUID from the URL (e.g., in https://next.frame.io/inbox/abcdefgh-1234-1234-1234-abcdefghijk, the account ID is abcdefgh-1234-1234-1234-abcdefghijk)",
                         "type": "string"
                       },
                       "folderId": {
+                        "description": "Frame.io folder ID containing the assets. This should be the ID of the folder (not an asset ID). For best performance and to avoid [size limitations](/#what-is-the-maximum-size-of-assets-i-can-process), use the folder ID closest to your target assets. The system will retrieve all content from the specified folder, so choosing a parent folder with many subfolders may exceed the maximum retrieval size limit",
                         "type": "string"
                       }
                     },
@@ -3498,7 +3665,10 @@ export const openapiMcpTools = [
           ],
           "description": "The JSON request body."
         }
-      }
+      },
+      "required": [
+        "requestBody"
+      ]
     },
     "method": "post",
     "pathTemplate": "/v1/scenes/render",
@@ -3524,7 +3694,8 @@ export const openapiMcpTools = [
     "requestBodyContentType": "application/json",
     "securityRequirements": [
       {
-        "bearerAuth": []
+        "bearerAuth": [],
+        "ApiKeyAuth": []
       }
     ],
     "operationId": "v1_scenes_render",
@@ -3627,6 +3798,11 @@ export const openapiMcpTools = [
               "description": "Request additional outputs from the renderer.",
               "type": "object",
               "properties": {
+                "exportDistanceToCamera": {
+                  "description": "export a distance-to-camera map as a NumPy .npy file (float32 2D array)",
+                  "type": "boolean",
+                  "default": false
+                },
                 "exportMaterialIds": {
                   "description": "Export an image with one color per material.",
                   "type": "boolean",
@@ -3648,6 +3824,26 @@ export const openapiMcpTools = [
                     }
                   },
                   "additionalProperties": false
+                },
+                "exportMatte": {
+                  "description": "export compositing matte for a selection of objects",
+                  "type": "object",
+                  "properties": {
+                    "includeNodes": {
+                      "description": "Nodes to be included into the matte, the list can contain glob patterns. If empty, the matte will contain all scene objects.",
+                      "type": [
+                        "array",
+                        "null"
+                      ],
+                      "items": {
+                        "type": "string"
+                      }
+                    }
+                  },
+                  "additionalProperties": false,
+                  "required": [
+                    "includeNodes"
+                  ]
                 },
                 "exportObjectIds": {
                   "description": "Export an image with one color per object.",
@@ -3968,7 +4164,7 @@ export const openapiMcpTools = [
                   "type": "object",
                   "properties": {
                     "usd": {
-                      "description": "USD format options.",
+                      "description": "options specific to USD file format",
                       "type": "object",
                       "properties": {
                         "variants": {
@@ -3981,12 +4177,15 @@ export const openapiMcpTools = [
                             "type": "object",
                             "properties": {
                               "primName": {
+                                "description": "name of the USD prim on which the variant is defined",
                                 "type": "string"
                               },
                               "variant": {
+                                "description": "name of the variant option to apply from the variant set",
                                 "type": "string"
                               },
                               "variantSet": {
+                                "description": "name of the variant set to select from",
                                 "type": "string"
                               }
                             },
@@ -4551,22 +4750,20 @@ export const openapiMcpTools = [
             },
             "sources": {
               "description": "List of sources to aggregate and run the job against.",
-              "type": [
-                "array",
-                "null"
-              ],
+              "type": "array",
               "items": {
                 "type": "object",
                 "properties": {
                   "frame.io": {
                     "description": "Fetch content from a Frame.io folder. ⚠️ All sources are exclusive.",
-                    "deprecated": true,
                     "type": "object",
                     "properties": {
                       "accessToken": {
+                        "description": "Frame.io access token or Developer token. See https://developer.frame.io/docs/getting-started/authentication for obtaining a token.",
                         "type": "string"
                       },
                       "folderId": {
+                        "description": "Frame.io folder ID containing the assets. This should be the ID of the folder (not an asset ID). For best performance and to avoid [size limitations](/#what-is-the-maximum-size-of-assets-i-can-process), use the folder ID closest to your target assets. The system will retrieve all content from the specified folder, so choosing a parent folder with many subfolders may exceed the maximum retrieval size limit",
                         "type": "string"
                       }
                     },
@@ -4586,12 +4783,15 @@ export const openapiMcpTools = [
                     "type": "object",
                     "properties": {
                       "accessToken": {
+                        "description": "Frame.io access token. See https://developer.adobe.com/frameio/guides/Authentication/ for obtaining a token.",
                         "type": "string"
                       },
                       "accountId": {
+                        "description": "Frame.io account ID. This is the account identifier for the next.frame.io account owner. To find your account ID, log in to next.frame.io, navigate to your inbox, and extract the UUID from the URL (e.g., in https://next.frame.io/inbox/abcdefgh-1234-1234-1234-abcdefghijk, the account ID is abcdefgh-1234-1234-1234-abcdefghijk)",
                         "type": "string"
                       },
                       "folderId": {
+                        "description": "Frame.io folder ID containing the assets. This should be the ID of the folder (not an asset ID). For best performance and to avoid [size limitations](/#what-is-the-maximum-size-of-assets-i-can-process), use the folder ID closest to your target assets. The system will retrieve all content from the specified folder, so choosing a parent folder with many subfolders may exceed the maximum retrieval size limit",
                         "type": "string"
                       }
                     },
@@ -4677,7 +4877,10 @@ export const openapiMcpTools = [
           ],
           "description": "The JSON request body."
         }
-      }
+      },
+      "required": [
+        "requestBody"
+      ]
     },
     "method": "post",
     "pathTemplate": "/v1/scenes/render-basic",
@@ -4703,7 +4906,8 @@ export const openapiMcpTools = [
     "requestBodyContentType": "application/json",
     "securityRequirements": [
       {
-        "bearerAuth": []
+        "bearerAuth": [],
+        "ApiKeyAuth": []
       }
     ],
     "operationId": "v1_scenes_render-basic",
@@ -4731,10 +4935,215 @@ export const openapiMcpTools = [
     "requestBodyContentType": "multipart/form-data",
     "securityRequirements": [
       {
-        "bearerAuth": []
+        "bearerAuth": [],
+        "ApiKeyAuth": []
       }
     ],
     "operationId": "createSpace_v1",
+    "baseUrl": "https://s3d.adobe.io"
+  },
+  {
+    "name": "createSpace_v2",
+    "description": "## Overview\n\nThe **Substance 3D API** provides a way to upload and temporarily store files.\nUploading files requires a **multipart/form-data** request to send data.\n\nThe request requires a **files** field containing a list of files. Each file's **filename** field can contain a filepath to specify where the file will be stored in the space.\n\nExample for this files tree:\n\n```\n├── textures\n│   ├── diffuse.png\n│   └── normal.png\n└── lighthouse.fbx\n```\n\nHTTP data relative to the previous files tree:\n\n```HTTP\nPOST /spaces HTTP/1.1\nHost: localhost:8080\nContent-Type: multipart/form-data; boundary=----WebKitFormBoundary7MA4YWxkTrZu0gW\n\n------WebKitFormBoundary7MA4YWxkTrZu0gW\nContent-Disposition: form-data; name=\"files\"; filename=\"lighthouse.fbx\"\nContent-Type: model/vnd.autodesk.fbx\n\n(data)\n------WebKitFormBoundary7MA4YWxkTrZu0gW\nContent-Disposition: form-data; name=\"files\"; filename=\"textures/diffuse.png\"\nContent-Type: image/png\n\n(data)\n\n------WebKitFormBoundary7MA4YWxkTrZu0gW\nContent-Disposition: form-data; name=\"files\"; filename=\"textures/normal.png\"\nContent-Type: image/png\n\n(data)\n------WebKitFormBoundary7MA4YWxkTrZu0gW--\n```\n\nCurl command to create this file tree:\n\n```\ncurl -X POST https://s3d.adobe.io/v2/spaces \\\n  -F \"files=@Local/Path/To/The/Local/File/lighthouse.fbx;filename=lighthouse.fbx\" \\\n  -F \"files=@Local/Path/To/The/Local/File/diffuse.png;filename=textures/diffuse.png\" \\\n  -F \"files=@Local/Path/To/The/Local/File/normal.png;filename=textures/normal.png\"\n```\n\nThe result of the post is a **JSON** which contained the **id** of the space created.\nSpace **id** can be used into a space source to use space content as a source for API operations.\n\nExample of a space source:\n\n```json\n{\n  \"space\": {\n    \"id\": \"<space_id>\"\n  }\n}\n```\n",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "requestBody": {
+          "type": "string",
+          "description": "Request body (content type: multipart/form-data)"
+        }
+      },
+      "required": [
+        "requestBody"
+      ]
+    },
+    "method": "post",
+    "pathTemplate": "/v2/spaces",
+    "parameters": [],
+    "executionParameters": [],
+    "requestBodyContentType": "multipart/form-data",
+    "securityRequirements": [
+      {
+        "bearerAuth": [],
+        "ApiKeyAuth": []
+      }
+    ],
+    "operationId": "createSpace_v2",
+    "baseUrl": "https://s3d.adobe.io"
+  },
+  {
+    "name": "createSpaceFromFrameIO_v2",
+    "description": "## Overview\n\nThe **Substance 3D API** provides a way to upload and temporary store files.\nYou can upload folders from **frame.io** to create a space.\nTo upload a folder from frame.io, you must pass the following parameters:\n\n- **access Token**\n- **folder ID**\n\nThe result of the post is a **JSON** which contained the **id** of the space created.  \nSpace **id** can be used into a space source to use space content as a source for API operations.\n\nExample of a space source:\n\n```json\n{\n  \"space\": {\n    \"id\": \"<space_id>\"\n  }\n}\n```",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "requestBody": {
+          "type": "object",
+          "properties": {
+            "$schema": {
+              "description": "A URL to the JSON Schema for this object.",
+              "type": "string",
+              "format": "uri",
+              "examples": [
+                "https://s3d.adobe.io/schemas/rest_base.FileFrameIO.json"
+              ]
+            },
+            "accessToken": {
+              "description": "Frame.io access token or Developer token. See https://developer.frame.io/docs/getting-started/authentication for obtaining a token.",
+              "type": "string",
+              "examples": [
+                "base64.jwt.token"
+              ]
+            },
+            "folderId": {
+              "description": "Frame.io folder ID containing the assets. This should be the ID of the folder (not an asset ID). For best performance and to avoid [size limitations](/#what-is-the-maximum-size-of-assets-i-can-process), use the folder ID closest to your target assets. The system will retrieve all content from the specified folder, so choosing a parent folder with many subfolders may exceed the maximum retrieval size limit",
+              "type": "string",
+              "examples": [
+                "01234567-89ab-cdef-0123-456789abcdef"
+              ]
+            }
+          },
+          "additionalProperties": false,
+          "required": [
+            "folderId",
+            "accessToken"
+          ],
+          "description": "The JSON request body."
+        }
+      },
+      "required": [
+        "requestBody"
+      ]
+    },
+    "method": "post",
+    "pathTemplate": "/v2/spacesFrameIO",
+    "parameters": [],
+    "executionParameters": [],
+    "requestBodyContentType": "application/json",
+    "securityRequirements": [
+      {
+        "bearerAuth": [],
+        "ApiKeyAuth": []
+      }
+    ],
+    "operationId": "createSpaceFromFrameIO_v2",
+    "baseUrl": "https://s3d.adobe.io"
+  },
+  {
+    "name": "createSpaceFromNextFrameIO_v2",
+    "description": "## Overview\n\nThe **Substance 3D API** provides a way to upload and temporary store files.\nYou can upload folders from **next.frame.io** to create a space.\nTo upload a folder from next.frame.io, you must pass the following parameters:\n\n- **access Token**\n- **account ID**\n- **folder ID**\n\nThe result of the post is a **JSON** which contained the **id** of the space created.  \nSpace **id** can be used into a space source to use space content as a source for API operations.\n\nExample of a space source:\n\n```json\n{\n  \"space\": {\n    \"id\": \"<space_id>\"\n  }\n}\n```\n\n",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "requestBody": {
+          "type": "object",
+          "properties": {
+            "$schema": {
+              "description": "A URL to the JSON Schema for this object.",
+              "type": "string",
+              "format": "uri",
+              "examples": [
+                "https://s3d.adobe.io/schemas/rest_base.FileNextFrameIO.json"
+              ]
+            },
+            "accessToken": {
+              "description": "Frame.io access token. See https://developer.adobe.com/frameio/guides/Authentication/ for obtaining a token.",
+              "type": "string",
+              "examples": [
+                "fio-u-base64url"
+              ]
+            },
+            "accountId": {
+              "description": "Frame.io account ID. This is the account identifier for the next.frame.io account owner. To find your account ID, log in to next.frame.io, navigate to your inbox, and extract the UUID from the URL (e.g., in https://next.frame.io/inbox/abcdefgh-1234-1234-1234-abcdefghijk, the account ID is abcdefgh-1234-1234-1234-abcdefghijk)",
+              "type": "string",
+              "examples": [
+                "01234567-89ab-cdef-0123-456789abcdef"
+              ]
+            },
+            "folderId": {
+              "description": "Frame.io folder ID containing the assets. This should be the ID of the folder (not an asset ID). For best performance and to avoid [size limitations](/#what-is-the-maximum-size-of-assets-i-can-process), use the folder ID closest to your target assets. The system will retrieve all content from the specified folder, so choosing a parent folder with many subfolders may exceed the maximum retrieval size limit",
+              "type": "string",
+              "examples": [
+                "01234567-89ab-cdef-0123-456789abcdef"
+              ]
+            }
+          },
+          "additionalProperties": false,
+          "required": [
+            "folderId",
+            "accountId",
+            "accessToken"
+          ],
+          "description": "The JSON request body."
+        }
+      },
+      "required": [
+        "requestBody"
+      ]
+    },
+    "method": "post",
+    "pathTemplate": "/v2/spacesNextFrameIO",
+    "parameters": [],
+    "executionParameters": [],
+    "requestBodyContentType": "application/json",
+    "securityRequirements": [
+      {
+        "bearerAuth": [],
+        "ApiKeyAuth": []
+      }
+    ],
+    "operationId": "createSpaceFromNextFrameIO_v2",
+    "baseUrl": "https://s3d.adobe.io"
+  },
+  {
+    "name": "createSpaceURL_v2",
+    "description": "## Overview\n\nThe **Substance 3D API** provides a way to upload and temporary store files.\nYou can upload one or more files from one or more URLs.\nFor each URL, there is an optional **filepath** parameter that allows you to specify the file name and its path.\nBy combining multiple URLs with different **filepath** paths, you can compose a complete file tree structure.\n\nExample for this files tree:\n\n```\n├── textures\n│   ├── diffuse.png\n│   └── normal.png\n└── lighthouse.fbx\n```\n\nCurl request:\n\n```\ncurl --request POST \\\n  --url https://s3d.adobe.io/v2/spacesURL \\\n  --header 'Accept: application/json' \\\n  --header 'Authorization: Bearer 123' \\\n  --header 'Content-Type: application/json' \\\n  --data '[\n  {\n    \"filepath\": \"lighthouse.fbx\",\n    \"url\": \"https://url/to/lighthouse.fbx\"\n  },\n  {\n    \"filepath\": \"textures/diffuse.png\",\n    \"url\": \"https://url/to/diffuse.png\"\n  },\n  {\n    \"filepath\": \"textures/normal.png\",\n    \"url\": \"https://url/to/normal.png\"\n  }\n]'\n```\n\nThe result of the post is a **JSON** which contained the **id** of the space created.\nSpace **id** can be used into a space source to use space content as a source for API operations.\n\nExample of a space source:\n\n```json\n{\n  \"space\": {\n    \"id\": \"<space_id>\"\n  }\n}\n```\n",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "requestBody": {
+          "type": [
+            "array",
+            "null"
+          ],
+          "items": {
+            "type": "object",
+            "properties": {
+              "filepath": {
+                "description": "The filename in the filepath overrides filename. If filepath is unset, will try to detect filename from content disposition header, then url itself. If a path is specified before the filename in the filepath, the file will be mounted at that location in the space.",
+                "type": "string"
+              },
+              "url": {
+                "type": "string",
+                "examples": [
+                  "https://raw.githubusercontent.com/KhronosGroup/glTF-Sample-Models/master/2.0/WaterBottle/glTF-Binary/WaterBottle.glb"
+                ]
+              }
+            },
+            "additionalProperties": false,
+            "required": [
+              "url"
+            ]
+          },
+          "description": "The JSON request body."
+        }
+      },
+      "required": [
+        "requestBody"
+      ]
+    },
+    "method": "post",
+    "pathTemplate": "/v2/spacesURL",
+    "parameters": [],
+    "executionParameters": [],
+    "requestBodyContentType": "application/json",
+    "securityRequirements": [
+      {
+        "bearerAuth": [],
+        "ApiKeyAuth": []
+      }
+    ],
+    "operationId": "createSpaceURL_v2",
     "baseUrl": "https://s3d.adobe.io"
   }
 ] as const;

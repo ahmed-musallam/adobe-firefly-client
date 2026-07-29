@@ -1,3 +1,9 @@
+# @musallam/ffs-substance-3d-client [2.2.0](https://github.com/ahmed-musallam/adobe-firefly-client/compare/@musallam/ffs-substance-3d-client@2.1.1...@musallam/ffs-substance-3d-client@2.2.0) (2026-07-29)
+
+### Features
+
+- update substance spec to latest ([0811264](https://github.com/ahmed-musallam/adobe-firefly-client/commit/0811264faf693adb52af7c6b574ed350fd3275f3))
+
 ## @musallam/ffs-substance-3d-client [2.1.1](https://github.com/ahmed-musallam/adobe-firefly-client/compare/@musallam/ffs-substance-3d-client@2.1.0...@musallam/ffs-substance-3d-client@2.1.1) (2026-04-09)
 
 ### Bug Fixes

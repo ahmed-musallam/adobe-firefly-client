@@ -337,14 +337,22 @@ export type ErrorResponse = {
 
 export type TemplateDescribeRequest = {
     /**
+     * Input template type. Use `mogrt` for a Motion Graphics Template or `aep` for an After Effects project. Defaults to `mogrt` when omitted.
+     */
+    type?: 'mogrt' | 'aep';
+    /**
      * Contains metadata about the source of the input template.
      */
     source: {
         /**
-         * A pre-signed URL pointing to the input template file.
+         * A pre-signed URL pointing to the input template file. For `mogrt`, this is a `.mogrt` file. For `aep`, this is a `.zip` archive containing exactly one `.aep` project file together with its collected footage and assets.
          */
         url: string;
     };
+    /**
+     * Name of the After Effects composition to describe. Required when `type` is `aep`; not applicable to `mogrt`. This composition name within the AEP project must be unique so that `compName` resolves to a single composition.
+     */
+    compName?: string;
 };
 
 export type TemplateDescribeResponse = {
@@ -420,14 +428,22 @@ export type PresetsResponse = {
 
 export type TemplateRenderRequest = {
     /**
+     * Input template type. Use `mogrt` for a Motion Graphics Template or `aep` for an After Effects project. Defaults to `mogrt` when omitted.
+     */
+    type?: 'mogrt' | 'aep';
+    /**
      * Contains metadata about the source of the input template.
      */
     source: {
         /**
-         * A pre-signed URL pointing to the input template file.
+         * A pre-signed URL pointing to the input template file. For `mogrt`, this is a `.mogrt` file. For `aep`, this is a `.zip` archive containing exactly one `.aep` project file together with its collected footage and assets.
          */
         url: string;
     };
+    /**
+     * Name of the After Effects composition to render. Required when `type` is `aep`; not applicable to `mogrt`. This composition name within the AEP project must be unique so that `compName` resolves to a single composition.
+     */
+    compName?: string;
     /**
      * Array of fonts to be used in the template.
      */
@@ -451,6 +467,10 @@ export type TemplateRenderRequest = {
          * How to handle missing fonts. 'fail' will cause the render to fail; 'use_default' will use Premiere Pro fallback behavior.
          */
         handleMissingFonts?: 'fail' | 'use_default';
+        /**
+         * Optional. Applicable only when `type` is `aep`. Set to `aep` to also produce the collected After Effects project (a self-contained archive of the `.aep` file and its footage), returned as `sidecarDestination` on each output. Not supported for `mogrt` renders.
+         */
+        sidecar?: 'aep';
     };
     /**
      * Array of image, video, or audio assets referenced by variations via assetIndex.
@@ -487,7 +507,7 @@ export type TemplateRenderRequest = {
          */
         variables: Array<{
             /**
-             * Unique identifier for the template variable (from describe response).
+             * Unique identifier for the template variable, taken verbatim from the describe response. For AEP, this is the composite ID of a control (for example `c259:l261:media` for a media control or `c169:l193:layer:sourceText` for a text control).
              */
             variableId: string;
             /**
@@ -525,6 +545,75 @@ export type TemplateRenderRequest = {
         }>;
     }>;
     /**
+     * Layer-level timing operations applied after variable overrides, in array order. Applicable only when `type` is `aep`; ignored for `mogrt`. Each operation targets a layer by its `layerId` (the `layers[].id` value from the describe response, of the form `c{comp}:l{layer}:layer`). The exact field set depends on `operation`; see the Render guide for the per-operation field reference.
+     */
+    layerOperations?: Array<{
+        /**
+         * The layer operation to perform.
+         */
+        operation: 'trim_comp' | 'trim_inpoint' | 'trim_outpoint' | 'shift_inpoint' | 'shift_outpoint' | 'match_source_duration' | 'set_layer_duration' | 'stretch_layer' | 'enable_layer';
+        /**
+         * Target layer ID (`c{comp}:l{layer}:layer`). Used by all operations except `trim_comp`.
+         */
+        layerId?: string;
+        /**
+         * Reference layer for `shift_inpoint`, `shift_outpoint`, `trim_inpoint`, and `trim_outpoint` (its in/out time, selected by `refInOut`, anchors the move) and for `stretch_layer` (its duration becomes the target duration when no `duration*` field is provided).
+         */
+        refLayerId?: string;
+        /**
+         * Which end of `refLayerId` to read as the reference time.
+         */
+        refInOut?: 'in' | 'out';
+        /**
+         * For `trim_comp`, the layer whose in point sets the start of the comp.
+         */
+        startLayerId?: string;
+        /**
+         * For `trim_comp`, the layer whose out point sets the end of the comp.
+         */
+        endLayerId?: string;
+        /**
+         * For `trim_comp`, the absolute start time of the comp, in seconds.
+         */
+        startSeconds?: number;
+        /**
+         * For `trim_comp`, the absolute start time of the comp, in frames.
+         */
+        startFrames?: number;
+        /**
+         * Offset added to the resolved reference time (`shift_*`, `trim_*`) or target duration (`stretch_layer`), in seconds. Takes precedence over `offsetFrames`.
+         */
+        offsetSeconds?: number;
+        /**
+         * Offset added to the resolved reference time (`shift_*`, `trim_*`) or target duration (`stretch_layer`), in frames. Used only when `offsetSeconds` is absent.
+         */
+        offsetFrames?: number;
+        /**
+         * Duration in seconds for `set_layer_duration` and `stretch_layer`, or the comp duration for `trim_comp`. Takes precedence over `durationFrames`.
+         */
+        durationSeconds?: number;
+        /**
+         * Duration in frames for `set_layer_duration` and `stretch_layer`, or the comp duration for `trim_comp`. Used only when `durationSeconds` is absent.
+         */
+        durationFrames?: number;
+        /**
+         * For `stretch_layer`, the target duration as a percentage of the layer's native duration. Highest priority of the `stretch_layer` duration inputs: `durationPercent` > `durationSeconds` > `durationFrames` > `refLayerId`.
+         */
+        durationPercent?: number;
+        /**
+         * For `enable_layer`, turns the target layer's video (visuals) on or off. Optional; each `enable_layer` operation must set at least one of `videoEnabled`, `audioEnabled`, or `solo`.
+         */
+        videoEnabled?: boolean;
+        /**
+         * For `enable_layer`, turns the target layer's audio on or off. Optional; each `enable_layer` operation must set at least one of `videoEnabled`, `audioEnabled`, or `solo`.
+         */
+        audioEnabled?: boolean;
+        /**
+         * For `enable_layer`, solos the target layer within its comp; only solo-enabled layers will render. A comp with solo-enabled layers will render against transparency or the comp's background color setting, depending on the render output format. To render audio-only to a video output format, solo an invisible video layer (such as a null) in addition to any solo-enabled audio layers; this is not necessary when rendering to an audio output format. Optional; each `enable_layer` operation must set at least one of `videoEnabled`, `audioEnabled`, or `solo`. If `videoEnabled` and `audioEnabled` are both false for a layer, solo cannot be applied to it.
+         */
+        solo?: boolean;
+    }>;
+    /**
      * Defines which variation and preset combinations to render and optional output file names.
      */
     outputs?: Array<{
@@ -540,6 +629,10 @@ export type TemplateRenderRequest = {
          * Optional custom file name for the output.
          */
         fileName?: string;
+        /**
+         * A pre-signed URL destination for the video output.
+         */
+        destination?: string;
     }>;
 };
 
@@ -552,6 +645,10 @@ export type TemplateRenderResponse = {
      * URL to poll for the status of the rendering job.
      */
     statusUrl: string;
+    /**
+     * URL to cancel the rendering job.
+     */
+    cancelUrl?: string;
 };
 
 export type JobStatus = {
@@ -560,9 +657,9 @@ export type JobStatus = {
      */
     jobId: string;
     /**
-     * Current status of the job.
+     * Current status of the job. `canceling` is a transient state between a `PUT /v1/cancel/{jobId}` call and the worker fully stopping; `canceled` is the terminal state once stopped. **Note:** `canceling` and `canceled` apply only to render jobs submitted via `POST /v1/templates/render`.
      */
-    status: 'not_started' | 'running' | 'succeeded' | 'failed' | 'partially_succeeded';
+    status: 'not_started' | 'running' | 'canceling' | 'canceled' | 'succeeded' | 'failed' | 'partially_succeeded';
     /**
      * Error message when job status is failed.
      */
@@ -589,6 +686,20 @@ export type JobStatus = {
              */
             url: string;
         };
+        sidecarDestination?: {
+            /**
+             * URL from which the collected After Effects project archive can be downloaded. Present only when `config.sidecar` was set to `aep`.
+             */
+            url: string;
+        };
+        /**
+         * ISO 8601 date-time when this output item started rendering. Present only for render jobs (`POST /v1/templates/render`).
+         */
+        startedDate?: string;
+        /**
+         * ISO 8601 date-time when this output item finished rendering. Present only for render jobs (`POST /v1/templates/render`).
+         */
+        completedDate?: string;
     }>;
     /**
      * Array of errors for failed variations (only present when status is partially_succeeded).
@@ -612,7 +723,27 @@ export type JobStatus = {
              */
             message: string;
         };
+        /**
+         * ISO 8601 date-time when this item started processing. Present only for render jobs (`POST /v1/templates/render`).
+         */
+        startedDate?: string;
+        /**
+         * ISO 8601 date-time when this item reached a terminal failure state. Present only for render jobs (`POST /v1/templates/render`).
+         */
+        completedDate?: string;
     }>;
+    /**
+     * ISO 8601 date-time when the job was submitted. Present only for render jobs (`POST /v1/templates/render`).
+     */
+    createdDate?: string;
+    /**
+     * Total number of output items (variation × preset combinations) in this render job. Present once the job has been dispatched to workers. Applies only to render jobs (`POST /v1/templates/render`).
+     */
+    totalJobItems?: number;
+    /**
+     * Pre-built retry payload URL containing only the failed items. Present only when `status` is `partially_succeeded`. Applies only to render jobs (`POST /v1/templates/render`).
+     */
+    retryPayloadUrl?: string;
     /**
      * Output for describe API jobs.
      */
@@ -641,7 +772,7 @@ export type JobStatus = {
             /**
              * Type of the element.
              */
-            type: 'mogrt';
+            type: 'mogrt' | 'aep';
             /**
              * Array of controls from the template.
              */
@@ -708,6 +839,23 @@ export type JobStatus = {
                  * Comment text for comment controls.
                  */
                 text?: string;
+            }>;
+            /**
+             * Layers of the described AEP composition, in render order (top-to-bottom). Present only for `aep` elements. Use a layer's composite `id` as the `layerId` in render `layerOperations`.
+             */
+            layers?: Array<{
+                /**
+                 * Composite ID of the form `c{comp}:l{layer}:layer`.
+                 */
+                id?: string;
+                /**
+                 * Layer name as displayed in After Effects.
+                 */
+                name?: string;
+                /**
+                 * Name of the composition that contains the layer.
+                 */
+                compName?: string;
             }>;
         }>;
     };
@@ -1187,6 +1335,88 @@ export type CompositionV2 = {
     overlays?: Array<OverlayV2>;
 };
 
+/**
+ * Success response body returned with HTTP 202 when a render job cancel request is accepted. Applies only to render jobs submitted via `POST /v1/templates/render`.
+ */
+export type CancelAcceptedResponse = {
+    /**
+     * UUID of the render job for which cancellation was accepted.
+     */
+    jobId: string;
+    /**
+     * Transient in-progress status. Poll `GET /v1/status/{jobId}` to observe the terminal `canceled` state.
+     */
+    status: 'canceling';
+};
+
+/**
+ * Cursor-based pagination metadata returned by the List Render Jobs endpoint.
+ */
+export type PagingInfo = {
+    /**
+     * Absolute URL to the next page of results. Absent on the last page — treat its absence as the end of the result set.
+     */
+    nextUrl?: string;
+    /**
+     * Total number of render jobs matching the filter across all pages.
+     */
+    totalRecords: number;
+};
+
+/**
+ * Summary of a single template render job as returned by `GET /v1/templates/render-jobs`. Applies only to render jobs submitted via `POST /v1/templates/render`.
+ */
+export type RenderJobListItem = {
+    /**
+     * Unique identifier of the render job.
+     */
+    jobId: string;
+    /**
+     * Current overall status of the render job.
+     */
+    status: 'not_started' | 'running' | 'succeeded' | 'partially_succeeded' | 'failed' | 'canceled';
+    /**
+     * Total number of output items (variation × preset combinations) in this batch render job.
+     */
+    totalJobItems: number;
+    /**
+     * Percentage of the job completed (0–100). Present only when `status` is `running`.
+     */
+    percentCompleted?: number;
+    /**
+     * ISO 8601 date-time when the render job was submitted.
+     */
+    createdDate: string;
+    /**
+     * ISO 8601 date-time when the job reached a terminal state. Present only when `status` is `succeeded`, `partially_succeeded`, `failed`, or `canceled`.
+     */
+    completedDate?: string;
+    /**
+     * Absolute URL to poll for the latest job status (`GET /v1/status/{jobId}`).
+     */
+    statusUrl: string;
+    /**
+     * Absolute URL to submit a cancel request (`PUT /v1/cancel/{jobId}`). Present only when the job is still cancellable (`status` is `not_started` or `running`).
+     */
+    cancelUrl?: string;
+};
+
+/**
+ * Response body for `GET /v1/templates/render-jobs`. Contains render jobs submitted via `POST /v1/templates/render` only.
+ */
+export type RenderJobListResponse = {
+    paging: PagingInfo;
+    /**
+     * Ordered list of render job summaries for the current page. Empty array when no jobs match the filter.
+     */
+    jobs: Array<RenderJobListItem>;
+};
+
+/**
+ * GUID, unique per request. Auto-generated if not provided.
+ */
+export type XRequestIdHeader = string;
+
 export type VoicesData = {
     body?: never;
     path?: never;
@@ -1432,6 +1662,126 @@ export type TemplateRenderResponses = {
 };
 
 export type TemplateRenderResponse2 = TemplateRenderResponses[keyof TemplateRenderResponses];
+
+export type CancelRenderJobData = {
+    body?: never;
+    headers?: {
+        /**
+         * GUID, unique per request. Auto-generated if not provided.
+         */
+        'x-request-id'?: string;
+    };
+    path: {
+        /**
+         * UUID of the render job to cancel, as returned in the `jobId` field of the original 202 submit response or in the `cancelUrl` property of a List Render Jobs response item.
+         */
+        jobId: string;
+    };
+    query?: never;
+    url: '/v1/cancel/{jobId}';
+};
+
+export type CancelRenderJobErrors = {
+    /**
+     * Bad Request
+     */
+    400: ErrorResponse;
+    /**
+     * Unauthorized
+     */
+    401: ErrorResponse;
+    /**
+     * Forbidden
+     */
+    403: ErrorResponse;
+    /**
+     * Not Found — `jobId` is unknown or no longer accessible.
+     */
+    404: ErrorResponse;
+    /**
+     * Conflict — the job is already in a terminal state and cannot be canceled.
+     */
+    409: ErrorResponse;
+    /**
+     * Too Many Requests
+     */
+    429: ErrorResponse;
+    /**
+     * Internal Server Error
+     */
+    500: ErrorResponse;
+};
+
+export type CancelRenderJobError = CancelRenderJobErrors[keyof CancelRenderJobErrors];
+
+export type CancelRenderJobResponses = {
+    /**
+     * Cancellation accepted. The job is transitioning to `canceled`; poll `GET /v1/status/{jobId}` to observe the terminal state.
+     */
+    202: CancelAcceptedResponse;
+};
+
+export type CancelRenderJobResponse = CancelRenderJobResponses[keyof CancelRenderJobResponses];
+
+export type ListRenderJobsData = {
+    body?: never;
+    headers?: {
+        /**
+         * GUID, unique per request. Auto-generated if not provided.
+         */
+        'x-request-id'?: string;
+    };
+    path?: never;
+    query?: {
+        /**
+         * FIQL filter string. Supported sub-params: `status` (enum) and `createdDate` (ISO 8601 date-time or relative duration). Default: `createdDate=ge=-P30D;status=in=(not_started,running,succeeded,partially_succeeded,failed,canceled)`.
+         */
+        filter?: string;
+        /**
+         * Maximum number of job entries to return per page. Must be between 1 and 100 (inclusive). Defaults to 20.
+         */
+        limit?: number;
+        /**
+         * Opaque pagination cursor returned in `paging.nextUrl` of a previous response. Omit to fetch the first page.
+         */
+        cursor?: string;
+    };
+    url: '/v1/templates/render-jobs';
+};
+
+export type ListRenderJobsErrors = {
+    /**
+     * Bad request — invalid filter, limit, cursor, or date range.
+     */
+    400: ErrorResponse;
+    /**
+     * Unauthorized
+     */
+    401: ErrorResponse;
+    /**
+     * Forbidden
+     */
+    403: ErrorResponse;
+    /**
+     * Too Many Requests
+     */
+    429: ErrorResponse;
+    /**
+     * Internal Server Error
+     */
+    500: ErrorResponse;
+};
+
+export type ListRenderJobsError = ListRenderJobsErrors[keyof ListRenderJobsErrors];
+
+export type ListRenderJobsResponses = {
+    /**
+     * Success — list of render jobs (may be empty).
+     */
+    200: RenderJobListResponse;
+};
+
+export type ListRenderJobsResponse = ListRenderJobsResponses[keyof ListRenderJobsResponses];
 
 export type GenerateReframedVideoData = {
     /**

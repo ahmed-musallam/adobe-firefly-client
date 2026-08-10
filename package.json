@@ -3,7 +3,7 @@
   "private": true,
   "repository": {
     "type": "git",
-    "url": "https://github.com/ahmed-musallam/adobe-firefly-client"
+    "url": "git+https://github.com/ahmed-musallam/adobe-firefly-client.git"
   },
   "type": "module",
   "scripts": {
@@ -47,5 +47,6 @@
       "oxlint --fix"
     ]
   },
-  "packageManager": "pnpm@10.17.0"
+  "packageManager": "pnpm@10.17.0",
+  "version": ""
 }

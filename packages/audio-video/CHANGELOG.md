@@ -1,3 +1,9 @@
+# @musallam/ffs-audio-video-client [2.2.0](https://github.com/ahmed-musallam/adobe-firefly-client/compare/@musallam/ffs-audio-video-client@2.1.2...@musallam/ffs-audio-video-client@2.2.0) (2026-08-10)
+
+### Features
+
+- update audio/video API to latest ([6d386a1](https://github.com/ahmed-musallam/adobe-firefly-client/commit/6d386a1bf28fc5d8643b53bcbedda1d5bb6040c0))
+
 ## @musallam/ffs-audio-video-client [2.1.2](https://github.com/ahmed-musallam/adobe-firefly-client/compare/@musallam/ffs-audio-video-client@2.1.1...@musallam/ffs-audio-video-client@2.1.2) (2026-05-19)
 
 ### Bug Fixes

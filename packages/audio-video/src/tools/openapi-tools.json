@@ -199,6 +199,15 @@
             "source"
           ],
           "properties": {
+            "type": {
+              "type": "string",
+              "enum": [
+                "mogrt",
+                "aep"
+              ],
+              "default": "mogrt",
+              "description": "Input template type. Use `mogrt` for a Motion Graphics Template or `aep` for an After Effects project. Defaults to `mogrt` when omitted."
+            },
             "source": {
               "type": "object",
               "required": [
@@ -208,11 +217,31 @@
                 "url": {
                   "type": "string",
                   "format": "uri",
-                  "description": "A pre-signed URL pointing to the input template file."
+                  "description": "A pre-signed URL pointing to the input template file. For `mogrt`, this is a `.mogrt` file. For `aep`, this is a `.zip` archive containing exactly one `.aep` project file together with its collected footage and assets."
                 }
               },
               "description": "Contains metadata about the source of the input template."
+            },
+            "compName": {
+              "type": "string",
+              "description": "Name of the After Effects composition to describe. Required when `type` is `aep`; not applicable to `mogrt`. This composition name within the AEP project must be unique so that `compName` resolves to a single composition."
             }
+          },
+          "if": {
+            "properties": {
+              "type": {
+                "const": "aep"
+              }
+            },
+            "required": [
+              "type"
+            ]
+          },
+          "then": {
+            "required": [
+              "source",
+              "compName"
+            ]
           },
           "description": "The JSON request body."
         }
@@ -268,6 +297,15 @@
             "variations"
           ],
           "properties": {
+            "type": {
+              "type": "string",
+              "enum": [
+                "mogrt",
+                "aep"
+              ],
+              "default": "mogrt",
+              "description": "Input template type. Use `mogrt` for a Motion Graphics Template or `aep` for an After Effects project. Defaults to `mogrt` when omitted."
+            },
             "source": {
               "type": "object",
               "required": [
@@ -277,10 +315,14 @@
                 "url": {
                   "type": "string",
                   "format": "uri",
-                  "description": "A pre-signed URL pointing to the input template file."
+                  "description": "A pre-signed URL pointing to the input template file. For `mogrt`, this is a `.mogrt` file. For `aep`, this is a `.zip` archive containing exactly one `.aep` project file together with its collected footage and assets."
                 }
               },
               "description": "Contains metadata about the source of the input template."
+            },
+            "compName": {
+              "type": "string",
+              "description": "Name of the After Effects composition to render. Required when `type` is `aep`; not applicable to `mogrt`. This composition name within the AEP project must be unique so that `compName` resolves to a single composition."
             },
             "fonts": {
               "type": "array",
@@ -324,6 +366,13 @@
                   ],
                   "default": "use_default",
                   "description": "How to handle missing fonts. 'fail' will cause the render to fail; 'use_default' will use Premiere Pro fallback behavior."
+                },
+                "sidecar": {
+                  "type": "string",
+                  "enum": [
+                    "aep"
+                  ],
+                  "description": "Optional. Applicable only when `type` is `aep`. Set to `aep` to also produce the collected After Effects project (a self-contained archive of the `.aep` file and its footage), returned as `sidecarDestination` on each output. Not supported for `mogrt` renders."
                 }
               }
             },
@@ -399,7 +448,7 @@
                       "properties": {
                         "variableId": {
                           "type": "string",
-                          "description": "Unique identifier for the template variable (from describe response)."
+                          "description": "Unique identifier for the template variable, taken verbatim from the describe response. For AEP, this is the composite ID of a control (for example `c259:l261:media` for a media control or `c169:l193:layer:sourceText` for a text control)."
                         },
                         "selectedCheckboxValue": {
                           "type": "boolean",
@@ -449,6 +498,97 @@
                 }
               }
             },
+            "layerOperations": {
+              "type": "array",
+              "description": "Layer-level timing operations applied after variable overrides, in array order. Applicable only when `type` is `aep`; ignored for `mogrt`. Each operation targets a layer by its `layerId` (the `layers[].id` value from the describe response, of the form `c{comp}:l{layer}:layer`). The exact field set depends on `operation`; see the Render guide for the per-operation field reference.",
+              "items": {
+                "type": "object",
+                "required": [
+                  "operation"
+                ],
+                "properties": {
+                  "operation": {
+                    "type": "string",
+                    "enum": [
+                      "trim_comp",
+                      "trim_inpoint",
+                      "trim_outpoint",
+                      "shift_inpoint",
+                      "shift_outpoint",
+                      "match_source_duration",
+                      "set_layer_duration",
+                      "stretch_layer",
+                      "enable_layer"
+                    ],
+                    "description": "The layer operation to perform."
+                  },
+                  "layerId": {
+                    "type": "string",
+                    "description": "Target layer ID (`c{comp}:l{layer}:layer`). Used by all operations except `trim_comp`."
+                  },
+                  "refLayerId": {
+                    "type": "string",
+                    "description": "Reference layer for `shift_inpoint`, `shift_outpoint`, `trim_inpoint`, and `trim_outpoint` (its in/out time, selected by `refInOut`, anchors the move) and for `stretch_layer` (its duration becomes the target duration when no `duration*` field is provided)."
+                  },
+                  "refInOut": {
+                    "type": "string",
+                    "enum": [
+                      "in",
+                      "out"
+                    ],
+                    "description": "Which end of `refLayerId` to read as the reference time."
+                  },
+                  "startLayerId": {
+                    "type": "string",
+                    "description": "For `trim_comp`, the layer whose in point sets the start of the comp."
+                  },
+                  "endLayerId": {
+                    "type": "string",
+                    "description": "For `trim_comp`, the layer whose out point sets the end of the comp."
+                  },
+                  "startSeconds": {
+                    "type": "number",
+                    "description": "For `trim_comp`, the absolute start time of the comp, in seconds."
+                  },
+                  "startFrames": {
+                    "type": "number",
+                    "description": "For `trim_comp`, the absolute start time of the comp, in frames."
+                  },
+                  "offsetSeconds": {
+                    "type": "number",
+                    "description": "Offset added to the resolved reference time (`shift_*`, `trim_*`) or target duration (`stretch_layer`), in seconds. Takes precedence over `offsetFrames`."
+                  },
+                  "offsetFrames": {
+                    "type": "number",
+                    "description": "Offset added to the resolved reference time (`shift_*`, `trim_*`) or target duration (`stretch_layer`), in frames. Used only when `offsetSeconds` is absent."
+                  },
+                  "durationSeconds": {
+                    "type": "number",
+                    "description": "Duration in seconds for `set_layer_duration` and `stretch_layer`, or the comp duration for `trim_comp`. Takes precedence over `durationFrames`."
+                  },
+                  "durationFrames": {
+                    "type": "number",
+                    "description": "Duration in frames for `set_layer_duration` and `stretch_layer`, or the comp duration for `trim_comp`. Used only when `durationSeconds` is absent."
+                  },
+                  "durationPercent": {
+                    "type": "number",
+                    "description": "For `stretch_layer`, the target duration as a percentage of the layer's native duration. Highest priority of the `stretch_layer` duration inputs: `durationPercent` > `durationSeconds` > `durationFrames` > `refLayerId`."
+                  },
+                  "videoEnabled": {
+                    "type": "boolean",
+                    "description": "For `enable_layer`, turns the target layer's video (visuals) on or off. Optional; each `enable_layer` operation must set at least one of `videoEnabled`, `audioEnabled`, or `solo`."
+                  },
+                  "audioEnabled": {
+                    "type": "boolean",
+                    "description": "For `enable_layer`, turns the target layer's audio on or off. Optional; each `enable_layer` operation must set at least one of `videoEnabled`, `audioEnabled`, or `solo`."
+                  },
+                  "solo": {
+                    "type": "boolean",
+                    "description": "For `enable_layer`, solos the target layer within its comp; only solo-enabled layers will render. A comp with solo-enabled layers will render against transparency or the comp's background color setting, depending on the render output format. To render audio-only to a video output format, solo an invisible video layer (such as a null) in addition to any solo-enabled audio layers; this is not necessary when rendering to an audio output format. Optional; each `enable_layer` operation must set at least one of `videoEnabled`, `audioEnabled`, or `solo`. If `videoEnabled` and `audioEnabled` are both false for a layer, solo cannot be applied to it."
+                  }
+                }
+              }
+            },
             "outputs": {
               "type": "array",
               "description": "Defines which variation and preset combinations to render and optional output file names.",
@@ -470,10 +610,31 @@
                   "fileName": {
                     "type": "string",
                     "description": "Optional custom file name for the output."
+                  },
+                  "destination": {
+                    "type": "string",
+                    "description": "A pre-signed URL destination for the video output."
                   }
                 }
               }
             }
+          },
+          "if": {
+            "properties": {
+              "type": {
+                "const": "aep"
+              }
+            },
+            "required": [
+              "type"
+            ]
+          },
+          "then": {
+            "required": [
+              "source",
+              "variations",
+              "compName"
+            ]
           },
           "description": "The JSON request body."
         }
@@ -494,6 +655,189 @@
       }
     ],
     "operationId": "template-render",
+    "baseUrl": "https://audio-video-api.adobe.io"
+  },
+  {
+    "name": "cancel-render-job",
+    "description": "Aborts an in-flight render job. Returns `202 Accepted` as soon as the cancellation has been accepted; subsequent calls to `GET /v1/status/{jobId}` will report `\"status\": \"canceled\"` once the worker has fully stopped the underlying render.\n\n**Applicable only to render jobs submitted via `POST /v1/templates/render`.** This endpoint does not apply to Describe, Reframe, TLS, TTS, or Avatar jobs.\n\n**Notes:**\n- Cancellation is idempotent.\n- Once propagated to the worker, in-progress outputs are not uploaded to the destinations specified in the original render request.\n- For a short window after the PUT, the status endpoint may still report `running`; poll until it transitions to `canceled`.",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "jobId": {
+          "type": "string",
+          "format": "uuid",
+          "description": "UUID of the render job to cancel, as returned in the `jobId` field of the original 202 submit response or in the `cancelUrl` property of a List Render Jobs response item."
+        },
+        "x-request-id": {
+          "type": "string",
+          "format": "uuid",
+          "description": "GUID, unique per request. Auto-generated if not provided."
+        }
+      },
+      "required": [
+        "jobId"
+      ]
+    },
+    "method": "put",
+    "pathTemplate": "/v1/cancel/{jobId}",
+    "parameters": [
+      {
+        "name": "jobId",
+        "in": "path",
+        "required": true,
+        "schema": {
+          "type": "string",
+          "format": "uuid"
+        },
+        "description": "UUID of the render job to cancel, as returned in the `jobId` field of the original 202 submit response or in the `cancelUrl` property of a List Render Jobs response item."
+      },
+      {
+        "name": "x-request-id",
+        "in": "header",
+        "required": false,
+        "description": "GUID, unique per request. Auto-generated if not provided.",
+        "schema": {
+          "type": "string",
+          "format": "uuid",
+          "example": "a1b2c3d4-e5f6-7890-abcd-ef1234567890"
+        }
+      }
+    ],
+    "executionParameters": [
+      {
+        "name": "jobId",
+        "in": "path"
+      },
+      {
+        "name": "x-request-id",
+        "in": "header"
+      }
+    ],
+    "securityRequirements": [
+      {
+        "AccessToken": [],
+        "X-Api-Key": []
+      }
+    ],
+    "operationId": "cancel-render-job",
+    "baseUrl": "https://audio-video-api.adobe.io"
+  },
+  {
+    "name": "list-render-jobs",
+    "description": "Returns a paginated list of template render jobs owned by the authenticated caller, optionally filtered by status and creation date.\n\n**Applicable only to render jobs submitted via `POST /v1/templates/render`.** Jobs from other API types (Describe, Reframe, TLS, TTS, Avatar) are not returned.\n\n**Filter syntax (FIQL):**\n- `status==running` — single status equality\n- `status=in=(running,not_started)` — status set membership\n- `createdDate=ge=2026-05-01T00:00:00Z` — absolute ISO 8601 lower bound\n- `createdDate=ge=-P7D` — relative ISO 8601 duration (last 7 days)\n- Combine with `;` (AND): `status==running;createdDate=ge=-P7D`\n\n**Default filter:** all statuses, `createdDate` within the last 30 days.\n\n**Retention:** `createdDate` filter values must fall within the 30-day retention window.\n\n**Pagination:** follow `paging.nextUrl` until it is absent (last page).",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "filter": {
+          "type": "string",
+          "description": "FIQL filter string. Supported sub-params: `status` (enum) and `createdDate` (ISO 8601 date-time or relative duration). Default: `createdDate=ge=-P30D;status=in=(not_started,running,succeeded,partially_succeeded,failed,canceled)`."
+        },
+        "limit": {
+          "type": "number",
+          "minimum": 1,
+          "maximum": 100,
+          "default": 20,
+          "description": "Maximum number of job entries to return per page. Must be between 1 and 100 (inclusive). Defaults to 20."
+        },
+        "cursor": {
+          "type": "string",
+          "description": "Opaque pagination cursor returned in `paging.nextUrl` of a previous response. Omit to fetch the first page."
+        },
+        "x-request-id": {
+          "type": "string",
+          "format": "uuid",
+          "description": "GUID, unique per request. Auto-generated if not provided."
+        }
+      }
+    },
+    "method": "get",
+    "pathTemplate": "/v1/templates/render-jobs",
+    "parameters": [
+      {
+        "name": "filter",
+        "in": "query",
+        "required": false,
+        "description": "FIQL filter string. Supported sub-params: `status` (enum) and `createdDate` (ISO 8601 date-time or relative duration). Default: `createdDate=ge=-P30D;status=in=(not_started,running,succeeded,partially_succeeded,failed,canceled)`.",
+        "schema": {
+          "type": "string"
+        },
+        "examples": {
+          "RunningOnly": {
+            "summary": "Running jobs only",
+            "value": "status==running"
+          },
+          "Last7DaysRunning": {
+            "summary": "Running jobs in last 7 days",
+            "value": "createdDate=ge=-P7D;status==running"
+          },
+          "AbsoluteDateRange": {
+            "summary": "Absolute date range",
+            "value": "createdDate=ge=2026-05-14T00:00:00Z;createdDate=le=2026-05-21T00:00:00Z"
+          },
+          "MultipleStatuses": {
+            "summary": "Multiple statuses",
+            "value": "status=in=(running,not_started)"
+          }
+        }
+      },
+      {
+        "name": "limit",
+        "in": "query",
+        "required": false,
+        "description": "Maximum number of job entries to return per page. Must be between 1 and 100 (inclusive). Defaults to 20.",
+        "schema": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 100,
+          "default": 20
+        }
+      },
+      {
+        "name": "cursor",
+        "in": "query",
+        "required": false,
+        "description": "Opaque pagination cursor returned in `paging.nextUrl` of a previous response. Omit to fetch the first page.",
+        "schema": {
+          "type": "string"
+        }
+      },
+      {
+        "name": "x-request-id",
+        "in": "header",
+        "required": false,
+        "description": "GUID, unique per request. Auto-generated if not provided.",
+        "schema": {
+          "type": "string",
+          "format": "uuid",
+          "example": "a1b2c3d4-e5f6-7890-abcd-ef1234567890"
+        }
+      }
+    ],
+    "executionParameters": [
+      {
+        "name": "filter",
+        "in": "query"
+      },
+      {
+        "name": "limit",
+        "in": "query"
+      },
+      {
+        "name": "cursor",
+        "in": "query"
+      },
+      {
+        "name": "x-request-id",
+        "in": "header"
+      }
+    ],
+    "securityRequirements": [
+      {
+        "AccessToken": [],
+        "X-Api-Key": []
+      }
+    ],
+    "operationId": "list-render-jobs",
     "baseUrl": "https://audio-video-api.adobe.io"
   },
   {

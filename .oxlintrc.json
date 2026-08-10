@@ -5,7 +5,8 @@
     "suspicious": "warn"
   },
   "rules": {
-    "typescript/no-explicit-any": "warn"
+    "typescript/no-explicit-any": "warn",
+    "unicorn/no-thenable": "off"
   },
   "ignorePatterns": ["**/src/flat/**", "**/src/sdk/**", "**/dist/**"]
 }

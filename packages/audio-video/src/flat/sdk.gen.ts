@@ -2,7 +2,7 @@
 
 import type { Client, Options as Options2, TDataShape } from './client';
 import { client } from './client.gen';
-import type { AvatarsData, AvatarsErrors, AvatarsResponses, DubData, DubErrors, DubResponses, GenerateAvatarData, GenerateAvatarErrors, GenerateAvatarResponses, GenerateReframedVideoData, GenerateReframedVideoErrors, GenerateReframedVideoResponses, GenerateReframedVideoV2Data, GenerateReframedVideoV2Errors, GenerateReframedVideoV2Responses, GenerateSpeechData, GenerateSpeechErrors, GenerateSpeechResponses, GetPresetsData, GetPresetsErrors, GetPresetsResponses, JobResultV2Data, JobResultV2Errors, JobResultV2Responses, StatusData, StatusErrors, StatusResponses, TemplateDescribeData, TemplateDescribeErrors, TemplateDescribeResponses, TemplateRenderData, TemplateRenderErrors, TemplateRenderResponses, TranscribeData, TranscribeErrors, TranscribeResponses, VoicesData, VoicesErrors, VoicesResponses } from './types.gen';
+import type { AvatarsData, AvatarsErrors, AvatarsResponses, CancelRenderJobData, CancelRenderJobErrors, CancelRenderJobResponses, DubData, DubErrors, DubResponses, GenerateAvatarData, GenerateAvatarErrors, GenerateAvatarResponses, GenerateReframedVideoData, GenerateReframedVideoErrors, GenerateReframedVideoResponses, GenerateReframedVideoV2Data, GenerateReframedVideoV2Errors, GenerateReframedVideoV2Responses, GenerateSpeechData, GenerateSpeechErrors, GenerateSpeechResponses, GetPresetsData, GetPresetsErrors, GetPresetsResponses, JobResultV2Data, JobResultV2Errors, JobResultV2Responses, ListRenderJobsData, ListRenderJobsErrors, ListRenderJobsResponses, StatusData, StatusErrors, StatusResponses, TemplateDescribeData, TemplateDescribeErrors, TemplateDescribeResponses, TemplateRenderData, TemplateRenderErrors, TemplateRenderResponses, TranscribeData, TranscribeErrors, TranscribeResponses, VoicesData, VoicesErrors, VoicesResponses } from './types.gen';
 
 export type Options<TData extends TDataShape = TDataShape, ThrowOnError extends boolean = boolean, TResponse = unknown> = Options2<TData, ThrowOnError, TResponse> & {
     /**
@@ -94,6 +94,50 @@ export const templateRender = <ThrowOnError extends boolean = false>(options: Op
         'Content-Type': 'application/json',
         ...options.headers
     }
+});
+
+/**
+ * Cancel a render job
+ *
+ * Aborts an in-flight render job. Returns `202 Accepted` as soon as the cancellation has been accepted; subsequent calls to `GET /v1/status/{jobId}` will report `"status": "canceled"` once the worker has fully stopped the underlying render.
+ *
+ * **Applicable only to render jobs submitted via `POST /v1/templates/render`.** This endpoint does not apply to Describe, Reframe, TLS, TTS, or Avatar jobs.
+ *
+ * **Notes:**
+ * - Cancellation is idempotent.
+ * - Once propagated to the worker, in-progress outputs are not uploaded to the destinations specified in the original render request.
+ * - For a short window after the PUT, the status endpoint may still report `running`; poll until it transitions to `canceled`.
+ */
+export const cancelRenderJob = <ThrowOnError extends boolean = false>(options: Options<CancelRenderJobData, ThrowOnError>) => (options.client ?? client).put<CancelRenderJobResponses, CancelRenderJobErrors, ThrowOnError>({
+    security: [{ scheme: 'bearer', type: 'http' }, { name: 'x-api-key', type: 'apiKey' }],
+    url: '/v1/cancel/{jobId}',
+    ...options
+});
+
+/**
+ * List render jobs
+ *
+ * Returns a paginated list of template render jobs owned by the authenticated caller, optionally filtered by status and creation date.
+ *
+ * **Applicable only to render jobs submitted via `POST /v1/templates/render`.** Jobs from other API types (Describe, Reframe, TLS, TTS, Avatar) are not returned.
+ *
+ * **Filter syntax (FIQL):**
+ * - `status==running` — single status equality
+ * - `status=in=(running,not_started)` — status set membership
+ * - `createdDate=ge=2026-05-01T00:00:00Z` — absolute ISO 8601 lower bound
+ * - `createdDate=ge=-P7D` — relative ISO 8601 duration (last 7 days)
+ * - Combine with `;` (AND): `status==running;createdDate=ge=-P7D`
+ *
+ * **Default filter:** all statuses, `createdDate` within the last 30 days.
+ *
+ * **Retention:** `createdDate` filter values must fall within the 30-day retention window.
+ *
+ * **Pagination:** follow `paging.nextUrl` until it is absent (last page).
+ */
+export const listRenderJobs = <ThrowOnError extends boolean = false>(options?: Options<ListRenderJobsData, ThrowOnError>) => (options?.client ?? client).get<ListRenderJobsResponses, ListRenderJobsErrors, ThrowOnError>({
+    security: [{ scheme: 'bearer', type: 'http' }, { name: 'x-api-key', type: 'apiKey' }],
+    url: '/v1/templates/render-jobs',
+    ...options
 });
 
 /**
